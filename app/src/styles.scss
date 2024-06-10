@@ -63,6 +63,8 @@ $dark-theme: m3-theme.$dark-theme;
   }
 }
 
+// Consider doing something like this: https://pkief.medium.com/automatic-dark-mode-detection-in-angular-material-8342917885a0
+
 html,
 body {
   height: 100%;
