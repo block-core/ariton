@@ -7,7 +7,15 @@
     [mode]="(isHandset$ | async) ? 'over' : 'side'"
     [opened]="(isHandset$ | async) === false"
   >
-    <mat-toolbar>Menu</mat-toolbar>
+    <mat-toolbar>
+      <img class="toolbar-logo" src="ariton-icon-dark.svg">
+
+      <picture  class="toolbar-text">
+        <source srcset="ariton-text-light.svg" media="(prefers-color-scheme: dark)">
+        <img src="ariton-text-dark.svg">
+    </picture>
+
+    </mat-toolbar>
     <mat-nav-list>
       @for (item of rootRoutes; track $index) {
       <a
@@ -34,7 +42,9 @@
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
       }
-      <span>angular-material-3</span>
+      <span>Dashboard <app-theme-toggle></app-theme-toggle>
+      </span>
+      
     </mat-toolbar>
     <div class="sidenav-scroll-wrapper">
       <div class="sidenav-content">
