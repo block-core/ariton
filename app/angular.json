@@ -104,14 +104,7 @@
           }
         },
         "deploy": {
-          "builder": "angular-cli-ghpages:deploy",
-          "options": {
-            "baseHref": "https://block-core.github.io/ariton/",
-            "dir": "dist/app",
-            "repo": "https://github.com/block-core/ariton.git",
-            "name": "Angular Schule Team",
-            "email": "team@angular.schule"
-          }
+          "builder": "angular-cli-ghpages:deploy"
         }
       }
     }
