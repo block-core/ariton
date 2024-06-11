@@ -107,7 +107,10 @@
           "builder": "angular-cli-ghpages:deploy",
           "options": {
             "name": "Ariton Team",
-            "email": "post@blockcore.net"
+            "email": "post@blockcore.net",
+            "baseHref": "/ariton/",
+            "dir": "dist/app",
+            "repo": "https://github.com/block-core/ariton.git"
            }
         }
       }
