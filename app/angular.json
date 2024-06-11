@@ -110,7 +110,8 @@
             "email": "sondre@outlook.com",
             "baseHref": "/ariton/",
             "dir": "dist/app",
-            "repo": "https://github.com/block-core/ariton.git"
+            "repo": "https://github.com/block-core/ariton.git",
+            "cname": "alpha.ariton.app"
            }
         }
       }
