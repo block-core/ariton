@@ -104,7 +104,11 @@
           }
         },
         "deploy": {
-          "builder": "angular-cli-ghpages:deploy"
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {
+            "name": "Ariton Team",
+            "email": "post@blockcore.net"
+           }
         }
       }
     }
