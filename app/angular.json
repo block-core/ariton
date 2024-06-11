@@ -106,6 +106,7 @@
         "deploy": {
           "builder": "angular-cli-ghpages:deploy",
           "options": {
+            "name": "sondreb",
             "baseHref": "/",
             "dir": "dist/app",
             "repo": "https://github.com/block-core/ariton.git",
