@@ -107,6 +107,7 @@
           "builder": "angular-cli-ghpages:deploy",
           "options": {
             "name": "sondreb",
+            "email": "sondre@outlook.com",
             "baseHref": "/",
             "dir": "dist/app",
             "repo": "https://github.com/block-core/ariton.git",
