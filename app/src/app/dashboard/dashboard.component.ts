@@ -28,6 +28,7 @@ export class DashboardComponent {
   private breakpointObserver = inject(BreakpointObserver);
 
   async ngOnInit() {
+    console.log('Connecting to Web5...');
     const { web5, did: myDid } = await Web5.connect();
     console.log(myDid);
     console.log(web5);
