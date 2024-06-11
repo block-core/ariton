@@ -12,7 +12,7 @@ export const routes: Routes = [
       import('./dashboard/dashboard.component').then(
         (c) => c.DashboardComponent
       ),
-      title: 'Dashboard'
+      title: 'Dashboard v0.0'
   },
   {
     path: 'address',
