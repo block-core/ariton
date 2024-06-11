@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "deploy": "ng deploy --repo https://github.com/block-core/ariton.git app --base-href '/ariton/' --dir dist/app --no-silent"
+    "deploy": "ng deploy app --base-href '/ariton/' --dir dist/app --no-silent"
   },
   "repository": {
     "type": "git",
