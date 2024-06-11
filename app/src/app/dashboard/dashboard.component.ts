@@ -7,6 +7,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { Web5 } from '@web5/api';
+import { VerifiableCredential } from '@web5/credentials';
 
 @Component({
   selector: 'app-dashboard',
@@ -25,6 +27,12 @@ import { MatCardModule } from '@angular/material/card';
 export class DashboardComponent {
   private breakpointObserver = inject(BreakpointObserver);
 
+  async ngOnInit() {
+    const { web5, did: myDid } = await Web5.connect();
+    console.log(myDid);
+    console.log(web5);
+  }
+  
   /** Based on the screen size, switch from standard to one column per row */
   cards = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
     map(({ matches }) => {
