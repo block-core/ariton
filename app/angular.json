@@ -106,8 +106,8 @@
         "deploy": {
           "builder": "angular-cli-ghpages:deploy",
           "options": {
-            "name": "Ariton Team",
-            "email": "post@blockcore.net",
+            "name": "sondreb",
+            "email": "sondre@outlook.com",
             "baseHref": "/ariton/",
             "dir": "dist/app",
             "repo": "https://github.com/block-core/ariton.git"
