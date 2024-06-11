@@ -19,6 +19,8 @@ jobs:
 
     - name: Install dependencies
       run: npm ci
+      working-directory: app
 
     - name: Run deploy script
       run: npm run deploy
+      working-directory: app
