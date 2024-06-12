@@ -12,7 +12,44 @@ export const routes: Routes = [
       import('./dashboard/dashboard.component').then(
         (c) => c.DashboardComponent
       ),
-      title: 'Dashboard v0.0'
+      title: 'Dashboard',
+      data: { icon: 'dashboard' }
+  },
+  {
+    path: 'communities',
+    loadComponent: () =>
+      import('./communities/communities.component').then(
+        (c) => c.CommunitiesComponent
+      ),
+      title: 'Communities',
+      data: { icon: 'diversity_2' }
+  },
+  {
+    path: 'marketplace',
+    loadComponent: () =>
+      import('./marketplace/marketplace.component').then(
+        (c) => c.MarketplaceComponent
+      ),
+      title: 'Marketplace',
+      data: { icon: 'storefront' }
+  },
+  {
+    path: 'registries',
+    loadComponent: () =>
+      import('./registries/registries.component').then(
+        (c) => c.RegistriesComponent
+      ),
+      title: 'Registries',
+      data: { icon: 'folder_shared' }
+  },
+  {
+    path: 'data',
+    loadComponent: () =>
+      import('./data/data.component').then(
+        (c) => c.DataComponent
+      ),
+      title: 'Data',
+      data: { icon: 'source' }
   },
   {
     path: 'address',
@@ -20,7 +57,8 @@ export const routes: Routes = [
       import('./address-form/address-form.component').then(
         (c) => c.AddressFormComponent
       ),
-      title: 'Address'
+      title: 'Address',
+      data: { icon: 'folder' }
   },
   {
     path: 'table',
@@ -28,7 +66,8 @@ export const routes: Routes = [
       import('./table/table.component').then(
         (c) => c.TableComponent
       ),
-      title: 'Table'
+      title: 'Table',
+      data: { icon: 'folder' }
   },
   {
     path: 'tree',
@@ -36,7 +75,8 @@ export const routes: Routes = [
       import('./tree/tree.component').then(
         (c) => c.TreeComponent
       ),
-      title: 'Tree'
+      title: 'Tree',
+      data: { icon: 'folder' }
   },
   {
     path: 'drag-drop',
@@ -44,7 +84,8 @@ export const routes: Routes = [
       import('./drag-drop/drag-drop.component').then(
         (c) => c.DragDropComponent
       ),
-      title: 'Drag-Drop'
+      title: 'Drag-Drop',
+      data: { icon: 'folder' }
   },
   {
     path: 'identity',
@@ -52,6 +93,7 @@ export const routes: Routes = [
       import('./identity/identity.component').then(
         (c) => c.IdentityComponent
       ),
-      title: 'Identity'
+      title: 'Identity',
+      data: { icon: 'account_circle' }
   },
 ];
