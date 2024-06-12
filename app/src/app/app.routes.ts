@@ -46,4 +46,12 @@ export const routes: Routes = [
       ),
       title: 'Drag-Drop'
   },
+  {
+    path: 'identity',
+    loadComponent: () =>
+      import('./identity/identity.component').then(
+        (c) => c.IdentityComponent
+      ),
+      title: 'Identity'
+  },
 ];

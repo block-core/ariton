@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { Web5 } from '@web5/api';
 import { VerifiableCredential } from '@web5/credentials';
+import { IdentityService } from '../identity.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -27,11 +28,18 @@ import { VerifiableCredential } from '@web5/credentials';
 export class DashboardComponent {
   private breakpointObserver = inject(BreakpointObserver);
 
+  constructor(private identity: IdentityService) {
+
+  }
+
   async ngOnInit() {
-    console.log('Connecting to Web5...');
-    const { web5, did: myDid } = await Web5.connect();
-    console.log(myDid);
-    console.log(web5);
+    // console.log('Connecting to Web5...');
+    // const { web5, did: myDid } = await Web5.connect();
+    // console.log(myDid);
+    // console.log(web5);
+
+    // this.identity.web5 = web5;
+    // this.identity.did = myDid;
   }
   
   /** Based on the screen size, switch from standard to one column per row */
