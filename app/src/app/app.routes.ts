@@ -7,6 +7,15 @@ export const routes: Routes = [
     redirectTo: 'dashboard',
   },
   {
+    path: 'introduction',
+    loadComponent: () =>
+      import('./introduction/introduction.component').then(
+        (c) => c.IntroductionComponent
+      ),
+      title: 'Introduction',
+      data: { icon: 'lightbulb' }
+  },
+  {
     path: 'dashboard',
     loadComponent: () =>
       import('./dashboard/dashboard.component').then(
@@ -34,6 +43,15 @@ export const routes: Routes = [
       data: { icon: 'storefront' }
   },
   {
+    path: 'apps',
+    loadComponent: () =>
+      import('./apps/apps.component').then(
+        (c) => c.AppsComponent
+      ),
+      title: 'Apps',
+      data: { icon: 'apps' }
+  },
+  {
     path: 'registries',
     loadComponent: () =>
       import('./registries/registries.component').then(
@@ -50,6 +68,24 @@ export const routes: Routes = [
       ),
       title: 'Data',
       data: { icon: 'source' }
+  },
+  {
+    path: 'identity',
+    loadComponent: () =>
+      import('./identity/identity.component').then(
+        (c) => c.IdentityComponent
+      ),
+      title: 'Identity',
+      data: { icon: 'account_circle' }
+  },
+  {
+    path: 'settings',
+    loadComponent: () =>
+      import('./settings/settings.component').then(
+        (c) => c.SettingsComponent
+      ),
+      title: 'Settings',
+      data: { icon: 'settings' }
   },
   {
     path: 'address',
@@ -86,14 +122,5 @@ export const routes: Routes = [
       ),
       title: 'Drag-Drop',
       data: { icon: 'folder' }
-  },
-  {
-    path: 'identity',
-    loadComponent: () =>
-      import('./identity/identity.component').then(
-        (c) => c.IdentityComponent
-      ),
-      title: 'Identity',
-      data: { icon: 'account_circle' }
   },
 ];

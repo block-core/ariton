@@ -10,6 +10,7 @@ import { MatCardModule } from '@angular/material/card';
 import { Web5 } from '@web5/api';
 import { VerifiableCredential } from '@web5/credentials';
 import { IdentityService } from '../identity.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -22,7 +23,8 @@ import { IdentityService } from '../identity.service';
     MatMenuModule,
     MatIconModule,
     MatButtonModule,
-    MatCardModule
+    MatCardModule,
+    RouterModule
   ]
 })
 export class DashboardComponent {
