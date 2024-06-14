@@ -7,7 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "deploy": "ng deploy app"
+    "deploy": "ng deploy app",
+    "i18n": "ng extract-i18n --format=json --output-path src/locale"
   },
   "repository": {
     "type": "git",
@@ -40,6 +41,7 @@
     "@angular-devkit/build-angular": "^18.0.3",
     "@angular/cli": "^18.0.3",
     "@angular/compiler-cli": "^18.0.2",
+    "@angular/localize": "^18.0.2",
     "@types/jasmine": "~5.1.4",
     "angular-cli-ghpages": "^2.0.1",
     "jasmine-core": "~5.1.2",
