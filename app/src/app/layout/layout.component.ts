@@ -32,7 +32,7 @@ import { ThemeToggleComponent } from '../theme-toggle/theme-toggle.component';
 export class LayoutComponent {
   private breakpointObserver = inject(BreakpointObserver);
 
-  rootRoutes = routes.filter(r=>r.path);
+  rootRoutes = routes.filter(r=>r.path).filter(r=>r.data && r.data['hide'] != true);
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(

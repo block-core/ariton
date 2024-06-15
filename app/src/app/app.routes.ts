@@ -67,7 +67,7 @@ export const routes: Routes = [
         (c) => c.RegistryComponent
       ),
       title: 'Registry',
-      data: { icon: 'folder_shared' }
+      data: { hide: true, icon: 'folder_shared' }
   },
   {
     path: 'data',
