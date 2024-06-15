@@ -61,6 +61,15 @@ export const routes: Routes = [
       data: { icon: 'folder_shared' }
   },
   {
+    path: 'registries/:id',
+    loadComponent: () =>
+      import('./registries//registry/registry.component').then(
+        (c) => c.RegistryComponent
+      ),
+      title: 'Registry',
+      data: { icon: 'folder_shared' }
+  },
+  {
     path: 'data',
     loadComponent: () =>
       import('./data/data.component').then(

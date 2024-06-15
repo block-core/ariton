@@ -1,0 +1,38 @@
+<h1>Registry: Blockchain Social Network (BSN)</h1>
+
+<p>
+Updated: {{updated | date: 'medium'}}
+</p>
+
+
+<mat-list>
+    <div mat-subheader>Tokens</div>
+    @for (token of tokens; track token) {
+      <mat-list-item>
+        <mat-icon matListItemIcon>folder</mat-icon>
+        <div matListItemTitle>{{token.name}}</div>
+        <div matListItemLine>{{token.short}}</div>
+      </mat-list-item>
+    }
+    <mat-divider></mat-divider>
+    <div mat-subheader>Sources</div>
+    @for (source of sources; track source) {
+      <mat-list-item>
+        <mat-icon matListItemIcon>note</mat-icon>
+        <div matListItemTitle>{{source.name}}</div>
+        <div matListItemLine>{{source.short}}</div>
+      </mat-list-item>
+    }
+    <div mat-subheader>Accounts</div>
+    @for (account of accounts; track account) {
+      <mat-list-item>
+        <mat-icon matListItemIcon>note</mat-icon>
+        <div matListItemTitle>{{account.short}}</div>
+        <div matListItemLine>
+          @for (tag of account.tags; track tag) {
+            {{tag.id}},
+          }
+        </div>
+      </mat-list-item>
+    }
+  </mat-list>
