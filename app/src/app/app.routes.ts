@@ -12,8 +12,8 @@ export const routes: Routes = [
       import('./introduction/introduction.component').then(
         (c) => c.IntroductionComponent
       ),
-      title: 'Introduction',
-      data: { icon: 'lightbulb' }
+    title: 'Introduction',
+    data: { icon: 'lightbulb' },
   },
   {
     path: 'dashboard',
@@ -21,8 +21,8 @@ export const routes: Routes = [
       import('./dashboard/dashboard.component').then(
         (c) => c.DashboardComponent
       ),
-      title: 'Dashboard',
-      data: { icon: 'dashboard' }
+    title: 'Dashboard',
+    data: { icon: 'dashboard' },
   },
   {
     path: 'communities',
@@ -30,8 +30,8 @@ export const routes: Routes = [
       import('./communities/communities.component').then(
         (c) => c.CommunitiesComponent
       ),
-      title: 'Communities',
-      data: { icon: 'diversity_2' }
+    title: 'Communities',
+    data: { icon: 'diversity_2' },
   },
   {
     path: 'marketplace',
@@ -39,17 +39,15 @@ export const routes: Routes = [
       import('./marketplace/marketplace.component').then(
         (c) => c.MarketplaceComponent
       ),
-      title: 'Marketplace',
-      data: { icon: 'storefront' }
+    title: 'Marketplace',
+    data: { icon: 'storefront' },
   },
   {
     path: 'apps',
     loadComponent: () =>
-      import('./apps/apps.component').then(
-        (c) => c.AppsComponent
-      ),
-      title: 'Apps',
-      data: { icon: 'apps' }
+      import('./apps/apps.component').then((c) => c.AppsComponent),
+    title: 'Apps',
+    data: { icon: 'apps' },
   },
   {
     path: 'registries',
@@ -57,8 +55,8 @@ export const routes: Routes = [
       import('./registries/registries.component').then(
         (c) => c.RegistriesComponent
       ),
-      title: 'Registries',
-      data: { icon: 'folder_shared' }
+    title: 'Registries',
+    data: { icon: 'folder_shared' },
   },
   {
     path: 'registries/:id',
@@ -66,35 +64,29 @@ export const routes: Routes = [
       import('./registries//registry/registry.component').then(
         (c) => c.RegistryComponent
       ),
-      title: 'Registry',
-      data: { hide: true, icon: 'folder_shared' }
+    title: 'Registry',
+    data: { hide: true, icon: 'folder_shared' },
   },
   {
     path: 'data',
     loadComponent: () =>
-      import('./data/data.component').then(
-        (c) => c.DataComponent
-      ),
-      title: 'Data',
-      data: { icon: 'source' }
+      import('./data/data.component').then((c) => c.DataComponent),
+    title: 'Data',
+    data: { icon: 'source' },
   },
   {
     path: 'identity',
     loadComponent: () =>
-      import('./identity/identity.component').then(
-        (c) => c.IdentityComponent
-      ),
-      title: 'Identity',
-      data: { icon: 'account_circle' }
+      import('./identity/identity.component').then((c) => c.IdentityComponent),
+    title: 'Identity',
+    data: { icon: 'account_circle' },
   },
   {
     path: 'settings',
     loadComponent: () =>
-      import('./settings/settings.component').then(
-        (c) => c.SettingsComponent
-      ),
-      title: 'Settings',
-      data: { icon: 'settings' }
+      import('./settings/settings.component').then((c) => c.SettingsComponent),
+    title: 'Settings',
+    data: { icon: 'settings' },
   },
   {
     path: 'address',
@@ -102,26 +94,22 @@ export const routes: Routes = [
       import('./address-form/address-form.component').then(
         (c) => c.AddressFormComponent
       ),
-      title: 'Address',
-      data: { icon: 'folder' }
+    title: 'Address',
+    data: { hide: true, icon: 'folder' },
   },
   {
     path: 'table',
     loadComponent: () =>
-      import('./table/table.component').then(
-        (c) => c.TableComponent
-      ),
-      title: 'Table',
-      data: { icon: 'folder' }
+      import('./table/table.component').then((c) => c.TableComponent),
+    title: 'Table',
+    data: { hide: true, icon: 'folder' },
   },
   {
     path: 'tree',
     loadComponent: () =>
-      import('./tree/tree.component').then(
-        (c) => c.TreeComponent
-      ),
-      title: 'Tree',
-      data: { icon: 'folder' }
+      import('./tree/tree.component').then((c) => c.TreeComponent),
+    title: 'Tree',
+    data: { hide: true, icon: 'folder' },
   },
   {
     path: 'drag-drop',
@@ -129,7 +117,7 @@ export const routes: Routes = [
       import('./drag-drop/drag-drop.component').then(
         (c) => c.DragDropComponent
       ),
-      title: 'Drag-Drop',
-      data: { icon: 'folder' }
+    title: 'Drag-Drop',
+    data: { hide: true, icon: 'folder' },
   },
 ];
