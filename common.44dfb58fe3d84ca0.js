@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkapp=self.webpackChunkapp||[]).push([[76],{69226:(e,c,s)=>{s.d(c,{x:()=>n});var a=s(93953);let n=(()=>{class t{constructor(){this.bsn={tokens:[],sources:[],accounts:[]}}static#t=this.\u0275fac=function(o){return new(o||t)};static#s=this.\u0275prov=a.jDH({token:t,factory:t.\u0275fac,providedIn:"root"})}return t})()}}]);
