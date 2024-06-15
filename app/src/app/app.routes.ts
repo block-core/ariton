@@ -75,6 +75,13 @@ export const routes: Routes = [
     data: { icon: 'source' },
   },
   {
+    path: 'data/:source/:id',
+    loadComponent: () =>
+      import('./data/entry/entry.component').then((c) => c.DataEntryComponent),
+    title: 'Data Entry',
+    data: { hide: true, icon: 'source' },
+  },
+  {
     path: 'identity',
     loadComponent: () =>
       import('./identity/identity.component').then((c) => c.IdentityComponent),

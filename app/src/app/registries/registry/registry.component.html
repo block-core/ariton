@@ -25,7 +25,7 @@ Updated: {{updated | date: 'medium'}}
     }
     <div mat-subheader>Accounts</div>
     @for (account of accounts; track account) {
-      <mat-list-item>
+      <mat-list-item [routerLink]="['/data', 'bsn', account.id]">
         <mat-icon matListItemIcon>account_circle</mat-icon>
         <div matListItemTitle>{{account.short}}</div>
         <div matListItemLine>
