@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1718659069206,
+  "timestamp": 1718659801846,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -62,6 +62,9 @@
         "/icons/ariton-screenshot-01.png",
         "/icons/ariton-screenshot-02.png",
         "/icons/ariton-screenshot-03.png",
+        "/icons/ariton-screenshot-04.png",
+        "/icons/ariton-screenshot-05.png",
+        "/icons/ariton-screenshot-06.png",
         "/icons/icon-1024x1024.png",
         "/icons/icon-128x128.png",
         "/icons/icon-144x144.png",
@@ -114,9 +117,12 @@
     "/ariton-text-light.svg": "713bac3c7ac2791ea5daa2678007ad9ae5db7173",
     "/ariton-text.svg": "2a6d0b37fb95a028694b47fead937797a850960a",
     "/common.44dfb58fe3d84ca0.js": "aa7999605f394fb6527999c3bf28a5f0653f2bb5",
-    "/icons/ariton-screenshot-01.png": "e2efe0ef03628cff6ec53416aa73f5475bbe3756",
-    "/icons/ariton-screenshot-02.png": "454341243acb5bdcda7c36f5008bfa455bcf96d4",
-    "/icons/ariton-screenshot-03.png": "0f246dbd4fb945e06b23f8cbe7914da19233c41e",
+    "/icons/ariton-screenshot-01.png": "fd84b5eee66e16394eabb18d68b91e9b39021a0f",
+    "/icons/ariton-screenshot-02.png": "5e55eefd6edc1f527281a649e40ee74b33db6332",
+    "/icons/ariton-screenshot-03.png": "4299e27b64c5ceb71befc0d0a710793c9fd860a5",
+    "/icons/ariton-screenshot-04.png": "6ce662b92179b89ffcb126f3e2099692d7b44aa6",
+    "/icons/ariton-screenshot-05.png": "7740f24190825decfee860e9b61f96ea37d97522",
+    "/icons/ariton-screenshot-06.png": "4cf80ca32248903ed46654f5b63cdbd8da7e3d31",
     "/icons/icon-1024x1024.png": "a3ae1c2e0461f81bb646d14b0f33353cd9679b4d",
     "/icons/icon-128x128.png": "4d244f882ce2dc7ca5d430092bf49813bacc3eb8",
     "/icons/icon-144x144.png": "08f140427e7da08c4935590db91db128e1db74dd",
@@ -134,7 +140,7 @@
     "/icons/icon.svg": "0b3ce85aede370466e690f6be683a5cc88957595",
     "/index.html": "3cef5dddacfd3428feb4d7806f84c0944757594d",
     "/main.52052b0a16ce19a5.js": "53f84f1ece3e51fbe5c20298db5a239338c0d211",
-    "/manifest.webmanifest": "7f0000b2c7d509474c3c97813e39c514710a8ccf",
+    "/manifest.webmanifest": "ecb6401c6bdf0e2257ab8d3b257130bccaf1b93f",
     "/polyfills.06209e7550b54b81.js": "bde4e749ef46b9b59ed280e8cad2e658570731a1",
     "/runtime.54ff7b0d5f117446.js": "94c0b9fad4382036fe412c5fcce07f9a58de8151",
     "/styles.5465efd10443ca52.css": "dec560d31b544eafadd55c8c7290c6563e04ec01"
