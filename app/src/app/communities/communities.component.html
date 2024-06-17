@@ -1,1 +1,15 @@
-<p>communities works!</p>
+<div class="toolbox">
+  <div class="toolbox-left">
+    <mat-form-field class="search-input" appearance="outline">
+      <mat-label>Search</mat-label>
+      <input matInput placeholder="Filter communities..." />
+      <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+    </mat-form-field>
+  </div>
+  <div class="toolbox-right">
+    <mat-button-toggle-group [formControl]="view" name="fontStyle" aria-label="Font Style">
+      <mat-button-toggle value="card">Cards</mat-button-toggle>
+      <mat-button-toggle value="table">Table</mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+</div>

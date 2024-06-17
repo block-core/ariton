@@ -1,0 +1,17 @@
+.toolbox {
+    display: flex;
+    gap: 1em;
+    align-items: baseline;
+}
+
+.toolbox-left {
+    flex-grow: 2;
+}
+
+.tooblox-right {
+    flex-grow: 1;
+}
+
+.search-input {
+    width: 100%;
+}
