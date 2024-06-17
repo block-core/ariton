@@ -27,6 +27,7 @@
     "@angular/platform-browser": "^18.0.2",
     "@angular/platform-browser-dynamic": "^18.0.2",
     "@angular/router": "^18.0.2",
+    "@angular/service-worker": "^18.0.2",
     "@web5/api": "^0.9.4",
     "@web5/credentials": "^1.0.2",
     "crypto-browserify": "^3.12.0",
