@@ -57,11 +57,14 @@ mat-sidenav-content {
     padding-right: 8px;
     padding-left: 8px;
   }
+
   .sidenav-scroll-wrapper {
     height: calc(100dvh - 64px);
   }
+
   .sidenav-content {
-    overflow-y: visible;
-    padding: 8px;
+    // This create some scrolling issues on smaller screen.
+    // overflow-y: visible;
+    // padding: 8px;
   }
 }
