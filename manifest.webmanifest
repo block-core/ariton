@@ -12,6 +12,29 @@
   "start_url": "./",
   "categories": ["tools"],
   "edge_side_panel": {},
+  "screenshots": [
+    {
+      "src": "icons/ariton-screenshot-01.png",
+      "sizes": "1189x733",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Community Discovery screen"
+    },
+    {
+      "src": "icons/ariton-screenshot-02.png",
+      "sizes": "966x414",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Open standards"
+    },
+    {
+      "src": "icons/ariton-screenshot-03.png",
+      "sizes": "1298x644",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Freedom to Connect, Power to Own"
+    }
+  ],
   "icons": [
     {
       "src": "icons/icon-72x72.png",
