@@ -20,6 +20,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { TableDataSource, TableItem } from './communities-datasource';
 import { Router } from '@angular/router';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatToolbarModule } from '@angular/material/toolbar';
+
+type CardContent = {
+  title: string;
+  description: string;
+  imageUrl: string;
+};
+
 @Component({
   selector: 'app-communities',
   standalone: true,
@@ -37,6 +45,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatSortModule,
     MatSlideToggleModule,
     FormsModule,
+    MatToolbarModule,
   ],
   templateUrl: './communities.component.html',
   styleUrl: './communities.component.scss',
@@ -50,6 +59,21 @@ export class CommunitiesComponent {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<TableItem>;
   dataSource = new TableDataSource();
+
+  cards = signal<CardContent[]>([]);
+
+  images = [
+    'nature',
+    'sky',
+    'grass',
+    'mountains',
+    'rivers',
+    'glacier',
+    'forest',
+    'streams',
+    'rain',
+    'clouds',
+  ];
 
   // hideSingleSelectionIndicator = signal(false);
   // toggle() {
@@ -103,7 +127,16 @@ export class CommunitiesComponent {
       console.log(`The checked is: ${this.checked()})`);
     });
 
-    console.log('HI!');
+    const cards: CardContent[] = [];
+    for (let i = 0; i < this.images.length; i++) {
+      cards.push({
+        title: `Community ${i + 1}`,
+        description: `This is a description of community. We are a great community with many members.`,
+        imageUrl: `https://picsum.photos/seed/${this.images[i]}x/200/300`,
+      });
+    }
+
+    this.cards.set(cards);
   }
 
   open(community: string) {
