@@ -7,7 +7,11 @@ import { MatListModule } from '@angular/material/list';
 import { Record } from '@web5/api';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { MatTreeFlatDataSource, MatTreeFlattener, MatTreeModule } from '@angular/material/tree';
+import {
+  MatTreeFlatDataSource,
+  MatTreeFlattener,
+  MatTreeModule,
+} from '@angular/material/tree';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { files } from './example-data';
 
@@ -39,7 +43,7 @@ export interface FlatTreeNode {
     MatIconModule,
     MatButtonModule,
     MatListModule,
-    MatTreeModule
+    MatTreeModule,
   ],
   templateUrl: './data-management.component.html',
   styleUrl: './data-management.component.scss',
@@ -49,7 +53,6 @@ export class DataManagementComponent {
 
   records = signal<Record[]>([]);
 
-  
   /** The TreeControl controls the expand/collapse state of tree nodes.  */
   treeControl: FlatTreeControl<FlatTreeNode>;
 
@@ -59,32 +62,35 @@ export class DataManagementComponent {
   /** The MatTreeFlatDataSource connects the control and flattener to provide data. */
   dataSource: MatTreeFlatDataSource<FileNode, FlatTreeNode>;
 
-
   constructor(private identityService: IdentityService) {
     effect(() => {
-      console.log('Identity Service initialized.', this.identityService.initialized());
-      this.load();
+      if (this.identityService.initialized()) {
+        this.load();
+      }
     });
 
     this.treeFlattener = new MatTreeFlattener(
       this.transformer,
       this.getLevel,
       this.isExpandable,
-      this.getChildren);
+      this.getChildren
+    );
 
     this.treeControl = new FlatTreeControl(this.getLevel, this.isExpandable);
-    this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
+    this.dataSource = new MatTreeFlatDataSource(
+      this.treeControl,
+      this.treeFlattener
+    );
     this.dataSource.data = files;
   }
 
-  
   /** Transform the data to something the tree can read. */
   transformer(node: FileNode, level: number): FlatTreeNode {
     return {
       name: node.name,
       type: node.type,
       level,
-      expandable: !!node.children
+      expandable: !!node.children,
     };
   }
 
@@ -107,7 +113,6 @@ export class DataManagementComponent {
   getChildren(node: FileNode): FileNode[] | null | undefined {
     return node.children;
   }
-  
 
   async load() {
     // Filterable Record Properties
