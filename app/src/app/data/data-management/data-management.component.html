@@ -12,10 +12,12 @@
     @for (record of records(); track record) {
 
         <div class="record-line">
-            <span matListItemTitle>ID: <a [routerLink]="['view', record.id]">{{ record.id }}</a></span>
-            <span>Author: {{record.author}}<br>
+            <span matListItemTitle>ID: <a [routerLink]="['view', record.id]">{{ record.id }}</a></span><br>
+            <span>
+                <!-- Author: {{record.author}}<br> -->
                 Format: {{record.dataFormat}}<br>
-                Size: {{record.dataSize}}<br>
+                Schema: {{record.schema}}<br>
+                Size: {{record.dataSize | size}}<br>
                 Created: {{record.dateCreated }}<br>
                 Published: {{record.published }}<br>
                 Date Published: {{record.datePublished }}<br>

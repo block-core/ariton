@@ -14,6 +14,7 @@ import {
 } from '@angular/material/tree';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { files } from './example-data';
+import { SizePipe } from '../../shared/pipes/size.pipe';
 
 /** File node data with possible child nodes. */
 export interface FileNode {
@@ -44,9 +45,11 @@ export interface FlatTreeNode {
     MatButtonModule,
     MatListModule,
     MatTreeModule,
+    SizePipe
   ],
   templateUrl: './data-management.component.html',
   styleUrl: './data-management.component.scss',
+  providers: [SizePipe],
 })
 export class DataManagementComponent {
   record = signal<any>(null);
@@ -77,10 +80,12 @@ export class DataManagementComponent {
     );
 
     this.treeControl = new FlatTreeControl(this.getLevel, this.isExpandable);
+
     this.dataSource = new MatTreeFlatDataSource(
       this.treeControl,
       this.treeFlattener
     );
+
     this.dataSource.data = files;
   }
 
