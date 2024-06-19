@@ -1,0 +1,21 @@
+<br>
+
+@if(record()) {
+    <div class="record-line">
+        <span matListItemTitle>ID: <a [routerLink]="['view', record().id]">{{ record().id }}</a></span>
+        <span>Author: {{record().author}}<br>
+            Format: {{record().dataFormat}}<br>
+            Size: {{record().dataSize}}<br>
+            Created: {{record().dateCreated }}<br>
+            Published: {{record().published }}<br>
+            Date Published: {{record().datePublished }}<br>
+        </span>
+    </div>
+
+
+    <div>
+        Data: <br>
+        {{recordJson()}}
+    </div>
+
+}

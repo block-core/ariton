@@ -61,10 +61,19 @@ export const routes: Routes = [
   {
     path: 'registries/:id',
     loadComponent: () =>
-      import('./registries//registry/registry.component').then(
+      import('./registries/registry/registry.component').then(
         (c) => c.RegistryComponent
       ),
     title: 'Registry',
+    data: { hide: true, icon: 'folder_shared' },
+  },
+  {
+    path: 'data/view/:id',
+    loadComponent: () =>
+      import('./data/view/data-view.component').then(
+        (c) => c.DataViewComponent
+      ),
+    title: 'Data View',
     data: { hide: true, icon: 'folder_shared' },
   },
   {
