@@ -1,1 +1,11 @@
-<p>settings works!</p>
+<h1>Settings</h1>
+
+<br>
+Debug: {{ settings().debug }}
+<br>
+Servers: {{ settings().servers }}
+<br>
+Language: {{ settings().language }}
+<br>
+<br>
+<button mat-flat-button (click)="toggleDebug()">Toggle debug</button>
