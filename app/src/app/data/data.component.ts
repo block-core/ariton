@@ -8,8 +8,6 @@ import { DataManagementComponent } from './data-management/data-management.compo
   standalone: true,
   imports: [MatTabsModule, MatIconModule, DataManagementComponent],
   templateUrl: './data.component.html',
-  styleUrl: './data.component.scss'
+  styleUrl: './data.component.scss',
 })
-export class DataComponent {
-
-}
+export class DataComponent {}

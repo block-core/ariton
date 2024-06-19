@@ -1,10 +1,10 @@
-import { Signal, computed, signal } from "@angular/core";
+import { Signal, computed, signal } from '@angular/core';
 
 export class SignalsSimpleStoreService<T> {
   readonly state = signal({} as T);
-  
+
   constructor() {}
-  
+
   /**
    * Returns a reactive value for a property on the state.
    * This is used when the consumer needs the signal for
@@ -15,7 +15,7 @@ export class SignalsSimpleStoreService<T> {
   public select<K extends keyof T>(key: K): Signal<T[K]> {
     return computed(() => this.state()[key]);
   }
-  
+
   /**
    * This is used to set a new value for a property
    *
@@ -25,7 +25,7 @@ export class SignalsSimpleStoreService<T> {
   public set<K extends keyof T>(key: K, data: T[K]) {
     this.state.update((currentValue) => ({ ...currentValue, [key]: data }));
   }
-  
+
   /**
    * Sets values for multiple properties on the store
    * This is used when there is a need to update multiple

@@ -111,21 +111,21 @@ export const routes: Routes = [
         (c) => c.AddressFormComponent
       ),
     title: 'Address',
-    data: { hide: true, icon: 'folder' },
+    data: { hide: false, icon: 'folder' },
   },
   {
     path: 'table',
     loadComponent: () =>
       import('./table/table.component').then((c) => c.TableComponent),
     title: 'Table',
-    data: { hide: true, icon: 'folder' },
+    data: { hide: false, icon: 'folder' },
   },
   {
     path: 'tree',
     loadComponent: () =>
       import('./tree/tree.component').then((c) => c.TreeComponent),
     title: 'Tree',
-    data: { hide: true, icon: 'folder' },
+    data: { hide: false, icon: 'folder' },
   },
   {
     path: 'drag-drop',
@@ -134,6 +134,6 @@ export const routes: Routes = [
         (c) => c.DragDropComponent
       ),
     title: 'Drag-Drop',
-    data: { hide: true, icon: 'folder' },
+    data: { hide: false, icon: 'folder' },
   },
 ];
