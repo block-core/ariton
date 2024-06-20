@@ -45,7 +45,7 @@ export interface FlatTreeNode {
     MatButtonModule,
     MatListModule,
     MatTreeModule,
-    SizePipe
+    SizePipe,
   ],
   templateUrl: './data-management.component.html',
   styleUrl: './data-management.component.scss',
@@ -127,17 +127,25 @@ export class DataManagementComponent {
     const { protocols } = await this.identityService.web5.dwn.protocols.query({
       message: {
         filter: {
-          protocol: 'https://music.org/protocol',
+          protocol: 'https://social-media.xyz',
         },
       },
     });
 
     console.log(protocols);
 
+    // var { records } = await this.identityService.web5.dwn.records.query({
+    //   message: {
+    //     filter: {
+    //       dataFormat: 'application/json',
+    //     },
+    //   },
+    // });
+
     var { records } = await this.identityService.web5.dwn.records.query({
       message: {
         filter: {
-          dataFormat: 'application/json',
+          protocol: 'https://social-media.xyz'
         },
       },
     });
@@ -184,30 +192,196 @@ export class DataManagementComponent {
     console.log(records);
   }
 
+  async registerChatProtocol() {
+    const protocolDefinition = {
+      protocol: 'https://social-media.xyz',
+      published: true,
+      types: {
+        post: {
+          schema: 'https://social-media.xyz/schemas/postSchema',
+          dataFormats: ['text/plain'],
+        },
+        reply: {
+          schema: 'https://social-media.xyz/schemas/replySchema',
+          dataFormats: ['text/plain'],
+        },
+        image: {
+          dataFormats: ['image/jpeg'],
+        },
+        caption: {
+          schema: 'https://social-media.xyz/schemas/captionSchema',
+          dataFormats: ['text/plain'],
+        },
+      },
+      structure: {
+        post: {
+          $actions: [
+            {
+              who: 'anyone',
+              can: ['create', 'read'],
+            },
+          ],
+          reply: {
+            $actions: [
+              {
+                who: 'recipient',
+                of: 'post',
+                can: ['create'],
+              },
+              {
+                who: 'author',
+                of: 'post',
+                can: ['create'],
+              },
+            ],
+          },
+        },
+        image: {
+          $actions: [
+            {
+              who: 'anyone',
+              can: ['create', 'read'],
+            },
+          ],
+          caption: {
+            $actions: [
+              {
+                who: 'anyone',
+                can: ['read'],
+              },
+              {
+                who: 'author',
+                of: 'image',
+                can: ['create'],
+              },
+            ],
+          },
+          reply: {
+            $actions: [
+              {
+                who: 'author',
+                of: 'image',
+                can: ['read'],
+              },
+              {
+                who: 'recipient',
+                of: 'image',
+                can: ['create'],
+              },
+            ],
+          },
+        },
+      },
+    };
+
+    const { protocol, status } =
+      await this.identityService.web5.dwn.protocols.configure({
+        message: {
+          definition: protocolDefinition,
+        },
+      });
+
+    if (status.code === 202) {
+      // 'Accepted''
+      console.log('Protocol accepted');
+    }
+
+    console.log(protocol);
+    console.log(status);
+
+    if (protocol) {
+      //sends protocol to remote DWNs immediately (vs waiting for sync)
+      const { status } = await protocol.send(
+        'did:dht:83azq4wzkghcacu4mt57ne8d5gumnytxxjkpmn5h1shwkafzi5so'
+      );
+
+      if (status.code === 202) {
+        console.log('Protocol sent to remote DWNs');
+      } else {
+        console.error(
+          `Failed to send protocol to remote DWNs. Code: ${status.detail}, Detail: ${status.detail}`
+        );
+      }
+    }
+  }
+
+  async createChatRecord() {
+    const { record: postRecord, status: createStatus } =
+      await this.identityService.web5.dwn.records.create({
+        data: 'Hey this is my first post!',
+        message: {
+          recipient:
+            'did:dht:83azq4wzkghcacu4mt57ne8d5gumnytxxjkpmn5h1shwkafzi5so',
+          schema: 'https://social-media.xyz/schemas/postSchema',
+          dataFormat: 'text/plain',
+          protocol: 'https://social-media.xyz',
+          protocolPath: 'post',
+        },
+      });
+
+    // const { record: postRecord, status: createStatus } =
+    //   await this.identityService.web5.dwn.records.create({
+    //     data: {
+    //       content: 'Hey this is my first post!',
+    //       tags: ['web5', 'ariton', 'did'],
+    //     },
+    //     message: {
+    //       recipient:
+    //         'did:dht:83azq4wzkghcacu4mt57ne8d5gumnytxxjkpmn5h1shwkafzi5so',
+    //       schema: 'message',
+    //       dataFormat: 'text/json',
+    //       protocol: 'http://chat-protocol.xyz',
+    //       protocolPath: 'message',
+    //     },
+    //   });
+
+    if (createStatus.code === 202) {
+      console.log('Record created successfully!');
+    } else {
+      console.error(
+        `Failed to create record. Code: ${createStatus.detail}, Detail: ${createStatus.detail}`
+      );
+    }
+
+    console.log(postRecord);
+
+    // var { record } = await this.identityService.web5.dwn.records.create({
+    //   data: 'this record will be written to the local DWN',
+    //   message: {
+    //     dataFormat: 'text/plain',
+    //   },
+    // });
+
+    // console.log(record);
+  }
+
   async createRecord(publish: boolean) {
     // Create a JSON record
     var { record } = await this.identityService.web5.dwn.records.create({
       data: {
-        content: 'Hello Web5',
-        description: 'Keep Building!',
+        content: 'Hello Web5 child!',
+        description: 'Keep Building child!',
         tags: ['web5', 'ariton', 'did'],
       },
       message: {
         dataFormat: 'application/json',
         published: publish,
+        protocolPath: 'playlist/video',
+        parentContextId:
+          'bafyreicvvzlgrovmwhoi6snnsiuvgs5eucy4f766vkfgb6sfcqveth5nhy',
       },
     });
 
     console.log(record);
 
-    var { record } = await this.identityService.web5.dwn.records.create({
-      data: 'this record will be written to the local DWN',
-      message: {
-        dataFormat: 'text/plain',
-      },
-    });
+    // var { record } = await this.identityService.web5.dwn.records.create({
+    //   data: 'this record will be written to the local DWN',
+    //   message: {
+    //     dataFormat: 'text/plain',
+    //   },
+    // });
 
-    console.log(record);
+    // console.log(record);
   }
 
   async updateRecord() {

@@ -71,11 +71,16 @@ export class DataViewComponent {
     if (record.dataFormat === 'application/json') {
       var jsonData = await record.data.json();
       console.log(jsonData);
-      this.recordJson.set(JSON.stringify(jsonData, null, 2));
+      this.recordData.set(JSON.stringify(jsonData, null, 2));
+    }
+    else if (record.dataFormat === 'text/plain') {
+      var recordText = await record.data.text();
+      console.log(recordText);
+      this.recordData.set(recordText);
     }
   }
 
-  recordJson = signal<string>('');
+  recordData = signal<string>('');
 
   async load() {
     // Filterable Record Properties

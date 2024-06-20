@@ -13,9 +13,21 @@
     </div>
 
 
-    <div>
-        Data: <br>
-        {{recordJson()}}
-    </div>
+    @if(record().dataFormat == 'text/plain')
+    {
+        <div>
+            Data: <br>
+            {{recordData()}}
+        </div>
+    }
+
+    @if(record().dataFormat == 'application/json')
+    {
+        <div>
+            Data: <br>
+            {{recordData()}}
+        </div>
+    }
+
 
 }
