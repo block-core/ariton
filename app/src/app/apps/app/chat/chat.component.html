@@ -68,10 +68,24 @@
     </p>
     </div>
     <div class="body-center column-content">
+
+
+
         @if(chat())
         {
-            {{chat().message}}
-        }
+        <img class="chat-avatar" src="{{chat().avatar}}">
+
+        {{chat().name}}
+          
+
+            <button mat-icon-button>
+                <mat-icon>favorite</mat-icon>
+              </button>
+
+              <p>
+              {{chat().message}}
+            </p>
+
 
         <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla beatae soluta sed numquam accusamus? Obcaecati, odit officia dicta cupiditate ad, consequatur minus voluptatibus voluptate aperiam odio et eaque quae quibusdam.
@@ -136,6 +150,8 @@
         <p>
             Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque reiciendis, doloremque dicta perferendis iure debitis quae officia a itaque illo voluptas accusantium soluta molestias eveniet non nisi, saepe veniam voluptatem!
         </p>
+        }
+
     </div>
     <div class="body-right column-content">Details</div>
   </div>
