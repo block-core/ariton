@@ -81,3 +81,24 @@ h1 {
 .dimmed {
   font-size: 0.8em;
 }
+
+
+  .column-content {
+
+    overflow: scroll;
+
+    &::-webkit-scrollbar-thumb {
+      background-color: mat.get-theme-color($theme, primary);
+    }
+
+    box-sizing: border-box;
+    @media (pointer: fine) {
+      &::-webkit-scrollbar {
+        background-color: transparent;
+        width: 8px;
+      }
+      &::-webkit-scrollbar-thumb {
+        border-radius: 4px;
+      }
+    }
+  }
