@@ -11,3 +11,5 @@
 # Developer Resources
 
 [web5-sdk-js](https://tbd54566975.github.io/web5-js/index.html)
+
+[Improve loading times with the @defer block in Angular](https://medium.com/ngconf/improve-loading-times-with-the-defer-block-in-angular-0bfc52823a54)
