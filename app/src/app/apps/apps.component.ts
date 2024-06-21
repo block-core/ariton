@@ -54,7 +54,7 @@ type CardContent = {
     AsyncPipe,
     MatGridListModule,
     MatMenuModule,
-    RouterModule
+    RouterModule  
   ],
   templateUrl: './apps.component.html',
   styleUrl: './apps.component.scss',
