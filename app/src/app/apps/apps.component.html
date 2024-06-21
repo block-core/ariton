@@ -64,8 +64,8 @@
               <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #menu="matMenu" xPosition="before">
-              <button mat-menu-item>Install</button>
-              <button mat-menu-item>Preview</button>
+              <button mat-menu-item [routerLink]="['/app', 'chat']">Install</button>
+              <button mat-menu-item [routerLink]="['/app', 'chat']">Preview</button>
             </mat-menu>
           </mat-card-title>
         </mat-card-header>
@@ -91,8 +91,8 @@
           </p>
         </mat-card-content>
         <mat-card-actions>
-          <button mat-button>INSTALL</button>
-          <button mat-button>PREVIEW</button>
+          <button mat-button [routerLink]="['/app', 'chat']">INSTALL</button>
+          <button mat-button [routerLink]="['/app', 'chat']">PREVIEW</button>
         </mat-card-actions>
       </mat-card>
     </div>

@@ -50,6 +50,13 @@ export const routes: Routes = [
     data: { icon: 'apps' },
   },
   {
+    path: 'app/chat',
+    loadComponent: () =>
+      import('./apps//app/chat/chat.component').then((c) => c.ChatComponent),
+    title: 'Chat',
+    data: { icon: 'chat' },
+  },
+  {
     path: 'registries',
     loadComponent: () =>
       import('./registries/registries.component').then(
