@@ -17,6 +17,28 @@
     </div>
     <div class="body-left column-content">
 
+        <mat-list>
+            <div mat-subheader>Starred</div>
+            @for (folder of folders; track folder) {
+              <mat-list-item (click)="open(folder.id)">
+                <img matListItemAvatar src="{{folder.avatar}}">
+                <div matListItemLine class="right-aligned">{{folder.updated | ago}}</div>
+                <div matListItemTitle>{{folder.name}}</div>
+                <div matListItemLine>{{folder.message}}</div>
+              </mat-list-item>
+            }
+            <mat-divider></mat-divider>
+            <div mat-subheader>Message</div>
+            @for (note of notes; track note) {
+              <mat-list-item>
+                <img matListItemAvatar src="{{note.avatar}}">
+                <div matListItemLine class="right-aligned">{{note.updated | ago}}</div>
+                <div matListItemTitle>{{note.name}}</div>
+                <div matListItemLine>{{note.message}}</div>
+              </mat-list-item>
+            }
+          </mat-list>
+
         <p>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla beatae soluta sed numquam accusamus? Obcaecati, odit officia dicta cupiditate ad, consequatur minus voluptatibus voluptate aperiam odio et eaque quae quibusdam.
     </p>
@@ -46,6 +68,11 @@
     </p>
     </div>
     <div class="body-center column-content">
+        @if(chat())
+        {
+            {{chat().message}}
+        }
+
         <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla beatae soluta sed numquam accusamus? Obcaecati, odit officia dicta cupiditate ad, consequatur minus voluptatibus voluptate aperiam odio et eaque quae quibusdam.
         </p>
