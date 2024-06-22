@@ -35,7 +35,7 @@ export class LayoutComponent {
 
   rootRoutes = routes.filter(r=>r.path).filter(r=>r.data && r.data['hide'] != true);
 
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
+  isHandset$: Observable<boolean> = this.breakpointObserver.observe('(max-width: 700px)')
     .pipe(
       map(result => result.matches),
       shareReplay()
