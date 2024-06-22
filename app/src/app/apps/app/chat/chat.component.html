@@ -16,7 +16,6 @@
 
     </div>
     <div class="body-left column-content">
-
         <mat-list>
             <div mat-subheader>Starred</div>
             @for (folder of folders; track folder) {
@@ -38,118 +37,113 @@
               </mat-list-item>
             }
           </mat-list>
-
-        <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla beatae soluta sed numquam accusamus? Obcaecati, odit officia dicta cupiditate ad, consequatur minus voluptatibus voluptate aperiam odio et eaque quae quibusdam.
-    </p>
-    <p>
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quos ipsam vitae autem nostrum earum aliquid rem mollitia, iste laboriosam ab ipsum ipsa molestias, numquam soluta laudantium odio facilis voluptates ea.
-    </p>
-    <p>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque reiciendis, doloremque dicta perferendis iure debitis quae officia a itaque illo voluptas accusantium soluta molestias eveniet non nisi, saepe veniam voluptatem!
-    </p>
-    <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla beatae soluta sed numquam accusamus? Obcaecati, odit officia dicta cupiditate ad, consequatur minus voluptatibus voluptate aperiam odio et eaque quae quibusdam.
-    </p>
-    <p>
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quos ipsam vitae autem nostrum earum aliquid rem mollitia, iste laboriosam ab ipsum ipsa molestias, numquam soluta laudantium odio facilis voluptates ea.
-    </p>
-    <p>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque reiciendis, doloremque dicta perferendis iure debitis quae officia a itaque illo voluptas accusantium soluta molestias eveniet non nisi, saepe veniam voluptatem!
-    </p>
-    <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla beatae soluta sed numquam accusamus? Obcaecati, odit officia dicta cupiditate ad, consequatur minus voluptatibus voluptate aperiam odio et eaque quae quibusdam.
-    </p>
-    <p>
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quos ipsam vitae autem nostrum earum aliquid rem mollitia, iste laboriosam ab ipsum ipsa molestias, numquam soluta laudantium odio facilis voluptates ea.
-    </p>
-    <p>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque reiciendis, doloremque dicta perferendis iure debitis quae officia a itaque illo voluptas accusantium soluta molestias eveniet non nisi, saepe veniam voluptatem!
-    </p>
     </div>
-    <div class="body-center column-content">
-
-
-
+    <div class="body-center">
+        
         @if(chat())
-        {
-        <img class="chat-avatar" src="{{chat().avatar}}">
-
-        {{chat().name}}
-          
-
-            <button mat-icon-button>
-                <mat-icon>favorite</mat-icon>
-              </button>
-
-              <p>
-              {{chat().message}}
-            </p>
+                {
+              
+        <div class="chat-messages-container">
+            <div class="chat-header">
 
 
-        <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla beatae soluta sed numquam accusamus? Obcaecati, odit officia dicta cupiditate ad, consequatur minus voluptatibus voluptate aperiam odio et eaque quae quibusdam.
-        </p>
-        <p>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quos ipsam vitae autem nostrum earum aliquid rem mollitia, iste laboriosam ab ipsum ipsa molestias, numquam soluta laudantium odio facilis voluptates ea.
-        </p>
-        <p>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque reiciendis, doloremque dicta perferendis iure debitis quae officia a itaque illo voluptas accusantium soluta molestias eveniet non nisi, saepe veniam voluptatem!
-        </p>
-        <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla beatae soluta sed numquam accusamus? Obcaecati, odit officia dicta cupiditate ad, consequatur minus voluptatibus voluptate aperiam odio et eaque quae quibusdam.
-        </p>
-        <p>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quos ipsam vitae autem nostrum earum aliquid rem mollitia, iste laboriosam ab ipsum ipsa molestias, numquam soluta laudantium odio facilis voluptates ea.
-        </p>
-        <p>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque reiciendis, doloremque dicta perferendis iure debitis quae officia a itaque illo voluptas accusantium soluta molestias eveniet non nisi, saepe veniam voluptatem!
-        </p>
-        <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla beatae soluta sed numquam accusamus? Obcaecati, odit officia dicta cupiditate ad, consequatur minus voluptatibus voluptate aperiam odio et eaque quae quibusdam.
-        </p>
-        <p>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quos ipsam vitae autem nostrum earum aliquid rem mollitia, iste laboriosam ab ipsum ipsa molestias, numquam soluta laudantium odio facilis voluptates ea.
-        </p>
-        <p>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque reiciendis, doloremque dicta perferendis iure debitis quae officia a itaque illo voluptas accusantium soluta molestias eveniet non nisi, saepe veniam voluptatem!
-        </p>
-        <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla beatae soluta sed numquam accusamus? Obcaecati, odit officia dicta cupiditate ad, consequatur minus voluptatibus voluptate aperiam odio et eaque quae quibusdam.
-        </p>
-        <p>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quos ipsam vitae autem nostrum earum aliquid rem mollitia, iste laboriosam ab ipsum ipsa molestias, numquam soluta laudantium odio facilis voluptates ea.
-        </p>
-        <p>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque reiciendis, doloremque dicta perferendis iure debitis quae officia a itaque illo voluptas accusantium soluta molestias eveniet non nisi, saepe veniam voluptatem!
-        </p>
-        <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla beatae soluta sed numquam accusamus? Obcaecati, odit officia dicta cupiditate ad, consequatur minus voluptatibus voluptate aperiam odio et eaque quae quibusdam.
-        </p>
-        <p>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quos ipsam vitae autem nostrum earum aliquid rem mollitia, iste laboriosam ab ipsum ipsa molestias, numquam soluta laudantium odio facilis voluptates ea.
-        </p>
-        <p>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque reiciendis, doloremque dicta perferendis iure debitis quae officia a itaque illo voluptas accusantium soluta molestias eveniet non nisi, saepe veniam voluptatem!
-        </p>
-        <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla beatae soluta sed numquam accusamus? Obcaecati, odit officia dicta cupiditate ad, consequatur minus voluptatibus voluptate aperiam odio et eaque quae quibusdam.
-        </p>
-        <p>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quos ipsam vitae autem nostrum earum aliquid rem mollitia, iste laboriosam ab ipsum ipsa molestias, numquam soluta laudantium odio facilis voluptates ea.
-        </p>
-        <p>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque reiciendis, doloremque dicta perferendis iure debitis quae officia a itaque illo voluptas accusantium soluta molestias eveniet non nisi, saepe veniam voluptatem!
-        </p>
-        <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla beatae soluta sed numquam accusamus? Obcaecati, odit officia dicta cupiditate ad, consequatur minus voluptatibus voluptate aperiam odio et eaque quae quibusdam.
-        </p>
-        <p>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quos ipsam vitae autem nostrum earum aliquid rem mollitia, iste laboriosam ab ipsum ipsa molestias, numquam soluta laudantium odio facilis voluptates ea.
-        </p>
-        <p>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque reiciendis, doloremque dicta perferendis iure debitis quae officia a itaque illo voluptas accusantium soluta molestias eveniet non nisi, saepe veniam voluptatem!
-        </p>
+                <img class="chat-avatar" src="{{chat().avatar}}">
+        
+                {{chat().name}}
+                  
+        
+                    <button mat-icon-button>
+                        <mat-icon>favorite</mat-icon>
+                      </button>
+        
+
+            </div>
+            <div class="chat-messages column-content">
+
+
+
+                
+                      <p>
+                      {{chat().message}}
+                    </p>
+        
+        
+                <p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla beatae soluta sed numquam accusamus? Obcaecati, odit officia dicta cupiditate ad, consequatur minus voluptatibus voluptate aperiam odio et eaque quae quibusdam.
+                </p>
+                <p>
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quos ipsam vitae autem nostrum earum aliquid rem mollitia, iste laboriosam ab ipsum ipsa molestias, numquam soluta laudantium odio facilis voluptates ea.
+                </p>
+                <p>
+                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque reiciendis, doloremque dicta perferendis iure debitis quae officia a itaque illo voluptas accusantium soluta molestias eveniet non nisi, saepe veniam voluptatem!
+                </p>
+                <p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla beatae soluta sed numquam accusamus? Obcaecati, odit officia dicta cupiditate ad, consequatur minus voluptatibus voluptate aperiam odio et eaque quae quibusdam.
+                </p>
+                <p>
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quos ipsam vitae autem nostrum earum aliquid rem mollitia, iste laboriosam ab ipsum ipsa molestias, numquam soluta laudantium odio facilis voluptates ea.
+                </p>
+                <p>
+                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque reiciendis, doloremque dicta perferendis iure debitis quae officia a itaque illo voluptas accusantium soluta molestias eveniet non nisi, saepe veniam voluptatem!
+                </p>
+                <p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla beatae soluta sed numquam accusamus? Obcaecati, odit officia dicta cupiditate ad, consequatur minus voluptatibus voluptate aperiam odio et eaque quae quibusdam.
+                </p>
+                <p>
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quos ipsam vitae autem nostrum earum aliquid rem mollitia, iste laboriosam ab ipsum ipsa molestias, numquam soluta laudantium odio facilis voluptates ea.
+                </p>
+                <p>
+                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque reiciendis, doloremque dicta perferendis iure debitis quae officia a itaque illo voluptas accusantium soluta molestias eveniet non nisi, saepe veniam voluptatem!
+                </p>
+                <p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla beatae soluta sed numquam accusamus? Obcaecati, odit officia dicta cupiditate ad, consequatur minus voluptatibus voluptate aperiam odio et eaque quae quibusdam.
+                </p>
+                <p>
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quos ipsam vitae autem nostrum earum aliquid rem mollitia, iste laboriosam ab ipsum ipsa molestias, numquam soluta laudantium odio facilis voluptates ea.
+                </p>
+                <p>
+                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque reiciendis, doloremque dicta perferendis iure debitis quae officia a itaque illo voluptas accusantium soluta molestias eveniet non nisi, saepe veniam voluptatem!
+                </p>
+                <p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla beatae soluta sed numquam accusamus? Obcaecati, odit officia dicta cupiditate ad, consequatur minus voluptatibus voluptate aperiam odio et eaque quae quibusdam.
+                </p>
+                <p>
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quos ipsam vitae autem nostrum earum aliquid rem mollitia, iste laboriosam ab ipsum ipsa molestias, numquam soluta laudantium odio facilis voluptates ea.
+                </p>
+                <p>
+                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque reiciendis, doloremque dicta perferendis iure debitis quae officia a itaque illo voluptas accusantium soluta molestias eveniet non nisi, saepe veniam voluptatem!
+                </p>
+                <p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla beatae soluta sed numquam accusamus? Obcaecati, odit officia dicta cupiditate ad, consequatur minus voluptatibus voluptate aperiam odio et eaque quae quibusdam.
+                </p>
+                <p>
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quos ipsam vitae autem nostrum earum aliquid rem mollitia, iste laboriosam ab ipsum ipsa molestias, numquam soluta laudantium odio facilis voluptates ea.
+                </p>
+                <p>
+                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque reiciendis, doloremque dicta perferendis iure debitis quae officia a itaque illo voluptas accusantium soluta molestias eveniet non nisi, saepe veniam voluptatem!
+                </p>
+                <p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla beatae soluta sed numquam accusamus? Obcaecati, odit officia dicta cupiditate ad, consequatur minus voluptatibus voluptate aperiam odio et eaque quae quibusdam.
+                </p>
+                <p>
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quos ipsam vitae autem nostrum earum aliquid rem mollitia, iste laboriosam ab ipsum ipsa molestias, numquam soluta laudantium odio facilis voluptates ea.
+                </p>
+                <p>
+                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque reiciendis, doloremque dicta perferendis iure debitis quae officia a itaque illo voluptas accusantium soluta molestias eveniet non nisi, saepe veniam voluptatem!
+                </p>
+              
+        
+
+
+            </div>
+            <div class="chat-input">
+
+                Write message here
+
+
+
+            </div>
+          </div>
         }
 
     </div>
