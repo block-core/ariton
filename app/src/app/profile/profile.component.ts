@@ -21,7 +21,7 @@ export class ProfileComponent {
   }
 
   openSnackBar(message: string) {
-    this._snackBar.open(message);
+    this._snackBar.open(message, undefined, { duration: 2000 });
   }
 
   async shareProfile() {
