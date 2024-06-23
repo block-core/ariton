@@ -1,0 +1,35 @@
+<div class="profile-header">
+    <img class="profile-header-icon" src="https://ariton.app/assets/sondre.png">
+    <div>
+        <h1>SondreB
+            <span>(Voluntaryist)</span>
+        </h1>
+        did:dht:umj7apgmkodtrb7mdpjo4h7xinqdnatzgy38j7wi67k9c7sdns1o
+    </div>
+    <div class="spacer"></div>
+    <div>
+        <button mat-icon-button [matMenuTriggerFor]="menuProfile">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+
+        <mat-menu #menuProfile="matMenu">
+            <button mat-menu-item [routerLink]="['/app/chat']">
+              <mat-icon>chat_bubble</mat-icon>
+              <span>Message</span>
+            </button>
+            <mat-divider></mat-divider>
+            <button (click)="shareProfile()" mat-menu-item>
+                <mat-icon>send</mat-icon>
+                <span>Share Profile</span>
+              </button>
+            <mat-divider></mat-divider>
+            <button mat-menu-item>
+                <mat-icon>block</mat-icon>
+                <span>Block</span>
+              </button>
+          </mat-menu>
+          
+
+        
+    </div>
+</div>

@@ -98,6 +98,13 @@ export const routes: Routes = [
     data: { hide: true, icon: 'source' },
   },
   {
+    path: 'profile/:id',
+    loadComponent: () =>
+      import('./profile/profile.component').then((c) => c.ProfileComponent),
+    title: 'Identity',
+    data: { icon: 'account_circle' },
+  },
+  {
     path: 'identity',
     loadComponent: () =>
       import('./identity/identity.component').then((c) => c.IdentityComponent),

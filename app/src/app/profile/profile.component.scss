@@ -1,0 +1,24 @@
+.profile-header {
+    display: flex;
+    gap: 1em;
+    align-items: center;
+
+}
+
+.profile-header-icon {
+    border-radius: 50%;
+    width: 128px;
+}
+
+h1 span {
+    font-weight: 300;
+}
+
+.spacer {
+    flex: 1 1 auto;
+  }
+
+  h1 {
+    margin: 0;
+    padding: 0;
+  }
