@@ -10,6 +10,7 @@ import { OnDestroy } from '@angular/core';
 import { MatListModule } from "@angular/material/list";
 import { DatePipe } from "@angular/common";
 import { AgoPipe } from "../../../shared/pipes/ago.pipe";
+import { MatMenuModule } from "@angular/material/menu";
 
 export interface Section {
     id: string;
@@ -27,6 +28,7 @@ export interface Section {
         MatIconModule,
         MatInputModule,
         MatListModule,
+        MatMenuModule,
         DatePipe,
         AgoPipe,
         MatButtonToggleModule,

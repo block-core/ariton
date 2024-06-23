@@ -118,7 +118,6 @@
   display: flex;
   flex-direction: column;
   height: calc(100vh -  100px - 64px - 16px);
-  background-color: green,
 }
 
 .chat-header {
@@ -126,7 +125,6 @@
   max-height: 64px;
   min-height: 64px;
 
-  background-color: blue;
   display: flex;
   flex-direction: row;
   align-items: stretch;
@@ -139,7 +137,7 @@
 
 .profile-button {
   display: flex;
-
+  align-items: center;
 }
 
 .profile-button > img {
@@ -154,7 +152,12 @@
   height: 64px;
   max-height: 64px;
   min-height: 64px;
-  background-color: red;
+  display: flex;
+  align-items: baseline;
+}
+
+.chat-message-input {
+  flex-grow: 2;
 }
 
 
@@ -168,7 +171,6 @@
 */
 
 .chat-messages {
-  border: 1px solid yellow;
   overflow-y: auto;
 
 }

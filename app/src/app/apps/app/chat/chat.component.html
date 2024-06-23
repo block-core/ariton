@@ -51,7 +51,6 @@
                         <img class="chat-avatar" src="{{chat().avatar}}">
                         <span>{{chat().name}}</span>
                     </div>
-
                 </div>
                 <div>
                     <button mat-icon-button>
@@ -140,8 +139,40 @@
             </div>
             <div class="chat-input">
 
-                Write message here
+                <button mat-icon-button [matMenuTriggerFor]="menu">
+                    <mat-icon>add_circle</mat-icon>
+                  </button>
+                  <mat-menu #menu="matMenu">
+                    <button mat-menu-item>
+                        <mat-icon>attach_money</mat-icon>
+                        <span>Send money</span>
+                      </button>
+                    <button mat-menu-item>
+                        <mat-icon>video_camera_back</mat-icon>
+                        <span>Capture video</span>
+                      </button>
+                    <button mat-menu-item>
+                      <mat-icon>photo_camera_front</mat-icon>
+                      <span>Capture photo</span>
+                    </button>
+                    <button mat-menu-item>
+                        <mat-icon>attachment</mat-icon>
+                        <span>Attach a file</span>
+                      </button>
+                      <button mat-menu-item>
+                        <mat-icon>add_a_photo</mat-icon>
+                        <span>Attach a photo</span>
+                      </button>
+                  </mat-menu>
 
+                  <mat-form-field class="chat-message-input" appearance="outline">
+                    <input matInput placeholder="Message..." />
+                    <mat-icon matSuffix>emoji_emotions</mat-icon>
+                  </mat-form-field>
+
+                <button mat-icon-button>
+                    <mat-icon>thumb_up</mat-icon>
+                </button>
 
 
             </div>
