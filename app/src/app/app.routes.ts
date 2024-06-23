@@ -105,6 +105,13 @@ export const routes: Routes = [
     data: { hide: true, icon: 'account_circle' },
   },
   {
+    path: 'notifications',
+    loadComponent: () =>
+      import('./notifications/notifications.component').then((c) => c.NotificationsComponent),
+    title: 'Notifications',
+    data: { hide: false, icon: 'notifications' },
+  },
+  {
     path: 'accounts',
     loadComponent: () =>
       import('./accounts/accounts.component').then((c) => c.AccountsComponent),
