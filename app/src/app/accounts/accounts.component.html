@@ -1,0 +1,116 @@
+<h1>All Accounts</h1>
+
+<mat-list>
+    <a [routerLink]="['/account', 'did:dht:umj7apgmkodtrb7mdpjo4h7xinqdnatzgy38j7wi67k9c7sdns1o']" mat-list-item class="selectable-list-item">
+        <mat-icon matListItemIcon>account_circle</mat-icon>
+        <span matListItemTitle>SondreB (Voluntaryist)</span>
+        <span matListItemLine>did:dht:umj7apgmkodtrb7mdpjo4h7xinqdnatzgy38j7wi67k9c7sdns1o</span>
+        <!--<div class="account-action-button" matListItemMeta>
+            <button mat-icon-button [matMenuTriggerFor]="menuActions">
+                <mat-icon>more_vert</mat-icon>
+            </button>
+        </div>-->
+    </a>
+    <a [routerLink]="['/account', 'did:dht:umj7apgmkodtrb7mdpjo4h7xinqdnatzgy38j7wi67k9c7sdns1o']" mat-list-item class="selectable-list-item">
+        <mat-icon matListItemIcon>account_circle</mat-icon>
+        <span matListItemTitle>Joe</span>
+        <span matListItemLine>did:dht:umj7apgmkodtrb7mdpjo4h7xinqdnatzgy38j7wi67k9c7sdns1o</span>
+        <!--<div class="account-action-button" matListItemMeta>
+            <button mat-icon-button [matMenuTriggerFor]="menuActions">
+                <mat-icon>more_vert</mat-icon>
+            </button>
+        </div>-->
+    </a>
+    <a [routerLink]="['/account', 'did:dht:umj7apgmkodtrb7mdpjo4h7xinqdnatzgy38j7wi67k9c7sdns1o']" mat-list-item class="selectable-list-item">
+        <mat-icon matListItemIcon>account_circle</mat-icon>
+        <span matListItemTitle>Luba</span>
+        <span matListItemLine>did:dht:umj7apgmkodtrb7mdpjo4h7xinqdnatzgy38j7wi67k9c7sdns1o</span>
+        <!--<div class="account-action-button" matListItemMeta>
+            <button mat-icon-button [matMenuTriggerFor]="menuActions">
+                <mat-icon>more_vert</mat-icon>
+            </button>
+        </div>-->
+    </a>
+</mat-list>
+
+<mat-menu #menuActions="matMenu">
+    <button mat-menu-item [routerLink]="['/settings']">
+      <mat-icon>settings</mat-icon>
+      <span>View</span>
+    </button>
+
+      <mat-divider></mat-divider>
+      <button mat-menu-item>
+        <mat-icon>person_remove</mat-icon>
+        <span>Remove Account from device</span>
+      </button>
+  </mat-menu>
+
+<!--
+  <mat-accordion class="example-headers-align" multi>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>SondreB (Voluntaryist)</mat-panel-title>
+        <mat-panel-description>
+            did:dht:umj7apgmkodtrb7mdpjo4h7xinqdnatzgy38j7wi67k9c7sdns1o
+          <mat-icon>account_circle</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+  
+      <mat-tab-group>
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="example-tab-icon">thumb_up</mat-icon>
+            First
+          </ng-template>
+          Content 1
+        </mat-tab>
+      
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="example-tab-icon">thumb_up</mat-icon>
+            Second
+          </ng-template>
+          Content 2
+        </mat-tab>
+      
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="example-tab-icon">thumb_up</mat-icon>
+            Third
+          </ng-template>
+      
+          Content 3
+        </mat-tab>
+      </mat-tab-group>
+    </mat-expansion-panel>
+    <mat-expansion-panel disabled>
+      <mat-expansion-panel-header>
+        <mat-panel-title> did:dht:umj7apgmkodtrb7mdpjo4h7xinqdnatzgy38j7wi67k9c7sdns1o </mat-panel-title>
+        <mat-panel-description>
+          Type the country name
+          <mat-icon>map</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+  
+      <mat-form-field>
+        <mat-label>Country</mat-label>
+        <input matInput />
+      </mat-form-field>
+    </mat-expansion-panel>
+  
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title> Day of the trip </mat-panel-title>
+        <mat-panel-description>
+          Inform the date you wish to travel
+          <mat-icon>date_range</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+  
+      <mat-form-field>
+        <mat-label>Date</mat-label>
+        <input matInput readonly />
+      </mat-form-field>
+    </mat-expansion-panel>
+  </mat-accordion>-->

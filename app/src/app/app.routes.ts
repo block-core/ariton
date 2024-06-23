@@ -101,8 +101,22 @@ export const routes: Routes = [
     path: 'profile/:id',
     loadComponent: () =>
       import('./profile/profile.component').then((c) => c.ProfileComponent),
-    title: 'Identity',
-    data: { icon: 'account_circle' },
+    title: 'Profile',
+    data: { hide: true, icon: 'account_circle' },
+  },
+  {
+    path: 'accounts',
+    loadComponent: () =>
+      import('./accounts/accounts.component').then((c) => c.AccountsComponent),
+    title: 'Accounts',
+    data: { hide: true, icon: 'account_circle' },
+  },
+  {
+    path: 'account/:id',
+    loadComponent: () =>
+      import('./account/account.component').then((c) => c.AccountComponent),
+    title: 'Account',
+    data: { hide: true, icon: 'account_circle' },
   },
   {
     path: 'identity',
@@ -116,7 +130,7 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./settings/settings.component').then((c) => c.SettingsComponent),
     title: 'Settings',
-    data: { icon: 'settings' },
+    data: { hide: true, icon: 'settings' },
   },
   {
     path: 'address',
@@ -132,14 +146,14 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./table/table.component').then((c) => c.TableComponent),
     title: 'Table',
-    data: { hide: false, icon: 'folder' },
+    data: { hide: true, icon: 'folder' },
   },
   {
     path: 'tree',
     loadComponent: () =>
       import('./tree/tree.component').then((c) => c.TreeComponent),
     title: 'Tree',
-    data: { hide: false, icon: 'folder' },
+    data: { hide: true, icon: 'folder' },
   },
   {
     path: 'drag-drop',

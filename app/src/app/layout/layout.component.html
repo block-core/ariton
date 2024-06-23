@@ -94,7 +94,7 @@
 
           <button mat-menu-item [matMenuTriggerFor]="menuAccounts">
               <mat-icon>switch_account</mat-icon>
-              <span>Switch account</span>
+              <span>Accounts</span>
             </button>
 
           <button mat-menu-item>
@@ -120,6 +120,11 @@
         </mat-menu>
 
         <mat-menu #menuAccounts="matMenu">
+          <button [routerLink]="['/accounts']" mat-menu-item>
+            <mat-icon>manage_accounts</mat-icon>
+            <span>Manage Accounts</span>
+          </button>
+          <mat-divider></mat-divider>
           <button mat-menu-item>
             <mat-icon>account_circle</mat-icon>
             <span>Account 1</span>
@@ -131,6 +136,11 @@
           <button mat-menu-item>
             <mat-icon>account_circle</mat-icon>
             <span>Account 3</span>
+          </button>
+          <mat-divider></mat-divider>
+          <button [routerLink]="['/accounts/add']" mat-menu-item>
+            <mat-icon>person_add</mat-icon>
+            <span>Add account</span>
           </button>
         </mat-menu>
 
