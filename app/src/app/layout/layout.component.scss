@@ -10,6 +10,29 @@
 .toolbar-items {
 }
 
+.account-menu-item {
+}
+
+.account-menu-profile {
+  color: var(--mat-menu-item-label-text-color);
+  display: flex;
+  gap: 8px;
+  margin: 8px;
+  align-items: center;
+}
+
+.account-menu-profile h2 {
+  margin: 0;
+  padding: 0;
+}
+
+.account-menu-profile-icon {
+  width: 64px;
+}
+
+.account-menu-profile > div {
+  flex-grow: 2;
+}
 
 .toolbar-text {
   margin-left: 0.3em;
