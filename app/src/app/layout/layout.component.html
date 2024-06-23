@@ -43,7 +43,91 @@
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
       }
-      <span> <!--<app-theme-toggle></app-theme-toggle>-->
+      <span class="toolbar-spacer"></span>
+      <span class="toolbar-items">
+        <button mat-icon-button [matMenuTriggerFor]="menuNotifications">
+          <mat-icon>notifications</mat-icon>
+        </button>
+        <mat-menu #menuNotifications="matMenu">
+          <button mat-menu-item [routerLink]="['/settings']">
+            <mat-icon>settings</mat-icon>
+            <span>Notification Settings</span>
+          </button>
+          <mat-divider></mat-divider>
+          <button mat-menu-item>
+              <mat-icon>forum</mat-icon>
+              <span>Knitting Community posted new pattern</span>
+            </button>
+          <button mat-menu-item>
+              <mat-icon>face</mat-icon>
+              <span>Joe sent you a message</span>
+            </button>
+          <button mat-menu-item>
+            <mat-icon>key</mat-icon>
+            <span>New security request</span>
+          </button>
+          <button mat-menu-item>
+              <mat-icon>verified_user</mat-icon>
+              <span>Social account recovery request</span>
+            </button>
+        </mat-menu>
+        
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon>account_circle</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item [matMenuTriggerFor]="menuAccounts">
+              <mat-icon>switch_account</mat-icon>
+              <span>Switch account</span>
+            </button>
+
+          <button mat-menu-item>
+              <mat-icon>logout</mat-icon>
+              <span>Sign Out</span>
+            </button>
+
+            <mat-divider></mat-divider>
+          <button mat-menu-item [matMenuTriggerFor]="menuLanguages">
+            <mat-icon>translate</mat-icon>
+            <span>Language: English</span>
+          </button>
+          <mat-divider></mat-divider>
+          <button [routerLink]="['/settings']" mat-menu-item>
+              <mat-icon>settings</mat-icon>
+              <span>Settings</span>
+            </button>
+            <mat-divider></mat-divider>
+            <button [routerLink]="['/introduction']" mat-menu-item>
+              <mat-icon>help</mat-icon>
+              <span>Help</span>
+            </button>
+        </mat-menu>
+
+        <mat-menu #menuAccounts="matMenu">
+          <button mat-menu-item>
+            <mat-icon>account_circle</mat-icon>
+            <span>Account 1</span>
+          </button>
+          <button mat-menu-item>
+            <mat-icon>account_circle</mat-icon>
+            <span>Account 2</span>
+          </button>
+          <button mat-menu-item>
+            <mat-icon>account_circle</mat-icon>
+            <span>Account 3</span>
+          </button>
+        </mat-menu>
+
+        <mat-menu #menuLanguages="matMenu">
+          <button mat-menu-item>
+            <span>English</span>
+          </button>
+          <button mat-menu-item>
+            <span>Norwegian</span>
+          </button>
+        </mat-menu>
+        
+        <!--<app-theme-toggle></app-theme-toggle>-->
       </span>
       
     </mat-toolbar>

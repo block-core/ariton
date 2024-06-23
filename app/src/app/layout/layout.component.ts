@@ -12,6 +12,7 @@ import { routes } from '../app.routes';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle.component';
 import { LayoutService } from '../layout.service';
+import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
   selector: 'app-layout',
@@ -24,6 +25,7 @@ import { LayoutService } from '../layout.service';
     MatSidenavModule,
     MatListModule,
     MatIconModule,
+    MatMenuModule,
     AsyncPipe,
     RouterLink,
     RouterLinkActive,
