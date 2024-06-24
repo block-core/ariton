@@ -31,6 +31,7 @@
     "@web5/api": "^0.9.4",
     "@web5/credentials": "^1.0.3",
     "@web5/dids": "^1.1.1",
+    "@web5/identity-agent": "^0.3.8",
     "crypto-browserify": "^3.12.0",
     "process": "^0.11.10",
     "rxjs": "~7.8.1",

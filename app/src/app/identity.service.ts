@@ -1,14 +1,20 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, WritableSignal, signal } from '@angular/core';
 import { Web5 } from '@web5/api';
 import { DidDht } from '@web5/dids';
+import { Web5IdentityAgent } from '@web5/identity-agent';
 
 @Injectable({
   providedIn: 'root',
 })
 export class IdentityService {
+
+  //agents = signal<Web5IdentityAgent[]>([]);
+
+  agents: WritableSignal<Web5IdentityAgent[]> = signal([]);
+
   constructor() {
     console.log('Connecting to Web5...');
-    Web5.connect({ sync: '5s' }).then((res) => {
+    /*Web5.connect({ sync: '5s' }).then((res) => {
       this.did = res.did;
       this.web5 = res.web5;
 
@@ -16,7 +22,24 @@ export class IdentityService {
       console.log(this.web5);
 
       this.initialized.set(true);
-    });
+    });*/
+  }
+
+  async initialize(password: string, recoveryPhrase: string, path: string) {
+    const agent = await Web5IdentityAgent.create({ dataPath: path });
+
+    if (await agent.firstLaunch()) {
+      recoveryPhrase = await agent.initialize({ password, recoveryPhrase });
+    }
+
+    this.agents.update(values => [...values, agent]);
+
+    /*this.agents.update((arr: Web5IdentityAgent[]) => {
+      arr.push(agent);
+      return arr;
+    });*/
+
+
   }
 
   initialized = signal<boolean>(false);
