@@ -1,0 +1,8 @@
+.selectable-list-item {
+    cursor: pointer;
+  }
+
+  .selectable-list-item:hover {
+    background-color: var(--mdc-list-list-item-leading-avatar-color);
+  }
+  
