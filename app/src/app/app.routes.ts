@@ -140,6 +140,27 @@ export const routes: Routes = [
     data: { hide: true, icon: 'settings' },
   },
   {
+    path: 'settings/about',
+    loadComponent: () =>
+      import('./settings/about/about.component').then((c) => c.AboutComponent),
+    title: 'About',
+    data: { hide: true, icon: 'settings' },
+  },
+  {
+    path: 'settings/licenses',
+    loadComponent: () =>
+      import('./settings/licenses/licenses.component').then((c) => c.LicensesComponent),
+    title: 'Licenses',
+    data: { hide: true, icon: 'settings' },
+  },
+  {
+    path: 'settings/privacy',
+    loadComponent: () =>
+      import('./settings/privacy/privacy.component').then((c) => c.PrivacyComponent),
+    title: 'Privacy',
+    data: { hide: true, icon: 'settings' },
+  },
+  {
     path: 'address',
     loadComponent: () =>
       import('./address-form/address-form.component').then(
