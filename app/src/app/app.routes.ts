@@ -119,6 +119,27 @@ export const routes: Routes = [
     data: { hide: true, icon: 'account_circle' },
   },
   {
+    path: 'account/create',
+    loadComponent: () =>
+      import('./account/create/create.component').then((c) => c.CreateComponent),
+    title: 'Create Account',
+    data: { hide: true, icon: 'account_circle' },
+  },
+  {
+    path: 'account/create/new',
+    loadComponent: () =>
+      import('./account/create/new/new.component').then((c) => c.NewComponent),
+    title: 'Create new account',
+    data: { hide: true, icon: 'account_circle' },
+  },
+  {
+    path: 'account/create/restore',
+    loadComponent: () =>
+      import('./account/create/restore/restore.component').then((c) => c.RestoreComponent),
+    title: 'Restore existing account',
+    data: { hide: true, icon: 'account_circle' },
+  },
+  {
     path: 'account/:id',
     loadComponent: () =>
       import('./account/account.component').then((c) => c.AccountComponent),
