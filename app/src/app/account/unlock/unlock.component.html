@@ -2,9 +2,10 @@
 
 <p>You have configured your account with a secure personal password. Enter password to unlock your account.</p>
 
+<form (ngSubmit)="onSubmit()">
 <mat-form-field appearance="outline">
     <mat-label>Enter your password</mat-label>
-    <input matInput [type]="hide() ? 'password' : 'text'" />
+    <input matInput [formControl]="passwordInput" [type]="hide() ? 'password' : 'text'" />
     <button
       mat-icon-button
       matSuffix
@@ -15,5 +16,14 @@
       <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
     </button>
   </mat-form-field>
+
 &nbsp;
-  <button mat-flat-button>Unlock</button>
+  <button mat-flat-button type="submit" [disabled]="!passwordInput.valid">Unlock</button>
+
+  <p>
+  @if (invalidPassword()) {
+    <mat-error>Password is <strong>invalid</strong></mat-error>
+  }
+</p>
+
+</form>

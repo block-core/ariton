@@ -22,6 +22,7 @@ export class IdentityService {
       console.log(this.web5);
 
       this.initialized.set(true);
+      this.locked.set(false);
     }).catch((err) => {
       console.error(err);
       console.log('Show unlock screen!');
@@ -32,6 +33,31 @@ export class IdentityService {
   async changePassword(oldPassword: string, newPassword: string) {
     const agent = this.web5.agent as Web5IdentityAgent;
     await agent.vault.changePassword({ oldPassword, newPassword });
+  }
+
+  async unlock(password: string) {
+    console.log('Connecting to Web5...');
+    
+    try {
+      const {did: userDid, web5 } = await Web5.connect({ sync: '5s', password });
+
+      this.did = userDid;
+      this.web5 = web5;
+
+      console.log(this.did);
+      console.log(this.web5);
+
+      this.initialized.set(true);
+      this.locked.set(false);
+      
+      return true;
+    }
+    catch (error) {
+      console.error(error);
+      console.log('Show unlock screen!');
+      this.locked.set(true);
+      return false;
+    }
   }
 
   async initialize(password: string, recoveryPhrase: string, path: string) {
