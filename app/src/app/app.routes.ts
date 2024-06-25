@@ -119,6 +119,13 @@ export const routes: Routes = [
     data: { hide: true, icon: 'account_circle' },
   },
   {
+    path: 'account/password',
+    loadComponent: () =>
+      import('./account/password/password.component').then((c) => c.PasswordComponent),
+    title: 'Password',
+    data: { hide: true, icon: 'account_circle' },
+  },
+  {
     path: 'account/create',
     loadComponent: () =>
       import('./account/create/create.component').then((c) => c.CreateComponent),

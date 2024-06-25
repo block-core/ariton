@@ -1,3 +1,8 @@
+@if (identityService.locked()) {
+  <div class="unlock-container">
+    <app-unlock></app-unlock>
+  </div>
+}
 <app-layout>
   <router-outlet />
 </app-layout>

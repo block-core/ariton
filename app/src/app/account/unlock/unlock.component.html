@@ -1,0 +1,19 @@
+<h1>Unlock your account</h1>
+
+<p>You have configured your account with a secure personal password. Enter password to unlock your account.</p>
+
+<mat-form-field appearance="outline">
+    <mat-label>Enter your password</mat-label>
+    <input matInput [type]="hide() ? 'password' : 'text'" />
+    <button
+      mat-icon-button
+      matSuffix
+      (click)="clickEvent($event)"
+      [attr.aria-label]="'Hide password'"
+      [attr.aria-pressed]="hide()"
+    >
+      <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
+    </button>
+  </mat-form-field>
+&nbsp;
+  <button mat-flat-button>Unlock</button>
