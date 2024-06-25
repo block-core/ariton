@@ -25,12 +25,14 @@ export class UnlockComponent {
 
   constructor(private identityService: IdentityService) {}
 
+  /*
   clickEvent(event: MouseEvent) {
     this.hide.set(!this.hide);
     event.stopPropagation();
-  }
+  }*/
 
   async onSubmit() {
+    console.log('ON SUBMIT!');
     const unlocked = await this.identityService.unlock(this.passwordInput.value!);
 
     if (unlocked) {

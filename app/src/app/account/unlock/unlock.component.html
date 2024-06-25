@@ -6,7 +6,9 @@
 <mat-form-field appearance="outline">
     <mat-label>Enter your password</mat-label>
     <input matInput [formControl]="passwordInput" [type]="hide() ? 'password' : 'text'" />
+    <!--
     <button
+        type="button"
       mat-icon-button
       matSuffix
       (click)="clickEvent($event)"
@@ -14,7 +16,7 @@
       [attr.aria-pressed]="hide()"
     >
       <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
-    </button>
+    </button>-->
   </mat-form-field>
 
 &nbsp;
