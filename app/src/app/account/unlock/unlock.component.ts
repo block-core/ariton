@@ -19,26 +19,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 export class UnlockComponent {
   passwordInput = new FormControl('', Validators.required);
 
-  hide = signal(true);
-
   unlocking = signal(false);
 
   invalidPassword = signal(false);
 
-  loading = false;
-
-  passwordSignal = toSignal(this.passwordInput.valueChanges, { initialValue: '' });
-
-  disabled = computed(() => {
-    console.log('computed');
-    return this.passwordInput.invalid;
-  });
-
   constructor(private identityService: IdentityService) { }
-
-  save() {
-    this.loading = true;
-  }
 
   async onSubmit() {
     this.unlocking.set(true);

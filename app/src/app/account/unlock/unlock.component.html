@@ -5,7 +5,7 @@
 <form (ngSubmit)="onSubmit()">
 <mat-form-field appearance="outline">
     <mat-label>Enter your password</mat-label>
-    <input matInput [formControl]="passwordInput" [type]="hide() ? 'password' : 'text'" />
+    <input matInput [formControl]="passwordInput" type="password" />
     <!--
     <button
         type="button"
