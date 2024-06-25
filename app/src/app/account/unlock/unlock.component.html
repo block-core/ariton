@@ -20,7 +20,13 @@
   </mat-form-field>
 
 &nbsp;
-  <button mat-flat-button type="submit" [disabled]="!passwordInput.valid">Unlock</button>
+  <button mat-flat-button type="submit" color="primary" [disabled]="!(passwordInput.valid && !unlocking())">
+    @if(unlocking()) {
+      <mat-spinner diameter="20"></mat-spinner>
+    } @else {
+        <span>Unlock</span>
+    }
+  </button>
 
   <p>
   @if (invalidPassword()) {
