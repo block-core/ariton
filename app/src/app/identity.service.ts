@@ -30,6 +30,11 @@ export class IdentityService {
     });
   }
 
+  activeAgent() {
+    const agent = this.web5.agent as Web5IdentityAgent;
+    return agent;
+  }
+
   async changePassword(oldPassword: string, newPassword: string) {
     const agent = this.web5.agent as Web5IdentityAgent;
     await agent.vault.changePassword({ oldPassword, newPassword });

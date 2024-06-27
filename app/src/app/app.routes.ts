@@ -126,6 +126,13 @@ export const routes: Routes = [
     data: { hide: true, icon: 'account_circle' },
   },
   {
+    path: 'account/backup',
+    loadComponent: () =>
+      import('./account/backup/backup.component').then((c) => c.BackupComponent),
+    title: 'Backup',
+    data: { hide: true, icon: 'account_circle' },
+  },
+  {
     path: 'account/create',
     loadComponent: () =>
       import('./account/create/create.component').then((c) => c.CreateComponent),
