@@ -2,6 +2,7 @@ import { Injectable, WritableSignal, signal } from '@angular/core';
 import { Web5 } from '@web5/api';
 import { DidDht } from '@web5/dids';
 import { Web5IdentityAgent } from '@web5/identity-agent';
+import { CryptoService } from './crypto.service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,11 +13,28 @@ export class IdentityService {
 
   agents: WritableSignal<Web5IdentityAgent[]> = signal([]);
 
-  constructor() {
+  constructor(private cryptoService: CryptoService) {
+
+
+    this.cryptoService.createPassword().then((password) => { 
+      console.log('Password: ', password);
+    });
+
+
     console.log('Connecting to Web5...');
     Web5.connect({ sync: '5s' }).then((res) => {
       this.did = res.did;
       this.web5 = res.web5;
+
+      const recoveryPhrase = res.recoveryPhrase;
+
+      if (recoveryPhrase) {
+        // Show recovery phrase
+        console.log(recoveryPhrase);
+
+
+
+      }
 
       console.log(this.did);
       console.log(this.web5);
@@ -44,7 +62,15 @@ export class IdentityService {
     console.log('Connecting to Web5...');
     
     try {
-      const {did: userDid, web5 } = await Web5.connect({ sync: '5s', password });
+      const {did: userDid, web5, recoveryPhrase } = await Web5.connect({ sync: '5s', password });
+
+
+      if (recoveryPhrase)
+        {
+
+
+
+        }
 
       this.did = userDid;
       this.web5 = web5;
