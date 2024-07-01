@@ -3,6 +3,7 @@
     color: var(--mat-app-text-color);
     padding: 2em;
     position: absolute;
+    box-sizing: border-box;
     width: 100%;
     left: 0;
     top: 0;

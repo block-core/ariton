@@ -8,21 +8,16 @@ import { CryptoService } from './crypto.service';
   providedIn: 'root',
 })
 export class IdentityService {
-
+  syncInterval = '10s';
   //agents = signal<Web5IdentityAgent[]>([]);
 
   agents: WritableSignal<Web5IdentityAgent[]> = signal([]);
 
   constructor(private cryptoService: CryptoService) {
 
-
-    this.cryptoService.createPassword().then((password) => { 
-      console.log('Password: ', password);
-    });
-
-
     console.log('Connecting to Web5...');
-    Web5.connect({ sync: '5s' }).then((res) => {
+    /*
+    Web5.connect({ sync: this.syncInterval }).then((res) => {
       this.did = res.did;
       this.web5 = res.web5;
 
@@ -45,7 +40,17 @@ export class IdentityService {
       console.error(err);
       console.log('Show unlock screen!');
       this.locked.set(true);
-    });
+    });*/
+  }
+
+  async initialConnect(password: string) {
+    const result = await Web5.connect({password,  sync: this.syncInterval });
+    return result;
+  }
+
+  async connect(connectedDid: string, password: string) {
+    const result = await Web5.connect({ connectedDid ,password,  sync: this.syncInterval });
+    return result;
   }
 
   activeAgent() {
