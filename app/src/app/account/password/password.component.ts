@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, computed, effect, signal } from '@angular/core';
 import { IdentityService } from '../../identity.service';
 import { MatButtonModule } from '@angular/material/button';
 import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterLink } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
+import { AppService } from '../../app.service';
 
 @Component({
   selector: 'app-password',
@@ -22,11 +23,20 @@ export class PasswordComponent {
   passwordInput = new FormControl('', Validators.required);
   passwordInputRepeat = new FormControl('', Validators.required);
 
+  /** Indicates if the view should be password set or password reset. */
+  reset = computed(() => (this.appService.account().passwordHash));
+
   unlocking = signal(false);
 
   invalidPassword = signal(false);
 
-  constructor(private identityService: IdentityService, private router: Router) { }
+  constructor(private appService: AppService, private identityService: IdentityService, private router: Router) { 
+
+  }
+
+  async ngOnLoad() {
+    
+  }
 
   async changePassword(oldPassword: string, newPassword: string, confirmPassword: string) {
     if (newPassword != confirmPassword) {
@@ -39,6 +49,14 @@ export class PasswordComponent {
     }
 
     await this.identityService.changePassword(oldPassword, newPassword);
+
+    // Clear the password from the local state
+    this.appService.account().password = undefined;
+
+    // Generate hash of the password.
+    this.appService.account().passwordHash = '123';
+
+    this.appService.saveAccounts();
 
     console.log('Password changed');
   }
@@ -54,7 +72,15 @@ export class PasswordComponent {
     }
 
     try {
-      await this.changePassword(this.passwordInputPrevious.value!, this.passwordInput.value!, this.passwordInputRepeat.value!);
+      let password: any = '';
+
+      if (this.reset()) {
+        password = this.passwordInputPrevious.value!;
+      } else {
+        password = this.appService.account().password;
+      }
+
+      await this.changePassword(password, this.passwordInput.value!, this.passwordInputRepeat.value!);
     } catch (error) {
       console.error(error);
       this.invalidPassword.set(true);

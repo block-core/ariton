@@ -45,11 +45,23 @@ export class IdentityService {
 
   async initialConnect(password: string) {
     const result = await Web5.connect({password,  sync: this.syncInterval });
+    this.web5 = result.web5;
+    this.did = result.did;
+
+    console.log('IDENTITY SERVICE:', this.web5);
+
+    this.initialized.set(true);
     return result;
   }
 
   async connect(connectedDid: string, password: string) {
     const result = await Web5.connect({ connectedDid ,password,  sync: this.syncInterval });
+    this.web5 = result.web5;
+    this.did = result.did;
+
+    console.log('IDENTITY SERVICE:', this.web5);
+
+    this.initialized.set(true);
     return result;
   }
 
@@ -59,6 +71,10 @@ export class IdentityService {
   }
 
   async changePassword(oldPassword: string, newPassword: string) {
+    console.log(this);
+    console.log(this.web5);
+    debugger;
+
     const agent = this.web5.agent as Web5IdentityAgent;
     await agent.vault.changePassword({ oldPassword, newPassword });
   }

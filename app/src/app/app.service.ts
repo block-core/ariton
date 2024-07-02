@@ -4,6 +4,17 @@ import { CryptoService } from './crypto.service';
 import { IdentityService } from './identity.service';
 import { Web5ConnectResult } from '@web5/api';
 
+export interface AppState {
+  selectedAccount: string;
+}
+
+export interface Account {
+  did: string;
+  recoveryPhrase: string;
+  password?: string;
+  passwordHash?: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -16,12 +27,26 @@ export class AppService {
 
   identity = inject(IdentityService);
 
+  state = signal<AppState>({ selectedAccount: ''});
+
+  account = signal<Account>({ did: '', recoveryPhrase: '', password: '', passwordHash: '' });
+
+  accounts = signal<Account[]>([]);
+
   constructor() { }
+
+  //getState() { 
+  //  return this.storage.read('state');
+  //}
+
+  saveAccounts() {
+    this.storage.save('accounts', this.accounts());
+  }
 
   async initialize() {
     console.log('Initializing Ariton...');
 
-    let state: any = this.storage.read('state');
+    let state = this.storage.read('state') as AppState;
 
     if (!state) {
       state = {
@@ -59,6 +84,8 @@ export class AppService {
 
         state.selectedAccount = result.did;
 
+        this.accounts.set(accounts);
+        this.account?.set(accounts[0]);
         this.storage.save('state', state);
       } else {
         // If there are accounts, select the one from the state.selectedAccount value.
@@ -66,11 +93,18 @@ export class AppService {
 
         console.log('Previous selected account: ', account);
 
-        result = await this.identity.connect(account.did, account.password);
+        this.accounts.set(accounts);
+        this.account?.set(account);
+
+        if (account.password) {
+          result = await this.identity.connect(account.did, account.password);
+        } else {
+          // If the account does not have a password, it means the user has not
+          // persisted it. We need to ask for the password.
+          this.identity.locked.set(true);
+        }
       }
 
-      console.log('RESULT: ', result);
-      
     // let password = this.storage.read('password');
 
     // // If there are no password, either user has choose to not persist
@@ -80,6 +114,8 @@ export class AppService {
     //   this.storage.save('password', password);
     //   console.log('Password created');
     // }
+
+    this.state.set(state);
 
     this.initialized.set(true);
   }
