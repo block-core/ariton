@@ -17,7 +17,15 @@
 
   <p>
     <button mat-stroked-button [routerLink]="['/communities']">Skip and jump into the app</button>
-    <button mat-flat-button [routerLink]="['/account/password']">Set a password</button>
+
+    @if(!reset()) {
+      <button mat-flat-button [routerLink]="['/account/password']">Set a password</button>
+    }
+    @else {
+      <button mat-flat-button disabled="true" [routerLink]="['/account/password']"><s>Set a password</s></button>
+
+    }
+    
     <button mat-flat-button [routerLink]="['/account/backup']">Backup your account</button>
     <button mat-flat-button color="warn" (click)="wipe()">Reset (Wipe) Data</button>
   

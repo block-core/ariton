@@ -1,20 +1,27 @@
-import { Component } from '@angular/core';
+import { Component, effect, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { IdentityService } from '../../identity.service';
 import { Web5IdentityAgent } from '@web5/identity-agent';
+import { AppService } from '../../app.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-backup',
   standalone: true,
-  imports: [MatButtonModule, MatIconModule, MatCardModule],
+  imports: [CommonModule, MatButtonModule, MatIconModule, MatCardModule],
   templateUrl: './backup.component.html',
   styleUrl: './backup.component.scss'
 })
 export class BackupComponent {
 
-  constructor(private identityService: IdentityService) { }
+  recoveryPhrase = '';
+
+  reveal = signal<boolean>(false);
+
+  constructor(public identityService: IdentityService, public appService: AppService) {
+   }
 
   async backupToFile() {
     const portableDid = await this.identityService.activeAgent().vault.backup();
@@ -42,5 +49,9 @@ export class BackupComponent {
     console.log(portableDid);
     const data = JSON.stringify(portableDid); // Assuming portableDid is the string you want to save
     await this.saveFile(data);
+  }
+
+  async revealRecoveryPhrase() {
+    this.reveal.set(!this.reveal());
   }
 }

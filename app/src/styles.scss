@@ -82,6 +82,11 @@ h1 {
   padding: 2em;
 }
 
+.blur {
+  color: transparent;
+  text-shadow: 0 0 5px rgba(255,255,255,0.5);
+}
+
 .dimmed {
   font-size: 0.8em;
 }

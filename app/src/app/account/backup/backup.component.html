@@ -1,28 +1,53 @@
 <h1>Backup your account</h1>
 
 
-<p>
-    <button mat-flat-button (click)="backupToFile()">
-        <mat-icon>save</mat-icon>
-        Save to file (without password)
-      </button>
-    
-      <button mat-flat-button (click)="backupToProtectedFile()">
-        <mat-icon>save_as</mat-icon>
-        Save to file (with password)
-      </button>
-    
-      <button mat-flat-button>
-        <mat-icon>groups</mat-icon>
-        Social Recovery Setup (3 friends)
-      </button>
-    
-      <button mat-flat-button>
-        <mat-icon>backup</mat-icon>
-        Save to Cloud
-      </button>
-    
-    </p>
+
+
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <mat-card-title>Secret Recovery Phrase</mat-card-title>
+        <mat-card-subtitle>Keep it hidden, keep it safe</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p class="recovery-phrase" [ngClass]="{ 'blur': !reveal()}">
+          {{ appService.account().recoveryPhrase }}
+        </p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button (click)="revealRecoveryPhrase()">
+          @if(!reveal()) {
+          <span>Reveal phrase</span>
+          }
+          @else {
+            <span>Hide phrase</span>
+          }
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+    <p>
+      <button mat-flat-button (click)="backupToFile()">
+          <mat-icon>save</mat-icon>
+          Save to file (without password)
+        </button>
+      
+        <button mat-flat-button (click)="backupToProtectedFile()">
+          <mat-icon>save_as</mat-icon>
+          Save to file (with password)
+        </button>
+      
+        <button mat-flat-button>
+          <mat-icon>groups</mat-icon>
+          Social Recovery Setup (3 friends)
+        </button>
+      
+        <button mat-flat-button>
+          <mat-icon>backup</mat-icon>
+          Save to Cloud
+        </button>
+      
+      </p>
+
 
 <mat-card>
     <mat-card-content>

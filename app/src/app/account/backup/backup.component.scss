@@ -2,3 +2,17 @@ button {
     margin-top: 1em;
     margin-right: 1em;
 }
+
+mat-card {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.secret-recovery-phrase {
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+}
+
+.recovery-phrase {
+    font-size: 1.4em;
+}
