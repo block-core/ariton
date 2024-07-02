@@ -6,18 +6,19 @@ import { LayoutService } from './layout.service';
 import { IdentityService } from './identity.service';
 import { UnlockComponent } from './account/unlock/unlock.component';
 import { AppService } from './app.service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, LayoutComponent, UnlockComponent],
+  imports: [MatProgressSpinnerModule, RouterOutlet, LayoutComponent, UnlockComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
   title = 'app';
-  private appService = inject(AppService);
+  appService = inject(AppService);
 
   constructor(private router: Router, private layout: LayoutService, public identityService: IdentityService) {
     this.router.events.subscribe(event => {
@@ -37,7 +38,14 @@ export class AppComponent {
     });
   }
 
-  ngOnInit() {
-    this.appService.initialize();
+  async ngOnInit() {
+    await this.appService.initialize();
+
+    console.log('App initialized!', this.appService.firstTime());
+
+    if (this.appService.firstTime()) {
+      console.log('First time setup, redirect to introduction!');
+      this.router.navigate(['/introduction']);
+    }
   }
 }

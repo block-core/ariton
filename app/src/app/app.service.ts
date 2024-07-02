@@ -33,6 +33,8 @@ export class AppService {
 
   accounts = signal<Account[]>([]);
 
+  firstTime = signal<boolean>(false);
+
   constructor() { }
 
   //getState() { 
@@ -52,6 +54,8 @@ export class AppService {
       state = {
         selectedAccount: ''
       };
+
+      this.firstTime.set(true);
     }
 
     let accounts = this.storage.read('accounts') as any[];
