@@ -15,27 +15,5 @@ import { AppService } from '../app.service';
 export class IntroductionComponent {
   appService = inject(AppService);
 
-  private storage = inject(StorageService);
-
   reset = computed(() => (this.appService.account().passwordHash));
-
-  async wipe() {
-    // Clear all data from localStorage
-    this.storage.clear();
-
-    console.log('Local storage data has been wiped!');
-    
-    // Clear all data from IndexedDb
-    await indexedDB.deleteDatabase('level-js-DATA/AGENT');
-    await indexedDB.deleteDatabase('level-js-DATA/AGENT/DID_RESOLVERCACHE');
-    await indexedDB.deleteDatabase('level-js-DATA/AGENT/DWN_DATASTORE');
-    await indexedDB.deleteDatabase('level-js-DATA/AGENT/DWN_EVENTLOG');
-    await indexedDB.deleteDatabase('level-js-DATA/AGENT/DWN_MESSAGEINDEX');
-    await indexedDB.deleteDatabase('level-js-DATA/AGENT/DWN_MESSAGESTORE');
-    await indexedDB.deleteDatabase('level-js-DATA/AGENT/VAULT_STORE');
-
-    console.log('Data has been wiped!');
-
-    window.location.reload();
-  }
 }

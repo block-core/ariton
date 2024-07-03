@@ -13,6 +13,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle.component';
 import { LayoutService } from '../layout.service';
 import { MatMenuModule } from '@angular/material/menu';
+import { StorageService } from '../storage.service';
 
 @Component({
   selector: 'app-layout',
@@ -35,11 +36,35 @@ import { MatMenuModule } from '@angular/material/menu';
 export class LayoutComponent {
   private breakpointObserver = inject(BreakpointObserver);
 
+  private storage = inject(StorageService);
+
   rootRoutes = routes.filter(r=>r.path).filter(r=>r.data && r.data['hide'] != true);
+
+  async wipe() {
+    // Clear all data from localStorage
+    this.storage.clear();
+
+    console.log('Local storage data has been wiped!');
+    
+    // Clear all data from IndexedDb
+    await indexedDB.deleteDatabase('level-js-DATA/AGENT');
+    await indexedDB.deleteDatabase('level-js-DATA/AGENT/DID_RESOLVERCACHE');
+    await indexedDB.deleteDatabase('level-js-DATA/AGENT/DWN_DATASTORE');
+    await indexedDB.deleteDatabase('level-js-DATA/AGENT/DWN_EVENTLOG');
+    await indexedDB.deleteDatabase('level-js-DATA/AGENT/DWN_MESSAGEINDEX');
+    await indexedDB.deleteDatabase('level-js-DATA/AGENT/DWN_MESSAGESTORE');
+    await indexedDB.deleteDatabase('level-js-DATA/AGENT/VAULT_STORE');
+
+    console.log('Data has been wiped!');
+
+    window.location.reload();
+  }
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe('(max-width: 700px)')
     .pipe(
       map(result => result.matches),
       shareReplay()
     );
+
+   
 }
