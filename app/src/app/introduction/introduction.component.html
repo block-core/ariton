@@ -22,11 +22,17 @@
       <button mat-flat-button [routerLink]="['/account/password']">Set a password</button>
     }
     @else {
-      <button mat-flat-button disabled="true" [routerLink]="['/account/password']"><s>Set a password</s></button>
+      <button mat-flat-button [routerLink]="['/account/password']"><s>Set a password</s></button>
+    }
 
+    @if(!backup()) {
+      <button mat-flat-button [routerLink]="['/account/backup']">Backup your account</button>
+    }
+    @else {
+      <button mat-flat-button [routerLink]="['/account/backup']"><s>Backup your account</s></button>
     }
     
-    <button mat-flat-button [routerLink]="['/account/backup']">Backup your account</button>
+    
   
   </p>
 

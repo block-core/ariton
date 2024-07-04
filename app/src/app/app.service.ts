@@ -6,6 +6,7 @@ import { Web5ConnectResult } from '@web5/api';
 
 export interface AppState {
   selectedAccount: string;
+  backupConfirmed?: boolean;
 }
 
 export interface Account {
@@ -43,6 +44,10 @@ export class AppService {
 
   saveAccounts() {
     this.storage.save('accounts', this.accounts());
+  }
+
+  saveState() {
+    this.storage.save('state', this.state());
   }
 
   async initialize() {

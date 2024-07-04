@@ -7,11 +7,12 @@ import { Web5IdentityAgent } from '@web5/identity-agent';
 import { AppService } from '../../app.service';
 import { CommonModule } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-backup',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatIconModule, MatCardModule, MatTooltipModule],
+  imports: [CommonModule, MatButtonModule, MatIconModule, MatCardModule, MatTooltipModule, RouterModule],
   templateUrl: './backup.component.html',
   styleUrl: './backup.component.scss'
 })
@@ -21,7 +22,7 @@ export class BackupComponent {
 
   reveal = signal<boolean>(false);
 
-  constructor(public identityService: IdentityService, public appService: AppService) {
+  constructor(private router: Router, public identityService: IdentityService, public appService: AppService) {
    }
 
   async backupToFile() {
@@ -37,6 +38,13 @@ export class BackupComponent {
   } catch (err) {
     console.error('Failed to copy: ', err);
   }
+}
+
+confirmBackup() {
+  this.appService.state().backupConfirmed = true;
+  this.appService.saveState();
+  
+  this.router.navigate(['/introduction']);
 }
 
   async saveFile(data: string) {

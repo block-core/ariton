@@ -91,6 +91,6 @@ export class PasswordComponent {
     this.invalidPassword.set(false);
     this.unlocking.set(false);
 
-    this.router.navigate(['/account', 'did:dht:umj7apgmkodtrb7mdpjo4h7xinqdnatzgy38j7wi67k9c7sdns1o']);
+    this.router.navigate(['/introduction']);
   }
 }

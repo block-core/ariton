@@ -16,4 +16,7 @@ export class IntroductionComponent {
   appService = inject(AppService);
 
   reset = computed(() => (this.appService.account().passwordHash));
+
+  backup = computed(() => (this.appService.state().backupConfirmed));
+
 }
