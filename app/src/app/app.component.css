@@ -12,6 +12,9 @@
     z-index: 1000;
     display: flex;
     justify-content: center;
+    align-items: center;
+    align-content: center;
+    text-align: center;
 }
 
 .loading-container {
