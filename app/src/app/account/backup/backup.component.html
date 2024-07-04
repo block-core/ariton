@@ -8,10 +8,13 @@
         <mat-card-title>Secret Recovery Phrase</mat-card-title>
         <mat-card-subtitle>Keep it hidden, keep it safe</mat-card-subtitle>
       </mat-card-header>
-      <mat-card-content>
+      <mat-card-content class="recovery-phrase-container">
         <p class="recovery-phrase" [ngClass]="{ 'blur': !reveal()}">
           {{ appService.account().recoveryPhrase }}
         </p>
+        <button class="copy-button" matTooltip="Copy the recovery phrase" mat-icon-button (click)="copyRecoveryPhrase()">
+          <mat-icon>content_copy</mat-icon>
+        </button>
       </mat-card-content>
       <mat-card-actions>
         <button mat-button (click)="revealRecoveryPhrase()">
@@ -27,21 +30,16 @@
 
     <p>
       <button mat-flat-button (click)="backupToFile()">
-          <mat-icon>save</mat-icon>
-          Save to file (without password)
+          <mat-icon>done</mat-icon>
+          Confirm you have saved the recovery phrase
         </button>
       
-        <button mat-flat-button (click)="backupToProtectedFile()">
-          <mat-icon>save_as</mat-icon>
-          Save to file (with password)
-        </button>
-      
-        <button mat-flat-button>
+        <button disabled="true" mat-flat-button>
           <mat-icon>groups</mat-icon>
           Social Recovery Setup (3 friends)
         </button>
       
-        <button mat-flat-button>
+        <button disabled="true" mat-flat-button>
           <mat-icon>backup</mat-icon>
           Save to Cloud
         </button>
@@ -56,18 +54,11 @@
 <p>Ariton is unique and unlike other apps you are used to. Ariton is self-custodial, meaning that you are responsible for keeping your 
     account safe and secure. If you lose your account, you lose all your data and access to the app.
 </p>
-<p>
-    To prevent this, you can take a backup of your account. This backup is encrypted and can be used to restore your account on other devices.
-</p>
 <p>Additionally we believe in giving you amazing user experience, so we have different options to choose from when it comes to backup.</p>
 
 <p>Quick explanation:</p>
 
 <ul>
-
-<li>You can save your account to a file on your local device. If anyone get hold of this file, they can access your account.</li>
-
-<li>Save to your local device with password protection. This makes the file encrypted with your password, making it much harder for someone to access yoru account, even if they get a copy of your backup file.</li>
 
 <li>Social backup is a unique feature that less apps have today. It allows you to choose 3 of your friends that you trust. If you ever loose your account (or device), you can simply ask your 3 friends to help restore your account. This must be setup before it can be used and you friends has to accept this responsibility.</li>
 

@@ -16,3 +16,14 @@ mat-card {
 .recovery-phrase {
     font-size: 1.4em;
 }
+
+.recovery-phrase-container {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+}
+
+.copy-button {
+    margin-left: 0.1em;
+    
+}

@@ -6,11 +6,12 @@ import { IdentityService } from '../../identity.service';
 import { Web5IdentityAgent } from '@web5/identity-agent';
 import { AppService } from '../../app.service';
 import { CommonModule } from '@angular/common';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-backup',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatIconModule, MatCardModule],
+  imports: [CommonModule, MatButtonModule, MatIconModule, MatCardModule, MatTooltipModule],
   templateUrl: './backup.component.html',
   styleUrl: './backup.component.scss'
 })
@@ -28,6 +29,15 @@ export class BackupComponent {
     const data = portableDid.data; // Assuming portableDid is the string you want to save
     await this.saveFile(data);
   }
+
+  async copyRecoveryPhrase(): Promise<void> {
+  try {
+    await navigator.clipboard.writeText(this.appService.account().recoveryPhrase);
+    console.log('Text copied to clipboard');
+  } catch (err) {
+    console.error('Failed to copy: ', err);
+  }
+}
 
   async saveFile(data: string) {
 
