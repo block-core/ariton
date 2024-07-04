@@ -14,6 +14,7 @@ import { ThemeToggleComponent } from '../theme-toggle/theme-toggle.component';
 import { LayoutService } from '../layout.service';
 import { MatMenuModule } from '@angular/material/menu';
 import { StorageService } from '../storage.service';
+import { IdentityService } from '../identity.service';
 
 @Component({
   selector: 'app-layout',
@@ -38,6 +39,8 @@ export class LayoutComponent {
 
   private storage = inject(StorageService);
 
+  private identity = inject(IdentityService);
+
   rootRoutes = routes.filter(r=>r.path).filter(r=>r.data && r.data['hide'] != true);
 
   async wipe() {
@@ -58,6 +61,10 @@ export class LayoutComponent {
     console.log('Data has been wiped!');
 
     window.location.reload();
+  }
+
+  lock() {
+    this.identity.lock();
   }
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe('(max-width: 700px)')

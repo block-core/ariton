@@ -79,6 +79,18 @@ export class IdentityService {
     await agent.vault.changePassword({ oldPassword, newPassword });
   }
 
+  async lock() {
+    // TODO: Validate if we need to do more when locking the account.
+    console.log('Locking account...');
+    
+    const agent = this.web5.agent as Web5IdentityAgent;
+    await agent.vault.lock();
+
+    console.log('Vault locked');
+
+    this.locked.set(true);
+  }
+
   async unlock(password: string) {
     console.log('Connecting to Web5...');
     
