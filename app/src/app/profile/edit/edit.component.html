@@ -7,7 +7,7 @@
           <div class="col">
             <mat-form-field class="full-width">
               <mat-label>Name</mat-label>
-              <input matInput placeholder="Name" formControlName="name">
+              <input matInput #name placeholder="Name" maxlength="200" formControlName="name">
             </mat-form-field>
           </div>
         </div>
@@ -15,7 +15,7 @@
           <div class="col">
             <mat-form-field class="full-width">
               <mat-label>Title</mat-label>
-              <input matInput placeholder="Title" formControlName="title">
+              <input matInput #title placeholder="Title" formControlName="title">
               @if (addressForm.controls['title'].hasError('required')) {
                 <mat-error>Title is <strong>required</strong></mat-error>
               }
@@ -36,10 +36,11 @@
           <div class="col">
             <mat-form-field class="full-width">
               <mat-label>Bio</mat-label>
-              <textarea matInput placeholder="Bio" formControlName="bio"></textarea>
+              <textarea maxlength="300" matInput #bio placeholder="Bio" formControlName="bio"></textarea>
               @if (addressForm.controls['bio'].hasError('required')) {
                 <mat-error>Bio is <strong>required</strong></mat-error>
               }
+              <mat-hint align="end">{{bio.value.length}} / 300</mat-hint>
             </mat-form-field>
           </div>
         </div>
