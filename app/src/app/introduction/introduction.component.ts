@@ -4,11 +4,12 @@ import { MatDividerModule } from '@angular/material/divider';
 import { RouterLink } from '@angular/router';
 import { StorageService } from '../storage.service';
 import { AppService } from '../app.service';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-introduction',
   standalone: true,
-  imports: [MatButtonModule, MatDividerModule, RouterLink],
+  imports: [MatCardModule, MatButtonModule, MatDividerModule, RouterLink],
   templateUrl: './introduction.component.html',
   styleUrl: './introduction.component.scss'
 })
