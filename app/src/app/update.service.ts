@@ -32,11 +32,18 @@ export class NewVersionCheckerService {
 
         this.zone.runOutsideAngular(() => {
             this.intervalSubscription = this.intervalSource.subscribe(async () => {
-                try {
-                    this.isNewVersionAvailable = await this.swUpdate.checkForUpdate();
-                    console.log(this.isNewVersionAvailable ? 'A new version is available.' : 'Already on the latest version.');
-                } catch (error) {
-                    console.error('Failed to check for updates:', error);
+                if (!this.isNewVersionAvailable) {   
+                    try {
+                        this.isNewVersionAvailable = await this.swUpdate.checkForUpdate();
+                        console.log(this.isNewVersionAvailable ? 'A new version is available.' : 'Already on the latest version.');
+                    } catch (error) {
+                        console.error('Failed to check for updates:', error);
+                    }
+                } else 
+                {
+                    // Check for updates at interval, which will keep the
+                    // browser updating to latest version as long as it's being kept open.
+                    await this.swUpdate.checkForUpdate();
                 }
             });
         })
