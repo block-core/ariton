@@ -74,6 +74,15 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
+a {
+  color: var(--mat-app-text-color);
+  text-decoration: underline;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
 h1 {
   word-wrap: break-word;
 }

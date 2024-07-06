@@ -227,4 +227,11 @@ export const routes: Routes = [
     title: 'Drag-Drop',
     data: { hide: false, icon: 'folder' },
   },
+  {
+    path: 'help',
+    loadComponent: () =>
+      import('./help/help.component').then((c) => c.HelpComponent),
+    title: 'Help',
+    data: { hide: true, icon: 'help' },
+  },
 ];
