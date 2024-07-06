@@ -51,10 +51,10 @@
 <div class="container responsive-grid">
     <mat-card *ngFor="let card of cards()">
       <mat-card-header>
-        <mat-card-title>{{ card.title }} </mat-card-title>
+        <mat-card-title>{{ card.name }} </mat-card-title>
       </mat-card-header>
       <br />
-      <img mat-card-image [src]="card.imageUrl" />
+      <img mat-card-image [src]="card.thumbnail" />
       <mat-card-content>
         <br />
         <p>

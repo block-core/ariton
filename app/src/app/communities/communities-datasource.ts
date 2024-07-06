@@ -10,6 +10,38 @@ export interface TableItem {
   id: number;
 }
 
+export interface Community { 
+  id: string;
+  name: string;
+  description: string;
+  thumbnail: string;
+
+  private: boolean;
+  visibility: string;
+
+  /** Type of community controls whichs protocol it will be using. */
+  type: string;
+
+  features: {
+    discussion: boolean;
+    members: boolean;
+
+    /** Should probably just be a mini app installed in the community */
+    events: boolean;
+
+    /** Should probably just be a mini app installed in the community */
+    media: boolean;
+
+    /** Should probably just be a mini app installed in the community */
+    files: boolean;
+  }
+
+  /** Apps that are installed in the community. Should probably just be list of IDs. */
+  apps: any[];
+
+
+}
+
 // TODO: replace this with real data from your application
 const EXAMPLE_DATA: TableItem[] = [
   {id: 1, name: 'Hydrogen'},

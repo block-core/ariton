@@ -17,7 +17,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTable, MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import { TableDataSource, TableItem } from './communities-datasource';
+import { Community, TableDataSource, TableItem } from './communities-datasource';
 import { Router } from '@angular/router';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -60,7 +60,7 @@ export class CommunitiesComponent {
   @ViewChild(MatTable) table!: MatTable<TableItem>;
   dataSource = new TableDataSource();
 
-  cards = signal<CardContent[]>([]);
+  cards = signal<Community[]>([]);
 
   images = [
     'nature',
@@ -127,12 +127,25 @@ export class CommunitiesComponent {
       console.log(`The checked is: ${this.checked()})`);
     });
 
-    const cards: CardContent[] = [];
+    const cards: Community[] = [];
     for (let i = 0; i < this.images.length; i++) {
       cards.push({
-        title: `Community ${i + 1}`,
+        id: 'id' + 1,
+        name: `Community ${i + 1}`,
         description: `This is a description of community. We are a great community with many members.`,
-        imageUrl: `https://picsum.photos/seed/${this.images[i]}x/200/300`,
+        thumbnail: `https://picsum.photos/seed/${this.images[i]}x/200/300`,
+        private: false,
+        visibility: 'public',
+        type: 'generic',
+        features: {
+          discussion: true,
+          members: true,
+          events: true,
+          media: true,
+          files: true,
+        },
+        apps: ['events', 'media', 'files'],
+        
       });
     }
 
