@@ -105,6 +105,13 @@ export const routes: Routes = [
     data: { hide: true, icon: 'account_circle' },
   },
   {
+    path: 'profile/:id/edit',
+    loadComponent: () =>
+      import('./profile/edit/edit.component').then((c) => c.ProfileEditComponent),
+    title: 'Edit Profile',
+    data: { hide: true, icon: 'account_circle' },
+  },
+  {
     path: 'notifications',
     loadComponent: () =>
       import('./notifications/notifications.component').then((c) => c.NotificationsComponent),
