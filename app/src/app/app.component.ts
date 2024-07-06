@@ -7,12 +7,13 @@ import { IdentityService } from './identity.service';
 import { UnlockComponent } from './account/unlock/unlock.component';
 import { AppService } from './app.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatButtonModule } from '@angular/material/button';
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [MatProgressSpinnerModule, RouterOutlet, LayoutComponent, UnlockComponent],
+  imports: [MatButtonModule, MatProgressSpinnerModule, RouterOutlet, LayoutComponent, UnlockComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -36,6 +37,12 @@ export class AppComponent {
         console.log('App has been initialized!!!!');
       }
     });
+  }
+
+  forceClose() {
+    // Force the initialized to be set to true. This can be useful when
+    // the app load or creation has issues during the prototype/beta phases.
+    this.appService.initialized.set(true);
   }
 
   async ngOnInit() {
