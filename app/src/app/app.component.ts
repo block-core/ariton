@@ -39,6 +39,7 @@ export class AppComponent {
     }
 
     console.log(queryParam);
+    console.log(this.appService.params);
     
     this.router.events.subscribe(event => {
       if (event instanceof NavigationStart) {
