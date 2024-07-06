@@ -1,2 +1,95 @@
 <h1>Edit your profile</h1>
 
+<form [formGroup]="addressForm" novalidate (ngSubmit)="onSubmit()">
+    <mat-card class="shipping-card">
+      <mat-card-content>
+        <div class="row">
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Name" formControlName="name">
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Title" formControlName="title">
+              @if (addressForm.controls['title'].hasError('required')) {
+                <mat-error>Title is <strong>required</strong></mat-error>
+              }
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Status" formControlName="status">
+              @if (addressForm.controls['status'].hasError('required')) {
+                <mat-error>Status is <strong>required</strong></mat-error>
+              }
+              <mat-icon matSuffix>place</mat-icon>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <mat-form-field class="full-width">
+              <textarea matInput placeholder="Bio" formControlName="bio"></textarea>
+              @if (addressForm.controls['bio'].hasError('required')) {
+                <mat-error>Bio is <strong>required</strong></mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+          
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Location" formControlName="location">
+              @if (addressForm.controls['location'].hasError('required')) {
+                <mat-error>Location is <strong>required</strong></mat-error>
+              }
+              <mat-icon matSuffix>place</mat-icon>
+            </mat-form-field>
+          </div>
+          <div class="col">
+              <!--
+            <mat-form-field class="full-width">
+           
+                <mat-select placeholder="State" formControlName="state">
+                @for (state of states; track state) {
+                  <mat-option [value]="state.abbreviation">{{ state.name }}</mat-option>
+                }
+              </mat-select>
+              @if (addressForm.controls['state'].hasError('required')) {
+                <mat-error>State is <strong>required</strong></mat-error>
+              }
+            </mat-form-field>-->
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput #postalCode maxlength="5" placeholder="Postal Code" type="number" formControlName="postalCode">
+              <mat-hint align="end">{{postalCode.value.length}} / 5</mat-hint>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <mat-radio-group formControlName="shipping">
+              <mat-radio-button value="free">Free Shipping</mat-radio-button>
+              <mat-radio-button value="priority">Priority Shipping</mat-radio-button>
+              <mat-radio-button value="nextday">Next Day Shipping</mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-flat-button color="primary" type="submit">Submit</button>
+      </mat-card-actions>
+    </mat-card>
+  </form>
+  

@@ -20,7 +20,6 @@ import { MatTabsModule } from '@angular/material/tabs';
   styleUrl: './profile.component.scss'
 })
 export class ProfileComponent {
-
   profileService = inject(ProfileService);
 
   constructor(private _snackBar: MatSnackBar, private route: ActivatedRoute) {

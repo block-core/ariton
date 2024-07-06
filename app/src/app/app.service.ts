@@ -107,9 +107,6 @@ export class AppService {
       } else {
         // If there are accounts, select the one from the state.selectedAccount value.
         const account = accounts.find((account: any) => account.did === state.selectedAccount);
-
-        console.log('Previous selected account: ', account);
-
         this.accounts.set(accounts);
         this.account?.set(account);
 
