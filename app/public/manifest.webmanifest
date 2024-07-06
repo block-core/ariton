@@ -10,8 +10,16 @@
   "display": "standalone",
   "scope": "./",
   "start_url": "./",
-  "categories": ["tools"],
+  "categories": [
+    "tools"
+  ],
   "edge_side_panel": {},
+  "protocol_handlers": [
+    {
+      "protocol": "web+data",
+      "url": "/index.html?data=%s"
+    }
+  ],
   "screenshots": [
     {
       "src": "icons/ariton-screenshot-01.png",
