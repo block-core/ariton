@@ -43,10 +43,7 @@ export class AppService {
 
   constructor() {
     console.log(`Ariton v${this.package.version} initialized.`);
-    console.log(this.package);
-
     this.dependencies = Object.entries(this.package.dependencies).map(([key, value]) => ({ name: key, version: value }));
-    console.log(this.dependencies);
    }
 
   //getState() { 

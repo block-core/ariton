@@ -15,7 +15,6 @@ export class IdentityService {
 
   constructor(private cryptoService: CryptoService) {
 
-    console.log('Connecting to Web5...');
     /*
     Web5.connect({ sync: this.syncInterval }).then((res) => {
       this.did = res.did;
@@ -48,7 +47,8 @@ export class IdentityService {
     this.web5 = result.web5;
     this.did = result.did;
 
-    console.log('IDENTITY SERVICE:', this.web5);
+    console.log('Web5 Connected.');
+    // console.log('IDENTITY SERVICE:', this.web5);
 
     this.initialized.set(true);
     return result;
@@ -59,7 +59,8 @@ export class IdentityService {
     this.web5 = result.web5;
     this.did = result.did;
 
-    console.log('IDENTITY SERVICE:', this.web5);
+    console.log('Web5 Connected.');
+    // console.log('IDENTITY SERVICE:', this.web5);
 
     this.initialized.set(true);
     return result;
@@ -101,15 +102,10 @@ export class IdentityService {
       if (recoveryPhrase)
         {
 
-
-
         }
 
       this.did = userDid;
       this.web5 = web5;
-
-      console.log(this.did);
-      console.log(this.web5);
 
       this.initialized.set(true);
       this.locked.set(false);
