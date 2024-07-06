@@ -37,6 +37,9 @@ export class AppService {
 
   firstTime = signal<boolean>(false);
 
+  /** Parameters that comes from query string during activation of the extension. */
+  params = signal<any>({});
+
   package = packageInfo;
 
   dependencies: any;

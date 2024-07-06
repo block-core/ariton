@@ -29,6 +29,17 @@ export class AppComponent {
   appService = inject(AppService);
 
   constructor(private router: Router, private layout: LayoutService, public identityService: IdentityService) {
+    // This must happen in the constructor on app component, or when loading in PWA, it won't
+    // be possible to read the query parameters.
+    const queryParam = globalThis.location.search;
+
+    if (queryParam) {
+      const param = Object.fromEntries(new URLSearchParams(queryParam)) as any;
+      this.appService.params = param;
+    }
+
+    console.log(queryParam);
+    
     this.router.events.subscribe(event => {
       if (event instanceof NavigationStart) {
         this.layout.enableScrolling();
