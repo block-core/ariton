@@ -13,7 +13,8 @@ export class NewVersionCheckerService {
         private swUpdate: SwUpdate,
         private zone: NgZone
     ) {
-        this.checkForUpdate();
+        this.checkForUpdateOnInterval();
+        this.checkForUpdateOnLoad();
     }
 
     applyUpdate(): void {
@@ -23,7 +24,7 @@ export class NewVersionCheckerService {
             .catch(error => console.error('Failed to apply updates:', error));
     }
 
-    checkForUpdate(): void {
+    checkForUpdateOnInterval(): void {
         this.intervalSubscription?.unsubscribe();
         if (!this.swUpdate.isEnabled) {
             return;
