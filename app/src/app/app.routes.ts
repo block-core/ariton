@@ -203,6 +203,13 @@ export const routes: Routes = [
     data: { hide: true, icon: 'settings' },
   },
   {
+    path: 'settings/handler',
+    loadComponent: () =>
+      import('./settings/handler/handler.component').then((c) => c.HandlerComponent),
+    title: 'Protocol Handler',
+    data: { hide: true, icon: 'search' },
+  },
+  {
     path: 'address',
     loadComponent: () =>
       import('./address-form/address-form.component').then(

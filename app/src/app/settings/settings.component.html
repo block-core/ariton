@@ -11,6 +11,16 @@ Language: {{ settings().language }}
 <button mat-flat-button (click)="toggleDebug()">Toggle debug</button>
 
 <mat-nav-list>
+  <div mat-subheader>Other Actions</div>
+
+  <a mat-list-item [routerLink]="['handler']">
+    <mat-icon matListItemIcon>search</mat-icon>
+    Register Protocol Handler
+  </a>
+
+</mat-nav-list>
+
+<mat-nav-list>
     <div mat-subheader>Information</div>
 
     <a mat-list-item [routerLink]="['about']">
