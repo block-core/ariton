@@ -23,9 +23,12 @@ export class NewVersionCheckerService {
     checkForUpdate(): void {
         this.newVersionSubscription?.unsubscribe();
         if (!this.swUpdate.isEnabled) {
+            console.log('Service worker updates are disabled for this app.');
             return;
         }
         this.newVersionSubscription = this.swUpdate.versionUpdates.subscribe(evt => {
+            console.log('New version update event:');
+            console.log(evt);
             switch (evt.type) {
                 case 'VERSION_DETECTED':
                     console.log(`Downloading new app version: ${evt.version.hash}`);
@@ -40,5 +43,7 @@ export class NewVersionCheckerService {
                     break;
             }
         });
+
+        console.log('Subscribed to new version updates.');
     }
 }
