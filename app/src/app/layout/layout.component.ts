@@ -15,6 +15,8 @@ import { LayoutService } from '../layout.service';
 import { MatMenuModule } from '@angular/material/menu';
 import { StorageService } from '../storage.service';
 import { IdentityService } from '../identity.service';
+import { NewVersionCheckerService } from '../update.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-layout',
@@ -31,7 +33,8 @@ import { IdentityService } from '../identity.service';
     AsyncPipe,
     RouterLink,
     RouterLinkActive,
-    ThemeToggleComponent
+    ThemeToggleComponent,
+    MatTooltipModule
   ]
 })
 export class LayoutComponent {
@@ -40,6 +43,8 @@ export class LayoutComponent {
   private storage = inject(StorageService);
 
   private identity = inject(IdentityService);
+
+  public updateService = inject(NewVersionCheckerService);
 
   rootRoutes = routes.filter(r=>r.path).filter(r=>r.data && r.data['hide'] != true);
 
@@ -62,6 +67,10 @@ export class LayoutComponent {
 
     window.location.reload();
   }
+
+  applyUpdate(): void {
+    this.updateService.applyUpdate();
+}
 
   lock() {
     this.identity.lock();
