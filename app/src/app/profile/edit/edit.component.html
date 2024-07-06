@@ -6,6 +6,7 @@
         <div class="row">
           <div class="col">
             <mat-form-field class="full-width">
+              <mat-label>Name</mat-label>
               <input matInput placeholder="Name" formControlName="name">
             </mat-form-field>
           </div>
@@ -13,6 +14,7 @@
         <div class="row">
           <div class="col">
             <mat-form-field class="full-width">
+              <mat-label>Title</mat-label>
               <input matInput placeholder="Title" formControlName="title">
               @if (addressForm.controls['title'].hasError('required')) {
                 <mat-error>Title is <strong>required</strong></mat-error>
@@ -21,6 +23,7 @@
           </div>
           <div class="col">
             <mat-form-field class="full-width">
+              <mat-label>Status</mat-label>
               <input matInput placeholder="Status" formControlName="status">
               @if (addressForm.controls['status'].hasError('required')) {
                 <mat-error>Status is <strong>required</strong></mat-error>
@@ -32,6 +35,7 @@
         <div class="row">
           <div class="col">
             <mat-form-field class="full-width">
+              <mat-label>Bio</mat-label>
               <textarea matInput placeholder="Bio" formControlName="bio"></textarea>
               @if (addressForm.controls['bio'].hasError('required')) {
                 <mat-error>Bio is <strong>required</strong></mat-error>
@@ -47,6 +51,7 @@
         <div class="row">
           <div class="col">
             <mat-form-field class="full-width">
+              <mat-label>Location</mat-label>
               <input matInput placeholder="Location" formControlName="location">
               @if (addressForm.controls['location'].hasError('required')) {
                 <mat-error>Location is <strong>required</strong></mat-error>
