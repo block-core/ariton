@@ -43,27 +43,45 @@ export class IdentityService {
   }
 
   async initialConnect(password: string) {
-    const result = await Web5.connect({password,  sync: this.syncInterval });
-    this.web5 = result.web5;
-    this.did = result.did;
+    try {
+      const result = await Web5.connect({ password, sync: this.syncInterval });
+      this.web5 = result.web5;
+      this.did = result.did;
 
-    console.log('Web5 Connected.');
-    // console.log('IDENTITY SERVICE:', this.web5);
+      console.log('Web5 Connected.');
+      // console.log('IDENTITY SERVICE:', this.web5);
 
-    this.initialized.set(true);
-    return result;
+      this.initialized.set(true);
+      return result;
+    }
+    catch (err) {
+      // TODO: Add UI and retry for Web5 initialize, add proper error handling.
+      // Various network connection issues might make this call fail.
+      alert('Failed to initialize Web5');
+    }
+    
+    return undefined;
   }
 
   async connect(connectedDid: string, password: string) {
-    const result = await Web5.connect({ connectedDid ,password,  sync: this.syncInterval });
-    this.web5 = result.web5;
-    this.did = result.did;
+    try {
+      const result = await Web5.connect({ connectedDid, password, sync: this.syncInterval });
+      this.web5 = result.web5;
+      this.did = result.did;
 
-    console.log('Web5 Connected.');
-    // console.log('IDENTITY SERVICE:', this.web5);
+      console.log('Web5 Connected.');
+      // console.log('IDENTITY SERVICE:', this.web5);
 
-    this.initialized.set(true);
-    return result;
+      this.initialized.set(true);
+      return result;
+    }
+    catch (err) {
+      // TODO: Add UI and retry for Web5 initialize, add proper error handling.
+      // Various network connection issues might make this call fail.@
+      alert('Failed to initialize Web5');
+    }
+
+    return undefined;
   }
 
   activeAgent() {
@@ -83,7 +101,7 @@ export class IdentityService {
   async lock() {
     // TODO: Validate if we need to do more when locking the account.
     console.log('Locking account...');
-    
+
     const agent = this.web5.agent as Web5IdentityAgent;
     await agent.vault.lock();
 
@@ -94,22 +112,21 @@ export class IdentityService {
 
   async unlock(password: string) {
     console.log('Connecting to Web5...');
-    
+
     try {
-      const {did: userDid, web5, recoveryPhrase } = await Web5.connect({ sync: '5s', password });
+      const { did: userDid, web5, recoveryPhrase } = await Web5.connect({ sync: '5s', password });
 
 
-      if (recoveryPhrase)
-        {
+      if (recoveryPhrase) {
 
-        }
+      }
 
       this.did = userDid;
       this.web5 = web5;
 
       this.initialized.set(true);
       this.locked.set(false);
-      
+
       return true;
     }
     catch (error) {

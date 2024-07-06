@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -36,8 +36,26 @@ export class ProfileEditComponent {
     postalCode: [null, Validators.compose([
       Validators.required, Validators.minLength(5), Validators.maxLength(5)])
     ],
-    shipping: ['free', Validators.required]
+    shipping: ['free', Validators.required],
+    links: this.fb.array([this.fb.control('')]),
   });
+
+  get links() {
+    return this.addressForm.get('links') as FormArray;
+  }
+
+  addLink() {
+    this.links.push(this.fb.control(''));
+  }
+
+  ngOnInit() {
+    
+  }
+
+// Step 4: Function to remove link input
+removeLink(index: number) {
+  this.links.removeAt(index);
+}
 
   onSubmit(): void {
     alert('Thanks!');

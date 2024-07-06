@@ -29,7 +29,7 @@ export class AppService {
 
   identity = inject(IdentityService);
 
-  state = signal<AppState>({ selectedAccount: ''});
+  state = signal<AppState>({ selectedAccount: '' });
 
   account = signal<Account>({ did: '', recoveryPhrase: '', password: '', passwordHash: '' });
 
@@ -44,7 +44,7 @@ export class AppService {
   constructor() {
     console.log(`Ariton v${this.package.version} initialized.`);
     this.dependencies = Object.entries(this.package.dependencies).map(([key, value]) => ({ name: key, version: value }));
-   }
+  }
 
   //getState() { 
   //  return this.storage.read('state');
@@ -73,51 +73,57 @@ export class AppService {
 
     let accounts = this.storage.read('accounts') as any[];
 
-    let result: Web5ConnectResult;
+    let result: Web5ConnectResult | undefined;
 
     console.log('Accounts: ', accounts);
 
     // If there are no accounts, user has not used app before.
-    if (!accounts) 
-      {
-        console.log('No accounts found');
-        // Create a unique password for the user that they can replace.
-        const password = await this.crypto.createPassword();
+    if (!accounts) {
+      console.log('No accounts found');
+      // Create a unique password for the user that they can replace.
+      const password = await this.crypto.createPassword();
 
-        console.log('Password: ', password);
+      console.log('Password: ', password);
 
-        // Initialize the identity service with the password to create an 
-        // initial account.
-        result = await this.identity.initialConnect(password);
+      // Initialize the identity service with the password to create an 
+      // initial account.
+      result = await this.identity.initialConnect(password);
 
-        // Save the account to storage.
-        accounts = [{
-          did: result.did,
-          recoveryPhrase: result.recoveryPhrase, // TODO: Encrypt this!
-          password: password,
-        }];
-
-        this.storage.save('accounts', accounts);
-
-        state.selectedAccount = result.did;
-
-        this.accounts.set(accounts);
-        this.account?.set(accounts[0]);
-        this.storage.save('state', state);
-      } else {
-        // If there are accounts, select the one from the state.selectedAccount value.
-        const account = accounts.find((account: any) => account.did === state.selectedAccount);
-        this.accounts.set(accounts);
-        this.account?.set(account);
-
-        if (account.password) {
-          result = await this.identity.connect(account.did, account.password);
-        } else {
-          // If the account does not have a password, it means the user has not
-          // persisted it. We need to ask for the password.
-          this.identity.locked.set(true);
-        }
+      if (!result) {
+        return;
       }
+
+      // Save the account to storage.
+      accounts = [{
+        did: result.did,
+        recoveryPhrase: result.recoveryPhrase, // TODO: Encrypt this!
+        password: password,
+      }];
+
+      this.storage.save('accounts', accounts);
+
+      state.selectedAccount = result.did;
+
+      this.accounts.set(accounts);
+      this.account?.set(accounts[0]);
+      this.storage.save('state', state);
+    } else {
+      // If there are accounts, select the one from the state.selectedAccount value.
+      const account = accounts.find((account: any) => account.did === state.selectedAccount);
+      this.accounts.set(accounts);
+      this.account?.set(account);
+
+      if (account.password) {
+        result = await this.identity.connect(account.did, account.password);
+        if (!result) {
+          return;
+        }
+      } else {
+        // If the account does not have a password, it means the user has not
+        // persisted it. We need to ask for the password.
+        this.identity.locked.set(true);
+      }
+    }
 
     // let password = this.storage.read('password');
 

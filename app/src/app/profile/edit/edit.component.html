@@ -69,6 +69,7 @@
             </mat-form-field>-->
           </div>
         </div>
+        <!--
         <div class="row">
           <div class="col">
             <mat-form-field class="full-width">
@@ -76,7 +77,44 @@
               <mat-hint align="end">{{postalCode.value.length}} / 5</mat-hint>
             </mat-form-field>
           </div>
+        </div>-->
+
+        <div class="row">
+          <div class="col">
+         <!-- In your component.html -->
+<!-- Step 5: Update HTML to display dynamic link inputs -->
+<!--<div formArrayName="links" *ngFor="let link of links.controls; let i = index">-->
+  <div formArrayName="links">
+  @for (link of links.controls; track link; let i = $index) {
+  <!--<div [formGroupName]="i">-->
+
+    <div class="link-input">
+      <mat-form-field class="full-width">
+        <input  matInput type="text" [formControlName]="i" placeholder="Enter link (URL)">
+      </mat-form-field>
+    <button mat-stroked-button type="button" (click)="removeLink(i)">Remove</button>
+    <button mat-icon-button type="button" (click)="removeLink(i)"><mat-icon>clear</mat-icon></button>
+
+    </div>
+
+  
+  <!--</div>-->
+}
+</div>
+<!--</div>-->
+<button mat-stroked-button type="button" (click)="addLink()"><mat-icon>add_link</mat-icon> Add Link</button>
+
+
+
+
+
+
+
+          </div>
         </div>
+
+
+        <!--
         <div class="row">
           <div class="col">
             <mat-radio-group formControlName="shipping">
@@ -85,9 +123,9 @@
               <mat-radio-button value="nextday">Next Day Shipping</mat-radio-button>
             </mat-radio-group>
           </div>
-        </div>
+        </div>-->
       </mat-card-content>
-      <mat-card-actions>
+      <mat-card-actions align="end">
         <button mat-flat-button color="primary" type="submit">Submit</button>
       </mat-card-actions>
     </mat-card>
