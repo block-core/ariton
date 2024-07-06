@@ -1,23 +1,43 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import {
   MatSnackBar
 } from '@angular/material/snack-bar';
+import { ProfileService } from '../profile.service';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [MatIconModule, MatButtonModule, MatMenuModule, RouterLink, MatDividerModule],
+  imports: [
+    MatTabsModule,
+    MatIconModule, MatButtonModule, MatMenuModule, RouterLink, MatDividerModule],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
 })
 export class ProfileComponent {
-  constructor(private _snackBar: MatSnackBar) {
 
+  profileService = inject(ProfileService);
+
+  constructor(private _snackBar: MatSnackBar, private route: ActivatedRoute) {
+
+  }
+
+  ngOnInit() {
+    this.route.paramMap.subscribe(params => {
+      const userId = params.get('id'); // Assuming 'id' is the name of the route parameter
+      if (userId) {
+        this.loadUserProfile(userId);
+      }
+    });
+  }
+
+  private loadUserProfile(userId: string) {
+    this.profileService.openProfile(userId);
   }
 
   openSnackBar(message: string) {

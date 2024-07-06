@@ -1,10 +1,10 @@
 <div class="profile-header">
-    <img class="profile-header-icon" src="https://ariton.app/assets/sondre.png">
+    <img class="profile-header-icon" [src]="profileService.current().profileImage">
     <div>
-        <h1>SondreB
-            <span>(Voluntaryist)</span>
+        <h1>{{ profileService.current().name }}
+            <span>({{ profileService.current().title }})</span>
         </h1>
-        did:dht:umj7apgmkodtrb7mdpjo4h7xinqdnatzgy38j7wi67k9c7sdns1o
+        <span>{{ profileService.current().did }}</span>
     </div>
     <div class="spacer"></div>
     <div>
@@ -18,6 +18,11 @@
               <span>Message</span>
             </button>
             <mat-divider></mat-divider>
+            <button mat-menu-item [routerLink]="['/app/chat']">
+                <mat-icon>edit</mat-icon>
+                <span>Edit Profile</span>
+              </button>
+              <mat-divider></mat-divider>
             <button (click)="shareProfile()" mat-menu-item>
                 <mat-icon>send</mat-icon>
                 <span>Share Profile</span>
@@ -32,4 +37,49 @@
 
         
     </div>
+</div>
+<div class="profile-content">
+
+    <mat-tab-group>
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="example-tab-icon">badge</mat-icon>
+            About
+          </ng-template>
+          
+          <div class="about-tab-container">
+
+            <div class="profile-items">
+                <mat-icon>event</mat-icon><span>{{ profileService.current().birthDate }}</span>
+                <mat-icon>place</mat-icon><span>{{ profileService.current().location }}</span>
+                <mat-icon>event</mat-icon><span>{{ profileService.current().status }}</span>
+                <mat-icon>link</mat-icon><span>{{ profileService.current().links }}</span>
+            </div>
+
+            <div class="profile-bio">
+                {{ profileService.current().bio }}
+            </div>
+
+          </div>
+
+        </mat-tab>
+      
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="example-tab-icon">diversity_2</mat-icon>
+            Communities
+          </ng-template>
+          Not implemented yet.
+        </mat-tab>
+      
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="example-tab-icon">folder_shared</mat-icon>
+            Data
+          </ng-template>
+      
+          Not implemented yet.
+        </mat-tab>
+      </mat-tab-group>
+    
 </div>
