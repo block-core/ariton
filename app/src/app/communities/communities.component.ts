@@ -17,7 +17,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTable, MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import { Community, TableDataSource, TableItem } from './communities-datasource';
+import { Community, TableDataSource } from './communities-datasource';
 import { Router } from '@angular/router';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -57,7 +57,7 @@ export class CommunitiesComponent {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatTable) table!: MatTable<TableItem>;
+  @ViewChild(MatTable) table!: MatTable<Community>;
   dataSource = new TableDataSource();
 
   cards = signal<Community[]>([]);
@@ -107,7 +107,7 @@ export class CommunitiesComponent {
   checked = model<boolean>(false);
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['id', 'name'];
+  displayedColumns = ['name', 'description'];
 
   constructor(private router: Router) {
     // Register a new effect.
@@ -150,6 +150,8 @@ export class CommunitiesComponent {
     }
 
     this.cards.set(cards);
+
+    this.dataSource.data = cards;
   }
 
   open(community: string) {
