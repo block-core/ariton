@@ -3,6 +3,7 @@ import { StorageService } from './storage.service';
 import { CryptoService } from './crypto.service';
 import { IdentityService } from './identity.service';
 import { Web5ConnectResult } from '@web5/api';
+import * as packageInfo from '../../package.json';
 
 export interface AppState {
   selectedAccount: string;
@@ -36,7 +37,17 @@ export class AppService {
 
   firstTime = signal<boolean>(false);
 
-  constructor() { }
+  package = packageInfo;
+
+  dependencies: any;
+
+  constructor() {
+    console.log(`Ariton v${this.package.version} initialized.`);
+    console.log(this.package);
+
+    this.dependencies = Object.entries(this.package.dependencies).map(([key, value]) => ({ name: key, version: value }));
+    console.log(this.dependencies);
+   }
 
   //getState() { 
   //  return this.storage.read('state');

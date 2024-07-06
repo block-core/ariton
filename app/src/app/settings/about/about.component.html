@@ -3,7 +3,7 @@
 
     <img class="about-logo" src="ariton-icon-dark.svg">
 
-    <p>Version: 0.0.1<br>
+    <p>Version: {{ appService.package.version }}<br>
       by Ariton Team</p>
 
     <p>
@@ -25,4 +25,14 @@
     </mat-card-content>
     </mat-card>
 
+    <h2>Packages</h2>
+
+    <p>We a proponents of openess and think it can help improve security 
+      and privacy, so here are the packages we use in this app:</p>
+    
+      <div class="packages">
+      @for (package of appService.dependencies; track package) {
+          <span class="package">{{package.name}} ({{package.version}})</span>
+      }
+    </div>
 </div>
