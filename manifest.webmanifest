@@ -16,6 +16,10 @@
   "edge_side_panel": {},
   "protocol_handlers": [
     {
+      "protocol": "web+ariton",
+      "url": "/index.html?data=%s"
+    },
+    {
       "protocol": "web+data",
       "url": "/index.html?data=%s"
     }
