@@ -18,17 +18,18 @@
     <button mat-stroked-button [routerLink]="['/communities']">Skip and jump into the app</button>
 
     @if (!reset()) {
-        <button mat-flat-button [routerLink]="['/account/password']">Set a password</button>
+    <button mat-flat-button [routerLink]="['/account/password']">Set a password</button>
     } @else {
-        <button mat-flat-button [routerLink]="['/account/password']"><s>Set a password</s></button>
-    }
-
-    @if (!backup()) {
-        <button mat-flat-button [routerLink]="['/account/backup']">Backup your account</button>
+    <button mat-flat-button [routerLink]="['/account/password']"><s>Set a password</s></button>
+    } @if (!backup()) {
+    <button mat-flat-button [routerLink]="['/account/backup']">Backup your account</button>
     } @else {
-        <button mat-flat-button [routerLink]="['/account/backup']"><s>Backup your account</s></button>
+    <button mat-flat-button [routerLink]="['/account/backup']"><s>Backup your account</s></button>
     }
 </p>
+
+<p>Existing user? Then you can restore your account, if you have a backup.</p>
+<button mat-flat-button [routerLink]="['/account/create/restore']">Restore your account</button>
 
 <mat-divider></mat-divider>
 
