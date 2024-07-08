@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
+import { IdentityService } from '../../../identity.service';
 
 @Component({
     selector: 'app-restore',
@@ -17,12 +18,17 @@ import { MatSelectModule } from '@angular/material/select';
 export class RestoreComponent {
     private fb = inject(FormBuilder);
 
+    private identity = inject(IdentityService);
+
     addressForm = this.fb.group({
         recoveryPhrase: [null, Validators.required],
     });
 
     onSubmit(): void {
         console.log(this.addressForm.controls.recoveryPhrase.value);
+
+        // this.identity.initialConnect();
+
         alert('Thanks!');
     }
 }

@@ -61,6 +61,10 @@ export class AppService {
         this.storage.save('state', this.state());
     }
 
+    restore(recoveryPhrase: string) {
+        // this.state().selectedAccount
+    }
+
     async initialize() {
         console.log('Initializing Ariton...');
 
