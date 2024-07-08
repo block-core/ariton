@@ -27,11 +27,11 @@ export class AppComponent {
     title = 'app';
     appService = inject(AppService);
 
-    constructor(
-        private router: Router,
-        private layout: LayoutService,
-        public identityService: IdentityService,
-    ) {
+    countChar(char: string, string: string): number {
+        return string.split(char).length - 1;
+    }
+
+    constructor(private router: Router, private layout: LayoutService, public identityService: IdentityService) {
         // This must happen in the constructor on app component, or when loading in PWA, it won't
         // be possible to read the query parameters.
         const queryParam = globalThis.location.search;
@@ -46,11 +46,16 @@ export class AppComponent {
 
         this.router.events.subscribe((event) => {
             if (event instanceof NavigationStart) {
-                this.layout.enableScrolling();
                 // Navigation started
+                this.layout.enableScrolling();
             } else if (event instanceof NavigationEnd) {
                 // Navigation ended
                 //this.layout.enableScrolling();
+                if (this.countChar('/', event.url) > 1) {
+                    this.layout.enableNavigation();
+                } else {
+                    this.layout.disableNavigation();
+                }
             }
         });
 

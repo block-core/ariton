@@ -17,6 +17,8 @@ import { StorageService } from '../storage.service';
 import { IdentityService } from '../identity.service';
 import { NewVersionCheckerService } from '../update.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { Location } from '@angular/common';
+import { NavigationService } from '../navigation.service';
 
 @Component({
     selector: 'app-layout',
@@ -45,6 +47,10 @@ export class LayoutComponent {
     private identity = inject(IdentityService);
 
     public updateService = inject(NewVersionCheckerService);
+
+    public layout = inject(LayoutService);
+
+    private navigation = inject(NavigationService);
 
     rootRoutes = routes.filter((r) => r.path).filter((r) => r.data && r.data['hide'] != true);
 
@@ -81,5 +87,7 @@ export class LayoutComponent {
         this.identity.lock();
     }
 
-    navigateBack() {}
+    navigateBack() {
+        this.navigation.back();
+    }
 }

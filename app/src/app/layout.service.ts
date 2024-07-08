@@ -28,11 +28,21 @@ export class LayoutService {
 
     scrolling = signal<boolean>(true);
 
+    navigation = signal<boolean>(false);
+
     enableScrolling() {
         this.scrolling.set(true);
     }
 
     disableScrolling() {
         this.scrolling.set(false);
+    }
+
+    enableNavigation() {
+        this.navigation.set(true);
+    }
+
+    disableNavigation() {
+        this.navigation.set(false);
     }
 }
