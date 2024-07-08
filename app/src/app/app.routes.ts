@@ -169,12 +169,6 @@ export const routes: Routes = [
         data: { hide: true, icon: 'search' },
     },
     {
-        path: 'address',
-        loadComponent: () => import('./address-form/address-form.component').then((c) => c.AddressFormComponent),
-        title: 'Address',
-        data: { hide: false, icon: 'folder' },
-    },
-    {
         path: 'table',
         loadComponent: () => import('./table/table.component').then((c) => c.TableComponent),
         title: 'Table',
