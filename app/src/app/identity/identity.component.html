@@ -7,24 +7,16 @@
 <button mat-flat-button (click)="createIdentity()">Create new identity</button>
 
 <div>
+    @if (portableDid()) {
+        <h3>DID Subject</h3>
+        <p>Subject of the DID</p>
+        {{ didSubject() }}
 
-    @if(portableDid()) {
-    <h3>DID Subject</h3>
-    <p>Subject of the DID</p>
-    {{
-    didSubject()
-    }}
-
-    <h3>DID Document</h3>
-    <p>The public published document for your DID</p>
-    {{
-    didDocument()
-    }}
-    <h3>Portable DID</h3>
-    <p>Includes your private key, keep it safe</p>
-    {{
-    portableDid()
-    }}
-
+        <h3>DID Document</h3>
+        <p>The public published document for your DID</p>
+        {{ didDocument() }}
+        <h3>Portable DID</h3>
+        <p>Includes your private key, keep it safe</p>
+        {{ portableDid() }}
     }
 </div>

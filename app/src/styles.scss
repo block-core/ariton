@@ -1,33 +1,33 @@
-@use "@angular/material" as mat;
-@use "../m3-theme";
-@use "./app/layout/layout-component.theme";
+@use '@angular/material' as mat;
+@use '../m3-theme';
+@use './app/layout/layout-component.theme';
 
 @include mat.core();
 
 $angular-material-3-light-theme: mat.define-theme(
-  (
-    color: (
-      theme-type: light,
-      primary: mat.$azure-palette,
-      tertiary: mat.$blue-palette,
-    ),
-    density: (
-      scale: 0,
-    ),
-  )
+    (
+        color: (
+            theme-type: light,
+            primary: mat.$azure-palette,
+            tertiary: mat.$blue-palette,
+        ),
+        density: (
+            scale: 0,
+        ),
+    )
 );
 
 $angular-material-3-dark-theme: mat.define-theme(
-  (
-    color: (
-      theme-type: dark,
-      primary: mat.$magenta-palette,
-      tertiary: mat.$violet-palette,
-    ),
-    density: (
-      scale: 0,
-    ),
-  )
+    (
+        color: (
+            theme-type: dark,
+            primary: mat.$magenta-palette,
+            tertiary: mat.$violet-palette,
+        ),
+        density: (
+            scale: 0,
+        ),
+    )
 );
 
 // Light theme
@@ -45,83 +45,81 @@ $theme: m3-theme.$light-theme;
 $dark-theme: m3-theme.$dark-theme;
 
 :root {
-  @include mat.all-component-themes($theme);
-
-  // Components themes
-  @include layout-component.theme($theme);
-
-  // Add backwards compatibility styles for color variants
-  @include mat.color-variants-backwards-compatibility($theme);
-
-  @media (prefers-color-scheme: dark) {
-    @include mat.all-component-colors($dark-theme);
+    @include mat.all-component-themes($theme);
 
     // Components themes
-    @include layout-component.theme($dark-theme);
+    @include layout-component.theme($theme);
 
-    @include mat.color-variants-backwards-compatibility($dark-theme);
-  }
+    // Add backwards compatibility styles for color variants
+    @include mat.color-variants-backwards-compatibility($theme);
+
+    @media (prefers-color-scheme: dark) {
+        @include mat.all-component-colors($dark-theme);
+
+        // Components themes
+        @include layout-component.theme($dark-theme);
+
+        @include mat.color-variants-backwards-compatibility($dark-theme);
+    }
 }
 
 // Consider doing something like this: https://pkief.medium.com/automatic-dark-mode-detection-in-angular-material-8342917885a0
 
 html,
 body {
-  height: 100%;
+    height: 100%;
 }
 body {
-  margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+    margin: 0;
+    font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
 a {
-  color: var(--mat-app-text-color);
-  text-decoration: underline;
+    color: var(--mat-app-text-color);
+    text-decoration: underline;
 }
 
 a:hover {
-  text-decoration: none;
+    text-decoration: none;
 }
 
 h1 {
-  word-wrap: break-word;
+    word-wrap: break-word;
 }
 
 .info-card {
-  padding: 2em;
+    padding: 2em;
 }
 
 .blur {
-  color: transparent;
-  text-shadow: 0 0 5px rgba(255,255,255,0.5);
+    color: transparent;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
 }
 
 .dimmed {
-  font-size: 0.8em;
+    font-size: 0.8em;
 }
 
-
-  .column-content {
-
+.column-content {
     overflow: scroll;
 
     &::-webkit-scrollbar-thumb {
-      background-color: mat.get-theme-color($theme, primary);
+        background-color: mat.get-theme-color($theme, primary);
     }
 
     box-sizing: border-box;
     @media (pointer: fine) {
-      &::-webkit-scrollbar {
-        background-color: transparent;
-        width: 8px;
-      }
-      &::-webkit-scrollbar-thumb {
-        border-radius: 4px;
-      }
+        &::-webkit-scrollbar {
+            background-color: transparent;
+            width: 8px;
+        }
+        &::-webkit-scrollbar-thumb {
+            border-radius: 4px;
+        }
     }
-  }
+}
 
-  .warning {
+.warning {
     padding: 2em;
     color: var(--mat-form-field-error-text-color);
 }

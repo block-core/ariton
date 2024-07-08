@@ -1,24 +1,24 @@
 .account-action-button {
-  padding-top: 1.2em;
+    padding-top: 1.2em;
 }
 
 .example-action-buttons {
     padding-bottom: 20px;
-  }
-  
-  .example-headers-align .mat-expansion-panel-header-description {
+}
+
+.example-headers-align .mat-expansion-panel-header-description {
     justify-content: space-between;
     align-items: center;
-  }
-  
-  .example-headers-align .mat-mdc-form-field + .mat-mdc-form-field {
+}
+
+.example-headers-align .mat-mdc-form-field + .mat-mdc-form-field {
     margin-left: 8px;
-  }
+}
 
-  .selectable-list-item {
+.selectable-list-item {
     cursor: pointer;
-  }
+}
 
-  .selectable-list-item:hover {
+.selectable-list-item:hover {
     background-color: var(--mdc-list-list-item-leading-avatar-color);
-  }
+}

@@ -1,33 +1,31 @@
-<br>
+<br />
 
-@if(record()) {
+@if (record()) {
     <div class="record-line">
-        <span matListItemTitle>ID: <a [routerLink]="['view', record().id]">{{ record().id }}</a></span>
-        <span>Author: {{record().author}}<br>
-            Format: {{record().dataFormat}}<br>
-            Size: {{record().dataSize}}<br>
-            Created: {{record().dateCreated }}<br>
-            Published: {{record().published }}<br>
-            Date Published: {{record().datePublished }}<br>
+        <span matListItemTitle
+            >ID: <a [routerLink]="['view', record().id]">{{ record().id }}</a></span
+        >
+        <span
+            >Author: {{ record().author }}<br />
+            Format: {{ record().dataFormat }}<br />
+            Size: {{ record().dataSize }}<br />
+            Created: {{ record().dateCreated }}<br />
+            Published: {{ record().published }}<br />
+            Date Published: {{ record().datePublished }}<br />
         </span>
     </div>
 
-
-    @if(record().dataFormat == 'text/plain')
-    {
+    @if (record().dataFormat == 'text/plain') {
         <div>
-            Data: <br>
-            {{recordData()}}
+            Data: <br />
+            {{ recordData() }}
         </div>
     }
 
-    @if(record().dataFormat == 'application/json')
-    {
+    @if (record().dataFormat == 'application/json') {
         <div>
-            Data: <br>
-            {{recordData()}}
+            Data: <br />
+            {{ recordData() }}
         </div>
     }
-
-
 }

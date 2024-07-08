@@ -2,7 +2,6 @@
     display: flex;
     gap: 1em;
     align-items: center;
-
 }
 
 .profile-header-icon {
@@ -16,37 +15,36 @@ h1 span {
 
 .spacer {
     flex: 1 1 auto;
-  }
+}
 
-  h1 {
+h1 {
     margin: 0;
     padding: 0;
-  }
+}
 
-  .example-tab-icon {
+.example-tab-icon {
     margin-right: 8px;
-  }
+}
 
-  .profile-content {
+.profile-content {
     margin-top: 0.4em;
-  }
+}
 
-  .about-tab-container {
+.about-tab-container {
     padding: 1em;
-  }
+}
 
-  .profile-items {
+.profile-items {
     display: flex;
     align-items: center;
-  }
+}
 
-  .profile-items span {
+.profile-items span {
     display: inline-block;
     margin-left: 0.2em;
     margin-right: 1em;
-  }
+}
 
-  .profile-bio {
+.profile-bio {
     margin-top: 1em;
-    
-  }
+}

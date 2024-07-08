@@ -11,7 +11,7 @@ export class NewVersionCheckerService {
 
     constructor(
         private swUpdate: SwUpdate,
-        private zone: NgZone
+        private zone: NgZone,
     ) {
         this.checkForUpdateOnInterval();
         this.checkForUpdateOnLoad();
@@ -19,9 +19,10 @@ export class NewVersionCheckerService {
 
     applyUpdate(): void {
         // Reload the page to update to the latest version after the new version is activated
-        this.swUpdate.activateUpdate()
+        this.swUpdate
+            .activateUpdate()
             .then(() => document.location.reload())
-            .catch(error => console.error('Failed to apply updates:', error));
+            .catch((error) => console.error('Failed to apply updates:', error));
     }
 
     checkForUpdateOnInterval(): void {
@@ -32,21 +33,20 @@ export class NewVersionCheckerService {
 
         this.zone.runOutsideAngular(() => {
             this.intervalSubscription = this.intervalSource.subscribe(async () => {
-                if (!this.isNewVersionAvailable) {   
+                if (!this.isNewVersionAvailable) {
                     try {
                         this.isNewVersionAvailable = await this.swUpdate.checkForUpdate();
                         console.log(this.isNewVersionAvailable ? 'A new version is available.' : 'Already on the latest version.');
                     } catch (error) {
                         console.error('Failed to check for updates:', error);
                     }
-                } else 
-                {
+                } else {
                     // Check for updates at interval, which will keep the
                     // browser updating to latest version as long as it's being kept open.
                     await this.swUpdate.checkForUpdate();
                 }
             });
-        })
+        });
     }
 
     checkForUpdateOnLoad(): void {
@@ -55,7 +55,7 @@ export class NewVersionCheckerService {
             console.log('Service worker updates are disabled for this app.');
             return;
         }
-        this.newVersionSubscription = this.swUpdate.versionUpdates.subscribe(evt => {
+        this.newVersionSubscription = this.swUpdate.versionUpdates.subscribe((evt) => {
             console.log('New version update event:');
             console.log(evt);
             switch (evt.type) {

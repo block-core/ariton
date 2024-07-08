@@ -1,24 +1,23 @@
 @if (identityService.locked()) {
-  <div class="unlock-container">
-    <app-unlock></app-unlock>
-  </div>
+    <div class="unlock-container">
+        <app-unlock></app-unlock>
+    </div>
 }
 @if (!appService.initialized()) {
-  <div class="loading-container">
-    <img class="loading-logo" src="ariton-icon-dark.svg">
+    <div class="loading-container">
+        <img class="loading-logo" src="ariton-icon-dark.svg" />
 
-    @if(appService.firstTime()) {
-      <div>Creating your account... please wait...</div>
-    }
-    @else {
-      <div>Loading your account... please wait...</div>
-    }
+        @if (appService.firstTime()) {
+            <div>Creating your account... please wait...</div>
+        } @else {
+            <div>Loading your account... please wait...</div>
+        }
 
-    <mat-spinner></mat-spinner>
+        <mat-spinner></mat-spinner>
 
-    <p>Issues? <button mat-button (click)="forceClose()">Close loading sceen</button></p>
-  </div>
+        <p>Issues? <button mat-button (click)="forceClose()">Close loading sceen</button></p>
+    </div>
 }
 <app-layout>
-  <router-outlet />
+    <router-outlet />
 </app-layout>

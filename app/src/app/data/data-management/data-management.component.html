@@ -1,4 +1,4 @@
-<br>
+<br />
 
 <button mat-flat-button (click)="load()">Load Data</button>
 &nbsp;
@@ -11,46 +11,42 @@
 <button mat-flat-button (click)="createChatRecord()">Create Chat Record</button>
 
 <mat-list class="example-list-wrapping">
-
     @for (record of records(); track record) {
-
         <div class="record-line">
-            <span matListItemTitle>ID: <a [routerLink]="['view', record.id]">{{ record.id }}</a></span><br>
+            <span matListItemTitle
+                >ID: <a [routerLink]="['view', record.id]">{{ record.id }}</a></span
+            ><br />
             <span>
                 <!-- Author: {{record.author}}<br> -->
-                Format: {{record.dataFormat}}<br>
-                Schema: {{record.schema}}<br>
-                Size: {{record.dataSize | size}}<br>
-                Created: {{record.dateCreated }}<br>
-                Published: {{record.published }}<br>
-                Date Published: {{record.datePublished }}<br>
+                Format: {{ record.dataFormat }}<br />
+                Schema: {{ record.schema }}<br />
+                Size: {{ record.dataSize | size }}<br />
+                Created: {{ record.dateCreated }}<br />
+                Published: {{ record.published }}<br />
+                Date Published: {{ record.datePublished }}<br />
             </span>
         </div>
-
-     }
-
+    }
 </mat-list>
 
 <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
     <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding>
-      <button mat-icon-button disabled></button>
-      <mat-icon class="type-icon" [attr.aria-label]="node.type + 'icon'">
-        {{ node.type === 'file' ? 'description' : 'folder' }}
-      </mat-icon>
-      {{node.name}}
-    </mat-tree-node>
-  
-    <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
-      <button mat-icon-button matTreeNodeToggle
-              [attr.aria-label]="'Toggle ' + node.name">
-        <mat-icon class="mat-icon-rtl-mirror">
-          {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+        <button mat-icon-button disabled></button>
+        <mat-icon class="type-icon" [attr.aria-label]="node.type + 'icon'">
+            {{ node.type === 'file' ? 'description' : 'folder' }}
         </mat-icon>
-      </button>
-      <mat-icon class="type-icon" [attr.aria-label]="node.type + 'icon'">
-        {{ node.type ==='file' ? 'description' : 'folder' }}
-      </mat-icon>
-      {{node.name}}
+        {{ node.name }}
     </mat-tree-node>
-  </mat-tree>
-  
+
+    <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+        <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name">
+            <mat-icon class="mat-icon-rtl-mirror">
+                {{ treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
+            </mat-icon>
+        </button>
+        <mat-icon class="type-icon" [attr.aria-label]="node.type + 'icon'">
+            {{ node.type === 'file' ? 'description' : 'folder' }}
+        </mat-icon>
+        {{ node.name }}
+    </mat-tree-node>
+</mat-tree>

@@ -1,11 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  ViewChild,
-  effect,
-  model,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild, effect, model, signal } from '@angular/core';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -23,144 +16,132 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 type CardContent = {
-  title: string;
-  description: string;
-  imageUrl: string;
+    title: string;
+    description: string;
+    imageUrl: string;
 };
 
 @Component({
-  selector: 'app-communities',
-  standalone: true,
-  imports: [
-    MatButtonToggleModule,
-    MatIconModule,
-    MatInputModule,
-    MatFormFieldModule,
-    ReactiveFormsModule,
-    CommonModule,
-    MatButtonModule,
-    MatCardModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatSlideToggleModule,
-    FormsModule,
-    MatToolbarModule,
-  ],
-  templateUrl: './communities.component.html',
-  styleUrl: './communities.component.scss',
-  changeDetection: ChangeDetectionStrategy.Default,
+    selector: 'app-communities',
+    standalone: true,
+    imports: [
+        MatButtonToggleModule,
+        MatIconModule,
+        MatInputModule,
+        MatFormFieldModule,
+        ReactiveFormsModule,
+        CommonModule,
+        MatButtonModule,
+        MatCardModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatSlideToggleModule,
+        FormsModule,
+        MatToolbarModule,
+    ],
+    templateUrl: './communities.component.html',
+    styleUrl: './communities.component.scss',
+    changeDetection: ChangeDetectionStrategy.Default,
 })
 export class CommunitiesComponent {
-  search = new FormControl('');
-  // view = new FormControl('card');
+    search = new FormControl('');
+    // view = new FormControl('card');
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatTable) table!: MatTable<Community>;
-  dataSource = new TableDataSource();
+    @ViewChild(MatPaginator) paginator!: MatPaginator;
+    @ViewChild(MatSort) sort!: MatSort;
+    @ViewChild(MatTable) table!: MatTable<Community>;
+    dataSource = new TableDataSource();
 
-  cards = signal<Community[]>([]);
+    cards = signal<Community[]>([]);
 
-  images = [
-    'nature',
-    'sky',
-    'grass',
-    'mountains',
-    'rivers',
-    'glacier',
-    'forest',
-    'streams',
-    'rain',
-    'clouds',
-  ];
+    images = ['nature', 'sky', 'grass', 'mountains', 'rivers', 'glacier', 'forest', 'streams', 'rain', 'clouds'];
 
-  // hideSingleSelectionIndicator = signal(false);
-  // toggle() {
-  //   // While standard inputs are read-only, you can write directly to model inputs.
-  //   if (this.viewStyle() === 'card') {
-  //     this.viewStyle.set('table');
-  //   } else {
-  //     this.viewStyle.set('card');
-  //   }
-  // }
+    // hideSingleSelectionIndicator = signal(false);
+    // toggle() {
+    //   // While standard inputs are read-only, you can write directly to model inputs.
+    //   if (this.viewStyle() === 'card') {
+    //     this.viewStyle.set('table');
+    //   } else {
+    //     this.viewStyle.set('card');
+    //   }
+    // }
 
-  // Function to handle page changes (optional)
-  // onViewChange(style: string) {
-  //   // Perform any logic based on the new page value
-  //   this.viewStyle.set(style); // Update the model signal
-  // }
+    // Function to handle page changes (optional)
+    // onViewChange(style: string) {
+    //   // Perform any logic based on the new page value
+    //   this.viewStyle.set(style); // Update the model signal
+    // }
 
-  // toggleSingleSelectionIndicator() {
-  //   this.hideSingleSelectionIndicator.update((value) => !value);
+    // toggleSingleSelectionIndicator() {
+    //   this.hideSingleSelectionIndicator.update((value) => !value);
 
-  //   this.dataSource.sort = this.sort;
-  //   this.dataSource.paginator = this.paginator;
-  //   this.table.dataSource = this.dataSource;
+    //   this.dataSource.sort = this.sort;
+    //   this.dataSource.paginator = this.paginator;
+    //   this.table.dataSource = this.dataSource;
 
-  //   console.log('HI!');
-  // }
+    //   console.log('HI!');
+    // }
 
-  //viewStyle = signal('card');
-  viewStyle = model<string>('card');
+    //viewStyle = signal('card');
+    viewStyle = model<string>('card');
 
-  checked = model<boolean>(false);
+    checked = model<boolean>(false);
 
-  /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['name', 'description'];
+    /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
+    displayedColumns = ['name', 'description'];
 
-  constructor(private router: Router) {
-    // Register a new effect.
-    effect(() => {
-      console.log(`The view style is: ${this.viewStyle()})`);
+    constructor(private router: Router) {
+        // Register a new effect.
+        effect(() => {
+            console.log(`The view style is: ${this.viewStyle()})`);
 
-      setTimeout(() => {
-        if (this.table) {
-          this.dataSource.sort = this.sort;
-          this.dataSource.paginator = this.paginator;
-          this.table.dataSource = this.dataSource;
+            setTimeout(() => {
+                if (this.table) {
+                    this.dataSource.sort = this.sort;
+                    this.dataSource.paginator = this.paginator;
+                    this.table.dataSource = this.dataSource;
+                }
+            });
+        });
+
+        effect(() => {
+            console.log(`The checked is: ${this.checked()})`);
+        });
+
+        const cards: Community[] = [];
+        for (let i = 0; i < this.images.length; i++) {
+            cards.push({
+                id: 'id' + 1,
+                name: `Community ${i + 1}`,
+                description: `This is a description of community. We are a great community with many members.`,
+                thumbnail: `https://picsum.photos/seed/${this.images[i]}x/200/300`,
+                private: false,
+                visibility: 'public',
+                type: 'generic',
+                features: {
+                    discussion: true,
+                    members: true,
+                    events: true,
+                    media: true,
+                    files: true,
+                },
+                apps: ['events', 'media', 'files'],
+            });
         }
-      });
-    });
 
-    effect(() => {
-      console.log(`The checked is: ${this.checked()})`);
-    });
+        this.cards.set(cards);
 
-    const cards: Community[] = [];
-    for (let i = 0; i < this.images.length; i++) {
-      cards.push({
-        id: 'id' + 1,
-        name: `Community ${i + 1}`,
-        description: `This is a description of community. We are a great community with many members.`,
-        thumbnail: `https://picsum.photos/seed/${this.images[i]}x/200/300`,
-        private: false,
-        visibility: 'public',
-        type: 'generic',
-        features: {
-          discussion: true,
-          members: true,
-          events: true,
-          media: true,
-          files: true,
-        },
-        apps: ['events', 'media', 'files'],
-        
-      });
+        this.dataSource.data = cards;
     }
 
-    this.cards.set(cards);
+    open(community: string) {
+        this.router.navigate(['community', community]);
+    }
 
-    this.dataSource.data = cards;
-  }
-
-  open(community: string) {
-    this.router.navigate(['community', community]);
-  }
-
-  ngAfterViewInit(): void {
-    // this.dataSource.sort = this.sort;
-    // this.dataSource.paginator = this.paginator;
-    // this.table.dataSource = this.dataSource;
-  }
+    ngAfterViewInit(): void {
+        // this.dataSource.sort = this.sort;
+        // this.dataSource.paginator = this.paginator;
+        // this.table.dataSource = this.dataSource;
+    }
 }

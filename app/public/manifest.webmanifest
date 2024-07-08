@@ -1,117 +1,115 @@
 {
-  "name": "Ariton",
-  "version": "0.0.1",
-  "author": "Team Ariton",
-  "description": "Freedom to Connect, Power to Own",
-  "orientation": "any",
-  "short_name": "Ariton",
-  "theme_color": "#1b1c18",
-  "background_color": "#1b1c18",
-  "display": "standalone",
-  "scope": "./",
-  "start_url": "./",
-  "categories": [
-    "tools"
-  ],
-  "edge_side_panel": {},
-  "protocol_handlers": [
-    {
-      "protocol": "web+ariton",
-      "url": "/index.html?data=%s"
-    },
-    {
-      "protocol": "web+a",
-      "url": "/index.html?data=%s"
-    },
-    {
-      "protocol": "web+data",
-      "url": "/index.html?data=%s"
-    }
-  ],
-  "screenshots": [
-    {
-      "src": "icons/ariton-screenshot-01.png",
-      "sizes": "1024x768",
-      "type": "image/png",
-      "form_factor": "wide",
-      "label": "Community Discovery screen"
-    },
-    {
-      "src": "icons/ariton-screenshot-02.png",
-      "sizes": "1024x768",
-      "type": "image/png",
-      "form_factor": "wide",
-      "label": "Open standards"
-    },
-    {
-      "src": "icons/ariton-screenshot-03.png",
-      "sizes": "1024x768",
-      "type": "image/png",
-      "form_factor": "wide",
-      "label": "Freedom to Connect, Power to Own"
-    },
-    {
-      "src": "icons/ariton-screenshot-04.png",
-      "sizes": "360x720",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "Community Discovery screen"
-    },
-    {
-      "src": "icons/ariton-screenshot-05.png",
-      "sizes": "360x720",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "Open standards"
-    },
-    {
-      "src": "icons/ariton-screenshot-06.png",
-      "sizes": "360x720",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "Freedom to Connect, Power to Own"
-    }
-  ],
-  "icons": [
-    {
-      "src": "icons/icon-72x72.png",
-      "sizes": "72x72",
-      "type": "image/png"
-    },
-    {
-      "src": "icons/icon-96x96.png",
-      "sizes": "96x96",
-      "type": "image/png"
-    },
-    {
-      "src": "icons/icon-128x128.png",
-      "sizes": "128x128",
-      "type": "image/png"
-    },
-    {
-      "src": "icons/icon-144x144.png",
-      "sizes": "144x144",
-      "type": "image/png"
-    },
-    {
-      "src": "icons/icon-152x152.png",
-      "sizes": "152x152",
-      "type": "image/png"
-    },
-    {
-      "src": "icons/icon-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "icons/icon-384x384.png",
-      "sizes": "384x384",
-      "type": "image/png"
-    },
-    {
-      "src": "icons/icon-512x512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ]
+    "name": "Ariton",
+    "version": "0.0.1",
+    "author": "Team Ariton",
+    "description": "Freedom to Connect, Power to Own",
+    "orientation": "any",
+    "short_name": "Ariton",
+    "theme_color": "#1b1c18",
+    "background_color": "#1b1c18",
+    "display": "standalone",
+    "scope": "./",
+    "start_url": "./",
+    "categories": ["tools"],
+    "edge_side_panel": {},
+    "protocol_handlers": [
+        {
+            "protocol": "web+ariton",
+            "url": "/index.html?data=%s"
+        },
+        {
+            "protocol": "web+a",
+            "url": "/index.html?data=%s"
+        },
+        {
+            "protocol": "web+data",
+            "url": "/index.html?data=%s"
+        }
+    ],
+    "screenshots": [
+        {
+            "src": "icons/ariton-screenshot-01.png",
+            "sizes": "1024x768",
+            "type": "image/png",
+            "form_factor": "wide",
+            "label": "Community Discovery screen"
+        },
+        {
+            "src": "icons/ariton-screenshot-02.png",
+            "sizes": "1024x768",
+            "type": "image/png",
+            "form_factor": "wide",
+            "label": "Open standards"
+        },
+        {
+            "src": "icons/ariton-screenshot-03.png",
+            "sizes": "1024x768",
+            "type": "image/png",
+            "form_factor": "wide",
+            "label": "Freedom to Connect, Power to Own"
+        },
+        {
+            "src": "icons/ariton-screenshot-04.png",
+            "sizes": "360x720",
+            "type": "image/png",
+            "form_factor": "narrow",
+            "label": "Community Discovery screen"
+        },
+        {
+            "src": "icons/ariton-screenshot-05.png",
+            "sizes": "360x720",
+            "type": "image/png",
+            "form_factor": "narrow",
+            "label": "Open standards"
+        },
+        {
+            "src": "icons/ariton-screenshot-06.png",
+            "sizes": "360x720",
+            "type": "image/png",
+            "form_factor": "narrow",
+            "label": "Freedom to Connect, Power to Own"
+        }
+    ],
+    "icons": [
+        {
+            "src": "icons/icon-72x72.png",
+            "sizes": "72x72",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/icon-96x96.png",
+            "sizes": "96x96",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/icon-128x128.png",
+            "sizes": "128x128",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/icon-144x144.png",
+            "sizes": "144x144",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/icon-152x152.png",
+            "sizes": "152x152",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/icon-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/icon-384x384.png",
+            "sizes": "384x384",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/icon-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
 }

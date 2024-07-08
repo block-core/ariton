@@ -19,71 +19,67 @@ import { NewVersionCheckerService } from '../update.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
-  selector: 'app-layout',
-  templateUrl: './layout.component.html',
-  styleUrl: './layout.component.scss',
-  standalone: true,
-  imports: [
-    MatToolbarModule,
-    MatButtonModule,
-    MatSidenavModule,
-    MatListModule,
-    MatIconModule,
-    MatMenuModule,
-    AsyncPipe,
-    RouterLink,
-    RouterLinkActive,
-    ThemeToggleComponent,
-    MatTooltipModule,
-  ],
+    selector: 'app-layout',
+    templateUrl: './layout.component.html',
+    styleUrl: './layout.component.scss',
+    standalone: true,
+    imports: [
+        MatToolbarModule,
+        MatButtonModule,
+        MatSidenavModule,
+        MatListModule,
+        MatIconModule,
+        MatMenuModule,
+        AsyncPipe,
+        RouterLink,
+        RouterLinkActive,
+        ThemeToggleComponent,
+        MatTooltipModule,
+    ],
 })
 export class LayoutComponent {
-  private breakpointObserver = inject(BreakpointObserver);
+    private breakpointObserver = inject(BreakpointObserver);
 
-  private storage = inject(StorageService);
+    private storage = inject(StorageService);
 
-  private identity = inject(IdentityService);
+    private identity = inject(IdentityService);
 
-  public updateService = inject(NewVersionCheckerService);
+    public updateService = inject(NewVersionCheckerService);
 
-  rootRoutes = routes
-    .filter((r) => r.path)
-    .filter((r) => r.data && r.data['hide'] != true);
+    rootRoutes = routes.filter((r) => r.path).filter((r) => r.data && r.data['hide'] != true);
 
-  isHandset$: Observable<boolean> = this.breakpointObserver
-    .observe('(max-width: 700px)')
-    .pipe(
-      map((result) => result.matches),
-      shareReplay()
+    isHandset$: Observable<boolean> = this.breakpointObserver.observe('(max-width: 700px)').pipe(
+        map((result) => result.matches),
+        shareReplay(),
     );
 
-  async wipe() {
-    // Clear all data from localStorage
-    this.storage.clear();
+    async wipe() {
+        // Clear all data from localStorage
+        this.storage.clear();
 
-    console.log('Local storage data has been wiped!');
+        console.log('Local storage data has been wiped!');
 
-    // Clear all data from IndexedDb
-    await indexedDB.deleteDatabase('level-js-DATA/AGENT');
-    await indexedDB.deleteDatabase('level-js-DATA/AGENT/DID_RESOLVERCACHE');
-    await indexedDB.deleteDatabase('level-js-DATA/AGENT/DWN_DATASTORE');
-    await indexedDB.deleteDatabase('level-js-DATA/AGENT/DWN_EVENTLOG');
-    await indexedDB.deleteDatabase('level-js-DATA/AGENT/DWN_MESSAGEINDEX');
-    await indexedDB.deleteDatabase('level-js-DATA/AGENT/DWN_MESSAGESTORE');
-    await indexedDB.deleteDatabase('level-js-DATA/AGENT/VAULT_STORE');
+        // Clear all data from IndexedDb
+        await indexedDB.deleteDatabase('level-js-DATA/AGENT');
+        await indexedDB.deleteDatabase('level-js-DATA/AGENT/DID_RESOLVERCACHE');
+        await indexedDB.deleteDatabase('level-js-DATA/AGENT/DWN_DATASTORE');
+        await indexedDB.deleteDatabase('level-js-DATA/AGENT/DWN_EVENTLOG');
+        await indexedDB.deleteDatabase('level-js-DATA/AGENT/DWN_MESSAGEINDEX');
+        await indexedDB.deleteDatabase('level-js-DATA/AGENT/DWN_MESSAGESTORE');
+        await indexedDB.deleteDatabase('level-js-DATA/AGENT/VAULT_STORE');
 
-    console.log('Data has been wiped!');
+        console.log('Data has been wiped!');
 
-    window.location.reload();
-  }
+        window.location.reload();
+    }
 
-  applyUpdate(): void {
-    this.updateService.applyUpdate();
-  }
+    applyUpdate(): void {
+        this.updateService.applyUpdate();
+    }
 
-  lock() {
-    this.identity.lock();
-  }
+    lock() {
+        this.identity.lock();
+    }
 
-  navigateBack() {}
+    navigateBack() {}
 }

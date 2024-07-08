@@ -6,28 +6,28 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  selector: 'app-data-entry',
-  standalone: true,
-  imports: [JsonPipe, CommonModule, MatButtonModule, MatIconModule],
-  templateUrl: './entry.component.html',
-  styleUrl: './entry.component.scss',
+    selector: 'app-data-entry',
+    standalone: true,
+    imports: [JsonPipe, CommonModule, MatButtonModule, MatIconModule],
+    templateUrl: './entry.component.html',
+    styleUrl: './entry.component.scss',
 })
 export class DataEntryComponent {
-  entry: any;
+    entry: any;
 
-  constructor(
-    private registryService: RegistryService,
-    private route: ActivatedRoute
-  ) {
-    this.route.params.subscribe((params) => {
-      const source = params['source'];
-      const id = params['id'];
+    constructor(
+        private registryService: RegistryService,
+        private route: ActivatedRoute,
+    ) {
+        this.route.params.subscribe((params) => {
+            const source = params['source'];
+            const id = params['id'];
 
-      this.entry = this.registryService.bsn.accounts.find((account) => {
-        return account.id === id;
-      });
+            this.entry = this.registryService.bsn.accounts.find((account) => {
+                return account.id === id;
+            });
 
-      console.log(this.entry);
-    });
-  }
+            console.log(this.entry);
+        });
+    }
 }

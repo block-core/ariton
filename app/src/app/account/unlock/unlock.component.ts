@@ -10,33 +10,33 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
-  selector: 'app-unlock',
-  standalone: true,
-  imports: [FormsModule, MatProgressSpinnerModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule],
-  templateUrl: './unlock.component.html',
-  styleUrl: './unlock.component.scss'
+    selector: 'app-unlock',
+    standalone: true,
+    imports: [FormsModule, MatProgressSpinnerModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule],
+    templateUrl: './unlock.component.html',
+    styleUrl: './unlock.component.scss',
 })
 export class UnlockComponent {
-  passwordInput = new FormControl('', Validators.required);
+    passwordInput = new FormControl('', Validators.required);
 
-  unlocking = signal(false);
+    unlocking = signal(false);
 
-  invalidPassword = signal(false);
+    invalidPassword = signal(false);
 
-  constructor(private identityService: IdentityService) { }
+    constructor(private identityService: IdentityService) {}
 
-  async onSubmit() {
-    this.unlocking.set(true);
-    const unlocked = await this.identityService.unlock(this.passwordInput.value!);
+    async onSubmit() {
+        this.unlocking.set(true);
+        const unlocked = await this.identityService.unlock(this.passwordInput.value!);
 
-    if (unlocked) {
-      console.log('Vault unlocked');
-      this.invalidPassword.set(false);
-    } else {
-      console.log('Failed to unlock vault');
-      this.invalidPassword.set(true);
+        if (unlocked) {
+            console.log('Vault unlocked');
+            this.invalidPassword.set(false);
+        } else {
+            console.log('Failed to unlock vault');
+            this.invalidPassword.set(true);
+        }
+
+        this.unlocking.set(false);
     }
-
-    this.unlocking.set(false);
-  }
 }

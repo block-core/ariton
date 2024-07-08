@@ -1,56 +1,54 @@
 <h1>Settings</h1>
 
-<br>
+<br />
 Debug: {{ settings().debug }}
-<br>
+<br />
 Servers: {{ settings().servers }}
-<br>
+<br />
 Language: {{ settings().language }}
-<br>
-<br>
+<br />
+<br />
 <button mat-flat-button (click)="toggleDebug()">Toggle debug</button>
 
 <mat-nav-list>
-  <div mat-subheader>Other Actions</div>
+    <div mat-subheader>Other Actions</div>
 
-  <a mat-list-item [routerLink]="['handler']">
-    <mat-icon matListItemIcon>search</mat-icon>
-    Register Protocol Handler (Web Only)
-  </a>
-
+    <a mat-list-item [routerLink]="['handler']">
+        <mat-icon matListItemIcon>search</mat-icon>
+        Register Protocol Handler (Web Only)
+    </a>
 </mat-nav-list>
 
 <mat-nav-list>
     <div mat-subheader>Information</div>
 
     <a mat-list-item [routerLink]="['about']">
-      <mat-icon matListItemIcon>new_releases</mat-icon>
-      About
+        <mat-icon matListItemIcon>new_releases</mat-icon>
+        About
     </a>
 
     <a mat-list-item [routerLink]="['licenses']">
         <mat-icon matListItemIcon>description</mat-icon>
-      Third Party Licenses
+        Third Party Licenses
     </a>
 
     <a mat-list-item [routerLink]="['privacy']">
-      <mat-icon matListItemIcon>privacy_tip</mat-icon>
-      Privacy Policy
+        <mat-icon matListItemIcon>privacy_tip</mat-icon>
+        Privacy Policy
     </a>
 
     <a mat-list-item href="https://ariton.app" target="_blank">
-      <mat-icon matListItemIcon>public</mat-icon>
-      Ariton Website
+        <mat-icon matListItemIcon>public</mat-icon>
+        Ariton Website
     </a>
 
     <a mat-list-item href="https://github.com/block-core/ariton/releases" target="_blank">
-      <mat-icon matListItemIcon>update</mat-icon>
-      Release 0.0.1
+        <mat-icon matListItemIcon>update</mat-icon>
+        Release 0.0.1
     </a>
 
     <a mat-list-item href="https://github.com/block-core/ariton" target="_blank">
-      <mat-icon matListItemIcon>code</mat-icon>
-      Source Code
+        <mat-icon matListItemIcon>code</mat-icon>
+        Source Code
     </a>
-
-  </mat-nav-list>
+</mat-nav-list>

@@ -2,55 +2,54 @@
     display: flex;
     gap: 1em;
     align-items: baseline;
-  }
-  
-  .toolbox-left {
+}
+
+.toolbox-left {
     flex-grow: 2;
-  }
-  
-  .tooblox-right {
+}
+
+.tooblox-right {
     flex-grow: 1;
-  }
-  
-  .search-input {
+}
+
+.search-input {
     width: 100%;
-  }
-  
-  .container {
+}
+
+.container {
     padding: 24px;
-  }
-  
-  img {
+}
+
+img {
     width: 100%;
     height: 200px;
     object-fit: cover;
-  }
-  
-  .responsive-grid {
+}
+
+.responsive-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 24px;
-  }
-  
-  .grid-container {
+}
+
+.grid-container {
     margin: 20px;
-  }
-  
-  .dashboard-card {
+}
+
+.dashboard-card {
     position: absolute;
     top: 15px;
     left: 15px;
     right: 15px;
     bottom: 15px;
-  }
-  
-  .more-button {
+}
+
+.more-button {
     position: absolute;
     top: 5px;
     right: 10px;
-  }
-  
-  .dashboard-card-content {
+}
+
+.dashboard-card-content {
     text-align: center;
-  }
-  
+}

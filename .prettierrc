@@ -4,5 +4,5 @@
     "semi": true,
     "tabWidth": 4,
     "printWidth": 160,
-    "prettier.useTabs": false
+    "useTabs": false
 }
