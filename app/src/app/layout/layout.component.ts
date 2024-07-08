@@ -34,8 +34,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     RouterLink,
     RouterLinkActive,
     ThemeToggleComponent,
-    MatTooltipModule
-  ]
+    MatTooltipModule,
+  ],
 })
 export class LayoutComponent {
   private breakpointObserver = inject(BreakpointObserver);
@@ -46,14 +46,23 @@ export class LayoutComponent {
 
   public updateService = inject(NewVersionCheckerService);
 
-  rootRoutes = routes.filter(r=>r.path).filter(r=>r.data && r.data['hide'] != true);
+  rootRoutes = routes
+    .filter((r) => r.path)
+    .filter((r) => r.data && r.data['hide'] != true);
+
+  isHandset$: Observable<boolean> = this.breakpointObserver
+    .observe('(max-width: 700px)')
+    .pipe(
+      map((result) => result.matches),
+      shareReplay()
+    );
 
   async wipe() {
     // Clear all data from localStorage
     this.storage.clear();
 
     console.log('Local storage data has been wiped!');
-    
+
     // Clear all data from IndexedDb
     await indexedDB.deleteDatabase('level-js-DATA/AGENT');
     await indexedDB.deleteDatabase('level-js-DATA/AGENT/DID_RESOLVERCACHE');
@@ -70,17 +79,11 @@ export class LayoutComponent {
 
   applyUpdate(): void {
     this.updateService.applyUpdate();
-}
+  }
 
   lock() {
     this.identity.lock();
   }
 
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe('(max-width: 700px)')
-    .pipe(
-      map(result => result.matches),
-      shareReplay()
-    );
-
-   
+  navigateBack() {}
 }

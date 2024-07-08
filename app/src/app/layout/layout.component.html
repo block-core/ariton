@@ -8,13 +8,15 @@
     [opened]="(isHandset$ | async) === false"
   >
     <mat-toolbar>
-      <img class="toolbar-logo" src="ariton-icon-dark.svg">
+      <img class="toolbar-logo" src="ariton-icon-dark.svg" />
 
-      <picture  class="toolbar-text">
-        <source srcset="ariton-text-light.svg" media="(prefers-color-scheme: dark)">
-        <img src="ariton-text-dark.svg">
-    </picture>
-
+      <picture class="toolbar-text">
+        <source
+          srcset="ariton-text-light.svg"
+          media="(prefers-color-scheme: dark)"
+        />
+        <img src="ariton-text-dark.svg" />
+      </picture>
     </mat-toolbar>
     <mat-nav-list>
       @for (item of rootRoutes; track $index) {
@@ -25,7 +27,7 @@
         routerLinkActive
         [activated]="link.isActive"
       >
-      <mat-icon matListItemIcon>{{ item.data!['icon'] }}</mat-icon>
+        <mat-icon matListItemIcon>{{ item.data!["icon"] }}</mat-icon>
         {{ item.title }}
       </a>
       }
@@ -43,13 +45,21 @@
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
       }
+
+      <button mat-icon-button (click)="navigateBack()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+
       <span class="toolbar-spacer"></span>
       <span class="toolbar-items">
-
         @if(updateService.isNewVersionAvailable){
-          <button matTooltip="Update available. Click to update now."  mat-icon-button (click)="applyUpdate()">
-            <mat-icon>file_download</mat-icon>
-          </button>
+        <button
+          matTooltip="Update available. Click to update now."
+          mat-icon-button
+          (click)="applyUpdate()"
+        >
+          <mat-icon>file_download</mat-icon>
+        </button>
         }
 
         <button mat-icon-button [matMenuTriggerFor]="menuDebug">
@@ -61,7 +71,6 @@
             <mat-icon>settings</mat-icon>
             <span>Reset All Data (Wipe)</span>
           </button>
-      
         </mat-menu>
 
         <button mat-icon-button [matMenuTriggerFor]="menuNotifications">
@@ -74,37 +83,47 @@
           </button>
           <mat-divider></mat-divider>
           <button mat-menu-item>
-              <mat-icon>forum</mat-icon>
-              <span>Knitting Community posted new pattern</span>
-            </button>
+            <mat-icon>forum</mat-icon>
+            <span>Knitting Community posted new pattern</span>
+          </button>
           <button mat-menu-item>
-              <mat-icon>face</mat-icon>
-              <span>Joe sent you a message</span>
-            </button>
+            <mat-icon>face</mat-icon>
+            <span>Joe sent you a message</span>
+          </button>
           <button mat-menu-item>
             <mat-icon>key</mat-icon>
             <span>New security request</span>
           </button>
           <button mat-menu-item>
-              <mat-icon>verified_user</mat-icon>
-              <span>Social account recovery request</span>
-            </button>
+            <mat-icon>verified_user</mat-icon>
+            <span>Social account recovery request</span>
+          </button>
         </mat-menu>
-        
+
         <button mat-icon-button [matMenuTriggerFor]="menu">
           <mat-icon>account_circle</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
-
           <div class="account-menu-profile">
-            <img class="account-menu-profile-icon" src="https://ariton.app/assets/sondre.png">
-            <div><h2>SondreB</h2>
-              &#64;sondreb<br>
-              did:dht:umj7a...dns1o<br>
+            <img
+              class="account-menu-profile-icon"
+              src="https://ariton.app/assets/sondre.png"
+            />
+            <div>
+              <h2>SondreB</h2>
+              &#64;sondreb<br />
+              did:dht:umj7a...dns1o<br />
             </div>
           </div>
 
-          <button [routerLink]="['/profile', 'did:dht:umj7apgmkodtrb7mdpjo4h7xinqdnatzgy38j7wi67k9c7sdns1o']" mat-menu-item class="account-menu-item">
+          <button
+            [routerLink]="[
+              '/profile',
+              'did:dht:umj7apgmkodtrb7mdpjo4h7xinqdnatzgy38j7wi67k9c7sdns1o'
+            ]"
+            mat-menu-item
+            class="account-menu-item"
+          >
             <mat-icon>account_circle</mat-icon>
             <span>View Profile</span>
           </button>
@@ -112,30 +131,30 @@
           <mat-divider></mat-divider>
 
           <button mat-menu-item [matMenuTriggerFor]="menuAccounts">
-              <mat-icon>switch_account</mat-icon>
-              <span>Accounts</span>
-            </button>
+            <mat-icon>switch_account</mat-icon>
+            <span>Accounts</span>
+          </button>
 
           <button mat-menu-item (click)="lock()">
-              <mat-icon>lock</mat-icon>
-              <span>Lock account</span>
-            </button>
+            <mat-icon>lock</mat-icon>
+            <span>Lock account</span>
+          </button>
 
-            <mat-divider></mat-divider>
+          <mat-divider></mat-divider>
           <button mat-menu-item [matMenuTriggerFor]="menuLanguages">
             <mat-icon>translate</mat-icon>
             <span>Language: English</span>
           </button>
           <mat-divider></mat-divider>
           <button [routerLink]="['/settings']" mat-menu-item>
-              <mat-icon>settings</mat-icon>
-              <span>Settings</span>
-            </button>
-            <mat-divider></mat-divider>
-            <button [routerLink]="['/help']" mat-menu-item>
-              <mat-icon>help</mat-icon>
-              <span>Help</span>
-            </button>
+            <mat-icon>settings</mat-icon>
+            <span>Settings</span>
+          </button>
+          <mat-divider></mat-divider>
+          <button [routerLink]="['/help']" mat-menu-item>
+            <mat-icon>help</mat-icon>
+            <span>Help</span>
+          </button>
         </mat-menu>
 
         <mat-menu #menuAccounts="matMenu">
@@ -144,15 +163,33 @@
             <span>Manage Accounts</span>
           </button>
           <mat-divider></mat-divider>
-          <button [routerLink]="['/account', 'did:dht:umj7apgmkodtrb7mdpjo4h7xinqdnatzgy38j7wi67k9c7sdns1o']" mat-menu-item>
+          <button
+            [routerLink]="[
+              '/account',
+              'did:dht:umj7apgmkodtrb7mdpjo4h7xinqdnatzgy38j7wi67k9c7sdns1o'
+            ]"
+            mat-menu-item
+          >
             <mat-icon>account_circle</mat-icon>
             <span>Account 1</span>
           </button>
-          <button [routerLink]="['/account', 'did:dht:umj7apgmkodtrb7mdpjo4h7xinqdnatzgy38j7wi67k9c7sdns1o']" mat-menu-item>
+          <button
+            [routerLink]="[
+              '/account',
+              'did:dht:umj7apgmkodtrb7mdpjo4h7xinqdnatzgy38j7wi67k9c7sdns1o'
+            ]"
+            mat-menu-item
+          >
             <mat-icon>account_circle</mat-icon>
             <span>Account 2</span>
           </button>
-          <button [routerLink]="['/account', 'did:dht:umj7apgmkodtrb7mdpjo4h7xinqdnatzgy38j7wi67k9c7sdns1o']" mat-menu-item>
+          <button
+            [routerLink]="[
+              '/account',
+              'did:dht:umj7apgmkodtrb7mdpjo4h7xinqdnatzgy38j7wi67k9c7sdns1o'
+            ]"
+            mat-menu-item
+          >
             <mat-icon>account_circle</mat-icon>
             <span>Account 3</span>
           </button>
@@ -171,18 +208,15 @@
             <span>Norwegian</span>
           </button>
         </mat-menu>
-        
+
         <!--<app-theme-toggle></app-theme-toggle>-->
       </span>
-      
     </mat-toolbar>
 
-      <div class="sidenav-scroll-wrapper">
-        <div class="sidenav-content">
-          <ng-content></ng-content>
-        </div>
+    <div class="sidenav-scroll-wrapper">
+      <div class="sidenav-content">
+        <ng-content></ng-content>
       </div>
-
-
+    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
