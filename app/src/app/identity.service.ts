@@ -47,7 +47,7 @@ export class IdentityService {
             this.web5 = result.web5;
             this.did = result.did;
 
-            console.log('Web5 Connected.');
+            console.log('Web5 Connected.', this.did);
             // console.log('IDENTITY SERVICE:', this.web5);
 
             this.initialized.set(true);

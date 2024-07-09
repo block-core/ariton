@@ -68,6 +68,7 @@ $dark-theme: m3-theme.$dark-theme;
 html,
 body {
     height: 100%;
+    overflow: hidden;
 }
 body {
     margin: 0;
@@ -122,4 +123,10 @@ h1 {
 .warning {
     padding: 2em;
     color: var(--mat-form-field-error-text-color);
+}
+
+.sidenav-scroll-wrapper,
+.sidenav-content,
+.column-content {
+    overscroll-behavior: contain;
 }
