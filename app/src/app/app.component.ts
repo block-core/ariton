@@ -1,4 +1,4 @@
-import { Component, effect, inject } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { LayoutComponent } from './layout/layout.component';
 import { Router, NavigationStart, NavigationEnd } from '@angular/router';
@@ -9,11 +9,12 @@ import { AppService } from './app.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import { RestoreComponent } from './account/create/restore/restore.component';
 
 @Component({
     selector: 'app-root',
     standalone: true,
-    imports: [MatButtonModule, MatProgressSpinnerModule, RouterOutlet, LayoutComponent, UnlockComponent],
+    imports: [RestoreComponent, MatButtonModule, MatProgressSpinnerModule, RouterOutlet, LayoutComponent, UnlockComponent],
     templateUrl: './app.component.html',
     styleUrl: './app.component.css',
     providers: [
@@ -72,7 +73,17 @@ export class AppComponent {
         this.appService.initialized.set(true);
     }
 
-    async ngOnInit() {
+    restore = signal<boolean>(false);
+
+    async restoreAccount() {
+        this.restore.set(true);
+    }
+
+    back() {
+        this.restore.set(false);
+    }
+
+    async createAccount() {
         await this.appService.initialize();
 
         console.log('App initialized!', this.appService.firstTime());
@@ -80,6 +91,23 @@ export class AppComponent {
         if (this.appService.firstTime()) {
             console.log('First time setup, redirect to introduction!');
             this.router.navigate(['/introduction']);
+        }
+    }
+
+    async ngOnInit() {
+        // If this is first time user visits, we will give them option
+        // to create a new account or restore existing.
+        if (this.appService.hasStateBeenSet()) {
+            await this.appService.initialize();
+
+            console.log('App initialized!', this.appService.firstTime());
+
+            if (this.appService.firstTime()) {
+                console.log('First time setup, redirect to introduction!');
+                this.router.navigate(['/introduction']);
+            }
+        } else {
+            console.log('No state has been set, redirect to introduction!');
         }
     }
 }

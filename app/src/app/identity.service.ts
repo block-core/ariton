@@ -87,10 +87,6 @@ export class IdentityService {
     }
 
     async changePassword(oldPassword: string, newPassword: string) {
-        console.log(this);
-        console.log(this.web5);
-        debugger;
-
         const agent = this.web5.agent as Web5IdentityAgent;
         await agent.vault.changePassword({ oldPassword, newPassword });
     }

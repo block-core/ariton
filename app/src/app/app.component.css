@@ -18,8 +18,8 @@
 }
 
 .loading-container {
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(18px);
     color: var(--mat-app-text-color);
     padding: 2em;
     position: absolute;
@@ -37,10 +37,20 @@
 }
 
 .loading-logo {
-    max-width: 256px;
-    margin: 2em;
+    max-width: 128px;
+    position: absolute;
+    right: 1em;
+    bottom: 1em;
 }
 
 mat-spinner {
     margin: 2em;
+}
+
+.new-user-actions {
+}
+
+.new-user-actions button {
+    margin-right: 1em;
+    margin-bottom: 1em;
 }

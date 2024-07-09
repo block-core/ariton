@@ -23,6 +23,8 @@ export interface Account {
 export class AppService {
     initialized = signal<boolean>(false);
 
+    loading = signal<boolean>(false);
+
     storage = inject(StorageService);
 
     crypto = inject(CryptoService);
@@ -65,7 +67,18 @@ export class AppService {
         // this.state().selectedAccount
     }
 
+    hasStateBeenSet() {
+        let state = this.storage.read('state') as AppState;
+
+        if (!state) {
+            return false;
+        }
+
+        return true;
+    }
+
     async initialize() {
+        this.loading.set(true);
         console.log('Initializing Ariton...');
 
         let state = this.storage.read('state') as AppState;
@@ -97,6 +110,7 @@ export class AppService {
             result = await this.identity.initialConnect(password);
 
             if (!result) {
+                this.loading.set(false);
                 return;
             }
 
@@ -125,6 +139,7 @@ export class AppService {
             if (account.password) {
                 result = await this.identity.connect(account.did, account.password);
                 if (!result) {
+                    this.loading.set(false);
                     return;
                 }
             } else {
@@ -147,5 +162,7 @@ export class AppService {
         this.state.set(state);
 
         this.initialized.set(true);
+
+        this.loading.set(false);
     }
 }

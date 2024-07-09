@@ -1,22 +1,32 @@
 @if (identityService.locked()) {
-    <div class="unlock-container">
-        <app-unlock></app-unlock>
-    </div>
-}
-@if (!appService.initialized()) {
-    <div class="loading-container">
-        <img class="loading-logo" src="ariton-icon-dark.svg" />
+<div class="unlock-container">
+    <app-unlock></app-unlock>
+</div>
+} @if (!appService.initialized()) {
+<div class="loading-container">
+    <img class="loading-logo" src="ariton-icon-dark.svg" />
 
-        @if (appService.firstTime()) {
-            <div>Creating your account... please wait...</div>
+    @if(appService.hasStateBeenSet()) { @if (appService.firstTime()) {
+    <div>Creating your account... please wait...</div>
+    } @else {
+    <div>Loading your account... please wait...</div>
+    } } @else {
+    <div class="new-user-actions">
+        @if(restore()) {
+        <button [disabled]="appService.loading()" mat-button (click)="back()">Back</button>
         } @else {
-            <div>Loading your account... please wait...</div>
+        <button [disabled]="appService.loading()" mat-flat-button (click)="createAccount()">Create a new account</button>
+        <button [disabled]="appService.loading()" mat-button (click)="restoreAccount()">Restore existing account</button>
+
+        } @if(restore()) {
+        <app-restore></app-restore>
         }
-
-        <mat-spinner></mat-spinner>
-
-        <p>Issues? <button mat-button (click)="forceClose()">Close loading sceen</button></p>
     </div>
+    } @if(appService.loading()) {
+    <mat-spinner></mat-spinner>
+    <p>Issues? <button mat-button (click)="forceClose()">Close loading sceen</button></p>
+    }
+</div>
 }
 <app-layout>
     <router-outlet />
