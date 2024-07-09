@@ -4,7 +4,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { IdentityService } from '../../identity.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
-import { Record } from '@web5/api';
+import { DwnApi, Record } from '@web5/api';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { MatTreeFlatDataSource, MatTreeFlattener, MatTreeModule } from '@angular/material/tree';
@@ -340,6 +340,11 @@ export class DataManagementComponent {
 
         console.log(record);
 
+        if (record) {
+            const { status: sendStatus } = await record.send('did:dht:r9pc5egfoa6isk3ueocrbmt7wigkjdnrfjd5dj35crbo5oesueuy');
+            console.log(sendStatus);
+        }
+
         var { record } = await this.identityService.web5.dwn.records.create({
             data: {
                 name: 'Blockchain Social Network (BSN)',
@@ -354,20 +359,36 @@ export class DataManagementComponent {
         });
 
         console.log(record);
+
+        if (record) {
+            const { status: sendStatus } = await record.send('did:dht:r9pc5egfoa6isk3ueocrbmt7wigkjdnrfjd5dj35crbo5oesueuy');
+            console.log(sendStatus);
+        }
     }
 
     async readRegistries() {
+        // var dwn = new DwnApi({ agent: this.identityService.web5.agent, connectedDid: 'did:dht:wd9fc1mn4s5yx7izbgm3zqpnpgzsbmepu8og1y5etyfm8wojbjcy' }););
+
+        // var { records } = await this.identityService.web5.dwn.records.query({
+        //     message: { filter: { schema: 'https://schema.ariton.app/registry' } },
+        // });
+
+        // console.log(records);
+
         var { records } = await this.identityService.web5.dwn.records.query({
-            message: { filter: { schema: 'https://schema.ariton.app/registry' } },
+            from: 'did:dht:r9pc5egfoa6isk3ueocrbmt7wigkjdnrfjd5dj35crbo5oesueuy',
+            message: {
+                filter: {
+                    schema: 'https://schema.ariton.app/registry',
+                },
+            },
         });
 
         console.log(records);
 
-        var { records } = await this.identityService.web5.dwn.records.query({
-            message: { filter: { author: 'did:dht:wd9fc1mn4s5yx7izbgm3zqpnpgzsbmepu8og1y5etyfm8wojbjcy' } },
-        });
-
-        console.log(records);
+        if (records) {
+            this.records.set(records);
+        }
     }
 
     async createRecord(publish: boolean) {
