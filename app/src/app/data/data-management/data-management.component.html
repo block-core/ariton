@@ -1,5 +1,12 @@
 <br />
 
+<p>
+    <button mat-flat-button (click)="createRegistry()">Create Registry in Public Node</button>&nbsp;
+    <button mat-flat-button (click)="readRegistries()">Read Registries in Public Node</button>
+</p>
+
+<br />
+
 <button mat-flat-button (click)="load()">Load Data</button>
 &nbsp;
 <button mat-flat-button (click)="createRecord(false)">Create Private Record</button>
@@ -12,20 +19,20 @@
 
 <mat-list class="example-list-wrapping">
     @for (record of records(); track record) {
-        <div class="record-line">
-            <span matListItemTitle
-                >ID: <a [routerLink]="['view', record.id]">{{ record.id }}</a></span
-            ><br />
-            <span>
-                <!-- Author: {{record.author}}<br> -->
-                Format: {{ record.dataFormat }}<br />
-                Schema: {{ record.schema }}<br />
-                Size: {{ record.dataSize | size }}<br />
-                Created: {{ record.dateCreated }}<br />
-                Published: {{ record.published }}<br />
-                Date Published: {{ record.datePublished }}<br />
-            </span>
-        </div>
+    <div class="record-line">
+        <span matListItemTitle
+            >ID: <a [routerLink]="['view', record.id]">{{ record.id }}</a></span
+        ><br />
+        <span>
+            <!-- Author: {{record.author}}<br> -->
+            Format: {{ record.dataFormat }}<br />
+            Schema: {{ record.schema }}<br />
+            Size: {{ record.dataSize | size }}<br />
+            Created: {{ record.dateCreated }}<br />
+            Published: {{ record.published }}<br />
+            Date Published: {{ record.datePublished }}<br />
+        </span>
+    </div>
     }
 </mat-list>
 

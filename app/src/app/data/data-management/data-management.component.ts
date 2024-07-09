@@ -324,6 +324,52 @@ export class DataManagementComponent {
         // console.log(record);
     }
 
+    async createRegistry() {
+        var { record } = await this.identityService.web5.dwn.records.create({
+            data: {
+                name: 'Liberstad CC',
+                description: 'Crypto Company Registry',
+                tags: ['registry', 'did', 'liberstad'],
+            },
+            message: {
+                dataFormat: 'application/json',
+                schema: 'https://schema.ariton.app/registry',
+                published: true,
+            },
+        });
+
+        console.log(record);
+
+        var { record } = await this.identityService.web5.dwn.records.create({
+            data: {
+                name: 'Blockchain Social Network (BSN)',
+                description: 'Stellar blockchain data registry',
+                tags: ['registry', 'did', 'stellar', 'mtl', 'montelibero'],
+            },
+            message: {
+                dataFormat: 'application/json',
+                schema: 'https://schema.ariton.app/registry',
+                published: true,
+            },
+        });
+
+        console.log(record);
+    }
+
+    async readRegistries() {
+        var { records } = await this.identityService.web5.dwn.records.query({
+            message: { filter: { schema: 'https://schema.ariton.app/registry' } },
+        });
+
+        console.log(records);
+
+        var { records } = await this.identityService.web5.dwn.records.query({
+            message: { filter: { author: 'did:dht:wd9fc1mn4s5yx7izbgm3zqpnpgzsbmepu8og1y5etyfm8wojbjcy' } },
+        });
+
+        console.log(records);
+    }
+
     async createRecord(publish: boolean) {
         // Create a JSON record
         var { record } = await this.identityService.web5.dwn.records.create({
