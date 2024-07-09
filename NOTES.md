@@ -108,6 +108,8 @@ Mini Apps will load dynamically in an iframe and be embedded into Ariton.
 
 Mini Apps are scheduled to be released in a future version of Ariton. Until the architecture for dynamically loading mini apps is in place, the "Apps" section will contain apps that are built-in to Ariton.
 
+Apps will also have a protocol that must be installed on the DWN of the user. The will be downloaded and installed automatically when the user clicks on the app. The protocol itself will need to be stored in the owner's DWN, as it won't be part of the approval of the app, but rather the owner's DWN so the app owner can always update their own protocol as needed.
+
 ## Marketplace
 
 Marketplace is suppose to give an aggregated view over the markets in all the communities that the user is a member of. This description only describes how a single marketplace functions within a community (not the global marketplace).
