@@ -123,3 +123,34 @@ schema: https://schema.ariton.app/marketplace/entry
     "icon": "sofa"
 }
 ```
+
+## Data
+
+Any user on Ariton will be able to create and store data in the Ariton network. This data can be shared with other users, communities, registries and apps.
+
+The data is stored in a decentralized manner, and can be encrypted. The user can choose to share the data with others, by providing them with a key to decrypt the data.
+
+schema: https://schema.ariton.app/data/entry
+
+```json
+{
+    "name": "My Data",
+    "description": "My data",
+    "icon": "https://ariton.app/assets/ariton-favicon.png",
+    "owner": "did:web5:0x1234567890abcdef"
+}
+```
+
+A user must submit their data structure for public listing approval, but the data itself is not stored in the Ariton network. The data is stored in the user's own storage, and the Ariton network only stores the metadata.
+
+A user can always share their data with other users outside or within a community, without any approval by Ariton. Ariton only approves what is listed to the public, not what is available.
+
+### Generic Data Editor
+
+Part of the Data feature of Ariton, will be a generic data editor where users can manage their data. The data can be knitting patterns, videos that have been validated to be acceptable for smaller children, or any other type of data.
+
+### Data Subscriptions
+
+Users can subscribe to data, and be notified when the data is updated. This can be useful for example when a new knitting pattern is added to a community, or when a new video is added to a children's video collection.
+
+The subscriptions can also be based upon payments to the owner of the data.
