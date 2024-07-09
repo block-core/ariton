@@ -7,6 +7,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { IdentityService } from '../../../identity.service';
+import { CryptoService } from '../../../crypto.service';
+import { AppService } from '../../../app.service';
 
 @Component({
     selector: 'app-restore',
@@ -18,17 +20,50 @@ import { IdentityService } from '../../../identity.service';
 export class RestoreComponent {
     private fb = inject(FormBuilder);
 
+    crypto = inject(CryptoService);
+
+    app = inject(AppService);
+
     private identity = inject(IdentityService);
 
     addressForm = this.fb.group({
         recoveryPhrase: [null, Validators.required],
     });
 
-    onSubmit(): void {
+    async onSubmit() {
         console.log(this.addressForm.controls.recoveryPhrase.value);
 
-        // this.identity.initialConnect();
+        this.addressForm.disable();
 
-        alert('Thanks!');
+        this.app.loading.set(true);
+
+        // Create a unique password for the user that they can replace.
+        let password = await this.crypto.createPassword();
+
+        const account = {
+            did: '',
+            recoveryPhrase: this.addressForm.controls.recoveryPhrase.value!,
+            password,
+            passwordHash: '',
+        };
+
+        password = '123';
+
+        const result = await this.identity.restore(password, this.addressForm.controls.recoveryPhrase.value!);
+
+        console.log('RESTORE Result: ', result);
+
+        if (!result) {
+            alert('Failed to restore account.');
+            this.addressForm.enable();
+            return;
+        }
+
+        account.did = result.did;
+
+        this.app.addAccount(account);
+
+        this.app.initialized.set(true);
+        this.app.loading.set(false);
     }
 }

@@ -81,6 +81,24 @@ export class IdentityService {
         return undefined;
     }
 
+    async restore(password: string, recoveryPhrase: string) {
+        try {
+            const result = await Web5.connect({ recoveryPhrase, password, sync: this.syncInterval });
+            this.web5 = result.web5;
+            this.did = result.did;
+
+            console.log('Web5 Connected.');
+            this.initialized.set(true);
+            return result;
+        } catch (err) {
+            // TODO: Add UI and retry for Web5 initialize, add proper error handling.
+            // Various network connection issues might make this call fail.@
+            alert('Failed to initialize Web5');
+        }
+
+        return undefined;
+    }
+
     activeAgent() {
         const agent = this.web5.agent as Web5IdentityAgent;
         return agent;

@@ -63,9 +63,11 @@ export class AppService {
         this.storage.save('state', this.state());
     }
 
-    restore(recoveryPhrase: string) {
-        // this.state().selectedAccount
-    }
+    // restore(recoveryPhrase: string) {
+    //     // Create a unique password for the user that they can replace.
+    //     const password = await this.crypto.createPassword();
+    //     // this.state().selectedAccount
+    // }
 
     hasStateBeenSet() {
         let state = this.storage.read('state') as AppState;
@@ -77,11 +79,21 @@ export class AppService {
         return true;
     }
 
+    addAccount(account: Account) {
+        this.accounts().push(account);
+        this.saveAccounts();
+
+        this.state().selectedAccount = account.did;
+        this.saveState();
+    }
+
     async initialize() {
         this.loading.set(true);
         console.log('Initializing Ariton...');
 
         let state = this.storage.read('state') as AppState;
+
+        console.log('STATE IS WHAT:', state);
 
         if (!state) {
             state = {
@@ -102,8 +114,6 @@ export class AppService {
             console.log('No accounts found');
             // Create a unique password for the user that they can replace.
             const password = await this.crypto.createPassword();
-
-            console.log('Password: ', password);
 
             // Initialize the identity service with the password to create an
             // initial account.
@@ -135,6 +145,8 @@ export class AppService {
             const account = accounts.find((account: any) => account.did === state.selectedAccount);
             this.accounts.set(accounts);
             this.account?.set(account);
+
+            console.log('Account found: ', account);
 
             if (account.password) {
                 result = await this.identity.connect(account.did, account.password);
