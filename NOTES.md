@@ -110,6 +110,21 @@ Mini Apps are scheduled to be released in a future version of Ariton. Until the 
 
 Apps will also have a protocol that must be installed on the DWN of the user. The will be downloaded and installed automatically when the user clicks on the app. The protocol itself will need to be stored in the owner's DWN, as it won't be part of the approval of the app, but rather the owner's DWN so the app owner can always update their own protocol as needed.
 
+### Proposed Apps
+
+-   **Tasks**: A simple task manager that allows shared items, either in read-only mode or collaboration mode.
+-   **Recipies**: Collect and share food recipies.
+-   **Calendar**: A simple calendar app that allows shared events.
+-   **Media Player**: This will integrate into the window frame with media playback controls.
+-   **Video Chat**: A simple video chat app that allows for group video calls.
+-   **Marketplace**: A simple marketplace app that allows users to buy and sell goods and services.
+-   **Data Editor**: A generic data editor that allows users to manage their data.
+-   **Chat**: A simple chat app that allows for group chat.
+-   **Forum**: A simple forum app that allows for threaded discussions.
+-   **Blog**: A simple blog app that allows for blog posts.
+-   **Game**: Simple games such as Tic-Tac-Toe style games, chess and others could be implemented.
+-   **Map**: A simple map app that allows for viewing maps, can be used to display locations of interest (guides, hiking trails, etc) or land areas (Terra Registry).
+
 ## Marketplace
 
 Marketplace is suppose to give an aggregated view over the markets in all the communities that the user is a member of. This description only describes how a single marketplace functions within a community (not the global marketplace).
