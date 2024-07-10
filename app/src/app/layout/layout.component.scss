@@ -73,29 +73,11 @@ mat-sidenav-content {
     overflow-y: auto;
     padding: 16px;
     box-sizing: border-box;
-    @media (pointer: fine) {
-        &::-webkit-scrollbar {
-            background-color: transparent;
-            width: 8px;
-        }
-        &::-webkit-scrollbar-thumb {
-            border-radius: 4px;
-        }
-    }
 }
 
 .column-content {
     overflow-y: scroll;
     box-sizing: border-box;
-    @media (pointer: fine) {
-        &::-webkit-scrollbar {
-            background-color: transparent;
-            width: 8px;
-        }
-        &::-webkit-scrollbar-thumb {
-            border-radius: 4px;
-        }
-    }
 }
 
 @media (max-width: 959.98px) {
