@@ -1,0 +1,54 @@
+{
+    "descriptor": {
+        "method": "Configure",
+        "interface": "Protocols",
+        "definition": {
+            "types": {
+                "post": { "schema": "https://social-media.xyz/schemas/postSchema", "dataFormats": ["text/plain"] },
+                "image": { "dataFormats": ["image/jpeg"] },
+                "reply": { "schema": "https://social-media.xyz/schemas/replySchema", "dataFormats": ["text/plain"] },
+                "caption": { "schema": "https://social-media.xyz/schemas/captionSchema", "dataFormats": ["text/plain"] }
+            },
+            "protocol": "https://social-media.xyz",
+            "published": true,
+            "structure": {
+                "post": {
+                    "reply": {
+                        "$actions": [
+                            { "of": "post", "can": ["create"], "who": "recipient" },
+                            { "of": "post", "can": ["create"], "who": "author" }
+                        ]
+                    },
+                    "$actions": [{ "can": ["create", "read"], "who": "anyone" }]
+                },
+                "image": {
+                    "reply": {
+                        "$actions": [
+                            { "of": "image", "can": ["read"], "who": "author" },
+                            { "of": "image", "can": ["create"], "who": "recipient" }
+                        ]
+                    },
+                    "caption": {
+                        "$actions": [
+                            { "can": ["read"], "who": "anyone" },
+                            { "of": "image", "can": ["create"], "who": "author" }
+                        ]
+                    },
+                    "$actions": [{ "can": ["create", "read"], "who": "anyone" }]
+                }
+            }
+        },
+        "messageTimestamp": "2024-07-10T12:50:27.364822Z"
+    },
+    "authorization": {
+        "signature": {
+            "payload": "eyJkZXNjcmlwdG9yQ2lkIjoiYmFmeXJlaWN2YXh1anV4bTV6dXV3MzN1ZHlwcnhjNnV0NG11cDIzejRlNG9xamF4eTR0bDZxb2lpNGkifQ",
+            "signatures": [
+                {
+                    "protected": "eyJraWQiOiJkaWQ6ZGh0OndkOWZjMW1uNHM1eXg3aXpiZ20zenFwbnBnenNibWVwdThvZzF5NWV0eWZtOHdvamJqY3kjMCIsImFsZyI6IkVkRFNBIn0",
+                    "signature": "ucqTqWCKTpw4vdOarKbnrW-k7ZYDMrFMuGuXrcXqkeqzU2VNMDKeLcwjnMJcKQMAwDtvB20rZ4rPDq0pU1AnBg"
+                }
+            ]
+        }
+    }
+}

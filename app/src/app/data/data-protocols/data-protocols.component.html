@@ -1,0 +1,48 @@
+<h2>Data Protocol Management</h2>
+
+<p>
+    Ariton stores your data on Decentralized Web Nodes and on your DWNs you have protocols that controls the behavior of your data. Here you can manage your
+    protocols.
+</p>
+
+<!-- <mat-list>
+    @for (protocol of protocols(); track protocol) {
+    <mat-list-item>
+        <span matListItemTitle>{{ protocol.definition.protocol }}</span>
+        <span matListItemLine>Published: {{ protocol.definition.published }}</span>
+    </mat-list-item>
+
+    <h3>Types</h3>
+    <div [innerHTML]="getFormattedTypes(protocol.definition.types)"></div>
+    }
+</mat-list> -->
+
+<div class="action-buttons">
+    <button mat-flat-button (click)="installProtocols()">Install Protocols</button>
+</div>
+
+<div class="action-buttons">
+    <button mat-button (click)="accordion().openAll()">Expand All</button>
+    <button mat-button (click)="accordion().closeAll()">Collapse All</button>
+</div>
+<mat-accordion class="example-headers-align" multi>
+    @for (protocol of protocols(); track protocol) {
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title> {{ protocol.definition.protocol }} </mat-panel-title>
+            <mat-panel-description>
+                Published: {{ protocol.definition.published }}
+                <mat-icon>format_list_bulleted</mat-icon>
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+        <h3>Types</h3>
+        <div [innerHTML]="getFormattedTypes(protocol.definition.types)"></div>
+        <h3>Structure</h3>
+        <div [innerHTML]="getFormattedStructure(protocol.definition.structure)"></div>
+        <mat-action-row>
+            <button mat-button>Previous</button>
+            <button mat-button>End</button>
+        </mat-action-row>
+    </mat-expansion-panel>
+    }
+</mat-accordion>
