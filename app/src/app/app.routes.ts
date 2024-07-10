@@ -43,6 +43,12 @@ export const routes: Routes = [
         data: { icon: 'chat' },
     },
     {
+        path: 'app/todo',
+        loadComponent: () => import('./apps//app/todo/todo.component').then((c) => c.TodoComponent),
+        title: 'Todo',
+        data: { icon: 'task' },
+    },
+    {
         path: 'registries',
         loadComponent: () => import('./registries/registries.component').then((c) => c.RegistriesComponent),
         title: 'Registries',
