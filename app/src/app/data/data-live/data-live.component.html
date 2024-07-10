@@ -1,0 +1,47 @@
+<h1>Live Data Demo</h1>
+
+<form [formGroup]="form" novalidate (ngSubmit)="onSubmit()">
+  <mat-card>
+    <mat-card-content>
+      <div class="row">
+        <mat-form-field class="full-width">
+          <mat-label>Name</mat-label>
+          <input matInput #name placeholder="Name" maxlength="200" formControlName="name" />
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <mat-form-field class="full-width">
+          <mat-label>Receiver</mat-label>
+          <input matInput #receiver placeholder="Receiver" maxlength="200" formControlName="receiver" />
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <mat-form-field class="full-width">
+          <mat-label>Message</mat-label>
+          <textarea maxlength="300" matInput #message placeholder="Message" formControlName="message"></textarea>
+          @if (form.controls['message'].hasError('required')) {
+          <mat-error>Message is <strong>required</strong></mat-error>
+          }
+          <mat-hint align="end">{{ message.value.length }} / 300</mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+    <mat-card-actions align="end">
+      <button mat-flat-button color="primary" type="submit">Submit</button>
+    </mat-card-actions>
+  </mat-card>
+</form>
+<br />
+
+@for (record of records(); track record) {
+<div class="message">
+  Date: {{ record.created | ago }}<br />
+  Author: {{ record.author }}<br />
+  Name: {{ record.name }}<br />
+  Message: {{ record.message }}<br />
+
+  <!-- {{ record | json }} -->
+</div>
+}
