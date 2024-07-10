@@ -9,6 +9,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { IdentityService } from '../../identity.service';
 import { CommonModule } from '@angular/common';
 import { AgoPipe } from '../../shared/pipes/ago.pipe';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-data-live',
@@ -21,6 +22,8 @@ export class DataLiveComponent {
   private fb = inject(FormBuilder);
 
   identity = inject(IdentityService);
+
+  snackBar = inject(MatSnackBar);
 
   form = this.fb.group({
     name: [null, Validators.required],
@@ -64,20 +67,30 @@ export class DataLiveComponent {
     const message = this.form.controls.message.value;
     const recipient = this.form.controls.receiver.value!;
 
-    const { status, record } = await this.identity.web5.dwn.records.create({
+    const { record } = await this.identity.web5.dwn.records.create({
       data: {
         name: name,
         message: message,
       },
+      store: false,
       message: {
         protocol: 'http://free-for-all-protocol.xyz',
         protocolPath: 'post',
         schema: 'eph',
-        recipient: recipient,
+        // recipient: recipient,
         dataFormat: 'application/json',
       },
     });
 
-    console.log('Record created:', status, record);
+    if (record) {
+      //send record to recipient's DWN
+      const { status } = await record.send(recipient);
+      console.log('Record sent:', status, record);
+
+      // Show a toast notification
+      this.snackBar.open('Record sent successfully!', 'Close', {
+        duration: 3000, // Duration in milliseconds
+      });
+    }
   }
 }
