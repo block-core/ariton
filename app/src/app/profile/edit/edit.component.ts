@@ -117,6 +117,7 @@ export class ProfileEditComponent {
       const { status, record } = await this.identity.web5.dwn.records.create({
         data: formData,
         message: {
+          published: true,
           protocol: profile.uri,
           protocolPath: 'profile',
           dataFormat: 'application/json',

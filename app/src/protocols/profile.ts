@@ -46,7 +46,14 @@ export const protocolDefinition = {
     },
   },
   structure: {
-    profile: {},
+    profile: {
+      $actions: [
+        {
+          who: 'anyone',
+          can: ['read'],
+        },
+      ],
+    },
     // name: {},
     // title: {},
     bio: {},
