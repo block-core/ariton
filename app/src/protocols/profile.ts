@@ -1,80 +1,65 @@
 export const protocolDefinition = {
-    protocol: 'https://schema.ariton.app/profile/entry',
-    published: true,
-    types: {
-        post: {
-            schema: 'https://social-media.xyz/schemas/postSchema',
-            dataFormats: ['text/plain'],
-        },
-        reply: {
-            schema: 'https://social-media.xyz/schemas/replySchema',
-            dataFormats: ['text/plain'],
-        },
-        image: {
-            dataFormats: ['image/jpeg'],
-        },
-        caption: {
-            schema: 'https://social-media.xyz/schemas/captionSchema',
-            dataFormats: ['text/plain'],
-        },
+  published: true,
+  protocol: 'https://schema.ariton.app/profile/entry',
+  types: {
+    profile: {
+      dataFormats: ['application/json'],
     },
-    structure: {
-        post: {
-            $actions: [
-                {
-                    who: 'anyone',
-                    can: ['create', 'read'],
-                },
-            ],
-            reply: {
-                $actions: [
-                    {
-                        who: 'recipient',
-                        of: 'post',
-                        can: ['create'],
-                    },
-                    {
-                        who: 'author',
-                        of: 'post',
-                        can: ['create'],
-                    },
-                ],
-            },
-        },
-        image: {
-            $actions: [
-                {
-                    who: 'anyone',
-                    can: ['create', 'read'],
-                },
-            ],
-            caption: {
-                $actions: [
-                    {
-                        who: 'anyone',
-                        can: ['read'],
-                    },
-                    {
-                        who: 'author',
-                        of: 'image',
-                        can: ['create'],
-                    },
-                ],
-            },
-            reply: {
-                $actions: [
-                    {
-                        who: 'author',
-                        of: 'image',
-                        can: ['read'],
-                    },
-                    {
-                        who: 'recipient',
-                        of: 'image',
-                        can: ['create'],
-                    },
-                ],
-            },
-        },
+    // title: {
+    //   dataFormats: ['application/json'],
+    // },
+    bio: {
+      dataFormats: ['application/json'],
     },
+    status: {
+      dataFormats: ['application/json'],
+    },
+    location: {
+      dataFormats: ['application/json'],
+    },
+    birthDate: {
+      dataFormats: ['application/json'],
+    },
+    social: {
+      dataFormats: ['application/json'],
+    },
+    messaging: {
+      dataFormats: ['application/json'],
+    },
+    phone: {
+      dataFormats: ['application/json'],
+    },
+    address: {
+      dataFormats: ['application/json'],
+    },
+    career: {
+      dataFormats: ['application/json'],
+    },
+    payment: {
+      dataFormats: ['application/json'],
+    },
+    avatar: {
+      dataFormats: ['image/gif', 'image/png', 'image/jpeg'],
+    },
+    hero: {
+      dataFormats: ['image/gif', 'image/png', 'image/jpeg'],
+    },
+  },
+  structure: {
+    profile: {},
+    // name: {},
+    // title: {},
+    bio: {},
+    status: {},
+    location: {},
+    birthDate: {},
+    social: {},
+    career: {},
+    avatar: {},
+    hero: {},
+    messaging: {},
+    address: {},
+    phone: {},
+    payment: {},
+  },
 };

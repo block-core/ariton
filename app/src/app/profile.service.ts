@@ -1,50 +1,146 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
+import { IdentityService } from './identity.service';
+import { profile } from '../protocols';
 
 export interface Profile {
-    did: string;
-    name: string;
-    title: string;
-    bio: string;
-    profileImage: string;
-    profileBanner: string;
-    status?: string;
-    location?: string;
-    links: string[];
-    birthDate?: string;
+  did: string;
+  name: string;
+  title: string;
+  bio: string;
+  profileImage: string;
+  profileBanner: string;
+  status?: string;
+  location?: string;
+  links: string[];
+  birthDate?: string;
 }
 
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root',
 })
 export class ProfileService {
-    current = signal<Profile>({
-        did: '',
-        name: '',
-        title: '',
-        bio: '',
-        profileImage: '',
-        profileBanner: '',
-        status: '',
-        location: '',
-        links: [],
-        birthDate: '',
+  identity = inject(IdentityService);
+
+  current = signal<Profile>({
+    did: '',
+    name: '',
+    title: '',
+    bio: '',
+    profileImage: '',
+    profileBanner: '',
+    status: '',
+    location: '',
+    links: [],
+    birthDate: '',
+  });
+
+  constructor() {}
+
+  async loadProfile(did: string) {
+    //Query records with plain text data format
+    const response = await this.identity.web5.dwn.records.query({
+      message: {
+        filter: {
+          protocol: profile.uri,
+          protocolPath: 'profile',
+          dataFormat: 'application/json',
+        },
+      },
     });
 
-    constructor() {}
+    console.log('Records in load profile:', response.records);
+    let json = {};
+    let recordEntry = null;
 
-    openProfile(did: string) {
-        console.log('Open profile', did);
-        this.current.set({
-            did,
-            birthDate: '1981',
-            name: 'SondreB',
-            title: 'Voluntaryist',
-            bio: 'I am a voluntaryist.',
-            profileImage: 'https://ariton.app/assets/sondre.png',
-            profileBanner: 'https://avatars.githubusercontent.com/u/1402241?v=4',
-            status: 'Online',
-            location: 'Norway',
-            links: ['https://sondreb.com'],
-        });
+    if (response.records) {
+      // Loop through returned records and print text from each
+      for (const record of response.records) {
+        recordEntry = record;
+        let recordJson = await record.data.json();
+        json = { ...recordJson, id: record.dataCid, did: record.author, created: record.dateCreated };
+      }
     }
+
+    // Returns a structure of both the record and the profile.
+    return {
+      record: recordEntry,
+      profile: json,
+    };
+  }
+
+  async openProfile(did: string) {
+    // If lookup is for current user, just query local DWN.
+    if (did == this.identity.did) {
+      const response = await this.identity.web5.dwn.records.query({
+        message: {
+          filter: {
+            protocol: profile.uri,
+            protocolPath: 'profile',
+            dataFormat: 'application/json',
+          },
+        },
+      });
+
+      if (response.records) {
+        response.records.forEach(async (record) => {
+          let json = await record.data.json();
+          console.log(json);
+          json = { ...json, id: record.dataCid, did: record.author, created: record.dateCreated };
+          this.current.set(json);
+          console.log(json);
+          //   this.records.update((records) => [...records, json]);
+        });
+      }
+    } else {
+      // Query for the external user's profile.
+      console.log('QUERY FOR USER PROFILE!!');
+      const response = await this.identity.web5.dwn.records.query({
+        from: did,
+        message: {
+          filter: {
+            protocol: profile.uri,
+            protocolPath: 'profile',
+            dataFormat: 'application/json',
+          },
+        },
+      });
+
+      console.log('Records in open profile:', response.records);
+
+      if (response.records && response.records.length > 0) {
+        // Loop through returned records and print text from each
+        response.records.forEach(async (record) => {
+          let json = await record.data.json();
+          console.log(json);
+
+          json = { ...json, id: record.dataCid, did: record.author, created: record.dateCreated };
+
+          this.current.set(json);
+
+          console.log(json);
+
+          //   this.records.update((records) => [...records, json]);
+        });
+      } else {
+        console.log('NOTHING FOUND!!');
+        this.current.set({ did: did, bio: '', profileImage: '', profileBanner: '', links: [], title: '', name: 'No profile found' });
+      }
+
+      //   this.records.set([]);
+    }
+
+    // console.log('Open profile', did);
+    // this.current.set({
+    //     did,
+    //     birthDate: '1981',
+    //     name: 'SondreB',
+    //     title: 'Voluntaryist',
+    //     bio: 'I am a voluntaryist.',
+    //     profileImage: 'https://ariton.app/assets/sondre.png',
+    //     profileBanner: 'https://avatars.githubusercontent.com/u/1402241?v=4',
+    //     status: 'Online',
+    //     location: 'Norway',
+    //     links: ['https://sondreb.com'],
+    // });
+  }
 }
