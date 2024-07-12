@@ -4,6 +4,7 @@ import { CryptoService } from './crypto.service';
 import { IdentityService } from './identity.service';
 import { Web5ConnectResult } from '@web5/api';
 import * as packageInfo from '../../package.json';
+import { ProtocolService } from './protocol.service';
 
 export interface AppState {
   selectedAccount: string;
@@ -30,6 +31,8 @@ export class AppService {
   crypto = inject(CryptoService);
 
   identity = inject(IdentityService);
+
+  protocol = inject(ProtocolService);
 
   state = signal<AppState>({ selectedAccount: '' });
 
@@ -176,5 +179,8 @@ export class AppService {
     this.initialized.set(true);
 
     this.loading.set(false);
+
+    // When intialization is finished, make sure we always re-register the protocols.
+    this.protocol.register();
   }
 }
