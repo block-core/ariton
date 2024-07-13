@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -33,34 +33,40 @@ export class DataLiveComponent {
 
   records = signal<any[]>([]);
 
-  async ngOnInit() {
-    setInterval(async () => {
-      //Query records with plain text data format
-      const response = await this.identity.web5.dwn.records.query({
-        message: {
-          filter: {
-            protocol: 'http://free-for-all-protocol.xyz',
-            protocolPath: 'post',
-            schema: 'eph',
-            dataFormat: 'application/json',
-          },
-        },
-      });
+  constructor() {
+    effect(async () => {
+      if (this.identity.initialized()) {
+        setInterval(async () => {
+          //Query records with plain text data format
+          const response = await this.identity.web5.dwn.records.query({
+            message: {
+              filter: {
+                protocol: 'http://free-for-all-protocol.xyz',
+                protocolPath: 'post',
+                schema: 'eph',
+                dataFormat: 'application/json',
+              },
+            },
+          });
 
-      this.records.set([]);
+          this.records.set([]);
 
-      if (response.records) {
-        // Loop through returned records and print text from each
-        response.records.forEach(async (record) => {
-          let json = await record.data.json();
+          if (response.records) {
+            // Loop through returned records and print text from each
+            response.records.forEach(async (record) => {
+              let json = await record.data.json();
 
-          json = { ...json, id: record.dataCid, author: record.author, created: record.dateCreated };
+              json = { ...json, id: record.dataCid, author: record.author, created: record.dateCreated };
 
-          this.records.update((records) => [...records, json]);
-        });
+              this.records.update((records) => [...records, json]);
+            });
+          }
+        }, 5000);
       }
-    }, 5000);
+    });
   }
+
+  async ngOnInit() {}
 
   async onSubmit() {
     const name = this.form.controls.name.value;

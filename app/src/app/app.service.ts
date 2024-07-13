@@ -118,9 +118,13 @@ export class AppService {
       // Create a unique password for the user that they can replace.
       const password = await this.crypto.createPassword();
 
+      console.log('Password generated...');
+
       // Initialize the identity service with the password to create an
       // initial account.
       result = await this.identity.initialConnect(password);
+
+      console.log('Initialize connect finished.');
 
       if (!result) {
         this.loading.set(false);

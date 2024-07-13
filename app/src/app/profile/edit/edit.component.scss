@@ -38,3 +38,32 @@
 mat-card-actions button {
   margin-left: 1em;
 }
+
+form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  min-width: 500px;
+  width: 100%;
+
+  .row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+
+    & > * {
+      width: 100%;
+      margin-right: 1rem;
+    }
+
+    :last-of-type {
+      margin-right: 0rem;
+    }
+  }
+
+  .margin-top {
+    margin-top: 3rem;
+  }
+}

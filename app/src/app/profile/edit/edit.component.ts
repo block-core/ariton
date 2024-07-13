@@ -11,11 +11,12 @@ import { profile } from '../../../protocols';
 import { Router } from '@angular/router';
 import { ProfileService } from '../../profile.service';
 import { NavigationService } from '../../navigation.service';
+import { AvatarComponent } from './avatar/avatar.component';
 
 @Component({
   selector: 'app-edit',
   standalone: true,
-  imports: [MatInputModule, MatButtonModule, MatSelectModule, MatIconModule, MatRadioModule, MatCardModule, ReactiveFormsModule],
+  imports: [AvatarComponent, MatInputModule, MatButtonModule, MatSelectModule, MatIconModule, MatRadioModule, MatCardModule, ReactiveFormsModule],
   templateUrl: './edit.component.html',
   styleUrl: './edit.component.scss',
 })
@@ -37,6 +38,7 @@ export class ProfileEditComponent {
     bio: [null, Validators.required],
     location: [null, Validators.required],
     state: [null, Validators.required],
+    avatar: [''],
     postalCode: [null, Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(5)])],
     shipping: ['free', Validators.required],
     links: this.fb.array([this.fb.control('')]),
@@ -55,6 +57,10 @@ export class ProfileEditComponent {
 
         // Only send the profile data to the form.
         this.updateForm(result.profile);
+
+        this.form.patchValue({
+          avatar: result.avatar,
+        });
       }
     });
   }
@@ -87,6 +93,33 @@ export class ProfileEditComponent {
     this.links.push(this.fb.control(''));
   }
 
+  // Create a blob record
+  async upload(imageBase64: any, record: any) {
+    console.log(record);
+    // const blob = new Blob(event.currentTarget.files, { type: 'image/png' });
+    if (record) {
+      console.log('UPDATING IMAGE!!!!');
+      const { status, updatedRecord } = await record.update({
+        published: true,
+        data: imageBase64,
+      });
+
+      console.log('Update profile status:', status, updatedRecord);
+      return updatedRecord;
+    } else {
+      const { record } = await this.identity.web5.dwn.records.create({
+        data: imageBase64,
+        message: {
+          protocol: profile.uri,
+          protocolPath: 'avatar',
+          dataFormat: 'image/png',
+        },
+      });
+
+      return record;
+    }
+  }
+
   ngOnInit() {}
 
   // Step 4: Function to remove link input
@@ -109,6 +142,7 @@ export class ProfileEditComponent {
     // If record exists, update it.
     if (this.data().record) {
       const { status, record } = await this.data().record.update({
+        published: true,
         data: formData,
       });
 
@@ -126,6 +160,20 @@ export class ProfileEditComponent {
 
       console.log('Save profile status:', status, record);
     }
+
+    // If avatar record exists, update it.
+    // if () {
+    //   const { status, record } = await this.data().record.update({
+    //     published: true,
+    //     data: formData,
+    //   });
+
+    //   console.log('Update profile status:', status, record);
+    // } else {
+
+    // TODO: Check if the avatar has changed before uploading. Don't upload if it hasn't.
+    await this.upload(this.form.controls.avatar.value, this.data().avatarRecord);
+    // }
 
     this.router.navigate(['/profile', this.identity.did]);
   }

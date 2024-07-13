@@ -62,8 +62,22 @@ export const protocolDefinition = {
     birthDate: {},
     social: {},
     career: {},
-    avatar: {},
-    hero: {},
+    avatar: {
+      $actions: [
+        {
+          who: 'anyone',
+          can: ['read'],
+        },
+      ],
+    },
+    hero: {
+      $actions: [
+        {
+          who: 'anyone',
+          can: ['read'],
+        },
+      ],
+    },
     messaging: {},
     address: {},
     phone: {},

@@ -9,11 +9,13 @@ import { ProfileService } from '../profile.service';
 import { MatTabsModule } from '@angular/material/tabs';
 import { IdentityService } from '../identity.service';
 import { profile } from '../../protocols';
+import { SafeUrlPipe } from '../shared/pipes/safe-url.pipe';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [MatTabsModule, MatIconModule, MatButtonModule, MatMenuModule, RouterLink, MatDividerModule],
+  imports: [SafeUrlPipe, MatTabsModule, MatIconModule, MatButtonModule, MatMenuModule, RouterLink, MatDividerModule],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
 })
@@ -24,7 +26,11 @@ export class ProfileComponent {
 
   profile = signal<any>({});
 
-  constructor(private _snackBar: MatSnackBar, private route: ActivatedRoute) {
+  ngOnDestroy() {
+    URL.revokeObjectURL(this.avatarSrc);
+  }
+
+  constructor(private sanitizer: DomSanitizer, private _snackBar: MatSnackBar, private route: ActivatedRoute) {
     effect(() => {
       if (this.identity.initialized()) {
         this.route.paramMap.subscribe((params) => {
@@ -41,8 +47,34 @@ export class ProfileComponent {
 
   async loadData() {}
 
+  avatarSrc: any = null;
+
   private async loadUserProfile(userId: string) {
     await this.profileService.openProfile(userId);
+
+    //let blob = new Blob([this.profileService.avatar()]);
+    // console.log(this.profileService.avatar());
+
+    // var imageUrl = URL.createObjectURL(this.profileService.avatar());
+    this.avatarSrc = this.profileService.avatar();
+
+    // const reader = new FileReader();
+    // reader.readAsDataURL(this.profileService.avatar());
+    // reader.onloadend = () => {
+    //   console.log(reader.result);
+    //   this.avatarSrc = reader.result;
+    //   // result includes identifier 'data:image/png;base64,' plus the base64 data
+    // };
+
+    //this.avatarSrc = this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(blob));
+
+    // const reader = new FileReader();
+    // reader.readAsDataURL(this.profileService.avatar());
+    // reader.onloadend = () => {
+    //   console.log(reader.result);
+    //   this.avatarSrc = reader.result;
+    //   // result includes identifier 'data:image/png;base64,' plus the base64 data
+    // };
   }
 
   openSnackBar(message: string) {

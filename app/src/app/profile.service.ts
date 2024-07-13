@@ -34,6 +34,8 @@ export class ProfileService {
     birthDate: '',
   });
 
+  avatar = signal<any>(null);
+
   constructor() {}
 
   async loadProfile(did: string) {
@@ -48,7 +50,6 @@ export class ProfileService {
       },
     });
 
-    console.log('Records in load profile:', response.records);
     let json = {};
     let recordEntry = null;
 
@@ -61,73 +62,128 @@ export class ProfileService {
       }
     }
 
+    var avatarRecord: any = null;
+    var avatar: any = null;
+
+    // If lookup is for current user, just query local DWN.
+    if (did == this.identity.did) {
+      const imageResponse = await this.identity.web5.dwn.records.query({
+        message: {
+          filter: {
+            protocol: profile.uri,
+            protocolPath: 'avatar',
+            dataFormat: 'image/png',
+          },
+        },
+      });
+
+      if (imageResponse.records && imageResponse.records.length > 0) {
+        const record = imageResponse.records[0];
+        avatarRecord = record;
+        let image = await record.data.text(); //.blob();
+        // this.avatar.set(image);
+
+        avatar = image;
+        // let image = await record.data.blob();
+        // this.current.update((profile) => ({ ...profile, profileImage: URL.createObjectURL
+      }
+    }
+
     // Returns a structure of both the record and the profile.
     return {
       record: recordEntry,
+      avatarRecord: avatarRecord,
+      avatar: avatar,
       profile: json,
     };
   }
 
   async openProfile(did: string) {
-    // If lookup is for current user, just query local DWN.
-    if (did == this.identity.did) {
-      const response = await this.identity.web5.dwn.records.query({
-        message: {
-          filter: {
-            protocol: profile.uri,
-            protocolPath: 'profile',
-            dataFormat: 'application/json',
-          },
-        },
-      });
+    const profile = await this.loadProfile(did);
 
-      if (response.records) {
-        response.records.forEach(async (record) => {
-          let json = await record.data.json();
-          console.log(json);
-          json = { ...json, id: record.dataCid, did: record.author, created: record.dateCreated };
-          this.current.set(json);
-          console.log(json);
-          //   this.records.update((records) => [...records, json]);
-        });
-      }
-    } else {
-      // Query for the external user's profile.
-      console.log('QUERY FOR USER PROFILE!!');
-      const response = await this.identity.web5.dwn.records.query({
-        from: did,
-        message: {
-          filter: {
-            protocol: profile.uri,
-            protocolPath: 'profile',
-            dataFormat: 'application/json',
-          },
-        },
-      });
+    this.avatar.set(profile.avatar);
+    this.current.set(profile.profile as Profile);
 
-      console.log('Records in open profile:', response.records);
+    // // If lookup is for current user, just query local DWN.
+    // if (did == this.identity.did) {
+    //   const imageResponse = await this.identity.web5.dwn.records.query({
+    //     message: {
+    //       filter: {
+    //         protocol: profile.uri,
+    //         protocolPath: 'avatar',
+    //         dataFormat: 'image/png',
+    //       },
+    //     },
+    //   });
 
-      if (response.records && response.records.length > 0) {
-        // Loop through returned records and print text from each
-        response.records.forEach(async (record) => {
-          let json = await record.data.json();
-          console.log(json);
+    //   console.log(imageResponse);
 
-          json = { ...json, id: record.dataCid, did: record.author, created: record.dateCreated };
+    //   if (imageResponse.records && imageResponse.records.length > 0) {
+    //     const record = imageResponse.records[0];
+    //     let image = await record.data.text(); //.blob();
+    //     console.log('Profile image from DWN:', image);
+    //     this.avatar.set(image);
+    //     // let image = await record.data.blob();
+    //     // this.current.update((profile) => ({ ...profile, profileImage: URL.createObjectURL
+    //   }
 
-          this.current.set(json);
+    //   const response = await this.identity.web5.dwn.records.query({
+    //     message: {
+    //       filter: {
+    //         protocol: profile.uri,
+    //         protocolPath: 'profile',
+    //         dataFormat: 'application/json',
+    //       },
+    //     },
+    //   });
 
-          console.log(json);
+    //   if (response.records) {
+    //     response.records.forEach(async (record) => {
+    //       let json = await record.data.json();
+    //       console.log(json);
+    //       json = { ...json, id: record.dataCid, did: record.author, created: record.dateCreated };
+    //       this.current.set(json);
+    //       console.log(json);
+    //       //   this.records.update((records) => [...records, json]);
+    //     });
+    //   }
+    // } else {
+    //   // Query for the external user's profile.
+    //   console.log('QUERY FOR USER PROFILE!!');
+    //   const response = await this.identity.web5.dwn.records.query({
+    //     from: did,
+    //     message: {
+    //       filter: {
+    //         protocol: profile.uri,
+    //         protocolPath: 'profile',
+    //         dataFormat: 'application/json',
+    //       },
+    //     },
+    //   });
 
-          //   this.records.update((records) => [...records, json]);
-        });
-      } else {
-        console.log('NOTHING FOUND!!');
-        this.current.set({ did: did, bio: '', profileImage: '', profileBanner: '', links: [], title: '', name: 'No profile found' });
-      }
+    //   console.log('Records in open profile:', response.records);
 
-      //   this.records.set([]);
-    }
+    //   if (response.records && response.records.length > 0) {
+    //     // Loop through returned records and print text from each
+    //     response.records.forEach(async (record) => {
+    //       let json = await record.data.json();
+    //       console.log(json);
+
+    //       json = { ...json, id: record.dataCid, did: record.author, created: record.dateCreated };
+
+    //       this.current.set(json);
+
+    //       console.log(json);
+
+    //       //   this.records.update((records) => [...records, json]);
+    //     });
+    //   } else {
+    //     console.log('NOTHING FOUND!!');
+    //     this.current.set({ did: did, bio: '', profileImage: '', profileBanner: '', links: [], title: '', name: 'No profile found' });
+    //   }
+
+    //   //   this.records.set([]);
+    // }
 
     // console.log('Open profile', did);
     // this.current.set({

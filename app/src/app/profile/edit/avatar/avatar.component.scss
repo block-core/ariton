@@ -1,0 +1,60 @@
+.avatar-container {
+  position: relative;
+  width: fit-content;
+}
+
+.box-shadow-avatar {
+  box-shadow: 0 10px 20px 20px #6c93001a;
+}
+
+.image-container {
+  height: 200px;
+  width: 200px;
+  z-index: 1;
+  border-radius: 50%;
+  background-color: #fff;
+  background-position: center;
+  background-size: cover;
+
+  &.avatar-placeholder {
+    background-image: url('~/public/avatar-placeholder.png');
+  }
+}
+
+.icon-wrapper {
+  position: absolute;
+  height: 40px;
+  width: 40px;
+  padding: 0.35rem;
+  background-color: var(--mat-fab-foreground-color);
+
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  right: 0;
+  top: 75%;
+  z-index: 2;
+  cursor: pointer;
+
+  &:hover {
+    transition: all 0.25s;
+    background-color: var(--mdc-circular-progress-active-indicator-color);
+  }
+
+  .icon {
+    // color: var(--mat-app-text-color);
+    color: var(--mdc-filled-button-label-text-color);
+  }
+
+  label {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  input[type='file'] {
+    display: none;
+  }
+}

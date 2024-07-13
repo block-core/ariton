@@ -1,5 +1,7 @@
 <div class="profile-header">
-  <img class="profile-header-icon" [src]="profileService.current().profileImage" />
+  <!-- <img [src]="avatarSrc | safeResourceUrl" alt="image" /> -->
+
+  <img class="profile-header-icon" [src]="avatarSrc | safeResourceUrl" />
   <div>
     <h1>
       {{ profileService.current().name }}

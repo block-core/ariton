@@ -1,0 +1,7 @@
+<div class="cropper-container">
+  <img id="image" height="600" [src]="sanitizedUrl" />
+  <div class="crop-actions">
+    <button style="margin-right: 1rem" mat-flat-button (click)="reset()">Reset</button>
+    <button color="primary" mat-flat-button (click)="crop()">Ok</button>
+  </div>
+</div>
