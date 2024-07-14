@@ -1,50 +1,61 @@
 .profile-header {
-    display: flex;
-    gap: 1em;
-    align-items: center;
+  display: flex;
+  gap: 1em;
+  align-items: center;
 }
 
 .profile-header-icon {
-    border-radius: 50%;
-    width: 128px;
+  border-radius: 50%;
+  width: 128px;
 }
 
 h1 span {
-    font-weight: 300;
+  font-weight: 300;
 }
 
 .spacer {
-    flex: 1 1 auto;
+  flex: 1 1 auto;
 }
 
 h1 {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 .example-tab-icon {
-    margin-right: 8px;
+  margin-right: 8px;
 }
 
 .profile-content {
-    margin-top: 0.4em;
+  margin-top: 0.4em;
 }
 
 .about-tab-container {
-    padding: 1em;
+  padding: 1em;
 }
 
 .profile-items {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .profile-items span {
-    display: inline-block;
-    margin-left: 0.2em;
-    margin-right: 1em;
+  display: inline-block;
+  margin-left: 0.2em;
+  margin-right: 1em;
 }
 
 .profile-bio {
-    margin-top: 1em;
+  margin-top: 1em;
+}
+
+.profile-header-text {
+  width: 100%;
+}
+
+@media (max-width: 959.98px) {
+  .profile-header {
+    gap: 0.2em;
+    flex-direction: column;
+  }
 }

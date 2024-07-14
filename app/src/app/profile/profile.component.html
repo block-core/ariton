@@ -2,12 +2,12 @@
   <!-- <img [src]="avatarSrc | safeResourceUrl" alt="image" /> -->
 
   <img class="profile-header-icon" [src]="avatarSrc | safeResourceUrl" />
-  <div>
+  <div class="profile-header-text">
     <h1>
       {{ profileService.current().name }}
       <span>({{ profileService.current().title }})</span>
     </h1>
-    <span>{{ profileService.current().did }}</span>
+    <span class="ellipsis">{{ profileService.current().did }}</span>
   </div>
   <div class="spacer"></div>
   <div>

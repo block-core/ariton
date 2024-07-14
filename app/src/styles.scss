@@ -144,3 +144,11 @@ h1 {
 //   justify-content: flex-end;
 //   margin-top: 1rem;
 // }
+
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block; /* Ensure the element is a block or inline-block */
+  width: 100%; /* Ensure the element has a defined width */
+}
