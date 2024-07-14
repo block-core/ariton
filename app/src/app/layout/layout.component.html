@@ -87,10 +87,10 @@
         </button>
         <mat-menu #menu="matMenu">
           <div class="account-menu-profile">
-            <img class="account-menu-profile-icon" src="https://ariton.app/assets/sondre.png" />
+            <img class="account-menu-profile-icon" [src]="profileService.avatar() | safeResourceUrl" />
             <div>
-              <h2>Name</h2>
-              &#64;alias<br />
+              <h2>{{ profileService.current().name }}</h2>
+              &#64;{{ profileService.current().title }}<br />
               {{ identity.did | did }}<br />
             </div>
           </div>

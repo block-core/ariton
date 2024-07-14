@@ -20,6 +20,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { Location } from '@angular/common';
 import { NavigationService } from '../navigation.service';
 import { DidPipe } from '../shared/pipes/did.pipe';
+import { ProfileService } from '../profile.service';
+import { SafeUrlPipe } from '../shared/pipes/safe-url.pipe';
 
 @Component({
   selector: 'app-layout',
@@ -27,6 +29,7 @@ import { DidPipe } from '../shared/pipes/did.pipe';
   styleUrl: './layout.component.scss',
   standalone: true,
   imports: [
+    SafeUrlPipe,
     MatToolbarModule,
     MatButtonModule,
     MatSidenavModule,
@@ -49,6 +52,8 @@ export class LayoutComponent {
   public identity = inject(IdentityService);
 
   public updateService = inject(NewVersionCheckerService);
+
+  public profileService = inject(ProfileService);
 
   public layout = inject(LayoutService);
 

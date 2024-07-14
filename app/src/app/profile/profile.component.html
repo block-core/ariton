@@ -1,13 +1,13 @@
 <div class="profile-header">
   <!-- <img [src]="avatarSrc | safeResourceUrl" alt="image" /> -->
 
-  <img class="profile-header-icon" [src]="avatarSrc | safeResourceUrl" />
+  <img class="profile-header-icon" [src]="profileService.avatarSelected() | safeResourceUrl" />
   <div class="profile-header-text">
     <h1>
-      {{ profileService.current().name }}
-      <span>({{ profileService.current().title }})</span>
+      {{ profileService.selected().name }}
+      <span>({{ profileService.selected().title }})</span>
     </h1>
-    <span class="ellipsis">{{ profileService.current().did }}</span>
+    <span class="ellipsis">{{ profileService.selected().did }}</span>
   </div>
   <div class="spacer"></div>
   <div>
@@ -48,13 +48,13 @@
 
       <div class="about-tab-container">
         <div class="profile-items">
-          <mat-icon>event</mat-icon><span>{{ profileService.current().birthDate }}</span> <mat-icon>place</mat-icon
-          ><span>{{ profileService.current().location }}</span> <mat-icon>event</mat-icon><span>{{ profileService.current().status }}</span>
-          <mat-icon>link</mat-icon><span>{{ profileService.current().links }}</span>
+          <mat-icon>event</mat-icon><span>{{ profileService.selected().birthDate }}</span> <mat-icon>place</mat-icon
+          ><span>{{ profileService.selected().location }}</span> <mat-icon>event</mat-icon><span>{{ profileService.selected().status }}</span>
+          <mat-icon>link</mat-icon><span>{{ profileService.selected().links }}</span>
         </div>
 
         <div class="profile-bio">
-          {{ profileService.current().bio }}
+          {{ profileService.selected().bio }}
         </div>
       </div>
     </mat-tab>

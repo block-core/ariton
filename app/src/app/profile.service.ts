@@ -34,7 +34,22 @@ export class ProfileService {
     birthDate: '',
   });
 
+  selected = signal<Profile>({
+    did: '',
+    name: '',
+    title: '',
+    bio: '',
+    profileImage: '',
+    profileBanner: '',
+    status: '',
+    location: '',
+    links: [],
+    birthDate: '',
+  });
+
   avatar = signal<any>(null);
+
+  avatarSelected = signal<any>(null);
 
   constructor() {}
 
@@ -101,8 +116,13 @@ export class ProfileService {
   async openProfile(did: string) {
     const profile = await this.loadProfile(did);
 
-    this.avatar.set(profile.avatar);
-    this.current.set(profile.profile as Profile);
+    this.avatarSelected.set(profile.avatar);
+    this.selected.set(profile.profile as Profile);
+
+    if (did == this.identity.did) {
+      this.avatar.set(profile.avatar);
+      this.current.set(profile.profile as Profile);
+    }
 
     // // If lookup is for current user, just query local DWN.
     // if (did == this.identity.did) {
