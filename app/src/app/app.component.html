@@ -7,9 +7,9 @@
   <img class="loading-logo" src="ariton-icon-dark.svg" />
 
   @if(appService.hasStateBeenSet()) { @if (appService.firstTime()) {
-  <div>Creating your account... please wait...</div>
+  <div>Creating account... please wait...</div>
   } @else {
-  <div>Loading your account... please wait...</div>
+  <div>Loading... please wait...</div>
   } } @else {
   <div class="new-user-actions">
     @if(restore()) {

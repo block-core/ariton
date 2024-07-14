@@ -11,46 +11,54 @@ import { Web5 } from '@web5/api';
 import { VerifiableCredential } from '@web5/credentials';
 import { IdentityService } from '../identity.service';
 import { RouterModule } from '@angular/router';
+import { AppService } from '../app.service';
 
 @Component({
-    selector: 'app-dashboard',
-    templateUrl: './dashboard.component.html',
-    styleUrl: './dashboard.component.scss',
-    standalone: true,
-    imports: [AsyncPipe, MatGridListModule, MatMenuModule, MatIconModule, MatButtonModule, MatCardModule, RouterModule],
+  selector: 'app-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrl: './dashboard.component.scss',
+  standalone: true,
+  imports: [AsyncPipe, MatGridListModule, MatMenuModule, MatIconModule, MatButtonModule, MatCardModule, RouterModule],
 })
 export class DashboardComponent {
-    private breakpointObserver = inject(BreakpointObserver);
+  private breakpointObserver = inject(BreakpointObserver);
 
-    constructor(private identity: IdentityService) {}
+  appService = inject(AppService);
 
-    async ngOnInit() {
-        // console.log('Connecting to Web5...');
-        // const { web5, did: myDid } = await Web5.connect();
-        // console.log(myDid);
-        // console.log(web5);
-        // this.identity.web5 = web5;
-        // this.identity.did = myDid;
-    }
+  constructor(private identity: IdentityService) {}
 
-    /** Based on the screen size, switch from standard to one column per row */
-    cards = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
-        map(({ matches }) => {
-            if (matches) {
-                return [
-                    { title: 'Card 1', cols: 1, rows: 1 },
-                    { title: 'Card 2', cols: 1, rows: 1 },
-                    { title: 'Card 3', cols: 1, rows: 1 },
-                    { title: 'Card 4', cols: 1, rows: 1 },
-                ];
-            }
+  async ngOnInit() {
+    // console.log('Connecting to Web5...');
+    // const { web5, did: myDid } = await Web5.connect();
+    // console.log(myDid);
+    // console.log(web5);
+    // this.identity.web5 = web5;
+    // this.identity.did = myDid;
+  }
 
-            return [
-                { title: 'Card 1', cols: 2, rows: 1 },
-                { title: 'Card 2', cols: 1, rows: 1 },
-                { title: 'Card 3', cols: 1, rows: 2 },
-                { title: 'Card 4', cols: 1, rows: 1 },
-            ];
-        }),
-    );
+  hideIntroduction() {
+    this.appService.state().hidden.introduction = true;
+    this.appService.saveState();
+  }
+
+  /** Based on the screen size, switch from standard to one column per row */
+  cards = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
+    map(({ matches }) => {
+      if (matches) {
+        return [
+          { title: 'Card 1', cols: 1, rows: 1 },
+          { title: 'Card 2', cols: 1, rows: 1 },
+          { title: 'Card 3', cols: 1, rows: 1 },
+          { title: 'Card 4', cols: 1, rows: 1 },
+        ];
+      }
+
+      return [
+        { title: 'Card 1', cols: 2, rows: 1 },
+        { title: 'Card 2', cols: 1, rows: 1 },
+        { title: 'Card 3', cols: 1, rows: 2 },
+        { title: 'Card 4', cols: 1, rows: 1 },
+      ];
+    }),
+  );
 }

@@ -9,6 +9,7 @@ import { ProtocolService } from './protocol.service';
 export interface AppState {
   selectedAccount: string;
   backupConfirmed?: boolean;
+  hidden: any;
 }
 
 export interface Account {
@@ -34,7 +35,7 @@ export class AppService {
 
   protocol = inject(ProtocolService);
 
-  state = signal<AppState>({ selectedAccount: '' });
+  state = signal<AppState>({ selectedAccount: '', hidden: {} });
 
   account = signal<Account>({ did: '', recoveryPhrase: '', password: '', passwordHash: '' });
 
@@ -101,9 +102,14 @@ export class AppService {
     if (!state) {
       state = {
         selectedAccount: '',
+        hidden: {},
       };
 
       this.firstTime.set(true);
+    }
+
+    if (state.hidden == null) {
+      state.hidden = {};
     }
 
     let accounts = this.storage.read('accounts') as any[];
