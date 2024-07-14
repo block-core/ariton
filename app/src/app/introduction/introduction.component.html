@@ -5,32 +5,35 @@
 <p>Ariton is different than your average app. <strong>You don't need to register to sign up</strong>, Ariton has already made a new account for you.</p>
 
 <p>
-    If you want to keep your account, you can <strong>take a backup</strong> of it. This will allow you to use your account on other devices, and if you delete
-    your browser data, you can restore it.
+  If you want to keep your account, you can <strong>take a backup</strong> of it. This will allow you to use your account on other devices, and if you delete
+  your browser data, you can restore it.
 </p>
 
 <p>
-    We also suggest you start protecting your account by <strong>securing it with your personal password</strong>. Right now anyone who have access to your
-    device, can access your Ariton account.
+  We also suggest you start protecting your account by <strong>securing it with your personal password</strong>. Right now anyone who have access to your
+  device, can access your Ariton account.
 </p>
 
 <p>
-    <button mat-stroked-button [routerLink]="['/communities']">Skip and jump into the app</button>
+  <button mat-stroked-button [routerLink]="['/communities']">Skip and jump into the app</button>
 
-    @if (!reset()) {
-    <button mat-flat-button [routerLink]="['/account/password']">Set a password</button>
-    } @else {
-    <button mat-flat-button [routerLink]="['/account/password']"><s>Set a password</s></button>
-    } @if (!backup()) {
-    <button mat-flat-button [routerLink]="['/account/backup']">Backup your account</button>
-    } @else {
-    <button mat-flat-button [routerLink]="['/account/backup']"><s>Backup your account</s></button>
-    }
+  @if (!reset()) {
+  <button mat-flat-button [routerLink]="['/account/password']">Set a password</button>
+  } @else {
+  <button mat-flat-button [routerLink]="['/account/password']"><s>Set a password</s></button>
+  } @if (!backup()) {
+  <button mat-flat-button [routerLink]="['/account/backup']">Backup your account</button>
+  } @else {
+  <button mat-flat-button [routerLink]="['/account/backup']"><s>Backup your account</s></button>
+  }
 </p>
+
+<!--
+Disable until restore is implemented in web5 sdk.
 
 <p>Existing user? Then you can restore your account, if you have a backup.</p>
 <button mat-flat-button [routerLink]="['/account/create/restore']">Restore your account</button>
-
+-->
 <mat-divider></mat-divider>
 
 <mat-card class="warning"> Remember that, during the alpha phase, all data entered into Ariton will be wiped and lost at any time. </mat-card>
