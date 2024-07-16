@@ -32,8 +32,8 @@ export class ProfileEditComponent {
   data = signal<any>({});
 
   form = this.fb.group({
-    name: [null, Validators.required],
-    title: [null],
+    name: null,
+    title: [null, Validators.required],
     status: [null],
     bio: [null],
     location: [null],
@@ -130,17 +130,41 @@ export class ProfileEditComponent {
   }
 
   async onSubmit() {
-    // Don't do anything on submit right now, simply redirect to mock-up community page.
-    // const formData = {
-    //   name: this.form.value.name,
-    //   title: this.form.value.title,
-    //   bio: this.form.value.bio,
-    //   status: this.form.value.status,
-    //   location: this.form.value.location,
-    // };
+    const formData = {
+      name: this.form.value.name,
+      title: this.form.value.title,
+      bio: this.form.value.bio,
+      status: this.form.value.status,
+      location: this.form.value.location,
+      // birthDate: this.form.value.birthDate,
+      // avatar: this.form.value.avatar,
+      // hero: this.form.value.hero,
+    };
 
-    // // If record exists, update it.
-    // if (this.data().record) {
+    // If record exists, update it.
+    if (this.data().record) {
+      const { status, record } = await this.data().record.update({
+        published: true,
+        data: formData,
+      });
+
+      console.log('Update profile status:', status, record);
+    } else {
+      const { status, record } = await this.identity.web5.dwn.records.create({
+        data: formData,
+        message: {
+          // published: true, /* published ignores the protocol permissions. */
+          protocol: profile.uri,
+          protocolPath: 'profile',
+          dataFormat: 'application/json',
+        },
+      });
+
+      console.log('Save profile status:', status, record);
+    }
+
+    // If avatar record exists, update it.
+    // if () {
     //   const { status, record } = await this.data().record.update({
     //     published: true,
     //     data: formData,
@@ -148,23 +172,11 @@ export class ProfileEditComponent {
 
     //   console.log('Update profile status:', status, record);
     // } else {
-    //   const { status, record } = await this.identity.web5.dwn.records.create({
-    //     data: formData,
-    //     message: {
-    //       // published: true, /* published ignores the protocol permissions. */
-    //       protocol: profile.uri,
-    //       protocolPath: 'profile',
-    //       dataFormat: 'application/json',
-    //     },
-    //   });
-
-    //   console.log('Save profile status:', status, record);
-    // }
 
     // TODO: Check if the avatar has changed before uploading. Don't upload if it hasn't.
-    // await this.upload(this.form.controls.avatar.value, this.data().avatarRecord);
+    await this.upload(this.form.controls.avatar.value, this.data().avatarRecord);
     // }
 
-    this.router.navigate(['/communities', this.identity.did]);
+    this.router.navigate(['/profile', this.identity.did]);
   }
 }
