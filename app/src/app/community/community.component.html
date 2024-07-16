@@ -126,6 +126,12 @@
       <mat-icon class="tab-icon">photo_library</mat-icon>
       <span class="hide-small">Media</span>
     </ng-template>
+
+    <div class="media responsive-grid">
+      <mat-card *ngFor="let photo of photos()">
+        <img class="media-thumbnail" mat-card-image [src]="photo.thumbnail" />
+      </mat-card>
+    </div>
   </mat-tab>
   <mat-tab>
     <ng-template mat-tab-label>
