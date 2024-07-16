@@ -5,7 +5,9 @@
   <div class="profile-header-text">
     <h1>
       {{ profileService.selected().name }}
+      @if(profileService.selected().title) {
       <span>({{ profileService.selected().title }})</span>
+      }
     </h1>
     <span class="ellipsis">{{ profileService.selected().did }}</span>
   </div>

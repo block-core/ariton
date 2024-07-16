@@ -32,15 +32,12 @@ export class ProfileEditComponent {
   data = signal<any>({});
 
   form = this.fb.group({
-    name: null,
-    title: [null, Validators.required],
-    status: [null, Validators.required],
-    bio: [null, Validators.required],
-    location: [null, Validators.required],
-    state: [null, Validators.required],
+    name: [null, Validators.required],
+    title: [null],
+    status: [null],
+    bio: [null],
+    location: [null],
     avatar: [''],
-    postalCode: [null, Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(5)])],
-    shipping: ['free', Validators.required],
     links: this.fb.array([this.fb.control('')]),
   });
 
@@ -95,6 +92,11 @@ export class ProfileEditComponent {
 
   // Create a blob record
   async upload(imageBase64: any, record: any) {
+    if (!imageBase64) {
+      console.log('No image to upload.');
+      return;
+    }
+
     console.log(record);
     // const blob = new Blob(event.currentTarget.files, { type: 'image/png' });
     if (record) {
