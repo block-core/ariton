@@ -1,1 +1,109 @@
-<p>create works!</p>
+<form [formGroup]="form" novalidate (ngSubmit)="onSubmit()">
+  <app-avatar formControlName="avatar"></app-avatar>
+
+  <mat-card class="form-card">
+    <mat-card-content>
+      <mat-form-field class="full-width">
+        <mat-label>Community name</mat-label>
+        <input matInput #name placeholder="Community name" maxlength="200" formControlName="name" />
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-label>Community type</mat-label>
+        <mat-select formControlName="type">
+          @for (type of communityTypes; track type) {
+          <mat-option [value]="type.type">{{ type.name }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <!-- <mat-form-field class="full-width">
+        <mat-label>Title</mat-label>
+        <input matInput #title placeholder="Title" formControlName="title" />
+        @if (form.controls['title'].hasError('required')) {
+        <mat-error>Title is <strong>required</strong></mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-label>Status</mat-label>
+        <input matInput placeholder="Status" formControlName="status" />
+        @if (form.controls['status'].hasError('required')) {
+        <mat-error>Status is <strong>required</strong></mat-error>
+        }
+      </mat-form-field> -->
+
+      <mat-form-field class="full-width">
+        <mat-label>About</mat-label>
+        <textarea maxlength="300" matInput #bio placeholder="About" formControlName="bio"></textarea>
+        @if (form.controls['bio'].hasError('required')) {
+        <mat-error>About is <strong>required</strong></mat-error>
+        }
+        <mat-hint align="end">{{ bio.value.length }} / 300</mat-hint>
+      </mat-form-field>
+
+      <!-- <mat-form-field class="full-width">
+        <mat-label>Location</mat-label>
+        <input matInput placeholder="Location" formControlName="location" />
+        @if (form.controls['location'].hasError('required')) {
+        <mat-error>Location is <strong>required</strong></mat-error>
+        }
+        <mat-icon matSuffix>place</mat-icon>
+      </mat-form-field> -->
+
+      <!--
+            <mat-form-field class="full-width">
+           
+                <mat-select placeholder="State" formControlName="state">
+                @for (state of states; track state) {
+                  <mat-option [value]="state.abbreviation">{{ state.name }}</mat-option>
+                }
+              </mat-select>
+              @if (addressForm.controls['state'].hasError('required')) {
+                <mat-error>State is <strong>required</strong></mat-error>
+              }
+            </mat-form-field>-->
+
+      <!--
+        <div class="row">
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput #postalCode maxlength="5" placeholder="Postal Code" type="number" formControlName="postalCode">
+              <mat-hint align="end">{{postalCode.value.length}} / 5</mat-hint>
+            </mat-form-field>
+          </div>
+        </div>-->
+
+      <!-- In your component.html -->
+      <!-- Step 5: Update HTML to display dynamic link inputs -->
+      <!--<div formArrayName="links" *ngFor="let link of links.controls; let i = index">-->
+      <div formArrayName="owners">
+        @for (owner of owners.controls; track owner; let i = $index) {
+        <div class="link-input">
+          <mat-form-field class="full-width">
+            <input matInput type="text" [formControlName]="i" placeholder="Owner (DID)" />
+          </mat-form-field>
+          <!-- <button mat-stroked-button type="button" (click)="removeLink(i)">Remove</button> -->
+          <button mat-icon-button type="button" (click)="removeOwner(i)"><mat-icon>clear</mat-icon></button>
+        </div>
+        }
+      </div>
+      <button mat-stroked-button type="button" (click)="addOwner()"><mat-icon>add_link</mat-icon> Add Owner</button>
+
+      <!--
+        <div class="row">
+          <div class="col">
+            <mat-radio-group formControlName="shipping">
+              <mat-radio-button value="free">Free Shipping</mat-radio-button>
+              <mat-radio-button value="priority">Priority Shipping</mat-radio-button>
+              <mat-radio-button value="nextday">Next Day Shipping</mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div>-->
+    </mat-card-content>
+    <mat-card-actions align="end">
+      <button mat-button type="button" (click)="back()">Cancel</button>
+      <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid">Save</button>
+    </mat-card-actions>
+  </mat-card>
+</form>

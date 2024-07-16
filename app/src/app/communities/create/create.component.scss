@@ -1,0 +1,30 @@
+.full-width {
+  width: 100%;
+}
+
+.form-card {
+  margin-top: 1em;
+}
+
+.link-input {
+  display: flex;
+  align-items: baseline;
+}
+
+.link-input button {
+  margin-left: 0.4em;
+}
+
+mat-card-actions button {
+  margin-left: 1em;
+}
+
+form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+@media (max-width: 959.98px) {
+}
