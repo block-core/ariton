@@ -1,48 +1,58 @@
 import { Injectable, effect, signal } from '@angular/core';
 
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root',
 })
 export class LayoutService {
-    constructor() {
-        effect(() => {
-            const element = document.querySelector('.sidenav-scroll-wrapper') as any;
-            if (element) {
-                if (this.scrolling()) {
-                    element.style.overflow = 'auto';
-                } else {
-                    element.style.overflow = 'hidden';
-                }
-            }
+  constructor() {
+    effect(() => {
+      const element = document.querySelector('.sidenav-scroll-wrapper') as any;
+      if (element) {
+        if (this.scrolling()) {
+          element.style.overflow = 'auto';
+        } else {
+          element.style.overflow = 'hidden';
+        }
+      }
 
-            const element2 = document.querySelector('.sidenav-content') as any;
-            if (element2) {
-                if (this.scrolling()) {
-                    element2.style.overflow = 'auto';
-                } else {
-                    element2.style.overflow = 'hidden';
-                }
-            }
-        });
-    }
+      const element2 = document.querySelector('.sidenav-content') as any;
+      if (element2) {
+        if (this.scrolling()) {
+          element2.style.overflow = 'auto';
+        } else {
+          element2.style.overflow = 'hidden';
+        }
+      }
+    });
+  }
 
-    scrolling = signal<boolean>(true);
+  scrolling = signal<boolean>(true);
 
-    navigation = signal<boolean>(false);
+  navigation = signal<boolean>(false);
 
-    enableScrolling() {
-        this.scrolling.set(true);
-    }
+  actions = signal<any[]>([]);
 
-    disableScrolling() {
-        this.scrolling.set(false);
-    }
+  addAction(action: any) {
+    this.actions.update((actions) => [...actions, action]);
+  }
 
-    enableNavigation() {
-        this.navigation.set(true);
-    }
+  resetActions() {
+    this.actions.set([]);
+  }
 
-    disableNavigation() {
-        this.navigation.set(false);
-    }
+  enableScrolling() {
+    this.scrolling.set(true);
+  }
+
+  disableScrolling() {
+    this.scrolling.set(false);
+  }
+
+  enableNavigation() {
+    this.navigation.set(true);
+  }
+
+  disableNavigation() {
+    this.navigation.set(false);
+  }
 }

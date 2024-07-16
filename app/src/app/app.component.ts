@@ -49,6 +49,7 @@ export class AppComponent {
       if (event instanceof NavigationStart) {
         // Navigation started
         this.layout.enableScrolling();
+        this.layout.resetActions();
       } else if (event instanceof NavigationEnd) {
         // Navigation ended
         //this.layout.enableScrolling();

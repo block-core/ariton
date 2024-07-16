@@ -34,6 +34,10 @@
       <button mat-icon-button (click)="navigateBack()">
         <mat-icon>arrow_back</mat-icon>
       </button>
+      } @for(action of layout.actions(); track action) {
+      <button [title]="action.name" mat-icon-button (click)="action.action()">
+        <mat-icon>{{ action.icon }}</mat-icon>
+      </button>
       }
 
       <span class="toolbar-spacer"></span>

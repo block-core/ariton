@@ -25,6 +25,12 @@ export const routes: Routes = [
     data: { icon: 'diversity_2' },
   },
   {
+    path: 'communities/create',
+    loadComponent: () => import('./communities//create/create.component').then((c) => c.CreateComponent),
+    title: 'Communities',
+    data: { hide: true, icon: 'diversity_2' },
+  },
+  {
     path: 'marketplace',
     loadComponent: () => import('./marketplace/marketplace.component').then((c) => c.MarketplaceComponent),
     title: 'Marketplace',
@@ -190,7 +196,7 @@ export const routes: Routes = [
     path: 'drag-drop',
     loadComponent: () => import('./drag-drop/drag-drop.component').then((c) => c.DragDropComponent),
     title: 'Drag-Drop',
-    data: { hide: false, icon: 'folder' },
+    data: { hide: true, icon: 'folder' },
   },
   {
     path: 'help',
