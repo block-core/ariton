@@ -79,6 +79,47 @@
       <mat-icon class="tab-icon">event</mat-icon>
       <span class="hide-small">Events</span>
     </ng-template>
+
+    <mat-card class="events-card">
+      <mat-card-header>
+        <mat-card-title>Upcoming events</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-list>
+          <mat-list-item>
+            <mat-icon matListItemIcon>event</mat-icon>
+            <div matListItemTitle>Summer Party 2024</div>
+            <div matListItemLine>{{ '2024-07-16 10:00' | date }}</div>
+          </mat-list-item>
+          <mat-list-item>
+            <mat-icon matListItemIcon>event</mat-icon>
+            <div matListItemTitle>Workshop #5</div>
+            <div matListItemLine>{{ '2024-07-30 10:00' | date }}</div>
+          </mat-list-item>
+        </mat-list>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button>SEE MORE</button>
+      </mat-card-actions>
+    </mat-card>
+
+    <mat-card class="events-card">
+      <mat-card-header>
+        <mat-card-title>Past events</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-list>
+          <mat-list-item>
+            <mat-icon matListItemIcon>event</mat-icon>
+            <div matListItemTitle>Workshop #4</div>
+            <div matListItemLine>{{ '2024-07-30 10:00' | date }}</div>
+          </mat-list-item>
+        </mat-list>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button>SEE MORE</button>
+      </mat-card-actions>
+    </mat-card>
   </mat-tab>
   <mat-tab>
     <ng-template mat-tab-label>
