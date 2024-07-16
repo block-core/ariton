@@ -11,24 +11,30 @@ schema: https://schema.ariton.app/community/entry
 
 ```json
 {
-    "name": "Knitting Patterns United",
-    "description": "We share knitting patterns and ideas",
-    "icon": "https://ariton.app/assets/ariton-favicon.png",
-    "owner": "did:web5:0x1234567890abcdef"
+  "name": "Knitting Patterns United",
+  "description": "We share knitting patterns and ideas",
+  "icon": "https://ariton.app/assets/ariton-favicon.png",
+  "owner": "did:web5:0x1234567890abcdef"
 }
 ```
 
 ```json
 {
-    "name": "Gathering of Tribes",
-    "description": "Community that connects tribes",
-    "icon": "https://ariton.app/assets/ariton-favicon.png",
-    "owner": "did:web5:0x1234567890abcdef",
-    "requirements": {
-        "age": 18
-    }
+  "name": "Gathering of Tribes",
+  "description": "Community that connects tribes",
+  "icon": "https://ariton.app/assets/ariton-favicon.png",
+  "owner": "did:web5:0x1234567890abcdef",
+  "requirements": {
+    "age": 18
+  }
 }
 ```
+
+### Gated Access
+
+It should be possible for the owner of a community, to make it a gated community that will require the members to provide a Verifiable Credential in order to join the community. The owner of the community can choose which Verifiable Credential is required, by selecting the authority (DID) and the type of credential.
+
+Examples of Verifiable Credentials could be one that proves age, one that proves pre-paid access, one that proves membership in some external source, etc.
 
 ## Registries
 
@@ -46,21 +52,21 @@ Examples:
 
 ```json
 {
-    "name": "Blockchain Social Network (BSN)",
-    "description": "Stellar blockchain data registry",
-    "url": "https://ariton.app",
-    "icon": "https://ariton.app/assets/ariton-favicon.png",
-    "owner": "did:web5:0x1234567890abcdef"
+  "name": "Blockchain Social Network (BSN)",
+  "description": "Stellar blockchain data registry",
+  "url": "https://ariton.app",
+  "icon": "https://ariton.app/assets/ariton-favicon.png",
+  "owner": "did:web5:0x1234567890abcdef"
 }
 ```
 
 ```json
 {
-    "name": "Terra Registry",
-    "description": "Registry of free territories",
-    "url": "https://terrareg",
-    "icon": "https://ariton.app/assets/ariton-favicon.png",
-    "owner": "did:web5:0x1234567890abcdef"
+  "name": "Terra Registry",
+  "description": "Registry of free territories",
+  "url": "https://terrareg",
+  "icon": "https://ariton.app/assets/ariton-favicon.png",
+  "owner": "did:web5:0x1234567890abcdef"
 }
 ```
 
@@ -72,9 +78,9 @@ schema: https://schema.ariton.app/registry/config
 
 ```json
 {
-    "layout": "grid",
-    "columns": 3,
-    "sort": "date"
+  "layout": "grid",
+  "columns": 3,
+  "sort": "date"
 }
 ```
 
@@ -96,11 +102,11 @@ schema: https://schema.ariton.app/app/entry
 
 ```json
 {
-    "name": "Chat",
-    "description": "Basic Chat App",
-    "icon": "https://ariton.app/assets/ariton-favicon.png",
-    "url": "https://apps.ariton.app/chat",
-    "owner": "did:web5:0x1234567890abcdef"
+  "name": "Chat",
+  "description": "Basic Chat App",
+  "icon": "https://ariton.app/assets/ariton-favicon.png",
+  "url": "https://apps.ariton.app/chat",
+  "owner": "did:web5:0x1234567890abcdef"
 }
 ```
 
@@ -112,18 +118,18 @@ Apps will also have a protocol that must be installed on the DWN of the user. Th
 
 ### Proposed Apps
 
--   **Tasks**: A simple task manager that allows shared items, either in read-only mode or collaboration mode.
--   **Recipies**: Collect and share food recipies.
--   **Calendar**: A simple calendar app that allows shared events.
--   **Media Player**: This will integrate into the window frame with media playback controls.
--   **Video Chat**: A simple video chat app that allows for group video calls.
--   **Marketplace**: A simple marketplace app that allows users to buy and sell goods and services.
--   **Data Editor**: A generic data editor that allows users to manage their data.
--   **Chat**: A simple chat app that allows for group chat.
--   **Forum**: A simple forum app that allows for threaded discussions.
--   **Blog**: A simple blog app that allows for blog posts.
--   **Game**: Simple games such as Tic-Tac-Toe style games, chess and others could be implemented.
--   **Map**: A simple map app that allows for viewing maps, can be used to display locations of interest (guides, hiking trails, etc) or land areas (Terra Registry).
+- **Tasks**: A simple task manager that allows shared items, either in read-only mode or collaboration mode.
+- **Recipies**: Collect and share food recipies.
+- **Calendar**: A simple calendar app that allows shared events.
+- **Media Player**: This will integrate into the window frame with media playback controls.
+- **Video Chat**: A simple video chat app that allows for group video calls.
+- **Marketplace**: A simple marketplace app that allows users to buy and sell goods and services.
+- **Data Editor**: A generic data editor that allows users to manage their data.
+- **Chat**: A simple chat app that allows for group chat.
+- **Forum**: A simple forum app that allows for threaded discussions.
+- **Blog**: A simple blog app that allows for blog posts.
+- **Game**: Simple games such as Tic-Tac-Toe style games, chess and others could be implemented.
+- **Map**: A simple map app that allows for viewing maps, can be used to display locations of interest (guides, hiking trails, etc) or land areas (Terra Registry).
 
 ## Marketplace
 
@@ -135,9 +141,9 @@ schema: https://schema.ariton.app/marketplace/entry
 
 ```json
 {
-    "name": "Square",
-    "description": "Random items",
-    "icon": "sofa"
+  "name": "Square",
+  "description": "Random items",
+  "icon": "sofa"
 }
 ```
 
@@ -151,10 +157,10 @@ schema: https://schema.ariton.app/data/entry
 
 ```json
 {
-    "name": "My Data",
-    "description": "My data",
-    "icon": "https://ariton.app/assets/ariton-favicon.png",
-    "owner": "did:web5:0x1234567890abcdef"
+  "name": "My Data",
+  "description": "My data",
+  "icon": "https://ariton.app/assets/ariton-favicon.png",
+  "owner": "did:web5:0x1234567890abcdef"
 }
 ```
 
