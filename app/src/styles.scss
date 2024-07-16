@@ -120,6 +120,10 @@ h1 {
   overscroll-behavior: contain;
 }
 
+.tab-icon {
+  margin-right: 8px;
+}
+
 .type {
   margin-bottom: 1em;
 }
@@ -151,4 +155,10 @@ h1 {
   text-overflow: ellipsis;
   display: block; /* Ensure the element is a block or inline-block */
   width: 100%; /* Ensure the element has a defined width */
+}
+
+@media (max-width: 959.98px) {
+  .hide-small {
+    display: none;
+  }
 }
