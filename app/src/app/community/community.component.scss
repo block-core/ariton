@@ -1,3 +1,20 @@
 .discussion-card {
   margin-top: 1em;
 }
+
+.favorites {
+  margin-top: 1em;
+  grid-column: span 2;
+}
+
+.favorites-icon {
+  border-radius: 50%;
+  max-height: 64px;
+  margin-right: 0.1em;
+  border: 2px solid transparent;
+}
+
+.favorites-icon:hover {
+  border: 2px solid white;
+  cursor: pointer;
+}
