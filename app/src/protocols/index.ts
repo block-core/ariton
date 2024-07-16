@@ -1,5 +1,6 @@
 import { protocolDefinition as profileDefinition } from './profile';
 import { protocolDefinition as socialDefinition } from './social';
+import { protocolDefinition as registryDefinition } from './registry';
 import { protocolDefinition as anyoneCollaborateDefinition } from './anyone-collaborate';
 import { protocolDefinition as chatDefinition } from './chat';
 import { protocolDefinition as freeForAllDefinition } from './free-for-all';
@@ -14,6 +15,11 @@ export const profile = {
 export const social = {
   uri: socialDefinition.protocol,
   definition: socialDefinition,
+};
+
+export const registry = {
+  uri: registryDefinition.protocol,
+  definition: registryDefinition,
 };
 
 export const byUri = {
