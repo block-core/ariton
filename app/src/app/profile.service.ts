@@ -113,6 +113,7 @@ export class ProfileService {
     };
   }
 
+  /** Load and sets the profile to selected and current (if same as logged on user) */
   async openProfile(did: string) {
     const profile = await this.loadProfile(did);
 

@@ -5,6 +5,7 @@ import { IdentityService } from './identity.service';
 import { Web5ConnectResult } from '@web5/api';
 import * as packageInfo from '../../package.json';
 import { ProtocolService } from './protocol.service';
+import { ProfileService } from './profile.service';
 
 export interface AppState {
   selectedAccount: string;
@@ -32,6 +33,8 @@ export class AppService {
   crypto = inject(CryptoService);
 
   identity = inject(IdentityService);
+
+  profile = inject(ProfileService);
 
   protocol = inject(ProtocolService);
 
@@ -183,6 +186,9 @@ export class AppService {
     //   this.storage.save('password', password);
     //   console.log('Password created');
     // }
+
+    // Load the user profile.
+    await this.profile.openProfile(this.account().did);
 
     this.state.set(state);
 
