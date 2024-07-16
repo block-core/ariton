@@ -1,9 +1,7 @@
-<h1>Edit your profile</h1>
-
 <form [formGroup]="form" novalidate (ngSubmit)="onSubmit()">
   <app-avatar formControlName="avatar"></app-avatar>
 
-  <mat-card class="shipping-card">
+  <mat-card class="form-card">
     <mat-card-content>
       <mat-form-field class="full-width">
         <mat-label>Name</mat-label>
@@ -73,20 +71,15 @@
       <!--<div formArrayName="links" *ngFor="let link of links.controls; let i = index">-->
       <div formArrayName="links">
         @for (link of links.controls; track link; let i = $index) {
-        <!--<div [formGroupName]="i">-->
-
         <div class="link-input">
           <mat-form-field class="full-width">
             <input matInput type="text" [formControlName]="i" placeholder="Enter link (URL)" />
           </mat-form-field>
-          <button mat-stroked-button type="button" (click)="removeLink(i)">Remove</button>
+          <!-- <button mat-stroked-button type="button" (click)="removeLink(i)">Remove</button> -->
           <button mat-icon-button type="button" (click)="removeLink(i)"><mat-icon>clear</mat-icon></button>
         </div>
-
-        <!--</div>-->
         }
       </div>
-      <!--</div>-->
       <button mat-stroked-button type="button" (click)="addLink()"><mat-icon>add_link</mat-icon> Add Link</button>
 
       <!--

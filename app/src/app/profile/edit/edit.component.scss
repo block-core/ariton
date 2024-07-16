@@ -2,28 +2,8 @@
   width: 100%;
 }
 
-.shipping-card {
-  min-width: 120px;
-  margin: 20px auto;
-}
-
-.mat-radio-button {
-  display: block;
-  margin: 5px 0;
-}
-
-.row {
-  display: flex;
-  flex-direction: row;
-}
-
-.col {
-  flex: 1;
-  margin-right: 20px;
-}
-
-.col:last-child {
-  margin-right: 0;
+.form-card {
+  margin-top: 1em;
 }
 
 .link-input {
@@ -44,26 +24,7 @@ form {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  min-width: 500px;
-  width: 100%;
+}
 
-  .row {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-
-    & > * {
-      width: 100%;
-      margin-right: 1rem;
-    }
-
-    :last-of-type {
-      margin-right: 0rem;
-    }
-  }
-
-  .margin-top {
-    margin-top: 3rem;
-  }
+@media (max-width: 959.98px) {
 }
