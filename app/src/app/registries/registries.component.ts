@@ -9,13 +9,14 @@ import { Router } from '@angular/router';
 import { IdentityService } from '../identity.service';
 import { registry } from '../../protocols';
 import { CommonModule } from '@angular/common';
+import { DidPipe } from '../shared/pipes/did.pipe';
 
 @Component({
   selector: 'app-registries',
   templateUrl: './registries.component.html',
   styleUrl: './registries.component.scss',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatCardModule, MatTableModule, MatPaginatorModule, MatSortModule],
+  imports: [DidPipe, CommonModule, MatButtonModule, MatCardModule, MatTableModule, MatPaginatorModule, MatSortModule],
 })
 export class RegistriesComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -36,6 +37,21 @@ export class RegistriesComponent implements AfterViewInit {
         await this.load();
       }
     });
+  }
+
+  async deleteData() {
+    for (const record of this.records()) {
+      // Delete all records with the specified protocol and protocol path
+      await this.identity.web5.dwn.records.delete({
+        message: {
+          recordId: record.record.id,
+        },
+      });
+    }
+
+    this.records.set([]);
+
+    // await this.load();
   }
 
   async createData() {

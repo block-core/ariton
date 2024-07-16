@@ -1,6 +1,7 @@
 <h1>Registries</h1>
 
-<button mat-flat-button (click)="createData()">Create Sample Data</button>
+<button class="sample-button" mat-flat-button (click)="createData()">Create Sample Data</button>
+<button class="sample-button" mat-flat-button (click)="deleteData()">Delete Sample Data</button>
 
 <h3>Highlighted</h3>
 
@@ -14,7 +15,7 @@
   <mat-card-content>
     Website: <a [href]="record.data.url">{{ record.data.url }}</a
     ><br />
-    Owner: {{ record.data.owner }}<br />
+    Owner: {{ record.data.owner | did }}<br />
   </mat-card-content>
   <mat-card-actions>
     <button (click)="openRegistry('bsn')" mat-button>Open</button>
