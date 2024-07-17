@@ -8,11 +8,25 @@ import { RouterModule } from '@angular/router';
 import { MatListModule } from '@angular/material/list';
 import { CommonModule } from '@angular/common';
 import { SizePipe } from '../shared/pipes/size.pipe';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-community',
   standalone: true,
-  imports: [SizePipe, CommonModule, MatListModule, RouterModule, AgoPipe, MatCardModule, MatButtonModule, MatTabsModule, MatIconModule],
+  imports: [
+    MatInputModule,
+    MatToolbarModule,
+    SizePipe,
+    CommonModule,
+    MatListModule,
+    RouterModule,
+    AgoPipe,
+    MatCardModule,
+    MatButtonModule,
+    MatTabsModule,
+    MatIconModule,
+  ],
   templateUrl: './community.component.html',
   styleUrl: './community.component.scss',
 })

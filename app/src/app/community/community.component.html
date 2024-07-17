@@ -5,6 +5,17 @@
       <span class="hide-small">Discussions</span>
     </ng-template>
 
+    <mat-card class="toolbar-actions">
+      <mat-card-content>
+        <button type="button" mat-icon-button>
+          <mat-icon>menu</mat-icon>
+        </button>
+        <button mat-icon-button>
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+      </mat-card-content>
+    </mat-card>
+
     <mat-card class="discussion-card">
       <mat-card-header>
         <img mat-card-avatar src="https://ariton.app/assets/sondre.png" />
@@ -80,6 +91,14 @@
       <span class="hide-small">Events</span>
     </ng-template>
 
+    <mat-card class="toolbar-actions">
+      <mat-card-content>
+        <button type="button" mat-icon-button>
+          <mat-icon>add</mat-icon>
+        </button>
+      </mat-card-content>
+    </mat-card>
+
     <mat-card class="events-card">
       <mat-card-header>
         <mat-card-title>Upcoming events</mat-card-title>
@@ -139,11 +158,63 @@
       <span class="hide-small">Files</span>
     </ng-template>
 
+    <mat-card>
+      <mat-card-content>
+        <button type="button" mat-icon-button>
+          <mat-icon>menu</mat-icon>
+        </button>
+        <button mat-icon-button>
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+      </mat-card-content>
+    </mat-card>
+
+    <!--
+    <mat-toolbar color="primary">
+      <button type="button" aria-label="Toggle sidenav" mat-icon-button>
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <button mat-icon-button>
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <button [title]="'Name'" mat-icon-button>
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+
+      <span class="toolbar-spacer"></span>
+      <span class="toolbar-items"> </span
+    ></mat-toolbar>-->
+
     <mat-card class="files-card">
       <mat-card-header>
         <mat-card-title>Files</mat-card-title>
+        <span class="toolbar-spacer"></span>
+        <div class="card-actions-top">
+          <button mat-icon-button>
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
       </mat-card-header>
       <mat-card-content>
+        <mat-toolbar class="card-toolbar" color="primary">
+          <!-- <button type="button" aria-label="Toggle sidenav" mat-icon-button>
+            <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+          </button> -->
+          <button mat-icon-button>
+            <mat-icon>add</mat-icon>
+          </button>
+          <button [title]="'Name'" mat-icon-button>
+            <mat-icon>search</mat-icon>
+          </button>
+
+          <span class="toolbar-spacer"></span>
+          <span class="toolbar-items">
+            <mat-form-field class="full-width">
+              <mat-label>Filter</mat-label>
+              <input matInput #name placeholder="Filter files" maxlength="200" />
+            </mat-form-field> </span
+        ></mat-toolbar>
+
         <mat-list>
           <mat-list-item>
             <mat-icon matListItemIcon>attach_file</mat-icon>
