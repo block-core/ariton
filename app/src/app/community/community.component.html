@@ -7,11 +7,21 @@
 
     <mat-card class="toolbar-actions">
       <mat-card-content>
-        <button type="button" mat-icon-button>
-          <mat-icon>menu</mat-icon>
+        <button type="button" mat-button>
+          <mat-icon>chat</mat-icon>
+          Post
         </button>
-        <button mat-icon-button>
-          <mat-icon>arrow_back</mat-icon>
+        <button type="button" mat-button>
+          <mat-icon>event</mat-icon>
+          Event
+        </button>
+        <button type="button" mat-button>
+          <mat-icon>photo_library</mat-icon>
+          Media
+        </button>
+        <button type="button" mat-button>
+          <mat-icon>attach_file</mat-icon>
+          File
         </button>
       </mat-card-content>
     </mat-card>
@@ -93,8 +103,9 @@
 
     <mat-card class="toolbar-actions">
       <mat-card-content>
-        <button type="button" mat-icon-button>
+        <button type="button" mat-button>
           <mat-icon>add</mat-icon>
+          Create event
         </button>
       </mat-card-content>
     </mat-card>
@@ -158,17 +169,6 @@
       <span class="hide-small">Files</span>
     </ng-template>
 
-    <mat-card>
-      <mat-card-content>
-        <button type="button" mat-icon-button>
-          <mat-icon>menu</mat-icon>
-        </button>
-        <button mat-icon-button>
-          <mat-icon>arrow_back</mat-icon>
-        </button>
-      </mat-card-content>
-    </mat-card>
-
     <!--
     <mat-toolbar color="primary">
       <button type="button" aria-label="Toggle sidenav" mat-icon-button>
@@ -190,8 +190,9 @@
         <mat-card-title>Files</mat-card-title>
         <span class="toolbar-spacer"></span>
         <div class="card-actions-top">
-          <button mat-icon-button>
+          <button mat-button>
             <mat-icon>add</mat-icon>
+            Upload file
           </button>
         </div>
       </mat-card-header>
