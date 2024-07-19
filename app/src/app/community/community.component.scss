@@ -55,10 +55,22 @@
   margin-top: 1em;
 }
 
+.toolbar-actions-content {
+  display: flex;
+}
+
 .full-width {
   width: 100%;
 }
 
 .card-toolbar {
   align-items: center;
+}
+
+.search-input {
+  width: 100%;
+  flex-grow: 2 1 auto;
+}
+
+.search-close {
 }

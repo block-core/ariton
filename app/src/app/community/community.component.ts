@@ -59,4 +59,15 @@ export class CommunityComponent {
 
     this.photos.set(photos);
   }
+
+  searchingMembers = signal<boolean>(false);
+
+  searchMembers() {
+    this.searchingMembers.set(true);
+    // TODO: Add focus to the search input field.
+  }
+
+  hideMembersSearch() {
+    this.searchingMembers.set(false);
+  }
 }

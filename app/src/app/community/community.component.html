@@ -70,6 +70,35 @@
       <span class="hide-small">Members</span>
     </ng-template>
 
+    <mat-card class="toolbar-actions">
+      <mat-card-content class="toolbar-actions-content">
+        @if (searchingMembers()) {
+        <mat-form-field class="search-input">
+          <mat-label>Search</mat-label>
+          <input matInput placeholder="Filter members..." />
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+        <button class="search-close" mat-icon-button (click)="hideMembersSearch()">
+          <mat-icon>close</mat-icon>
+        </button>
+        } @else {
+        <button type="button" mat-button>
+          <mat-icon>chat</mat-icon>
+          Add Member
+        </button>
+        <button type="button" mat-button>
+          <mat-icon>event</mat-icon>
+          Invite
+        </button>
+        <button type="button" mat-button (click)="searchMembers()">
+          <mat-icon>seardh</mat-icon>
+          Search
+        </button>
+
+        }
+      </mat-card-content>
+    </mat-card>
+
     <div class="favorites">
       <a [routerLink]="['/profile', 'did:dht:my6nm5s1n9xmuuh5yixe668k7xbkmmuddzatn1fojzgdg5f5to8y']" routerLinkActive="router-link-active"
         ><img class="favorites-icon" src="https://ariton.app/assets/sondre.png"
