@@ -73,7 +73,7 @@
     <mat-card class="toolbar-actions">
       <mat-card-content class="toolbar-actions-content">
         @if (searchingMembers()) {
-        <mat-form-field class="search-input">
+        <mat-form-field subscriptSizing="dynamic" class="search-input">
           <mat-label>Search</mat-label>
           <input matInput placeholder="Filter members..." />
           <mat-icon matSuffix>search</mat-icon>
