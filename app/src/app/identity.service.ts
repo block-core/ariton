@@ -53,9 +53,8 @@ export class IdentityService {
       this.initialized.set(true);
       return result;
     } catch (err) {
-      // TODO: Add UI and retry for Web5 initialize, add proper error handling.
       // Various network connection issues might make this call fail.
-      alert('Failed to initialize Web5');
+      console.error(err);
     }
 
     return undefined;

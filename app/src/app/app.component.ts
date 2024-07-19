@@ -93,7 +93,13 @@ export class AppComponent {
     this.router.navigate([this.appService.state().loginAction]);
   }
 
+  reload() {
+    document.location = document.location;
+  }
+
   async ngOnInit() {
+    await this.appService.initialize();
+
     // If this is first time user visits, we will give them option
     // to create a new account or restore existing.
     // if (this.appService.hasStateBeenSet()) {

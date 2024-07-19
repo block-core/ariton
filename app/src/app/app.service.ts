@@ -26,6 +26,7 @@ export enum OnboardingState {
   NewUser = 1,
   Locked = 2,
   Unlocked = 3,
+  Error = 4,
 }
 
 @Injectable({
@@ -154,13 +155,23 @@ export class AppService {
       // initial account.
       result = await this.identity.initialConnect(password);
 
-      console.log('Initialize connect finished.');
-
-      if (!result) {
-        // TODO: Handle this error condition.
+      if (result === undefined) {
+        // If we fail on initial creation, reset the state so user
+        // will retry again when online.
+        this.storage.remove('state');
+        this.onboardingState.set(OnboardingState.Error);
         this.loading.set(false);
         return;
       }
+
+      console.log(result);
+      console.log('Initialize connect finished.');
+
+      // if (!result) {
+      //   // TODO: Handle this error condition.
+      //   this.loading.set(false);
+      //   return;
+      // }
 
       // Save the account to storage.
       accounts = [

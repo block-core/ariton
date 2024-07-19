@@ -25,6 +25,14 @@
     <img class="loading-logo" src="ariton-icon-dark.svg" />
     <div>Initializing... please wait...</div>
   </div>
+  } @case(4) {
+  <div class="loading-error">
+    <h1>Error during initialization. Offline?</h1>
+    <p>You must be online to create your account.<br />Please verify network connection and try again.</p>
+    <p>
+      <button mat-button (click)="reload()">Reload</button>
+    </p>
+  </div>
   } } @if(appService.loading()) {
   <mat-spinner></mat-spinner>
   }
