@@ -10,7 +10,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { RestoreComponent } from './account/create/restore/restore.component';
-
+import { OnboardingState } from './app.service';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -45,7 +45,7 @@ export class AppComponent {
     console.log(queryParam);
     console.log(this.appService.params);
 
-    this.router.events.subscribe((event) => {
+    this.router.events.subscribe((event: any) => {
       if (event instanceof NavigationStart) {
         // Navigation started
         this.layout.enableScrolling();
@@ -71,6 +71,7 @@ export class AppComponent {
   forceClose() {
     // Force the initialized to be set to true. This can be useful when
     // the app load or creation has issues during the prototype/beta phases.
+    this.appService.onboardingState.set(OnboardingState.Unlocked);
     this.appService.initialized.set(true);
   }
 
@@ -87,30 +88,23 @@ export class AppComponent {
   async createAccount() {
     console.log('Creating new account...');
 
-    await this.appService.initialize();
+    await this.appService.createAccount();
 
-    console.log('App initialized!', this.appService.firstTime());
-
-    if (this.appService.firstTime()) {
-      console.log('First time setup, redirect to introduction!');
-      this.router.navigate(['/introduction']);
-    }
+    this.router.navigate([this.appService.state().loginAction]);
   }
 
   async ngOnInit() {
     // If this is first time user visits, we will give them option
     // to create a new account or restore existing.
-    if (this.appService.hasStateBeenSet()) {
-      await this.appService.initialize();
-
-      console.log('App initialized!', this.appService.firstTime());
-
-      if (this.appService.firstTime()) {
-        console.log('First time setup, redirect to introduction!');
-        this.router.navigate(['/introduction']);
-      }
-    } else {
-      console.log('No state has been set, redirect to introduction!');
-    }
+    // if (this.appService.hasStateBeenSet()) {
+    //   await this.appService.initialize();
+    //   console.log('App initialized!', this.appService.firstTime());
+    //   if (this.appService.firstTime()) {
+    //     console.log('First time setup, redirect to introduction!');
+    //     this.router.navigate(['/introduction']);
+    //   }
+    // } else {
+    //   console.log('No state has been set, redirect to introduction!');
+    // }
   }
 }

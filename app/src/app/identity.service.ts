@@ -162,7 +162,8 @@ export class IdentityService {
 
   initialized = signal<boolean>(false);
 
-  locked = signal<boolean>(false);
+  // Locked should initially be true.
+  locked = signal<boolean>(true);
 
   web5!: Web5;
 

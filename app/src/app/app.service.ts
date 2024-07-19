@@ -1,4 +1,4 @@
-import { Injectable, inject, signal } from '@angular/core';
+import { Injectable, effect, inject, signal } from '@angular/core';
 import { StorageService } from './storage.service';
 import { CryptoService } from './crypto.service';
 import { IdentityService } from './identity.service';
@@ -11,6 +11,7 @@ export interface AppState {
   selectedAccount: string;
   backupConfirmed?: boolean;
   hidden: any;
+  loginAction: string;
 }
 
 export interface Account {
@@ -20,10 +21,25 @@ export interface Account {
   passwordHash?: string;
 }
 
+export enum OnboardingState {
+  Initial = 0,
+  NewUser = 1,
+  Locked = 2,
+  Unlocked = 3,
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class AppService {
+  /** To keep various UI states in sync, we use onboardingState as the organizing signal.
+   * 0 = App Loading
+   * 1 = App State Not Set, new user, allow them to create or restore account.
+   * 2 = App State Set, user have persisted password, loading them into app.
+   * 3 = App State Set, user have set custom password, show unlock dialog.
+   */
+  onboardingState = signal<OnboardingState>(OnboardingState.Initial);
+
   initialized = signal<boolean>(false);
 
   loading = signal<boolean>(false);
@@ -38,13 +54,11 @@ export class AppService {
 
   protocol = inject(ProtocolService);
 
-  state = signal<AppState>({ selectedAccount: '', hidden: {} });
+  state = signal<AppState>({ loginAction: '/dashboard', selectedAccount: '', hidden: {} });
 
   account = signal<Account>({ did: '', recoveryPhrase: '', password: '', passwordHash: '' });
 
   accounts = signal<Account[]>([]);
-
-  firstTime = signal<boolean>(false);
 
   /** Parameters that comes from query string during activation of the extension. */
   params = signal<any>({});
@@ -56,6 +70,13 @@ export class AppService {
   constructor() {
     console.log(`Ariton v${this.package.version} initialized.`);
     this.dependencies = Object.entries(this.package.dependencies).map(([key, value]) => ({ name: key, version: value }));
+
+    effect(async () => {
+      // When account is unlocked, either automatically or manually, proceed with the initial load.
+      if (!this.identity.locked()) {
+        await this.onUnlocked();
+      }
+    });
   }
 
   //getState() {
@@ -94,40 +115,40 @@ export class AppService {
     this.saveState();
   }
 
+  async createAccount() {
+    let state: AppState = {
+      selectedAccount: '',
+      hidden: {},
+      loginAction: '/introduction',
+    };
+
+    this.storage.save('state', state);
+
+    await this.initialize();
+  }
+
   async initialize() {
     this.loading.set(true);
     console.log('Initializing Ariton...');
 
     let state = this.storage.read('state') as AppState;
 
-    console.log('STATE IS WHAT:', state);
-
+    // If there is no state, it's a new user and return immediately.
     if (!state) {
-      state = {
-        selectedAccount: '',
-        hidden: {},
-      };
-
-      this.firstTime.set(true);
-    }
-
-    if (state.hidden == null) {
-      state.hidden = {};
+      this.onboardingState.set(OnboardingState.NewUser);
+      this.loading.set(false);
+      return;
     }
 
     let accounts = this.storage.read('accounts') as any[];
-
     let result: Web5ConnectResult | undefined;
-
-    // console.log('Accounts: ', accounts);
 
     // If there are no accounts, user has not used app before.
     if (!accounts) {
       console.log('No accounts found');
+
       // Create a unique password for the user that they can replace.
       const password = await this.crypto.createPassword();
-
-      console.log('Password generated...');
 
       // Initialize the identity service with the password to create an
       // initial account.
@@ -136,6 +157,7 @@ export class AppService {
       console.log('Initialize connect finished.');
 
       if (!result) {
+        // TODO: Handle this error condition.
         this.loading.set(false);
         return;
       }
@@ -156,6 +178,12 @@ export class AppService {
       this.accounts.set(accounts);
       this.account?.set(accounts[0]);
       this.storage.save('state', state);
+
+      // A new default account is auto-unlocked with a generate password.
+      this.onboardingState.set(OnboardingState.Unlocked);
+
+      // The default account is unlocked upon creation, continue the loading process.
+      this.identity.locked.set(false);
     } else {
       // If there are accounts, select the one from the state.selectedAccount value.
       const account = accounts.find((account: any) => account.did === state.selectedAccount);
@@ -167,16 +195,25 @@ export class AppService {
       if (account.password) {
         result = await this.identity.connect(account.did, account.password);
         if (!result) {
+          // TODO: Implement error handling for this case.
           this.loading.set(false);
-          return;
+        } else {
+          // Existing account was successfully unlocked.
+          this.onboardingState.set(OnboardingState.Unlocked);
+          this.identity.locked.set(false);
         }
       } else {
         // If the account does not have a password, it means the user has not
         // persisted it. We need to ask for the password.
         this.identity.locked.set(true);
+        this.onboardingState.set(OnboardingState.Locked);
       }
     }
 
+    this.state.set(state);
+  }
+
+  async onUnlocked() {
     // let password = this.storage.read('password');
 
     // // If there are no password, either user has choose to not persist
@@ -189,8 +226,6 @@ export class AppService {
 
     // Load the user profile.
     await this.profile.openProfile(this.account().did);
-
-    this.state.set(state);
 
     this.initialized.set(true);
 
