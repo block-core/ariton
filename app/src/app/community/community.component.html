@@ -198,6 +198,30 @@
       <span class="hide-small">Files</span>
     </ng-template>
 
+    <mat-card class="toolbar-actions">
+      <mat-card-content class="toolbar-actions-content">
+        @if (searchingMembers()) {
+        <mat-form-field subscriptSizing="dynamic" class="search-input">
+          <mat-label>Search</mat-label>
+          <input matInput placeholder="Filter members..." />
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+        <button class="search-close" mat-icon-button (click)="hideMembersSearch()">
+          <mat-icon>close</mat-icon>
+        </button>
+        } @else {
+        <button type="button" mat-button>
+          <mat-icon>attach_file</mat-icon>
+          Upload file
+        </button>
+        <button type="button" mat-button (click)="searchMembers()">
+          <mat-icon>seardh</mat-icon>
+          Search
+        </button>
+        }
+      </mat-card-content>
+    </mat-card>
+
     <!--
     <mat-toolbar color="primary">
       <button type="button" aria-label="Toggle sidenav" mat-icon-button>
