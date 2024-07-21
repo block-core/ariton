@@ -22,6 +22,10 @@
         <mat-icon>chat_bubble</mat-icon>
         <span>Message</span>
       </button>
+      <button disabled="true" mat-menu-item [routerLink]="['/app/chat']">
+        <mat-icon>person_add</mat-icon>
+        <span>Add Friend</span>
+      </button>
       <mat-divider></mat-divider>
       <button mat-menu-item [routerLink]="['edit']">
         <mat-icon>edit</mat-icon>
@@ -35,6 +39,10 @@
       <button (click)="copyDID()" mat-menu-item>
         <mat-icon>content_copy</mat-icon>
         <span>Copy DID</span>
+      </button>
+      <button (click)="showQR()" mat-menu-item>
+        <mat-icon>qr_code</mat-icon>
+        <span>Show QR</span>
       </button>
       <mat-divider></mat-divider>
       <button disabled="true" mat-menu-item>
