@@ -29,14 +29,29 @@ export class RegistryService {
     tokens: any[];
     sources: any[];
     accounts: any[];
+    tags: any[];
+    accounts_filtered: any[];
   } = {
     tokens: [],
     sources: [],
     accounts: [],
+    tags: [],
+    accounts_filtered: [],
   };
 
   shorten(str: string) {
     return str.substring(0, 5) + '...' + str.substring(str.length - 5);
+  }
+
+  filter(tags: string[]) {
+    if (!tags || tags.length == 0) {
+      this.bsn.accounts_filtered = this.bsn.accounts;
+    } else {
+      this.bsn.accounts_filtered = this.bsn.accounts.filter((account) => account.tags.some((tag: any) => tags.includes(tag.id)));
+
+      // this.bsn.accounts_filtered = this.bsn.accounts.filter((account) => account.tags.some((tag: any) => tags.includes(tag)));
+    }
+    console.log(this.bsn.accounts);
   }
 
   async load() {
@@ -74,6 +89,18 @@ export class RegistryService {
       this.bsn.tokens = tokens;
       this.bsn.sources = sources;
       this.bsn.accounts = accounts;
+
+      // Collect all unique tags from accounts
+      const uniqueTags = new Set<string>();
+      accounts.forEach((account) => {
+        account.tags.forEach((tag) => {
+          uniqueTags.add(tag.id);
+        });
+      });
+      this.bsn.tags = Array.from(uniqueTags).sort();
+
+      // By default add all to be rendered in the filtered array.
+      this.bsn.accounts_filtered = this.bsn.accounts;
 
       this.loaded.set(true);
     }

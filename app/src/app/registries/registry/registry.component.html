@@ -9,6 +9,12 @@
       <span class="hide-small">Accounts</span>
     </ng-template>
 
+    <mat-chip-listbox [multiple]="true" [(ngModel)]="selectedTags">
+      @for (tag of registryService.bsn.tags; track tag) {
+      <mat-chip-option (click)="onSelectionChange($event)" [value]="tag">{{ tag }}</mat-chip-option>
+      }
+    </mat-chip-listbox>
+
     <!--
     <mat-card class="toolbar-actions">
       <mat-card-content>
@@ -32,7 +38,7 @@
     </mat-card>-->
 
     <mat-list>
-      @for (account of registryService.bsn.accounts; track account) {
+      @for (account of registryService.bsn.accounts_filtered; track account) {
       <mat-list-item [routerLink]="['/data', 'bsn', account.id]">
         <mat-icon matListItemIcon>account_circle</mat-icon>
         <div matListItemTitle>{{ account.short }}</div>
