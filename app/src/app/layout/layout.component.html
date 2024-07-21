@@ -91,7 +91,11 @@
         </button>
         <mat-menu #menu="matMenu">
           <div class="account-menu-profile">
-            <img class="account-menu-profile-icon" [src]="profileService.avatar() | safeResourceUrl" />
+            <img
+              class="account-menu-profile-icon"
+              [src]="profileService.avatar() | safeResourceUrl"
+              onerror="this.src='/avatar-placeholder.png';this.onerror='';"
+            />
             <div>
               <h2>{{ profileService.current().name }}</h2>
               &#64;{{ profileService.current().title }}<br />

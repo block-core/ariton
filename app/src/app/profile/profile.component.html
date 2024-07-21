@@ -1,7 +1,7 @@
 <div class="profile-header">
   <!-- <img [src]="avatarSrc | safeResourceUrl" alt="image" /> -->
 
-  <img class="profile-header-icon" [src]="profileService.avatarSelected() | safeResourceUrl" />
+  <img class="profile-header-icon" [src]="profileService.avatarSelected() | safeResourceUrl" onerror="this.src='/avatar-placeholder.png';this.onerror='';" />
   <div class="profile-header-text">
     <h1>
       {{ profileService.selected().name }}
