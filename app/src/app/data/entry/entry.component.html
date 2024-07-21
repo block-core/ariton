@@ -1,29 +1,36 @@
 <div *ngIf="entry">
-    <h1 *ngIf="entry.profile.Name">{{ entry.profile.Name }}</h1>
-    <h1 *ngIf="!entry.profile.Name">{{ entry.short }}</h1>
+  @if (entry.Profile) {
+  <h1>{{ entry.profile.Name }}</h1>
 
-    <h2 class="dimmed">{{ entry.id }}</h2>
+  } @else {
+  <h1>{{ entry.short }}</h1>
+  }
 
-    <p *ngIf="entry.profile.About">
-        {{ entry.profile.About }}
-    </p>
+  <h2 class="dimmed">{{ entry.id }}</h2>
 
-    <p *ngIf="entry.profile.Website">
-        @for (website of entry.profile.Website; track website) {
-            <a mat-flat-button [href]="website" target="_blank">{{ website }}</a
-            >&nbsp;
-        }
-    </p>
+  @if (entry.profile?.About) {
+  {{ entry.profile.About }}
+  } @if (entry.profile?.About) {
+  <p>
+    @for (website of entry.profile.Website; track website) {
+    <a mat-flat-button [href]="website" target="_blank">{{ website }}</a
+    >&nbsp; }
+  </p>
+  }
 
-    <p>Tags: {{ entry.tags.length }}</p>
+  <p>Tags: {{ entry.tags.length }}</p>
 
-    <p>
-        @for (tag of entry.tags; track tag) {
-            <a *ngIf="tag.id == 'Love'" mat-icon-button [href]="'https://stellar.expert/explorer/public/account/' + tag.value[0]" target="_blank">
-                <mat-icon>favorite</mat-icon>
-            </a>
-        }
-    </p>
+  <p>
+    @for (tag of entry.tags; track tag) { @if (tag.id == 'Love') {
+    <a mat-icon-button [href]="'https://stellar.expert/explorer/public/account/' + tag.value[0]" target="_blank">
+      <mat-icon>favorite</mat-icon>
+    </a>
+    } @else {
+    <a mat-button [href]="'https://stellar.expert/explorer/public/account/' + tag.value[0]" target="_blank">{{ tag.id }}</a>
+    <!-- <span>{{ tag.id }}: {{ tag.value }}</span> -->
 
-    <p></p>
+    } }
+  </p>
+
+  <p></p>
 </div>

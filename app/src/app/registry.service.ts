@@ -1,18 +1,81 @@
-import { Injectable } from '@angular/core';
+import { effect, inject, Injectable, signal } from '@angular/core';
+import { AppService } from './app.service';
 
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root',
 })
 export class RegistryService {
-    constructor() {}
+  appService = inject(AppService);
 
-    bsn: {
-        tokens: any[];
-        sources: any[];
-        accounts: any[];
-    } = {
-        tokens: [],
-        sources: [],
-        accounts: [],
-    };
+  loaded = signal<boolean>(false);
+
+  constructor() {
+    effect(() => {
+      if (this.appService.initialized()) {
+        this.load();
+      }
+    });
+  }
+
+  updated: any;
+
+  //   tokens: any[] = [];
+
+  //   sources: any[] = [];
+
+  //   accounts: any[] = [];
+
+  bsn: {
+    tokens: any[];
+    sources: any[];
+    accounts: any[];
+  } = {
+    tokens: [],
+    sources: [],
+    accounts: [],
+  };
+
+  shorten(str: string) {
+    return str.substring(0, 5) + '...' + str.substring(str.length - 5);
+  }
+
+  async load() {
+    var request = await fetch('https://bsn.mtla.me/json');
+
+    if (request.ok) {
+      var data = await request.json();
+
+      this.updated = data.createDate;
+
+      let tokens = data.knownTokens.map((token: { split: (arg0: string) => [any, any] }) => {
+        const [name, id] = token.split('-');
+        return { id, name, short: this.shorten(id) };
+      });
+
+      let sources = data.usedSources.map((token: { split: (arg0: string) => [any, any] }) => {
+        const [name, id] = token.split('-');
+        return { id, name, short: this.shorten(id) };
+      });
+
+      let accounts = Object.entries(data.accounts).map(([id, accountData]: [string, any]) => {
+        return {
+          id,
+          short: this.shorten(id),
+          balances: accountData.balances,
+          profile: accountData.profile,
+          tags: accountData.tags
+            ? Object.entries(accountData.tags).map(([tag, value]: [string, any]) => {
+                return { id: tag, value };
+              })
+            : [],
+        };
+      });
+
+      this.bsn.tokens = tokens;
+      this.bsn.sources = sources;
+      this.bsn.accounts = accounts;
+
+      this.loaded.set(true);
+    }
+  }
 }
