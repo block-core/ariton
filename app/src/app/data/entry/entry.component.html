@@ -21,15 +21,17 @@
   <p>Tags: {{ entry.tags.length }}</p>
 
   <p>
-    @for (tag of entry.tags; track tag) { @if (tag.id == 'Love') {
-    <a mat-icon-button [href]="'https://stellar.expert/explorer/public/account/' + tag.value[0]" target="_blank">
+    @for (tag of entry.tags; track tag) {
+    <a mat-button [href]="'https://stellar.expert/explorer/public/account/' + tag.value[0]" target="_blank">
+      @if (tag.id == 'Love') {
       <mat-icon>favorite</mat-icon>
-    </a>
-    } @else {
-    <a mat-button [href]="'https://stellar.expert/explorer/public/account/' + tag.value[0]" target="_blank">{{ tag.id }}</a>
-    <!-- <span>{{ tag.id }}: {{ tag.value }}</span> -->
+      } @if (tag.id == 'OneFamily') {
+      <mat-icon>family_restroom</mat-icon>
+      }
 
-    } }
+      {{ tag.id }}
+    </a>
+    }
   </p>
 
   <p></p>
