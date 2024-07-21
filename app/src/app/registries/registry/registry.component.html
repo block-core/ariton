@@ -1,34 +1,79 @@
 <h1>Registry: Blockchain Social Network (BSN)</h1>
 
-<p>Updated: {{ registryService.updated | date : 'medium' }}</p>
+<!-- <p>Updated: {{ registryService.updated | date : 'medium' }}</p> -->
 
-<mat-list>
-  <div mat-subheader>Tokens</div>
-  @for (token of registryService.bsn.tokens; track token) {
-  <mat-list-item>
-    <mat-icon matListItemIcon>token</mat-icon>
-    <div matListItemTitle>{{ token.name }}</div>
-    <div matListItemLine>{{ token.short }}</div>
-  </mat-list-item>
-  }
-  <mat-divider></mat-divider>
-  <div mat-subheader>Sources</div>
-  @for (source of registryService.bsn.sources; track source) {
-  <mat-list-item>
-    <mat-icon matListItemIcon>source</mat-icon>
-    <div matListItemTitle>{{ source.name }}</div>
-    <div matListItemLine>{{ source.short }}</div>
-  </mat-list-item>
-  }
-  <div mat-subheader>Accounts</div>
-  @for (account of registryService.bsn.accounts; track account) {
-  <mat-list-item [routerLink]="['/data', 'bsn', account.id]">
-    <mat-icon matListItemIcon>account_circle</mat-icon>
-    <div matListItemTitle>{{ account.short }}</div>
-    <div matListItemLine>
-      @for (tag of account.tags; track tag) {
-      {{ tag.id }}, }
-    </div>
-  </mat-list-item>
-  }
-</mat-list>
+<mat-tab-group>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon class="tab-icon">account_circle</mat-icon>
+      <span class="hide-small">Accounts</span>
+    </ng-template>
+
+    <!--
+    <mat-card class="toolbar-actions">
+      <mat-card-content>
+        <button type="button" mat-button>
+          <mat-icon>chat</mat-icon>
+          Post
+        </button>
+        <button type="button" mat-button>
+          <mat-icon>event</mat-icon>
+          Event
+        </button>
+        <button type="button" mat-button>
+          <mat-icon>photo_library</mat-icon>
+          Media
+        </button>
+        <button type="button" mat-button>
+          <mat-icon>attach_file</mat-icon>
+          File
+        </button>
+      </mat-card-content>
+    </mat-card>-->
+
+    <mat-list>
+      @for (account of registryService.bsn.accounts; track account) {
+      <mat-list-item [routerLink]="['/data', 'bsn', account.id]">
+        <mat-icon matListItemIcon>account_circle</mat-icon>
+        <div matListItemTitle>{{ account.short }}</div>
+        <div matListItemLine>
+          @for (tag of account.tags; track tag) {
+          {{ tag.id }}, }
+        </div>
+      </mat-list-item>
+      }
+    </mat-list>
+  </mat-tab>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon class="tab-icon">token</mat-icon>
+      <span class="hide-small">Tokens</span>
+    </ng-template>
+
+    <mat-list>
+      @for (token of registryService.bsn.tokens; track token) {
+      <mat-list-item>
+        <mat-icon matListItemIcon>token</mat-icon>
+        <div matListItemTitle>{{ token.name }}</div>
+        <div matListItemLine>{{ token.short }}</div>
+      </mat-list-item>
+      }
+    </mat-list>
+  </mat-tab>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon class="tab-icon">source</mat-icon>
+      <span class="hide-small">Sources</span>
+    </ng-template>
+
+    <mat-list>
+      @for (source of registryService.bsn.sources; track source) {
+      <mat-list-item>
+        <mat-icon matListItemIcon>source</mat-icon>
+        <div matListItemTitle>{{ source.name }}</div>
+        <div matListItemLine>{{ source.short }}</div>
+      </mat-list-item>
+      }
+    </mat-list>
+  </mat-tab>
+</mat-tab-group>

@@ -11,6 +11,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { DatePipe } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RegistryService } from '../../registry.service';
+import { MatTabsModule } from '@angular/material/tabs';
 
 export interface Section {
   name: string;
@@ -34,6 +35,7 @@ export interface Section {
     RouterModule,
     MatPaginatorModule,
     MatSortModule,
+    MatTabsModule,
   ],
 })
 export class RegistryComponent implements AfterViewInit {
