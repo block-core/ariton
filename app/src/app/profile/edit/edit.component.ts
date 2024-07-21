@@ -115,6 +115,9 @@ export class ProfileEditComponent {
           protocol: profile.uri,
           protocolPath: 'avatar',
           dataFormat: 'image/png',
+          tags: {
+            module: 'profile',
+          },
         },
       });
 

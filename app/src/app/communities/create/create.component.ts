@@ -183,6 +183,9 @@ export class CreateComponent {
           protocol: profile.uri,
           protocolPath: 'avatar',
           dataFormat: 'image/png',
+          tags: {
+            module: 'community',
+          },
         },
       });
 

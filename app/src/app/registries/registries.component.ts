@@ -69,6 +69,9 @@ export class RegistriesComponent implements AfterViewInit {
         protocol: registry.uri,
         protocolPath: 'profile',
         dataFormat: 'application/json',
+        tags: {
+          module: 'registries',
+        },
       },
     });
 
@@ -84,6 +87,9 @@ export class RegistriesComponent implements AfterViewInit {
         protocol: registry.uri,
         protocolPath: 'profile',
         dataFormat: 'application/json',
+        tags: {
+          module: 'registries',
+        },
       },
     });
 
@@ -99,6 +105,9 @@ export class RegistriesComponent implements AfterViewInit {
         protocol: registry.uri,
         protocolPath: 'profile',
         dataFormat: 'application/json',
+        tags: {
+          module: 'registries',
+        },
       },
     });
 
@@ -114,6 +123,9 @@ export class RegistriesComponent implements AfterViewInit {
         protocol: registry.uri,
         protocolPath: 'profile',
         dataFormat: 'application/json',
+        tags: {
+          module: 'registries',
+        },
       },
     });
 
