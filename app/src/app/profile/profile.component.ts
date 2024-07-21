@@ -81,6 +81,15 @@ export class ProfileComponent {
     this._snackBar.open(message, undefined, { duration: 2000 });
   }
 
+  async copyDID() {
+    try {
+      await navigator.clipboard.writeText(this.profileService.selected().did);
+      this.openSnackBar('DID copied to clipboard');
+    } catch (err) {
+      console.error('Failed to copy: ', err);
+    }
+  }
+
   async shareProfile() {
     const title = 'SondreB (Voluntaryist)';
     const url = document.location.href;
