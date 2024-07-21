@@ -48,10 +48,7 @@ export class RegistryService {
       this.bsn.accounts_filtered = this.bsn.accounts;
     } else {
       this.bsn.accounts_filtered = this.bsn.accounts.filter((account) => account.tags.some((tag: any) => tags.includes(tag.id)));
-
-      // this.bsn.accounts_filtered = this.bsn.accounts.filter((account) => account.tags.some((tag: any) => tags.includes(tag)));
     }
-    console.log(this.bsn.accounts);
   }
 
   async load() {
