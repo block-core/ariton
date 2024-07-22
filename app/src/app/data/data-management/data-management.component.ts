@@ -1,4 +1,4 @@
-import { Component, effect, signal } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { IdentityService } from '../../identity.service';
@@ -14,6 +14,7 @@ import { SizePipe } from '../../shared/pipes/size.pipe';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { community } from '../../../protocols';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 /** File node data with possible child nodes. */
 export interface FileNode {
@@ -54,6 +55,8 @@ export interface FlatTreeNode {
 })
 export class DataManagementComponent {
   protected readonly didInput = signal('');
+
+  snackBar = inject(MatSnackBar);
 
   protected onInput(event: Event) {
     this.didInput.set((event.target as HTMLInputElement).value);
@@ -96,12 +99,35 @@ export class DataManagementComponent {
     console.log('Album create', albumCreateStatus);
 
     if (albumRecord) {
-      const { status: aliceAlbumSendStatus } = await albumRecord.send(this.didInput());
-      console.log('Status from external write:', aliceAlbumSendStatus);
+      const { status: albumSendStatus } = await albumRecord.send(this.didInput());
+      console.log('Status from external write:', albumSendStatus);
+
+      if (albumSendStatus.code == 401) {
+        this.snackBar.open(albumSendStatus.detail, 'Close', {
+          duration: 3000,
+        });
+      }
 
       // When attempting to write to external DWN without protocol installed, this error will come:
       // "ProtocolAuthorizationProtocolNotFound: unable to find protocol definition for https://schema.ariton.app/community/entry"
     }
+  }
+
+  albums = signal<string>('');
+
+  async listAlbums() {
+    var { records } = await this.identityService.web5.dwn.records.query({
+      message: {
+        filter: {
+          protocol: community.uri,
+        },
+      },
+    });
+
+    console.log('All records:');
+    console.log(records);
+
+    this.albums.set(JSON.stringify(records));
   }
 
   record = signal<any>(null);
