@@ -32,10 +32,6 @@
         <span>Edit Profile</span>
       </button>
       <mat-divider></mat-divider>
-      <button (click)="shareProfile()" mat-menu-item>
-        <mat-icon>send</mat-icon>
-        <span>Share Profile</span>
-      </button>
       <button (click)="copyDID()" mat-menu-item>
         <mat-icon>content_copy</mat-icon>
         <span>Copy DID</span>
@@ -43,6 +39,10 @@
       <button (click)="showQR()" mat-menu-item>
         <mat-icon>qr_code</mat-icon>
         <span>Show QR</span>
+      </button>
+      <button (click)="shareProfile()" mat-menu-item>
+        <mat-icon>send</mat-icon>
+        <span>Share Profile</span>
       </button>
       <mat-divider></mat-divider>
       <button disabled="true" mat-menu-item>

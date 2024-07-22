@@ -1,5 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { protocolDefinition as profile } from '../protocols/profile';
+import { protocolDefinition as community } from '../protocols/community';
 import { protocolDefinition as social } from '../protocols/social';
 import { protocolDefinition as anyoneCollaborate } from '../protocols/anyone-collaborate';
 import { protocolDefinition as chat } from '../protocols/chat';
@@ -18,7 +19,7 @@ export class ProtocolService {
   constructor() {}
 
   async register() {
-    const protocols = [profile, social, anyoneCollaborate, chat, freeForAll, minimal, message, registry];
+    const protocols = [profile, community, social, anyoneCollaborate, chat, freeForAll, minimal, message, registry];
 
     for (const definition of protocols) {
       const { protocol, status } = await this.identityService.web5.dwn.protocols.configure({

@@ -100,8 +100,6 @@ export class CommunitiesComponent {
   constructor(private router: Router) {
     // Register a new effect.
     effect(() => {
-      console.log(`The view style is: ${this.viewStyle()})`);
-
       setTimeout(() => {
         if (this.table) {
           this.dataSource.sort = this.sort;

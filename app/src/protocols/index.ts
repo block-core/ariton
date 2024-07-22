@@ -1,4 +1,5 @@
 import { protocolDefinition as profileDefinition } from './profile';
+import { protocolDefinition as communityDefinition } from './community';
 import { protocolDefinition as socialDefinition } from './social';
 import { protocolDefinition as registryDefinition } from './registry';
 import { protocolDefinition as anyoneCollaborateDefinition } from './anyone-collaborate';
@@ -22,7 +23,14 @@ export const registry = {
   definition: registryDefinition,
 };
 
+export const community = {
+  uri: communityDefinition.protocol,
+  definition: communityDefinition,
+};
+
 export const byUri = {
   [profileDefinition.protocol]: profile,
   [socialDefinition.protocol]: social,
+  [registryDefinition.protocol]: registry,
+  [communityDefinition.protocol]: community,
 };
