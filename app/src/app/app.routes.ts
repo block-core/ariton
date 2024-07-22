@@ -210,4 +210,10 @@ export const routes: Routes = [
     title: 'Help',
     data: { hide: true, icon: 'help' },
   },
+  {
+    path: 'management',
+    loadComponent: () => import('./management/management.component').then((c) => c.ManagementComponent),
+    title: 'Management',
+    data: { icon: 'manage_accounts' },
+  },
 ];
