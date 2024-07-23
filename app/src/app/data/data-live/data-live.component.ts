@@ -63,7 +63,7 @@ export class DataLiveComponent {
 
           if (response.records) {
             // Loop through returned records and print text from each
-            response.records.forEach(async (record) => {
+            response.records.forEach(async (record: any) => {
               let json = await record.data.json();
 
               json = { ...json, id: record.dataCid, author: record.author, created: record.dateCreated };

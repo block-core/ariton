@@ -22,7 +22,7 @@ jobs:
         working-directory: app
 
       - name: Run tests
-        run: npm run test
+        run: npm test -- --watch=false --browsers=ChromeHeadless
         working-directory: app
         continue-on-error: true
 
