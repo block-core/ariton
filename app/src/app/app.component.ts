@@ -14,7 +14,14 @@ import { OnboardingState } from './app.service';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RestoreComponent, MatButtonModule, MatProgressSpinnerModule, RouterOutlet, LayoutComponent, UnlockComponent],
+  imports: [
+    RestoreComponent,
+    MatButtonModule,
+    MatProgressSpinnerModule,
+    RouterOutlet,
+    LayoutComponent,
+    UnlockComponent,
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   providers: [
