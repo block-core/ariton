@@ -187,12 +187,6 @@ export const routes: Routes = [
     data: { hide: true, icon: 'search' },
   },
   {
-    path: 'table',
-    loadComponent: () => import('./table/table.component').then((c) => c.TableComponent),
-    title: 'Table',
-    data: { hide: true, icon: 'folder' },
-  },
-  {
     path: 'tree',
     loadComponent: () => import('./tree/tree.component').then((c) => c.TreeComponent),
     title: 'Tree',
