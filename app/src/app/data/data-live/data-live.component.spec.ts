@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCardModule } from '@angular/material/card';
 import { ReactiveFormsModule } from '@angular/forms';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 describe('DataLiveComponent', () => {
   let component: DataLiveComponent;
@@ -28,6 +29,7 @@ describe('DataLiveComponent', () => {
         MatRadioModule,
         MatCardModule,
         ReactiveFormsModule,
+        provideAnimations(),
       ],
     }).compileComponents();
 

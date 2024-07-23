@@ -16,7 +16,16 @@ import { AvatarComponent } from './avatar/avatar.component';
 @Component({
   selector: 'app-edit',
   standalone: true,
-  imports: [AvatarComponent, MatInputModule, MatButtonModule, MatSelectModule, MatIconModule, MatRadioModule, MatCardModule, ReactiveFormsModule],
+  imports: [
+    AvatarComponent,
+    MatInputModule,
+    MatButtonModule,
+    MatSelectModule,
+    MatIconModule,
+    MatRadioModule,
+    MatCardModule,
+    ReactiveFormsModule,
+  ],
   templateUrl: './edit.component.html',
   styleUrl: './edit.component.scss',
 })

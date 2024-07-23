@@ -1,22 +1,26 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { IntroductionComponent } from './introduction.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
+import { RouterLink } from '@angular/router';
 
 describe('IntroductionComponent', () => {
-    let component: IntroductionComponent;
-    let fixture: ComponentFixture<IntroductionComponent>;
+  let component: IntroductionComponent;
+  let fixture: ComponentFixture<IntroductionComponent>;
 
-    beforeEach(async () => {
-        await TestBed.configureTestingModule({
-            imports: [IntroductionComponent],
-        }).compileComponents();
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [IntroductionComponent, MatCardModule, MatButtonModule, MatDividerModule, RouterLink],
+    }).compileComponents();
 
-        fixture = TestBed.createComponent(IntroductionComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
-    });
+    fixture = TestBed.createComponent(IntroductionComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
 
-    it('should create', () => {
-        expect(component).toBeTruthy();
-    });
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 });
