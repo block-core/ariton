@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ImageCropperComponent } from './image-cropper.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 describe('ImageCropperComponent', () => {
   let component: ImageCropperComponent;
@@ -8,9 +10,8 @@ describe('ImageCropperComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ImageCropperComponent]
-    })
-    .compileComponents();
+      imports: [ImageCropperComponent, MatIconModule, MatButtonModule],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ImageCropperComponent);
     component = fixture.componentInstance;
