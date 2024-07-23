@@ -10,19 +10,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Use Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '20'
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
 
-    - name: Install dependencies
-      run: npm install --force
-      working-directory: app
+      - name: Install dependencies
+        run: npm install --force
+        working-directory: app
 
-    - name: Run deploy script
-      run: npm run deploy
-      working-directory: app
-      env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run tests
+        run: npm run test
+        working-directory: app
+        continue-on-error: true
+
+      - name: Run deploy script
+        run: npm run deploy
+        working-directory: app
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

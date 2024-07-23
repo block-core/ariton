@@ -2,6 +2,10 @@ export const protocolDefinition = {
   protocol: 'https://schema.ariton.app/community/entry',
   published: true,
   types: {
+    community: {
+      schema: 'https://schema.ariton.app/community/schema/community',
+      dataFormats: ['application/json'],
+    },
     album: {
       schema: 'https://schema.ariton.app/community/schema/album',
       dataFormats: ['text/plain'],
@@ -24,8 +28,64 @@ export const protocolDefinition = {
     },
   },
   structure: {
+    // globalAdmin: {
+    //   $role: true
+    // },
+    admin: {
+      $role: true,
+    },
+    // member: {
+    //   $role: true,
+    // },
+    // moderator: {
+    //   $role: true,
+    // },
     friend: {
       $role: true,
+    },
+    community: {
+      admin: {
+        $role: true,
+        $actions: [
+          {
+            role: 'admin',
+            can: ['create', 'read', 'update', 'delete', 'prune', 'co-prune', 'co-delete', 'co-update'],
+          },
+        ],
+      },
+      member: {
+        $role: true,
+        $actions: [
+          {
+            who: 'author',
+            of: 'community',
+            can: ['create', 'read', 'update', 'delete', 'prune'],
+          },
+          {
+            role: 'community/admin',
+            can: ['create', 'read', 'update', 'delete', 'prune'],
+          },
+        ],
+      },
+      $actions: [
+        {
+          who: 'author',
+          of: 'community',
+          can: ['update', 'delete', 'read', 'prune'],
+        },
+        {
+          role: 'community/admin',
+          can: ['update', 'read'],
+        },
+        {
+          role: 'community/member',
+          can: ['read'],
+        },
+        {
+          role: 'admin',
+          can: ['create', 'read', 'update', 'delete', 'prune', 'co-prune', 'co-delete', 'co-update'],
+        },
+      ],
     },
     album: {
       $actions: [

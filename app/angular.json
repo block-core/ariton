@@ -94,7 +94,13 @@
         "test": {
           "builder": "@angular-builders/custom-webpack:karma",
           "options": {
-            "polyfills": ["zone.js", "zone.js/testing"],
+            "polyfills": ["zone.js", "./src/polyfills.ts", "zone.js/testing"],
+            "customWebpackConfig": {
+              "path": "./src/webpack.config.js",
+              "mergeRules": {
+                "externals": "replace"
+              }
+            },
             "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
