@@ -7,6 +7,7 @@ import { RouterOutlet } from '@angular/router';
 import { LayoutComponent } from './layout/layout.component';
 import { UnlockComponent } from './account/unlock/unlock.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -19,6 +20,7 @@ describe('AppComponent', () => {
         RouterOutlet,
         LayoutComponent,
         UnlockComponent,
+        provideAnimations(),
         ServiceWorkerModule.register('', { enabled: false }),
       ],
     }).compileComponents();

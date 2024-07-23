@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { DataManagementComponent } from './data-management/data-management.component';
 import { DataProtocolsComponent } from './data-protocols/data-protocols.component';
 import { DataLiveComponent } from './data-live/data-live.component';
+import { provideRouter } from '@angular/router';
 
 describe('DataComponent', () => {
   let component: DataComponent;
@@ -21,6 +22,7 @@ describe('DataComponent', () => {
         DataProtocolsComponent,
         DataLiveComponent,
       ],
+      providers: [provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DataComponent);

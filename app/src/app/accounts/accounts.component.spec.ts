@@ -9,7 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
-import { RouterLink } from '@angular/router';
+import { provideRouter, RouterLink } from '@angular/router';
 
 describe('AccountsComponent', () => {
   let component: AccountsComponent;
@@ -29,6 +29,7 @@ describe('AccountsComponent', () => {
         MatMenuModule,
         RouterLink,
       ],
+      providers: [provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AccountsComponent);

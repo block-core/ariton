@@ -8,6 +8,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { provideAnimations } from '@angular/platform-browser/animations';
+import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 
 describe('PasswordComponent', () => {
   let component: PasswordComponent;
@@ -25,6 +27,8 @@ describe('PasswordComponent', () => {
         MatInputModule,
         MatButtonModule,
         MatIconModule,
+        provideAnimations(),
+        BrowserDynamicTestingModule,
       ],
     }).compileComponents();
 

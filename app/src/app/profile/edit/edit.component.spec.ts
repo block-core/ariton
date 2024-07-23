@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { AvatarComponent } from './avatar/avatar.component';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 describe('EditComponent', () => {
   let component: ProfileEditComponent;
@@ -26,6 +27,7 @@ describe('EditComponent', () => {
         MatRadioModule,
         MatCardModule,
         ReactiveFormsModule,
+        provideAnimations(),
       ],
     }).compileComponents();
 

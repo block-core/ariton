@@ -10,10 +10,11 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { provideRouter, RouterLink, RouterLinkActive } from '@angular/router';
 import { DidPipe } from '../shared/pipes/did.pipe';
 import { SafeUrlPipe } from '../shared/pipes/safe-url.pipe';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 describe('LayoutComponent', () => {
   let component: LayoutComponent;
@@ -36,7 +37,9 @@ describe('LayoutComponent', () => {
         ThemeToggleComponent,
         MatTooltipModule,
         DidPipe,
+        ServiceWorkerModule.register('', { enabled: false }),
       ],
+      providers: [provideRouter([])],
     }).compileComponents();
   }));
 

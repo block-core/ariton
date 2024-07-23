@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 describe('RestoreComponent', () => {
   let component: RestoreComponent;
@@ -15,7 +16,17 @@ describe('RestoreComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RestoreComponent, MatInputModule, MatButtonModule, MatSelectModule, MatIconModule, MatRadioModule, MatCardModule, ReactiveFormsModule],
+      imports: [
+        RestoreComponent,
+        MatInputModule,
+        MatButtonModule,
+        MatSelectModule,
+        MatIconModule,
+        MatRadioModule,
+        MatCardModule,
+        ReactiveFormsModule,
+        provideAnimations(),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(RestoreComponent);

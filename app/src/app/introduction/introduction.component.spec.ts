@@ -4,7 +4,7 @@ import { IntroductionComponent } from './introduction.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
-import { RouterLink } from '@angular/router';
+import { provideRouter, RouterLink } from '@angular/router';
 
 describe('IntroductionComponent', () => {
   let component: IntroductionComponent;
@@ -13,6 +13,7 @@ describe('IntroductionComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [IntroductionComponent, MatCardModule, MatButtonModule, MatDividerModule, RouterLink],
+      providers: [provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(IntroductionComponent);

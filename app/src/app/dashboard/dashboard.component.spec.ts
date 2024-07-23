@@ -8,7 +8,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { RouterModule } from '@angular/router';
+import { provideRouter, RouterModule } from '@angular/router';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
@@ -26,6 +26,7 @@ describe('DashboardComponent', () => {
         MatCardModule,
         RouterModule,
       ],
+      providers: [provideRouter([])],
     }).compileComponents();
   }));
 
