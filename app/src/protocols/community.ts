@@ -26,20 +26,19 @@ export const protocolDefinition = {
       schema: 'https://schema.ariton.app/community/schema/updater',
       dataFormats: ['text/plain'],
     },
+    globalAdmin: {
+      schema: 'https://schema.ariton.app/community/schema/globalAdmin',
+      dataFormats: ['application/json'],
+    },
+    admin: {
+      schema: 'https://schema.ariton.app/community/schema/admin',
+      dataFormats: ['application/json'],
+    },
   },
   structure: {
-    // globalAdmin: {
-    //   $role: true
-    // },
-    admin: {
+    globalAdmin: {
       $role: true,
     },
-    // member: {
-    //   $role: true,
-    // },
-    // moderator: {
-    //   $role: true,
-    // },
     friend: {
       $role: true,
     },
@@ -48,88 +47,90 @@ export const protocolDefinition = {
         $role: true,
         $actions: [
           {
-            role: 'admin',
-            can: ['create', 'read', 'update', 'delete', 'prune', 'co-prune', 'co-delete', 'co-update'],
+            role: 'globalAdmin',
+            can: ['create', 'read'],
+
+            //can: ['create', 'read', 'update', 'delete', 'prune', 'co-prune', 'co-delete', 'co-update'],
           },
         ],
       },
-      member: {
-        $role: true,
-        $actions: [
-          {
-            who: 'author',
-            of: 'community',
-            can: ['create', 'read', 'update', 'delete', 'prune'],
-          },
-          {
-            role: 'community/admin',
-            can: ['create', 'read', 'update', 'delete', 'prune'],
-          },
-        ],
-      },
-      $actions: [
-        {
-          who: 'author',
-          of: 'community',
-          can: ['update', 'delete', 'read', 'prune'],
-        },
-        {
-          role: 'community/admin',
-          can: ['update', 'read'],
-        },
-        {
-          role: 'community/member',
-          can: ['read'],
-        },
-        {
-          role: 'admin',
-          can: ['create', 'read', 'update', 'delete', 'prune', 'co-prune', 'co-delete', 'co-update'],
-        },
-      ],
+      // member: {
+      //   $role: true,
+      //   $actions: [
+      //     {
+      //       who: 'author',
+      //       of: 'community',
+      //       can: ['create', 'read', 'update', 'delete', 'prune'],
+      //     },
+      //     {
+      //       role: 'community/admin',
+      //       can: ['create', 'read', 'update', 'delete', 'prune'],
+      //     },
+      //   ],
+      // },
+      // $actions: [
+      //   {
+      //     who: 'author',
+      //     of: 'community',
+      //     can: ['update', 'delete', 'read', 'prune'],
+      //   },
+      //   {
+      //     role: 'community/admin',
+      //     can: ['update', 'read'],
+      //   },
+      //   {
+      //     role: 'community/member',
+      //     can: ['read'],
+      //   },
+      //   {
+      //     role: 'admin',
+      //     can: ['create', 'read', 'update', 'delete', 'prune', 'co-prune', 'co-delete', 'co-update'],
+      //   },
+      // ],
     },
-    album: {
-      $actions: [
-        {
-          role: 'friend',
-          can: ['create', 'update'],
-        },
-      ],
-      participant: {
-        $role: true,
-        $actions: [
-          {
-            who: 'author',
-            of: 'album',
-            can: ['create', 'update'],
-          },
-        ],
-      },
-      updater: {
-        $role: true,
-        $actions: [
-          {
-            role: 'album/participant',
-            can: ['create', 'update'],
-          },
-        ],
-      },
-      photo: {
-        $actions: [
-          {
-            role: 'album/participant',
-            can: ['create', 'update'],
-          },
-          {
-            role: 'album/updater',
-            can: ['co-update'],
-          },
-          {
-            who: 'author',
-            of: 'album',
-            can: ['create', 'update'],
-          },
-        ],
-      },
-    },
+    // album: {
+    //   $actions: [
+    //     {
+    //       role: 'friend',
+    //       can: ['create', 'update'],
+    //     },
+    //   ],
+    //   participant: {
+    //     $role: true,
+    //     $actions: [
+    //       {
+    //         who: 'author',
+    //         of: 'album',
+    //         can: ['create', 'update'],
+    //       },
+    //     ],
+    //   },
+    //   updater: {
+    //     $role: true,
+    //     $actions: [
+    //       {
+    //         role: 'album/participant',
+    //         can: ['create', 'update'],
+    //       },
+    //     ],
+    //   },
+    //   photo: {
+    //     $actions: [
+    //       {
+    //         role: 'album/participant',
+    //         can: ['create', 'update'],
+    //       },
+    //       {
+    //         role: 'album/updater',
+    //         can: ['co-update'],
+    //       },
+    //       {
+    //         who: 'author',
+    //         of: 'album',
+    //         can: ['create', 'update'],
+    //       },
+    //     ],
+    //   },
+    // },
   },
 };
