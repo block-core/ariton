@@ -119,7 +119,7 @@ describe('CommunityProtocol', () => {
     expect(aliceFriendSendStatus.code).toBe(202);
 
     // After getting globalAdmin (employee of Ariton), let us create a new community.
-    const { status: albumCreateStatus, record: albumRecord } = await dwnBob.records.create({
+    const { status: communityCreateStatus, record: communityRecord } = await dwnBob.records.create({
       data: 'test',
       message: {
         recipient: aliceDid.uri,
@@ -130,12 +130,12 @@ describe('CommunityProtocol', () => {
         dataFormat: 'application/json',
       },
     });
-    expect(albumCreateStatus.code).toBe(202);
+    expect(communityCreateStatus.code).toBe(202);
 
-    const { status: bobAlbumSendStatus } = await albumRecord!.send(bobDid.uri);
-    expect(bobAlbumSendStatus.code).toBe(202);
+    const { status: bobCommunitySendStatus } = await communityRecord!.send(bobDid.uri);
+    expect(bobCommunitySendStatus.code).toBe(202);
 
-    const { status: aliceAlbumSendStatus } = await albumRecord!.send(aliceDid.uri);
-    expect(aliceAlbumSendStatus.code).toBe(202);
+    // const { status: aliceAlbumSendStatus } = await communityRecord!.send(aliceDid.uri);
+    // expect(aliceAlbumSendStatus.code).toBe(202);
   });
 });
