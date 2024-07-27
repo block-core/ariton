@@ -43,12 +43,21 @@ export const protocolDefinition = {
       $role: true,
     },
     community: {
+      $actions: [
+        {
+          role: 'globalAdmin',
+          can: ['create', 'update'],
+
+          //can: ['create', 'read', 'update', 'delete', 'prune', 'co-prune', 'co-delete', 'co-update'],
+        },
+      ],
+
       admin: {
         $role: true,
         $actions: [
           {
             role: 'globalAdmin',
-            can: ['create', 'read'],
+            can: ['create', 'update'],
 
             //can: ['create', 'read', 'update', 'delete', 'prune', 'co-prune', 'co-delete', 'co-update'],
           },

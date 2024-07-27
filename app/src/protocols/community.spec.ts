@@ -135,7 +135,7 @@ describe('CommunityProtocol', () => {
     const { status: bobCommunitySendStatus } = await communityRecord!.send(bobDid.uri);
     expect(bobCommunitySendStatus.code).toBe(202);
 
-    // const { status: aliceAlbumSendStatus } = await communityRecord!.send(aliceDid.uri);
-    // expect(aliceAlbumSendStatus.code).toBe(202);
+    const { status: aliceAlbumSendStatus } = await communityRecord!.send(aliceDid.uri);
+    expect(aliceAlbumSendStatus.code).toBe(202);
   });
 });
