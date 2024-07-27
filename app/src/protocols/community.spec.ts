@@ -96,7 +96,7 @@ describe('CommunityProtocol', () => {
     expect(aliceRemoteProtocolStatus.code).toBe(202);
 
     // Now that protocols is installed, assign globalAdmin between users.
-    const { status: adminCreateStatus, record: adminRecord } = await dwnAlice.records.create({
+    const { status: adminCreateStatus, record: globalAdminRecord } = await dwnAlice.records.create({
       data: { reason: 'is our super employee' },
       message: {
         recipient: bobDid.uri,
@@ -110,12 +110,12 @@ describe('CommunityProtocol', () => {
     console.log(adminCreateStatus);
     expect(adminCreateStatus.code).toBe(202);
 
-    const { status: friendRecordUpdateStatus } = await adminRecord!.update({
+    const { status: friendRecordUpdateStatus } = await globalAdminRecord!.update({
       data: { reason: 'is still our super employee' },
     });
     expect(friendRecordUpdateStatus.code).toBe(202);
 
-    const { status: aliceFriendSendStatus } = await adminRecord!.send(aliceDid.uri);
+    const { status: aliceFriendSendStatus } = await globalAdminRecord!.send(aliceDid.uri);
     expect(aliceFriendSendStatus.code).toBe(202);
 
     // After getting globalAdmin (employee of Ariton), let us create a new community.
@@ -137,5 +137,25 @@ describe('CommunityProtocol', () => {
 
     const { status: aliceAlbumSendStatus } = await communityRecord!.send(aliceDid.uri);
     expect(aliceAlbumSendStatus.code).toBe(202);
+
+    // Bob makes Alice a `participant` and sends the record to her and his own remote node.
+    const { status: participantCreateStatus, record: adminRecord } = await dwnBob.records.create({
+      data: 'test',
+      message: {
+        parentContextId: communityRecord!.contextId,
+        recipient: aliceDid.uri,
+        protocol: community.uri,
+        protocolPath: 'community/admin',
+        schema: 'https://schema.ariton.app/community/schema/admin',
+        dataFormat: 'application/json',
+      },
+    });
+    expect(participantCreateStatus.code).toBe(202);
+
+    // const { status: bobParticipantSendStatus } = await adminRecord!.send(bobDid.uri);
+    // expect(bobParticipantSendStatus.code).toBe(202);
+
+    // const { status: aliceParticipantSendStatus } = await adminRecord!.send(aliceDid.uri);
+    // expect(aliceParticipantSendStatus.code).toBe(202);
   });
 });
