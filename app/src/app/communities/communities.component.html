@@ -49,7 +49,8 @@
 </mat-card> -->
 
 <div class="container responsive-grid">
-  <mat-card *ngFor="let card of cards()">
+  @for(card of cards(); track card) {
+  <mat-card>
     <mat-card-header>
       <mat-card-title>{{ card.name }} </mat-card-title>
     </mat-card-header>
@@ -66,6 +67,7 @@
       <button mat-button (click)="open('did:dht:my6nm5s1n9xmuuh5yixe668k7xbkmmuddzatn1fojzgdg5f5to8y')">PREVIEW</button>
     </mat-card-actions>
   </mat-card>
+  }
 </div>
 } @else {
 <div class="mat-elevation-z8">
@@ -89,7 +91,14 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
 
-  <mat-paginator #paginator [length]="dataSource.data.length" [pageIndex]="0" [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" aria-label="Select page">
+  <mat-paginator
+    #paginator
+    [length]="dataSource.data.length"
+    [pageIndex]="0"
+    [pageSize]="10"
+    [pageSizeOptions]="[5, 10, 20]"
+    aria-label="Select page"
+  >
   </mat-paginator>
 </div>
 }
