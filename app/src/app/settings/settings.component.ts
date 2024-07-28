@@ -1,31 +1,54 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
 import { SettingsState, SettingsStateService } from '../settings.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
+import { IdentityService } from '../identity.service';
+import { DidResolutionResult } from '@web5/dids';
+import { CommonModule } from '@angular/common';
 
 @Component({
-    selector: 'app-settings',
-    standalone: true,
-    imports: [MatButtonModule, MatListModule, MatIconModule, RouterLink],
-    templateUrl: './settings.component.html',
-    styleUrl: './settings.component.scss',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    providers: [SettingsStateService],
+  selector: 'app-settings',
+  standalone: true,
+  imports: [CommonModule, MatButtonModule, MatListModule, MatIconModule, RouterLink],
+  templateUrl: './settings.component.html',
+  styleUrl: './settings.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [SettingsStateService],
 })
 export class SettingsComponent {
-    debug = this.settingsState.select('debug');
+  debug = this.settingsState.select('debug');
 
-    readonly settings = this.settingsState.state.asReadonly();
+  identity = inject(IdentityService);
 
-    constructor(private settingsState: SettingsStateService) {}
+  document = signal<DidResolutionResult | undefined>(undefined);
 
-    toggleDebug() {
-        // Update single property
-        //this.settingsState.set('debug', !this.settings().debug);
+  nodes = signal<any>([]);
 
-        // Update full or partial state
-        this.settingsState.setState({ debug: !this.settings().debug } as SettingsState);
-    }
+  readonly settings = this.settingsState.state.asReadonly();
+
+  constructor(private settingsState: SettingsStateService) {
+    effect(() => {
+      if (this.identity.initialized()) {
+        this.loadDIDDocument();
+      }
+    });
+  }
+
+  async loadDIDDocument() {
+    const document = await this.identity.web5.did.resolve(this.identity.did);
+    this.document.set(document);
+
+    let nodes = document.didDocument?.service?.filter((service) => service.type === 'DecentralizedWebNode');
+    this.nodes.set(nodes);
+  }
+
+  toggleDebug() {
+    // Update single property
+    //this.settingsState.set('debug', !this.settings().debug);
+
+    // Update full or partial state
+    this.settingsState.setState({ debug: !this.settings().debug } as SettingsState);
+  }
 }

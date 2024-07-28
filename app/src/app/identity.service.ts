@@ -43,7 +43,12 @@ export class IdentityService {
 
   async initialConnect(password: string) {
     try {
-      const result = await Web5.connect({ password, sync: this.syncInterval });
+      const result = await Web5.connect({
+        // didCreateOptions: { dwnEndpoints: ['https://dwn.gcda.xyz', 'https://dwn.tbddev.org/beta'] },
+        // didCreateOptions: { dwnEndpoints: ['https://dwn.tbddev.org/beta'] },
+        password,
+        sync: this.syncInterval,
+      });
       this.web5 = result.web5;
       this.did = result.did;
 
