@@ -1,7 +1,11 @@
 <div class="profile-header">
   <!-- <img [src]="avatarSrc | safeResourceUrl" alt="image" /> -->
 
-  <img class="profile-header-icon" [src]="profileService.avatarSelected() | safeResourceUrl" onerror="this.src='/avatar-placeholder.png';this.onerror='';" />
+  <img
+    class="profile-header-icon"
+    [src]="profileService.avatarSelected() | safeResourceUrl"
+    onerror="this.src='/avatar-placeholder.png';this.onerror='';"
+  />
   <div class="profile-header-text">
     <h1>
       {{ profileService.selected().name }}
@@ -22,7 +26,7 @@
         <mat-icon>chat_bubble</mat-icon>
         <span>Message</span>
       </button>
-      <button disabled="true" mat-menu-item [routerLink]="['/app/chat']">
+      <button mat-menu-item (click)="addFriend()">
         <mat-icon>person_add</mat-icon>
         <span>Add Friend</span>
       </button>
@@ -63,8 +67,9 @@
       <div class="about-tab-container">
         <div class="profile-items">
           <mat-icon>event</mat-icon><span>{{ profileService.selected().birthDate }}</span> <mat-icon>place</mat-icon
-          ><span>{{ profileService.selected().location }}</span> <mat-icon>event</mat-icon><span>{{ profileService.selected().status }}</span>
-          <mat-icon>link</mat-icon><span>{{ profileService.selected().links }}</span>
+          ><span>{{ profileService.selected().location }}</span> <mat-icon>event</mat-icon
+          ><span>{{ profileService.selected().status }}</span> <mat-icon>link</mat-icon
+          ><span>{{ profileService.selected().links }}</span>
         </div>
 
         <div class="profile-bio">

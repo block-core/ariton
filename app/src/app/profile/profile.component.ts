@@ -8,7 +8,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ProfileService } from '../profile.service';
 import { MatTabsModule } from '@angular/material/tabs';
 import { IdentityService } from '../identity.service';
-import { profile } from '../../protocols';
+import { message, profile } from '../../protocols';
 import { SafeUrlPipe } from '../shared/pipes/safe-url.pipe';
 import { DomSanitizer } from '@angular/platform-browser';
 import * as QRCode from 'qrcode';
@@ -18,7 +18,17 @@ import { QRCodeDialogComponent } from '../shared/dialog/qrcode-dialog/qrcode-dia
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [QRCodeDialogComponent, MatDialogModule, SafeUrlPipe, MatTabsModule, MatIconModule, MatButtonModule, MatMenuModule, RouterLink, MatDividerModule],
+  imports: [
+    QRCodeDialogComponent,
+    MatDialogModule,
+    SafeUrlPipe,
+    MatTabsModule,
+    MatIconModule,
+    MatButtonModule,
+    MatMenuModule,
+    RouterLink,
+    MatDividerModule,
+  ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
 })
@@ -33,7 +43,12 @@ export class ProfileComponent {
     URL.revokeObjectURL(this.avatarSrc);
   }
 
-  constructor(private dialog: MatDialog, private sanitizer: DomSanitizer, private _snackBar: MatSnackBar, private route: ActivatedRoute) {
+  constructor(
+    private dialog: MatDialog,
+    private sanitizer: DomSanitizer,
+    private _snackBar: MatSnackBar,
+    private route: ActivatedRoute,
+  ) {
     effect(() => {
       if (this.identity.initialized()) {
         this.route.paramMap.subscribe((params) => {
@@ -49,6 +64,23 @@ export class ProfileComponent {
   async ngOnInit() {}
 
   async loadData() {}
+
+  async addFriend() {
+    const { status: communityCreateStatus, record: messageRecord } = await this.identity.web5.dwn.records.create({
+      data: { message: 'I want to be your friend.' },
+      message: {
+        recipient: this.profileService.selected().did,
+        protocol: message.uri,
+        protocolPath: 'request',
+        schema: 'https://schema.ariton.app/message/schema/request',
+        dataFormat: 'application/json',
+      },
+    });
+
+    const { status: aliceAlbumSendStatus } = await messageRecord!.send(this.profileService.selected().did);
+
+    this.openSnackBar('Friend request sent');
+  }
 
   avatarSrc: any = null;
 
