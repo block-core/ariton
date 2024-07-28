@@ -177,3 +177,40 @@ Part of the Data feature of Ariton, will be a generic data editor where users ca
 Users can subscribe to data, and be notified when the data is updated. This can be useful for example when a new knitting pattern is added to a community, or when a new video is added to a children's video collection.
 
 The subscriptions can also be based upon payments to the owner of the data.
+
+## Social Graph
+
+This is a protocol that is used to collect connections with other users. The connections are stored in the user's DWN.
+
+### Use Case Flow
+
+1. User A looks up User B profile, discovered through their DID.
+2. User A can only send friend request if the DWN of User B has enabled friend requests (write permission). This check only happens after user takes active decision to "Add Friend". This avoids additional network traffic, but can become annoying for users if most people have disable friend requests.
+3. User A sends a friend request to User B. This involves sending a message to User B, that User A wants to connect. This goes to a special inbox that is only for friend requests.
+4. At the same time, User A will issue various roles to User B, to allow User B to perform additional actions. These actions are available even if User B never accept the friend request. These roles are stored in User A's DWN. One of those permissions include the ability to send Direct Messages.
+5. Maybe User A should be allowed to choose a "role" (or "circle") that User B will be added to. This will allow User A to manage their connections in a more structured way. For example "Family" and "Friends" can be two different circles, and when added to either, a user can see family photos or not.
+
+The `request` type of message should support multiple kinds, including DM requests. That will allow anyone to message anyone,
+without first having to be friends. The message request appears not in the regular chat messages to avoid spam.
+
+schema: https://schema.ariton.app/social-graph
+
+```json
+{
+  "did": "did:web5:0x1234567890abcdef"
+}
+```
+
+## Message Protocol
+
+The message protocol is a simple protocol that allows users to send messages to each other. The messages are stored in the user's DWN. Should there be a `from` field that allows the user to send a message on behalf of another user?
+
+schema: https://schema.ariton.app/message
+
+```json
+{
+  "from": "did:web5:0x1234567890abcdef",
+  "to": "did:web5:0xabcdef1234567890",
+  "message": "Hello, how are you?"
+}
+```

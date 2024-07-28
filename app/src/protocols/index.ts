@@ -7,6 +7,7 @@ import { protocolDefinition as chatDefinition } from './chat';
 import { protocolDefinition as freeForAllDefinition } from './free-for-all';
 import { protocolDefinition as minimalDefinition } from './minimal';
 import { protocolDefinition as messageDefinition } from './message';
+import { protocolDefinition as socialGraphDefinition } from './social';
 
 export const profile = {
   uri: profileDefinition.protocol,
@@ -28,9 +29,20 @@ export const community = {
   definition: communityDefinition,
 };
 
+export const message = {
+  uri: messageDefinition.protocol,
+  definition: messageDefinition,
+};
+
+export const socialGraph = {
+  uri: socialGraphDefinition.protocol,
+  definition: socialGraphDefinition,
+};
+
 export const byUri = {
-  [profileDefinition.protocol]: profile,
-  [socialDefinition.protocol]: social,
-  [registryDefinition.protocol]: registry,
-  [communityDefinition.protocol]: community,
+  [profile.uri]: profile,
+  [social.uri]: social,
+  [registry.uri]: registry,
+  [community.uri]: community,
+  [message.uri]: message,
 };
