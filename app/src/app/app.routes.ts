@@ -37,6 +37,12 @@ export const routes: Routes = [
     data: { hide: true, icon: 'diversity_2' },
   },
   {
+    path: 'friends',
+    loadComponent: () => import('./friends/friends.component').then((c) => c.FriendsComponent),
+    title: 'Friends',
+    data: { hide: false, icon: 'people' },
+  },
+  {
     path: 'marketplace',
     loadComponent: () => import('./marketplace/marketplace.component').then((c) => c.MarketplaceComponent),
     title: 'Marketplace',
