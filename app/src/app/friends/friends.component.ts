@@ -73,9 +73,6 @@ export class FriendsComponent {
         let data = await record.data.json();
         let json: any = { record: record, data: data };
 
-        console.log(record.author);
-        console.log(this.identity.did);
-
         if (record.author == this.identity.did) {
           json.direction = 'out';
         }

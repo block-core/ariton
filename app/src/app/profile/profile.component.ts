@@ -15,6 +15,8 @@ import * as QRCode from 'qrcode';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { QRCodeDialogComponent } from '../shared/dialog/qrcode-dialog/qrcode-dialog.component';
 import { AppService } from '../app.service';
+import { CommonModule } from '@angular/common';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-profile',
@@ -29,6 +31,8 @@ import { AppService } from '../app.service';
     MatMenuModule,
     RouterLink,
     MatDividerModule,
+    CommonModule,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
@@ -40,7 +44,9 @@ export class ProfileComponent {
 
   app = inject(AppService);
 
-  profile = signal<any>({});
+  data = signal<any>(undefined);
+
+  avatarSrc: any = null;
 
   ngOnDestroy() {
     URL.revokeObjectURL(this.avatarSrc);
@@ -69,8 +75,13 @@ export class ProfileComponent {
 
   async loadData() {}
 
-  async addFriend() {
-    const { status: communityCreateStatus, record: messageRecord } = await this.identity.web5.dwn.records.create({
+  async addFriend(did: string) {
+    console.log('TARGET DID 1:', this.profileService.selected().did);
+    console.log('TARGET DID 2:', this.profileService.current().did);
+    console.log('AUTHOR DID:', this.identity.did);
+    console.log('INPUT DID:', did);
+
+    const { status: requestCreateStatus, record: messageRecord } = await this.identity.web5.dwn.records.create({
       data: { message: 'I want to be your friend.' },
       message: {
         recipient: this.profileService.selected().did,
@@ -81,27 +92,28 @@ export class ProfileComponent {
       },
     });
 
-    const { status: aliceAlbumSendStatus } = await messageRecord!.send(this.profileService.selected().did);
+    console.log('Request create status:', requestCreateStatus);
 
-    if (aliceAlbumSendStatus.code != 201) {
-      this.openSnackBar(
-        `Friend request failed.Code: ${aliceAlbumSendStatus.code}, Details: ${aliceAlbumSendStatus.detail}.`,
-      );
+    const { status: requestStatus } = await messageRecord!.send(this.profileService.selected().did);
+
+    if (requestStatus.code !== 202) {
+      this.openSnackBar(`Friend request failed.Code: ${requestStatus.code}, Details: ${requestStatus.detail}.`);
     } else {
       this.openSnackBar('Friend request sent');
     }
   }
 
-  avatarSrc: any = null;
-
   private async loadUserProfile(userId: string) {
-    await this.profileService.openProfile(userId);
+    const profile = await this.profileService.loadProfile(userId);
+    this.data.set(profile);
+
+    console.log(profile);
+    console.log('PROFILE SET!!!');
 
     //let blob = new Blob([this.profileService.avatar()]);
     // console.log(this.profileService.avatar());
 
     // var imageUrl = URL.createObjectURL(this.profileService.avatar());
-    this.avatarSrc = this.profileService.avatar();
 
     // const reader = new FileReader();
     // reader.readAsDataURL(this.profileService.avatar());
@@ -126,23 +138,22 @@ export class ProfileComponent {
     this._snackBar.open(message, undefined, { duration: 2000 });
   }
 
-  async copyDID() {
+  async copyDID(did: string) {
     try {
-      await navigator.clipboard.writeText(this.profileService.selected().did);
+      await navigator.clipboard.writeText(did);
       this.openSnackBar('DID copied to clipboard');
     } catch (err) {
       console.error('Failed to copy: ', err);
     }
   }
 
-  showQR() {
-    const did = this.profileService.selected().did;
+  showQR(did: string) {
     this.dialog.open(QRCodeDialogComponent, {
       data: { did: did },
     });
   }
 
-  async shareProfile() {
+  async shareProfile(did: string) {
     const title = 'SondreB (Voluntaryist)';
     const url = document.location.href;
     const text = 'Check out this profile on Ariton';

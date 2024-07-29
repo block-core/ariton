@@ -56,6 +56,7 @@ export class ProfileService {
   async loadProfile(did: string) {
     //Query records with plain text data format
     const response = await this.identity.web5.dwn.records.query({
+      from: did,
       message: {
         filter: {
           protocol: profile.uri,
@@ -67,6 +68,9 @@ export class ProfileService {
 
     let json = {};
     let recordEntry = null;
+
+    console.log('RESPONSE FOUND FOR PROFILE:', response);
+    console.log('RECORDS FOUND FOR PROFILE:', response.records);
 
     if (response.records) {
       // Loop through returned records and print text from each
@@ -81,28 +85,29 @@ export class ProfileService {
     var avatar: any = null;
 
     // If lookup is for current user, just query local DWN.
-    if (did == this.identity.did) {
-      const imageResponse = await this.identity.web5.dwn.records.query({
-        message: {
-          filter: {
-            protocol: profile.uri,
-            protocolPath: 'avatar',
-            dataFormat: 'image/png',
-          },
+    // if (did == this.identity.did) {
+    const imageResponse = await this.identity.web5.dwn.records.query({
+      from: did,
+      message: {
+        filter: {
+          protocol: profile.uri,
+          protocolPath: 'avatar',
+          dataFormat: 'image/png',
         },
-      });
+      },
+    });
 
-      if (imageResponse.records && imageResponse.records.length > 0) {
-        const record = imageResponse.records[0];
-        avatarRecord = record;
-        let image = await record.data.text(); //.blob();
-        // this.avatar.set(image);
+    if (imageResponse.records && imageResponse.records.length > 0) {
+      const record = imageResponse.records[0];
+      avatarRecord = record;
+      let image = await record.data.text(); //.blob();
+      // this.avatar.set(image);
 
-        avatar = image;
-        // let image = await record.data.blob();
-        // this.current.update((profile) => ({ ...profile, profileImage: URL.createObjectURL
-      }
+      avatar = image;
+      // let image = await record.data.blob();
+      // this.current.update((profile) => ({ ...profile, profileImage: URL.createObjectURL
     }
+    // }
 
     // Returns a structure of both the record and the profile.
     return {
@@ -114,7 +119,15 @@ export class ProfileService {
   }
 
   /** Load and sets the profile to selected and current (if same as logged on user) */
+  async openCurrentUserProfile(did: string) {
+    console.log('Open current user profile', did);
+    const profile = await this.loadProfile(did);
+    this.current.set(profile.profile as Profile);
+  }
+
+  /** Load and sets the profile to selected and current (if same as logged on user) */
   async openProfile(did: string) {
+    console.log('Open profile', did);
     const profile = await this.loadProfile(did);
 
     this.avatarSelected.set(profile.avatar);

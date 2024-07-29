@@ -248,7 +248,7 @@ export class AppService {
     // }
 
     // Load the user profile.
-    await this.profile.openProfile(this.account().did);
+    await this.profile.openCurrentUserProfile(this.account().did);
 
     this.initialized.set(true);
 

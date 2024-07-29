@@ -1,19 +1,25 @@
+@if (data()) {
 <div class="profile-header">
-  <!-- <img [src]="avatarSrc | safeResourceUrl" alt="image" /> -->
-
+  @if (data().avatar) {
   <img
     class="profile-header-icon"
-    [src]="profileService.avatarSelected() | safeResourceUrl"
+    [src]="data().avatar | safeResourceUrl"
     onerror="this.src='/avatar-placeholder.png';this.onerror='';"
   />
+  } @else {
+  <img class="profile-header-icon" src="/avatar-placeholder.png" />
+  }
+
   <div class="profile-header-text">
+    {{ data() | json }}
+    <br /><br />
     <h1>
-      {{ profileService.selected().name }}
-      @if(profileService.selected().title) {
-      <span>({{ profileService.selected().title }})</span>
+      {{ data().profile.name }}
+      @if(data().profile.title) {
+      <span>({{ data().profile.title }})</span>
       }
     </h1>
-    <span class="ellipsis">{{ profileService.selected().did }}</span>
+    <span class="ellipsis">{{ data().profile.did }}</span>
   </div>
   <div class="spacer"></div>
   <div>
@@ -26,9 +32,9 @@
         <mat-icon>chat_bubble</mat-icon>
         <span>Message</span>
       </button>
-      <button mat-menu-item (click)="addFriend()">
+      <button mat-menu-item (click)="addFriend(data().profile.did)">
         <mat-icon>person_add</mat-icon>
-        <span>Add Friend</span>
+        <span>Add Friend ({{ data().did }})</span>
       </button>
       <mat-divider></mat-divider>
       <button mat-menu-item [routerLink]="['edit']">
@@ -36,15 +42,15 @@
         <span>Edit Profile</span>
       </button>
       <mat-divider></mat-divider>
-      <button (click)="copyDID()" mat-menu-item>
+      <button (click)="copyDID(data().profile.did)" mat-menu-item>
         <mat-icon>content_copy</mat-icon>
         <span>Copy DID</span>
       </button>
-      <button (click)="showQR()" mat-menu-item>
+      <button (click)="showQR(data().profile.did)" mat-menu-item>
         <mat-icon>qr_code</mat-icon>
         <span>Show QR</span>
       </button>
-      <button (click)="shareProfile()" mat-menu-item>
+      <button (click)="shareProfile(data().profile.did)" mat-menu-item>
         <mat-icon>send</mat-icon>
         <span>Share Profile</span>
       </button>
@@ -66,10 +72,9 @@
 
       <div class="about-tab-container">
         <div class="profile-items">
-          <mat-icon>event</mat-icon><span>{{ profileService.selected().birthDate }}</span> <mat-icon>place</mat-icon
-          ><span>{{ profileService.selected().location }}</span> <mat-icon>event</mat-icon
-          ><span>{{ profileService.selected().status }}</span> <mat-icon>link</mat-icon
-          ><span>{{ profileService.selected().links }}</span>
+          <mat-icon>event</mat-icon><span>{{ data().profile.birthDate }}</span> <mat-icon>place</mat-icon
+          ><span>{{ data().profilelocation }}</span> <mat-icon>event</mat-icon><span>{{ data().profile.status }}</span>
+          <mat-icon>link</mat-icon><span>{{ data().profile.links }}</span>
         </div>
 
         <div class="profile-bio">
@@ -96,3 +101,6 @@
     </mat-tab>
   </mat-tab-group>
 </div>
+} @else {
+<mat-spinner></mat-spinner>
+}
