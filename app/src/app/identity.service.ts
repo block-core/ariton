@@ -55,6 +55,7 @@ export class IdentityService {
       console.log('Web5 Connected.', this.did);
       // console.log('IDENTITY SERVICE:', this.web5);
 
+      this.preinitialized.set(true);
       this.initialized.set(true);
       return result;
     } catch (err) {
@@ -74,6 +75,7 @@ export class IdentityService {
       console.log('Web5 Connected.');
       // console.log('IDENTITY SERVICE:', this.web5);
 
+      this.preinitialized.set(true);
       this.initialized.set(true);
       return result;
     } catch (err) {
@@ -92,6 +94,7 @@ export class IdentityService {
       this.did = result.did;
 
       console.log('Web5 Connected.');
+      this.preinitialized.set(true);
       this.initialized.set(true);
       return result;
     } catch (err) {
@@ -163,6 +166,8 @@ export class IdentityService {
   //   return arr;
   // });*/
   // }
+
+  preinitialized = signal<boolean>(false);
 
   initialized = signal<boolean>(false);
 

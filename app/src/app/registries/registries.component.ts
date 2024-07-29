@@ -150,25 +150,11 @@ export class RegistriesComponent implements AfterViewInit {
       // Loop through returned records and print text from each
       response.records.forEach(async (record) => {
         let data = await record.data.json();
-
         //   json = { ...json, id: record.dataCid, author: record.author, created: record.dateCreated };
-
         let json = { record: record, data: data };
-
         this.records.update((records) => [...records, json]);
       });
     }
-
-    // if (record) {
-    //   //send record to recipient's DWN
-    //   const { status } = await record.send(recipient);
-    //   console.log('Record sent:', status, record);
-
-    //   // Show a toast notification
-    //   this.snackBar.open('Record sent successfully!', 'Close', {
-    //     duration: 3000, // Duration in milliseconds
-    //   });
-    // }
   }
 
   ngAfterViewInit(): void {

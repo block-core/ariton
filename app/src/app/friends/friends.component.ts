@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -6,11 +6,24 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTabsModule } from '@angular/material/tabs';
+import { IdentityService } from '../identity.service';
+import { message } from '../../protocols';
+import { AppService } from '../app.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-friends',
   standalone: true,
-  imports: [MatListModule, MatCardModule, MatButtonModule, MatTabsModule, MatIconModule, MatBadgeModule, MatMenuModule],
+  imports: [
+    CommonModule,
+    MatListModule,
+    MatCardModule,
+    MatButtonModule,
+    MatTabsModule,
+    MatIconModule,
+    MatBadgeModule,
+    MatMenuModule,
+  ],
   templateUrl: './friends.component.html',
   styleUrl: './friends.component.scss',
 })
@@ -18,6 +31,50 @@ export class FriendsComponent {
   requests = signal<any[]>([]);
 
   friends = signal<any[]>([]);
+
+  identity = inject(IdentityService);
+
+  app = inject(AppService);
+
+  constructor() {
+    effect(() => {
+      if (this.app.initialized()) {
+        this.loadRequests();
+      }
+    });
+  }
+
+  async loadRequests() {
+    var { records } = await this.identity.web5.dwn.records.query({
+      message: {
+        filter: {
+          protocol: message.uri,
+          schema: 'https://schema.ariton.app/message/schema/request',
+          dataFormat: 'application/json',
+        },
+      },
+    });
+
+    console.log('Records from requests:');
+    console.log(records);
+
+    let json = {};
+    let recordEntry = null;
+
+    if (records) {
+      // Loop through returned records and print text from each
+      for (const record of records) {
+        let data = await record.data.json();
+        let json = { record: record, data: data };
+
+        this.requests.update((requests) => [...requests, json]);
+
+        // recordEntry = record;
+        // let recordJson = await record.data.json();
+        // json = { ...recordJson, id: record.dataCid, did: record.author, created: record.dateCreated };
+      }
+    }
+  }
 
   accept(did: string) {}
 

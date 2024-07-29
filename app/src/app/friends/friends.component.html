@@ -49,10 +49,11 @@
         <br />
         <img mat-card-image [src]="request.thumbnail" />
         <mat-card-content>
-          <br />
+          @if (request.data?.message) {
           <p>
-            {{ request.description }}
+            {{ request.data.message }}
           </p>
+          }
         </mat-card-content>
         <mat-card-actions>
           <button mat-flat-button (click)="accept('did:dht:my6nm5s1n9xmuuh5yixe668k7xbkmmuddzatn1fojzgdg5f5to8y')">
