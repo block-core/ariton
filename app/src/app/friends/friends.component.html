@@ -47,7 +47,8 @@
           <mat-card-title>{{ request.name }} </mat-card-title>
         </mat-card-header>
         <br />
-        <img mat-card-image [src]="request.thumbnail" />
+        <!-- <app-profile-image mat-card-image [did]="request.record?.author"></app-profile-image> -->
+        <img mat-card-image [appProfileImage]="request.record?.author" [src]="request.thumbnail" />
         <mat-card-content>
           @if (request.data?.message) {
           <p>

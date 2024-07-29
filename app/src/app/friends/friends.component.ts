@@ -10,6 +10,8 @@ import { IdentityService } from '../identity.service';
 import { message } from '../../protocols';
 import { AppService } from '../app.service';
 import { CommonModule } from '@angular/common';
+import { ProfileImageComponent } from '../shared/components/profile-image/profile-image.component';
+import { ProfileImageDirective } from '../shared/directives/profile-image.directive';
 
 @Component({
   selector: 'app-friends',
@@ -23,6 +25,8 @@ import { CommonModule } from '@angular/common';
     MatIconModule,
     MatBadgeModule,
     MatMenuModule,
+    ProfileImageComponent,
+    ProfileImageDirective,
   ],
   templateUrl: './friends.component.html',
   styleUrl: './friends.component.scss',

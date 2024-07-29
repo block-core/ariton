@@ -2,7 +2,7 @@ import { Injectable, effect, inject, signal } from '@angular/core';
 import { StorageService } from './storage.service';
 import { CryptoService } from './crypto.service';
 import { IdentityService } from './identity.service';
-import { Web5ConnectResult } from '@web5/api';
+import { activatePolyfills, Web5ConnectResult } from '@web5/api';
 import * as packageInfo from '../../package.json';
 import { ProtocolService } from './protocol.service';
 import { ProfileService } from './profile.service';
@@ -70,7 +70,19 @@ export class AppService {
 
   constructor() {
     console.log(`Ariton v${this.package.version} initialized.`);
-    this.dependencies = Object.entries(this.package.dependencies).map(([key, value]) => ({ name: key, version: value }));
+    this.dependencies = Object.entries(this.package.dependencies).map(([key, value]) => ({
+      name: key,
+      version: value,
+    }));
+
+    // Activate all polyfills with default options, and cache every DRL for 1 minute.
+    // activatePolyfills({
+    //   onCacheCheck(event: any, route: any) {
+    //     return {
+    //       ttl: 60_000,
+    //     };
+    //   },
+    // });
 
     effect(async () => {
       // When account is unlocked, either automatically or manually, proceed with the initial load.
