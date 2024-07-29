@@ -42,12 +42,36 @@
 
     <div class="container responsive-grid">
       @for(request of requests(); track request) {
-      <mat-card>
+
+      <app-profile-card [did]="request.record?.author">
+        @if (request.direction == 'out') {
+        <button mat-flat-button [disabled]="true">PENDING</button>
+        <button mat-button (click)="reject(request.record?.recordId)">DELETE</button>
+        } @else {
+        <button mat-flat-button (click)="accept(request.record?.recordId)">CONFIRM</button>
+        <button mat-button (click)="reject(request.record?.recordId)">DELETE</button>
+        }
+        <!-- <ng-container *ngIf="request.direction == 'out'">
+          <button mat-flat-button [disabled]="true">PENDING</button>
+          <button mat-button (click)="reject('did:dht:my6nm5s1n9xmuuh5yixe668k7xbkmmuddzatn1fojzgdg5f5to8y')">
+            DELETE
+          </button>
+        </ng-container>
+        <ng-container *ngIf="request.direction != 'out'">
+          <button mat-flat-button (click)="accept('did:dht:my6nm5s1n9xmuuh5yixe668k7xbkmmuddzatn1fojzgdg5f5to8y')">
+            CONFIRM
+          </button>
+          <button mat-button (click)="reject('did:dht:my6nm5s1n9xmuuh5yixe668k7xbkmmuddzatn1fojzgdg5f5to8y')">
+            DELETE
+          </button>
+        </ng-container> -->
+      </app-profile-card>
+
+      <!-- <mat-card>
         <mat-card-header>
           <mat-card-title>{{ request.name }} </mat-card-title>
         </mat-card-header>
         <br />
-        <!-- <app-profile-image mat-card-image [did]="request.record?.author"></app-profile-image> -->
         <img mat-card-image [appProfileImage]="request.record?.author" [src]="request.thumbnail" />
         <mat-card-content>
           @if (request.data?.message) {
@@ -71,7 +95,7 @@
           </button>
           }
         </mat-card-actions>
-      </mat-card>
+      </mat-card> -->
       }
     </div>
   </mat-tab>
