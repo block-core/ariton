@@ -37,7 +37,7 @@
   <mat-tab>
     <ng-template mat-tab-label>
       <mat-icon class="tab-icon">person_add</mat-icon>
-      <span class="hide-small" matBadge="4" matBadgeOverlap="false">Requests&nbsp;</span>
+      <span class="hide-small" [matBadge]="requests().length" matBadgeOverlap="false">Requests&nbsp;</span>
     </ng-template>
 
     <div class="container responsive-grid">

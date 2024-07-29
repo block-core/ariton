@@ -105,11 +105,11 @@ export class FriendsComponent {
       },
     ]);
 
-    this.requests.set([
-      {
-        name: 'Lu',
-        thumbnail: 'https://ariton.app/assets/lu.jpg',
-      },
-    ]);
+    // this.requests.set([
+    //   {
+    //     name: 'Lu',
+    //     thumbnail: 'https://ariton.app/assets/lu.jpg',
+    //   },
+    // ]);
   }
 }
