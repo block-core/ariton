@@ -56,12 +56,19 @@
           }
         </mat-card-content>
         <mat-card-actions>
+          @if (request.direction == 'out') {
+          <button mat-flat-button [disabled]="true">PENDING</button>
+          <button mat-button (click)="reject('did:dht:my6nm5s1n9xmuuh5yixe668k7xbkmmuddzatn1fojzgdg5f5to8y')">
+            DELETE
+          </button>
+          } @else {
           <button mat-flat-button (click)="accept('did:dht:my6nm5s1n9xmuuh5yixe668k7xbkmmuddzatn1fojzgdg5f5to8y')">
             CONFIRM
           </button>
           <button mat-button (click)="reject('did:dht:my6nm5s1n9xmuuh5yixe668k7xbkmmuddzatn1fojzgdg5f5to8y')">
             DELETE
           </button>
+          }
         </mat-card-actions>
       </mat-card>
       }

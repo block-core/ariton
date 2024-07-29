@@ -65,7 +65,14 @@ export class FriendsComponent {
       // Loop through returned records and print text from each
       for (const record of records) {
         let data = await record.data.json();
-        let json = { record: record, data: data };
+        let json: any = { record: record, data: data };
+
+        console.log(record.author);
+        console.log(this.identity.did);
+
+        if (record.author == this.identity.did) {
+          json.direction = 'out';
+        }
 
         this.requests.update((requests) => [...requests, json]);
 

@@ -151,7 +151,15 @@ export class RegistriesComponent implements AfterViewInit {
       response.records.forEach(async (record) => {
         let data = await record.data.json();
         //   json = { ...json, id: record.dataCid, author: record.author, created: record.dateCreated };
-        let json = { record: record, data: data };
+        let json: any = { record: record, data: data };
+
+        // console.log(record.author);
+        // console.log(this.identity.did);
+
+        // if (record.author == this.identity.did) {
+        //   json.direction = 'out';
+        // }
+
         this.records.update((records) => [...records, json]);
       });
     }
