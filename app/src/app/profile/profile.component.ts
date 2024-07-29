@@ -14,6 +14,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import * as QRCode from 'qrcode';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { QRCodeDialogComponent } from '../shared/dialog/qrcode-dialog/qrcode-dialog.component';
+import { AppService } from '../app.service';
 
 @Component({
   selector: 'app-profile',
@@ -37,6 +38,8 @@ export class ProfileComponent {
 
   identity = inject(IdentityService);
 
+  app = inject(AppService);
+
   profile = signal<any>({});
 
   ngOnDestroy() {
@@ -50,10 +53,11 @@ export class ProfileComponent {
     private route: ActivatedRoute,
   ) {
     effect(() => {
-      if (this.identity.initialized()) {
+      if (this.app.initialized()) {
         this.route.paramMap.subscribe((params) => {
           const userId = params.get('id'); // Assuming 'id' is the name of the route parameter
           if (userId) {
+            console.log('USER ID SET!!', userId);
             this.loadUserProfile(userId);
           }
         });
@@ -79,7 +83,13 @@ export class ProfileComponent {
 
     const { status: aliceAlbumSendStatus } = await messageRecord!.send(this.profileService.selected().did);
 
-    this.openSnackBar('Friend request sent');
+    if (aliceAlbumSendStatus.code != 201) {
+      this.openSnackBar(
+        `Friend request failed.Code: ${aliceAlbumSendStatus.code}, Details: ${aliceAlbumSendStatus.detail}.`,
+      );
+    } else {
+      this.openSnackBar('Friend request sent');
+    }
   }
 
   avatarSrc: any = null;
