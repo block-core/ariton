@@ -115,6 +115,7 @@ export class ProfileService {
       avatarRecord: avatarRecord,
       avatar: avatar,
       profile: json,
+      did: did,
     };
   }
 

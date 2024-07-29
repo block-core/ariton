@@ -19,7 +19,7 @@
       <span>({{ data().profile.title }})</span>
       }
     </h1>
-    <span class="ellipsis">{{ data().profile.did }}</span>
+    <span class="ellipsis">{{ data().did }}</span>
   </div>
   <div class="spacer"></div>
   <div>
@@ -32,9 +32,13 @@
         <mat-icon>chat_bubble</mat-icon>
         <span>Message</span>
       </button>
-      <button mat-menu-item (click)="addFriend(data().profile.did)">
+      <button mat-menu-item (click)="addFriend(data().did)">
         <mat-icon>person_add</mat-icon>
         <span>Add Friend ({{ data().did }})</span>
+      </button>
+      <button mat-menu-item (click)="load(data().did)">
+        <mat-icon>person_add</mat-icon>
+        <span>LOAD</span>
       </button>
       <mat-divider></mat-divider>
       <button mat-menu-item [routerLink]="['edit']">
@@ -42,15 +46,15 @@
         <span>Edit Profile</span>
       </button>
       <mat-divider></mat-divider>
-      <button (click)="copyDID(data().profile.did)" mat-menu-item>
+      <button (click)="copyDID(data().did)" mat-menu-item>
         <mat-icon>content_copy</mat-icon>
         <span>Copy DID</span>
       </button>
-      <button (click)="showQR(data().profile.did)" mat-menu-item>
+      <button (click)="showQR(data().did)" mat-menu-item>
         <mat-icon>qr_code</mat-icon>
         <span>Show QR</span>
       </button>
-      <button (click)="shareProfile(data().profile.did)" mat-menu-item>
+      <button (click)="shareProfile(data().did)" mat-menu-item>
         <mat-icon>send</mat-icon>
         <span>Share Profile</span>
       </button>

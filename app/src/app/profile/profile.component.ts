@@ -103,8 +103,13 @@ export class ProfileComponent {
     }
   }
 
+  async load(did: string) {
+    await this.loadUserProfile(did);
+  }
+
   private async loadUserProfile(userId: string) {
     const profile = await this.profileService.loadProfile(userId);
+
     this.data.set(profile);
 
     console.log(profile);
