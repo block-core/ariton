@@ -161,6 +161,10 @@ export class ProfileEditComponent {
       });
 
       console.log('Update profile status:', status, record);
+
+      // Send the record immediately to user public DWN.
+      const { status: recordSendStatus } = await this.data().record.send(this.identity.did);
+      console.log('Send profile status:', recordSendStatus);
     } else {
       const { status, record } = await this.identity.web5.dwn.records.create({
         data: formData,
@@ -172,8 +176,11 @@ export class ProfileEditComponent {
           dataFormat: 'application/json',
         },
       });
-
       console.log('Save profile status:', status, record);
+
+      // Send the record immediately to user public DWN.
+      const { status: recordSendStatus } = await record!.send(this.identity.did);
+      console.log('Send profile status:', recordSendStatus);
     }
 
     // If avatar record exists, update it.
@@ -187,7 +194,13 @@ export class ProfileEditComponent {
     // } else {
 
     // TODO: Check if the avatar has changed before uploading. Don't upload if it hasn't.
-    await this.upload(this.form.controls.avatar.value, this.data().avatarRecord);
+    const avatarRecord = await this.upload(this.form.controls.avatar.value, this.data().avatarRecord);
+
+    if (avatarRecord) {
+      // Send the record immediately to user public DWN.
+      const { status: recordSendStatus } = await avatarRecord!.send(this.identity.did);
+      console.log('Send avatar status:', recordSendStatus);
+    }
     // }
 
     this.router.navigate(['/profile', this.identity.did]);
