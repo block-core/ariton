@@ -43,16 +43,16 @@
     </ng-template>
 
     <div class="container responsive-grid">
-      @for(request of requests(); track request) {
+      @for(request of requests(); track request) { @if (request.direction == 'out') {
 
-      <app-profile-card [did]="request.record.author">
-        @if (request.direction == 'out') {
+      <p>
+        {{ request | json }}
+      </p>
+
+      <app-profile-card [did]="request.record.recipient">
         <button mat-flat-button [disabled]="true">PENDING</button>
         <button mat-button (click)="reject(request)">DELETE</button>
-        } @else {
-        <button mat-flat-button (click)="accept(request)">CONFIRM</button>
-        <button mat-button (click)="reject(request)">DELETE</button>
-        }
+
         <!-- <ng-container *ngIf="request.direction == 'out'">
           <button mat-flat-button [disabled]="true">PENDING</button>
           <button mat-button (click)="reject('did:dht:my6nm5s1n9xmuuh5yixe668k7xbkmmuddzatn1fojzgdg5f5to8y')">
@@ -68,6 +68,26 @@
           </button>
         </ng-container> -->
       </app-profile-card>
+      } @else {
+      <app-profile-card [did]="request.record.author">
+        <button mat-flat-button (click)="accept(request)">CONFIRM</button>
+        <button mat-button (click)="reject(request)">DELETE</button>
+        <!-- <ng-container *ngIf="request.direction == 'out'">
+          <button mat-flat-button [disabled]="true">PENDING</button>
+          <button mat-button (click)="reject('did:dht:my6nm5s1n9xmuuh5yixe668k7xbkmmuddzatn1fojzgdg5f5to8y')">
+            DELETE
+          </button>
+        </ng-container>
+        <ng-container *ngIf="request.direction != 'out'">
+          <button mat-flat-button (click)="accept('did:dht:my6nm5s1n9xmuuh5yixe668k7xbkmmuddzatn1fojzgdg5f5to8y')">
+            CONFIRM
+          </button>
+          <button mat-button (click)="reject('did:dht:my6nm5s1n9xmuuh5yixe668k7xbkmmuddzatn1fojzgdg5f5to8y')">
+            DELETE
+          </button>
+        </ng-container> -->
+      </app-profile-card>
+      }
 
       <!-- <mat-card>
         <mat-card-header>

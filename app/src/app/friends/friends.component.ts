@@ -88,6 +88,8 @@ export class FriendsComponent {
 
         this.requests.update((requests) => [...requests, json]);
 
+        console.log('All requests:', this.requests());
+
         // recordEntry = record;
         // let recordJson = await record.data.json();
         // json = { ...recordJson, id: record.dataCid, did: record.author, created: record.dateCreated };
@@ -100,16 +102,17 @@ export class FriendsComponent {
   async reject(entry: Entry) {
     console.log('Rejecting request:', entry);
 
-    // delete the request from the local DWN
-    const { status: deleteStatus } = await entry.record.delete();
-
     // If the recipinent is the current user, then use the author as the target DID.
+    // Very important to read this BEFORE running local delete, as that mutates the record.
     const targetDid = entry.record.recipient == this.identity.did ? entry.record.author : entry.record.recipient;
 
     console.log('Target DID:', targetDid);
     console.log('this.identity.did:', this.identity.did);
     console.log('entry.record.recipient:', entry.record.recipient);
     console.log('entry.record.author:', entry.record.author);
+
+    // delete the request from the local DWN
+    const { status: deleteStatus } = await entry.record.delete();
 
     // send the delete request to the remote DWN
     const { status: deleteSendStatus } = await entry.record.send(targetDid);

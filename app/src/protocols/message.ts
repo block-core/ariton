@@ -40,7 +40,7 @@ export const protocolDefinition = {
       $actions: [
         {
           who: 'anyone',
-          can: ['create', 'update'],
+          can: ['create', 'update', 'delete'],
         },
 
         // The sender of a friend request can read and delete it.
