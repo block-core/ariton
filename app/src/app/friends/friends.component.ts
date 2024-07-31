@@ -104,7 +104,7 @@ export class FriendsComponent {
     const { status: deleteStatus } = await entry.record.delete();
 
     // send the delete request to the remote DWN
-    const { status: deleteSendStatus } = await entry.record.send(entry.record.author);
+    const { status: deleteSendStatus } = await entry.record.send(entry.record.recipient);
 
     console.log('Delete status:', deleteStatus);
     console.log('deleteSendStatus:', deleteSendStatus);
