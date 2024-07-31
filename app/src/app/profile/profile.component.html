@@ -32,11 +32,7 @@
       </button>
       <button mat-menu-item (click)="addFriend(data().did)">
         <mat-icon>person_add</mat-icon>
-        <span>Add Friend ({{ data().did }})</span>
-      </button>
-      <button mat-menu-item (click)="load(data().did)">
-        <mat-icon>person_add</mat-icon>
-        <span>LOAD</span>
+        <span>Add Friend</span>
       </button>
       <mat-divider></mat-divider>
       <button mat-menu-item [routerLink]="['edit']">

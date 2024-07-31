@@ -17,6 +17,7 @@ import { QRCodeDialogComponent } from '../shared/dialog/qrcode-dialog/qrcode-dia
 import { AppService } from '../app.service';
 import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { protocolDefinition as messageDefinition } from '../../protocols/message';
 
 @Component({
   selector: 'app-profile',
@@ -84,27 +85,23 @@ export class ProfileComponent {
     const { status: requestCreateStatus, record: messageRecord } = await this.identity.web5.dwn.records.create({
       data: { message: 'I want to be your friend.' },
       message: {
-        recipient: this.profileService.selected().did,
-        protocol: message.uri,
+        recipient: did,
+        protocol: messageDefinition.protocol,
         protocolPath: 'request',
-        schema: 'https://schema.ariton.app/message/schema/request',
-        dataFormat: 'application/json',
+        schema: messageDefinition.types.request.schema,
+        dataFormat: messageDefinition.types.request.dataFormats[0],
       },
     });
 
     console.log('Request create status:', requestCreateStatus);
 
-    const { status: requestStatus } = await messageRecord!.send(this.profileService.selected().did);
+    const { status: requestStatus } = await messageRecord!.send(did);
 
     if (requestStatus.code !== 202) {
       this.openSnackBar(`Friend request failed.Code: ${requestStatus.code}, Details: ${requestStatus.detail}.`);
     } else {
       this.openSnackBar('Friend request sent');
     }
-  }
-
-  async load(did: string) {
-    await this.loadUserProfile(did);
   }
 
   private async loadUserProfile(userId: string) {

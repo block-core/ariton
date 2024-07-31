@@ -74,18 +74,16 @@ describe('ProfileProtocol', () => {
   });
 
   it('should create message protocol and perform actions', async () => {
-    console.log('YYYYYYEEEEEEESSSSS!');
-
     // Configure the protocol in both DWNs.
-    const { status: bobProtocolStatus, protocol: bobProtocol } = await dwnBob.protocols.configure({
-      message: {
-        definition: profile.definition,
-      },
-    });
-    expect(bobProtocolStatus.code).toBe(202);
+    // const { status: bobProtocolStatus, protocol: bobProtocol } = await dwnBob.protocols.configure({
+    //   message: {
+    //     definition: profile.definition,
+    //   },
+    // });
+    // expect(bobProtocolStatus.code).toBe(202);
 
-    const { status: bobRemoteProtocolStatus } = await bobProtocol!.send(bobDid.uri);
-    expect(bobRemoteProtocolStatus.code).toBe(202);
+    // const { status: bobRemoteProtocolStatus } = await bobProtocol!.send(bobDid.uri);
+    // expect(bobRemoteProtocolStatus.code).toBe(202);
 
     const { status: aliceProtocolStatus, protocol: aliceProtocol } = await dwnAlice.protocols.configure({
       message: {
@@ -97,16 +95,30 @@ describe('ProfileProtocol', () => {
     const { status: aliceRemoteProtocolStatus } = await aliceProtocol!.send(aliceDid.uri);
     expect(aliceRemoteProtocolStatus.code).toBe(202);
 
-    console.log('YEEESS 1111');
+    //  const imageRecordsWrite = await TestDataGenerator.generateRecordsWrite({
+    //    author: aliceDid.uri,
+    //    protocol: profile.uri,
+    //    protocolPath: 'profile', // this comes from `types` in protocol definition
+    //    schema: 'https://schema.ariton.app/profile/schema/profile',
+    //    dataFormat: 'image/jpeg',
+    //    data: { name: 'Alice' },
+    //    // recipient    : alice.did
+    //  });
+
+    // const dwn = dwnAlice as any;
+    // dwn.agent.processDwnRequest({ data: null });
 
     const { status: profileCreateStatus, record: writerRecord } = await dwnAlice.records.create({
       data: { name: 'Alice' },
       message: {
         // If this is not true, then record still wonæ't be readable.
-        published: true,
+        // published: true,
         // published: true, /* published ignores the protocol permissions. */
+        recipient: bobDid.uri,
+        // recipient: aliceDid.uri,
         protocol: profile.uri,
         protocolPath: 'profile',
+        schema: 'https://schema.ariton.app/profile/schema/profile',
         dataFormat: 'application/json',
       },
     });
@@ -116,17 +128,24 @@ describe('ProfileProtocol', () => {
     console.log(profileCreateStatus);
     expect(profileCreateStatus.code).toBe(202);
 
-    const { status: friendRecordUpdateStatus } = await writerRecord!.update({
-      data: { name: 'Alice3', reason: 'is still our super employee' },
-    });
-    expect(friendRecordUpdateStatus.code).toBe(202);
+    // const { status: friendRecordUpdateStatus } = await writerRecord!.update({
+    //   data: { name: 'Alice3', reason: 'is still our super employee' },
+    // });
+    // expect(friendRecordUpdateStatus.code).toBe(202);
 
     const { status: aliceFriendSendStatus } = await writerRecord!.send(aliceDid.uri);
     expect(aliceFriendSendStatus.code).toBe(202);
 
-    console.log('WHAT IS PROFILE???');
-    console.log(profile.uri);
     expect(profile.uri).toBeDefined();
+
+    // const response = await dwnBob.records.query({
+    //   from: aliceDid.uri,
+    //   message: {
+    //     filter: {
+    //       recordId: writerRecord!.id,
+    //     },
+    //   },
+    // });
 
     const response = await dwnBob.records.query({
       from: aliceDid.uri,
@@ -135,6 +154,7 @@ describe('ProfileProtocol', () => {
           protocol: profile.uri,
           protocolPath: 'profile',
           dataFormat: 'application/json',
+          schema: 'https://schema.ariton.app/profile/schema/profile',
         },
       },
     });

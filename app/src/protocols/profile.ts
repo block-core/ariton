@@ -3,6 +3,7 @@ export const protocolDefinition = {
   protocol: 'https://schema.ariton.app/profile/entry',
   types: {
     profile: {
+      schema: 'https://schema.ariton.app/profile/schema/profile',
       dataFormats: ['application/json'],
     },
     // title: {

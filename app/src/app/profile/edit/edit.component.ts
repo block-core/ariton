@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { ProfileService } from '../../profile.service';
 import { NavigationService } from '../../navigation.service';
 import { AvatarComponent } from './avatar/avatar.component';
+import { protocolDefinition as profileDefinition } from '../../../protocols/profile';
 
 @Component({
   selector: 'app-edit',
@@ -121,7 +122,8 @@ export class ProfileEditComponent {
       const { record } = await this.identity.web5.dwn.records.create({
         data: imageBase64,
         message: {
-          protocol: profile.uri,
+          published: true,
+          protocol: profileDefinition.protocol,
           protocolPath: 'avatar',
           dataFormat: 'image/png',
           tags: {
@@ -169,11 +171,12 @@ export class ProfileEditComponent {
       const { status, record } = await this.identity.web5.dwn.records.create({
         data: formData,
         message: {
+          // TODO: Remove this line when the DWN supports query by protocol access.
           published: true,
-          // published: true, /* published ignores the protocol permissions. */
-          protocol: profile.uri,
+          protocol: profileDefinition.protocol,
           protocolPath: 'profile',
-          dataFormat: 'application/json',
+          schema: profileDefinition.types.profile.schema,
+          dataFormat: profileDefinition.types.profile.dataFormats[0],
         },
       });
       console.log('Save profile status:', status, record);
