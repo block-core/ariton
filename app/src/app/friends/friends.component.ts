@@ -106,6 +106,11 @@ export class FriendsComponent {
     // If the recipinent is the current user, then use the author as the target DID.
     const targetDid = entry.record.recipient == this.identity.did ? entry.record.author : entry.record.recipient;
 
+    console.log('Target DID:', targetDid);
+    console.log('this.identity.did:', this.identity.did);
+    console.log('entry.record.recipient:', entry.record.recipient);
+    console.log('entry.record.author:', entry.record.author);
+
     // send the delete request to the remote DWN
     const { status: deleteSendStatus } = await entry.record.send(targetDid);
 
