@@ -47,7 +47,7 @@ export const protocolDefinition = {
         { who: 'author', of: 'request', can: ['read', 'create', 'delete'] },
 
         // The receiver of a friend request can delete it, this will also result in delete in the sender's DWN.
-        { who: 'recipient', of: 'request', can: ['read', 'create', 'delete'] },
+        { who: 'recipient', of: 'request', can: ['read', 'create', 'delete', 'co-delete'] },
       ],
     },
   },
