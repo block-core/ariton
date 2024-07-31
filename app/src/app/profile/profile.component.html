@@ -34,11 +34,13 @@
         <mat-icon>person_add</mat-icon>
         <span>Add Friend</span>
       </button>
+      @if (data().did === this.identity.did) {
       <mat-divider></mat-divider>
       <button mat-menu-item [routerLink]="['edit']">
         <mat-icon>edit</mat-icon>
         <span>Edit Profile</span>
       </button>
+      }
       <mat-divider></mat-divider>
       <button (click)="copyDID(data().did)" mat-menu-item>
         <mat-icon>content_copy</mat-icon>

@@ -103,8 +103,11 @@ export class FriendsComponent {
     // delete the request from the local DWN
     const { status: deleteStatus } = await entry.record.delete();
 
+    // If the recipinent is the current user, then use the author as the target DID.
+    const targetDid = entry.record.recipient == this.identity.did ? entry.record.author : entry.record.recipient;
+
     // send the delete request to the remote DWN
-    const { status: deleteSendStatus } = await entry.record.send(entry.record.recipient);
+    const { status: deleteSendStatus } = await entry.record.send(targetDid);
 
     console.log('Delete status:', deleteStatus);
     console.log('deleteSendStatus:', deleteSendStatus);
