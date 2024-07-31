@@ -45,10 +45,6 @@
     <div class="container responsive-grid">
       @for(request of requests(); track request) { @if (request.direction == 'out') {
 
-      <p>
-        {{ request | json }}
-      </p>
-
       <app-profile-card [did]="request.record.recipient">
         <button mat-flat-button [disabled]="true">PENDING</button>
         <button mat-button (click)="reject(request)">DELETE</button>
