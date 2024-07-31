@@ -13,6 +13,14 @@ import { CommonModule } from '@angular/common';
 import { ProfileCardComponent } from '../shared/components/profile-card/profile-card.component';
 import { ProfileImageDirective } from '../shared/directives/profile-image.directive';
 import { DidComponent } from '../shared/components/did/did.component';
+import { RouterModule } from '@angular/router';
+import { Record } from '@web5/api';
+
+export interface Entry {
+  record: Record;
+  data: any;
+  direction: 'in' | 'out' | any;
+}
 
 @Component({
   selector: 'app-friends',
@@ -29,12 +37,13 @@ import { DidComponent } from '../shared/components/did/did.component';
     ProfileCardComponent,
     ProfileImageDirective,
     DidComponent,
+    RouterModule,
   ],
   templateUrl: './friends.component.html',
   styleUrl: './friends.component.scss',
 })
 export class FriendsComponent {
-  requests = signal<any[]>([]);
+  requests = signal<Entry[]>([]);
 
   friends = signal<any[]>([]);
 
@@ -86,9 +95,23 @@ export class FriendsComponent {
     }
   }
 
-  accept(did: string) {}
+  async accept(entry: Entry) {}
 
-  reject(did: string) {}
+  async reject(entry: Entry) {
+    console.log('Rejecting request:', entry);
+
+    // delete the request from the local DWN
+    const { status: deleteStatus } = await entry.record.delete();
+
+    // send the delete request to the remote DWN
+    const { status: deleteSendStatus } = await entry.record.send(entry.record.author);
+
+    console.log('Delete status:', deleteStatus);
+    console.log('deleteSendStatus:', deleteSendStatus);
+
+    // Remove the deleted entry from the requests list
+    this.requests.update((requests) => requests.filter((request) => request !== entry));
+  }
 
   ngOnInit() {
     this.friends.set([

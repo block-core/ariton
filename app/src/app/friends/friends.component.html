@@ -9,7 +9,9 @@
       @for(request of friends(); track request) {
       <mat-card>
         <mat-card-header>
-          <mat-card-title>{{ request.name }} </mat-card-title>
+          <mat-card-title
+            ><a [routerLink]="['/profile', '']">{{ request.name }}</a></mat-card-title
+          >
           <mat-card-title-group
             ><button mat-icon-button [matMenuTriggerFor]="menu">
               <mat-icon>more_vert</mat-icon>
@@ -43,13 +45,13 @@
     <div class="container responsive-grid">
       @for(request of requests(); track request) {
 
-      <app-profile-card [did]="request.record?.author">
+      <app-profile-card [did]="request.record.author">
         @if (request.direction == 'out') {
         <button mat-flat-button [disabled]="true">PENDING</button>
-        <button mat-button (click)="reject(request.record?.recordId)">DELETE</button>
+        <button mat-button (click)="reject(request)">DELETE</button>
         } @else {
-        <button mat-flat-button (click)="accept(request.record?.recordId)">CONFIRM</button>
-        <button mat-button (click)="reject(request.record?.recordId)">DELETE</button>
+        <button mat-flat-button (click)="accept(request)">CONFIRM</button>
+        <button mat-button (click)="reject(request)">DELETE</button>
         }
         <!-- <ng-container *ngIf="request.direction == 'out'">
           <button mat-flat-button [disabled]="true">PENDING</button>

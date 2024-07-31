@@ -5,9 +5,12 @@
       [src]="data()?.avatar | safeResourceUrl"
       onerror="this.src='/avatar-placeholder.png';this.onerror='';"
     /> -->
-    <mat-card-title>{{ data().profile?.name }} ({{ data().profile?.title }})</mat-card-title>
+    <mat-card-title>
+      <a [routerLink]="['/profile', data().profile?.did]">{{ data().profile?.name }} ({{ data().profile?.title }})</a>
+    </mat-card-title>
     <mat-card-subtitle>
-      <app-did [did]="data().profile?.did"></app-did>
+      <!-- <app-did [did]="data().profile?.did"></app-did> -->
+      <a [routerLink]="['/profile', data().profile?.did]">{{ data().profile?.did | did }}</a>
     </mat-card-subtitle>
   </mat-card-header>
 
@@ -19,7 +22,9 @@
 
   <br />
   <img
+    class="profile-thumbnail"
     mat-card-image
+    [routerLink]="['/profile', data().profile?.did]"
     [src]="data().avatar | safeResourceUrl"
     onerror="this.src='/avatar-placeholder.png';this.onerror='';"
   />

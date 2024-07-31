@@ -7,11 +7,12 @@ import { SafeUrlPipe } from '../../pipes/safe-url.pipe';
 import { DidPipe } from '../../pipes/did.pipe';
 import { DidComponent } from '../did/did.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-profile-card',
   standalone: true,
-  imports: [DidComponent, MatTooltipModule, MatCardModule, SafeUrlPipe, DidPipe],
+  imports: [RouterModule, DidComponent, MatTooltipModule, MatCardModule, SafeUrlPipe, DidPipe],
   templateUrl: './profile-card.component.html',
   styleUrl: './profile-card.component.scss',
 })
