@@ -45,12 +45,6 @@
   height: 100%;
 }
 
-.sidenav {
-  width: 240px;
-  padding: 0 8px;
-  box-sizing: border-box;
-}
-
 .mat-toolbar.mat-primary {
   position: sticky;
   top: 0;
@@ -78,6 +72,20 @@ mat-sidenav-content {
 .column-content {
   overflow-y: scroll;
   box-sizing: border-box;
+}
+
+// mat-sidenav {
+//   width: 100px;
+// }
+
+.sidenav {
+  width: 240px;
+  padding: 0 8px;
+  box-sizing: border-box;
+}
+
+.sidenav-collapsed {
+  width: 72px;
 }
 
 @media (max-width: 959.98px) {

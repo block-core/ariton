@@ -1,6 +1,6 @@
-import { Component, effect, inject } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -29,6 +29,7 @@ import { SafeUrlPipe } from '../shared/pipes/safe-url.pipe';
   styleUrl: './layout.component.scss',
   standalone: true,
   imports: [
+    CommonModule,
     SafeUrlPipe,
     MatToolbarModule,
     MatButtonModule,
@@ -96,5 +97,11 @@ export class LayoutComponent {
 
   navigateBack() {
     this.navigation.back();
+  }
+
+  collapsed = signal<boolean>(false);
+
+  collapseToggle() {
+    this.collapsed.set(!this.collapsed());
   }
 }
