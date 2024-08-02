@@ -55,6 +55,12 @@ export const routes: Routes = [
     data: { icon: 'apps' },
   },
   {
+    path: 'app/notes',
+    loadComponent: () => import('./apps//app/notes/notes.component').then((c) => c.NotesComponent),
+    title: 'Notes',
+    data: { icon: 'note' },
+  },
+  {
     path: 'app/chat',
     loadComponent: () => import('./apps//app/chat/chat.component').then((c) => c.ChatComponent),
     title: 'Chat',

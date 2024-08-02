@@ -1,0 +1,268 @@
+<div class="container">
+    <div class="top">
+        <div class="favorites">
+            <a><img class="favorites-icon" src="https://ariton.app/assets/sondre.png" /></a>
+            <a><img class="favorites-icon" src="https://ariton.app/assets/dan.png" /></a>
+
+            <a><img class="favorites-icon" src="https://ariton.app/assets/david.jpg" /></a>
+
+            <a><img class="favorites-icon" src="https://ariton.app/assets/milad.png" /></a>
+
+            <a><img class="favorites-icon" src="https://ariton.app/assets/lu.jpg" /></a>
+
+            <a><img class="favorites-icon" src="https://ariton.app/assets/kosta.jpg" /></a>
+        </div>
+    </div>
+    <div class="body-left column-content">
+        <mat-list>
+            <div mat-subheader>Starred</div>
+            @for (folder of folders; track folder) {
+                <mat-list-item (click)="open(folder.id)">
+                    <img matListItemAvatar src="{{ folder.avatar }}" />
+                    <div matListItemLine class="right-aligned">{{ folder.updated | ago }}</div>
+                    <div matListItemTitle>{{ folder.name }}</div>
+                    <div matListItemLine>{{ folder.message }}</div>
+                </mat-list-item>
+            }
+            <mat-divider></mat-divider>
+            <div mat-subheader>Message</div>
+            @for (note of notes; track note) {
+                <mat-list-item>
+                    <img matListItemAvatar src="{{ note.avatar }}" />
+                    <div matListItemLine class="right-aligned">{{ note.updated | ago }}</div>
+                    <div matListItemTitle>{{ note.name }}</div>
+                    <div matListItemLine>{{ note.message }}</div>
+                </mat-list-item>
+            }
+        </mat-list>
+    </div>
+    <div class="body-center">
+        @if (chat()) {
+            <div class="chat-messages-container">
+                <div class="chat-header">
+                    <div>
+                        <div class="profile-button">
+                            <img class="chat-avatar" src="{{ chat().avatar }}" />
+                            <span>{{ chat().name }}</span>
+                        </div>
+                    </div>
+                    <div>
+                        <button mat-icon-button>
+                            <mat-icon>favorite</mat-icon>
+                        </button>
+                    </div>
+                </div>
+                <div class="chat-messages column-content">
+                    <p>
+                        {{ chat().message }}
+                    </p>
+
+                    <p>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla beatae soluta sed numquam accusamus? Obcaecati, odit officia dicta
+                        cupiditate ad, consequatur minus voluptatibus voluptate aperiam odio et eaque quae quibusdam.
+                    </p>
+                    <p>
+                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quos ipsam vitae autem nostrum earum aliquid rem mollitia, iste laboriosam ab
+                        ipsum ipsa molestias, numquam soluta laudantium odio facilis voluptates ea.
+                    </p>
+                    <p>
+                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque reiciendis, doloremque dicta perferendis iure debitis quae officia a
+                        itaque illo voluptas accusantium soluta molestias eveniet non nisi, saepe veniam voluptatem!
+                    </p>
+                    <p>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla beatae soluta sed numquam accusamus? Obcaecati, odit officia dicta
+                        cupiditate ad, consequatur minus voluptatibus voluptate aperiam odio et eaque quae quibusdam.
+                    </p>
+                    <p>
+                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quos ipsam vitae autem nostrum earum aliquid rem mollitia, iste laboriosam ab
+                        ipsum ipsa molestias, numquam soluta laudantium odio facilis voluptates ea.
+                    </p>
+                    <p>
+                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque reiciendis, doloremque dicta perferendis iure debitis quae officia a
+                        itaque illo voluptas accusantium soluta molestias eveniet non nisi, saepe veniam voluptatem!
+                    </p>
+                    <p>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla beatae soluta sed numquam accusamus? Obcaecati, odit officia dicta
+                        cupiditate ad, consequatur minus voluptatibus voluptate aperiam odio et eaque quae quibusdam.
+                    </p>
+                    <p>
+                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quos ipsam vitae autem nostrum earum aliquid rem mollitia, iste laboriosam ab
+                        ipsum ipsa molestias, numquam soluta laudantium odio facilis voluptates ea.
+                    </p>
+                    <p>
+                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque reiciendis, doloremque dicta perferendis iure debitis quae officia a
+                        itaque illo voluptas accusantium soluta molestias eveniet non nisi, saepe veniam voluptatem!
+                    </p>
+                    <p>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla beatae soluta sed numquam accusamus? Obcaecati, odit officia dicta
+                        cupiditate ad, consequatur minus voluptatibus voluptate aperiam odio et eaque quae quibusdam.
+                    </p>
+                    <p>
+                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quos ipsam vitae autem nostrum earum aliquid rem mollitia, iste laboriosam ab
+                        ipsum ipsa molestias, numquam soluta laudantium odio facilis voluptates ea.
+                    </p>
+                    <p>
+                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque reiciendis, doloremque dicta perferendis iure debitis quae officia a
+                        itaque illo voluptas accusantium soluta molestias eveniet non nisi, saepe veniam voluptatem!
+                    </p>
+                    <p>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla beatae soluta sed numquam accusamus? Obcaecati, odit officia dicta
+                        cupiditate ad, consequatur minus voluptatibus voluptate aperiam odio et eaque quae quibusdam.
+                    </p>
+                    <p>
+                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quos ipsam vitae autem nostrum earum aliquid rem mollitia, iste laboriosam ab
+                        ipsum ipsa molestias, numquam soluta laudantium odio facilis voluptates ea.
+                    </p>
+                    <p>
+                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque reiciendis, doloremque dicta perferendis iure debitis quae officia a
+                        itaque illo voluptas accusantium soluta molestias eveniet non nisi, saepe veniam voluptatem!
+                    </p>
+                    <p>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla beatae soluta sed numquam accusamus? Obcaecati, odit officia dicta
+                        cupiditate ad, consequatur minus voluptatibus voluptate aperiam odio et eaque quae quibusdam.
+                    </p>
+                    <p>
+                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quos ipsam vitae autem nostrum earum aliquid rem mollitia, iste laboriosam ab
+                        ipsum ipsa molestias, numquam soluta laudantium odio facilis voluptates ea.
+                    </p>
+                    <p>
+                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque reiciendis, doloremque dicta perferendis iure debitis quae officia a
+                        itaque illo voluptas accusantium soluta molestias eveniet non nisi, saepe veniam voluptatem!
+                    </p>
+                    <p>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla beatae soluta sed numquam accusamus? Obcaecati, odit officia dicta
+                        cupiditate ad, consequatur minus voluptatibus voluptate aperiam odio et eaque quae quibusdam.
+                    </p>
+                    <p>
+                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quos ipsam vitae autem nostrum earum aliquid rem mollitia, iste laboriosam ab
+                        ipsum ipsa molestias, numquam soluta laudantium odio facilis voluptates ea.
+                    </p>
+                    <p>
+                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque reiciendis, doloremque dicta perferendis iure debitis quae officia a
+                        itaque illo voluptas accusantium soluta molestias eveniet non nisi, saepe veniam voluptatem!
+                    </p>
+                </div>
+                <div class="chat-input">
+                    <button mat-icon-button [matMenuTriggerFor]="menu">
+                        <mat-icon>add_circle</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item>
+                            <mat-icon>attach_money</mat-icon>
+                            <span>Send money</span>
+                        </button>
+                        <button mat-menu-item>
+                            <mat-icon>video_camera_back</mat-icon>
+                            <span>Capture video</span>
+                        </button>
+                        <button mat-menu-item>
+                            <mat-icon>photo_camera_front</mat-icon>
+                            <span>Capture photo</span>
+                        </button>
+                        <button mat-menu-item>
+                            <mat-icon>attachment</mat-icon>
+                            <span>Attach a file</span>
+                        </button>
+                        <button mat-menu-item>
+                            <mat-icon>add_a_photo</mat-icon>
+                            <span>Attach a photo</span>
+                        </button>
+                    </mat-menu>
+
+                    <mat-form-field class="chat-message-input">
+                        <input matInput placeholder="Message..." />
+                        <mat-icon matSuffix>emoji_emotions</mat-icon>
+                    </mat-form-field>
+
+                    <button mat-icon-button>
+                        <mat-icon>thumb_up</mat-icon>
+                    </button>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="body-right column-content">Details</div>
+</div>
+
+<!--
+<div class="chat-container">
+
+    <div class="topics">
+
+        <div class="toolbox">
+            <div class="toolbox-left">
+              <mat-form-field class="search-input">
+                <mat-label>Search</mat-label>
+                <input matInput placeholder="Filter chats..." />
+                <mat-icon matSuffix>search</mat-icon>
+              </mat-form-field>
+            </div>
+            
+          </div>
+
+    </div>
+
+    <div class="messages">
+        <div class="chat">
+            <div class="chat-header">
+                <div class="chat-header-user">
+                    <img src="https://ariton.app/assets/sondre.png">
+                    <span>Sondre</span>
+                </div>
+                <div class="chat-header-action">
+                    <a><i class="icon icon-phone"></i></a>
+                    <a><i class="icon icon-video"></i></a>
+                    <a><i class="icon icon-info"></i></a>
+                </div>
+            </div>
+            <div class="chat-body">
+                <div class="chat-message">
+                    <div class="chat-message-user">
+                        <img src="https://ariton.app/assets/sondre.png">
+                    </div>
+                    <div class="chat-message-content">
+                        <span>Hey, how are you?</span>
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-message-user">
+                        <img src="https://ariton.app/assets/dan.png">
+                    </div>
+                    <div class="chat-message-content">
+                        <span>Hey, I'm good, thanks for asking!</span>
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-message-user">
+                        <img src="https://ariton.app/assets/sondre.png">
+                    </div>
+                    <div class="chat-message-content">
+                        <span>How was your day?</span>
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-message-user">
+                        <img src="https://ariton.app/assets/dan.png">
+                    </div>
+                    <div class="chat-message-content">
+                        <span>It was good, I had a lot of work to do, but I managed to finish everything on time.</span>
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-message-user">
+                        <img src="https://ariton.app/assets/sondre.png">
+                    </div>
+                    <div class="chat-message-content">
+                        <span>That's great to hear!</span>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-footer">
+                <input type="text" placeholder="Type a message...">
+                <a><i class="icon icon-send"></i></a>
+            </div>
+        </div>
+    </div>
+
+</div>
+-->
