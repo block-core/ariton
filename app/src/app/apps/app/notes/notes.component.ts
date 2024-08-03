@@ -77,92 +77,10 @@ export interface Section {
   styleUrl: './notes.component.scss',
 })
 export class NotesComponent implements OnDestroy {
-  @ViewChild('matMenuTrigger', { read: MatMenuTrigger })
-  private matMenuTriggerRef!: MatMenuTrigger;
-  @ViewChild('matMenuTrigger', { read: MatButton })
-  private matButtonRef!: MatButton;
-  @ViewChildren('menuItems')
-  private menuItemsRef!: QueryList<MatCheckbox>;
-
-  public triggerButtonText = 'Select a vehicle';
-
-  public premiumAutomobilesList = [
-    { title: 'Audi', activated: false, value: 'audi' },
-    { title: 'Infiniti', activated: false, value: 'infiniti' },
-    { title: 'BMW', activated: false, value: 'bmw' },
-    { title: 'Mercedes', activated: false, value: 'mercedes' },
-    { title: 'Lexus', activated: false, value: 'lexus' },
-    { title: 'Alfa Romeo', activated: false, value: 'alfa romeo' },
-    { title: 'Porsche', activated: false, value: 'porsche' },
-  ];
-  private selectedVehicles: string[] = [];
-  public formattedSelectedVehicles?: string;
-
-  isOpen = false;
-  // public onMenuOpened() {
-  //   this.setFocusOnFirstItem();
-  //   this.triggerButtonText = 'Close menu';
-  //   this.formattedSelectedVehicles = '';
-  // }
-
-  // public onMenuClosed() {
-  //   this.matButtonRef.focus();
-  //   this.triggerButtonText = 'Select a vehicle';
-
-  //   this.formattedSelectedVehicles =
-  //     (this.selectedVehicles.length === 0
-  //       ? 'No vehicles selected'
-  //       : 'You selected ' + this.selectedVehicles.join(', ')) + '.';
-  // }
-
   async closeLabelsMenu(entry: any) {
     entry.open = false;
     console.log('Menu closed:', entry);
     await this.saveNote(entry, entry.data);
-  }
-
-  public onMenuKeyDown(event: KeyboardEvent, index: number) {
-    switch (event.key) {
-      case 'ArrowUp':
-        if (index > 0) {
-          this.setCheckboxFocus(index - 1);
-        } else {
-          this.menuItemsRef.last.focus();
-        }
-        break;
-      case 'ArrowDown':
-        if (index !== this.menuItemsRef.length - 1) {
-          this.setCheckboxFocus(index + 1);
-        } else {
-          this.setFocusOnFirstItem();
-        }
-        break;
-      case 'Enter':
-        event.preventDefault();
-        this.premiumAutomobilesList[index].activated = !this.premiumAutomobilesList[index].activated;
-        this.onVehicleSelect();
-        setTimeout(() => this.matMenuTriggerRef.closeMenu(), 200);
-        break;
-    }
-  }
-
-  public onVehicleSelect() {
-    this.selectedVehicles = this.premiumAutomobilesList
-      .filter((menuitem) => menuitem.activated)
-      .map((menuitem) => menuitem.title);
-  }
-
-  private setFocusOnFirstItem(): void {
-    const firstCheckbox = this.menuItemsRef.first;
-    firstCheckbox.focus();
-    firstCheckbox._elementRef.nativeElement.classList.add('cdk-keyboard-focused');
-  }
-
-  private setCheckboxFocus(index: number) {
-    const checkBox = this.menuItemsRef.get(index);
-    if (checkBox) {
-      checkBox.focus();
-    }
   }
 
   viewStyle = model<string>('card');
@@ -223,18 +141,7 @@ export class NotesComponent implements OnDestroy {
         await this.loadNotes();
       }
     });
-
-    // this.toppings.valueChanges.subscribe((tags) => {
-    //   console.log('tags:', tags);
-    //   // this.onSelectionChange(tags);
-    // });
   }
-
-  // async onMenuClose(entry: any) {
-  //   console.log('Menu closed:', entry);
-  //   console.log('Saving updated note');
-  //   await this.saveNote(entry, entry.data);
-  // }
 
   async deleteNote(entry: any) {
     const { status } = await entry.record.delete();
@@ -386,13 +293,6 @@ export class NotesComponent implements OnDestroy {
       console.log('Record status:', status);
 
       if (record) {
-        //send record to recipient's DWN
-        // const { status } = await record.send(recipient);
-        // console.log('Record sent:', status, record);
-        // Show a toast notification
-        // this.snackBar.open('Record sent successfully!', 'Close', {
-        //   duration: 3000, // Duration in milliseconds
-        // });
       }
     } else {
       const { record, status } = await this.identity.web5.dwn.records.create({
@@ -414,14 +314,6 @@ export class NotesComponent implements OnDestroy {
       if (record) {
         entry.record = record;
         this.records.update((records) => [...records, entry]);
-        // await this.loadNotes();
-        //send record to recipient's DWN
-        // const { status } = await record.send(recipient);
-        // console.log('Record sent:', status, record);
-        // Show a toast notification
-        // this.snackBar.open('Record sent successfully!', 'Close', {
-        //   duration: 3000, // Duration in milliseconds
-        // });
       }
     }
   }
