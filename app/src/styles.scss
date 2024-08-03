@@ -114,11 +114,19 @@ h1 {
   color: var(--mat-form-field-error-text-color);
 }
 
+.full-width {
+  width: 100%;
+}
+
 .sidenav-scroll-wrapper,
 .sidenav-content,
 .column-content {
   overscroll-behavior: contain;
 }
+
+// .sidenav-content {
+//   display: flex;
+// }
 
 .tab-icon {
   margin-right: 8px;

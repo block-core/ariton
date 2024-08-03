@@ -1,5 +1,11 @@
 import { Injectable, effect, signal } from '@angular/core';
 
+export interface LayoutAction {
+  name: string;
+  icon: string;
+  action: any;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -32,7 +38,7 @@ export class LayoutService {
 
   actions = signal<any[]>([]);
 
-  addAction(action: any) {
+  addAction(action: LayoutAction) {
     this.actions.update((actions) => [...actions, action]);
   }
 

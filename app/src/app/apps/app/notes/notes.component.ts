@@ -1,4 +1,4 @@
-import { Component, model, signal } from '@angular/core';
+import { Component, inject, model, signal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -11,6 +11,11 @@ import { MatListModule } from '@angular/material/list';
 import { DatePipe } from '@angular/common';
 import { AgoPipe } from '../../../shared/pipes/ago.pipe';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatCardModule } from '@angular/material/card';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { NoteDialogComponent } from './note-dialog.component';
 
 export interface Section {
   id: string;
@@ -24,6 +29,10 @@ export interface Section {
   selector: 'app-notes',
   standalone: true,
   imports: [
+    MatDialogModule,
+    MatTooltipModule,
+    MatCardModule,
+    MatChipsModule,
     FormsModule,
     MatButtonModule,
     MatIconModule,
@@ -42,8 +51,25 @@ export interface Section {
 export class NotesComponent implements OnDestroy {
   viewStyle = model<string>('card');
 
-  constructor(public layout: LayoutService) {
+  selectedTags: string[] = [];
+
+  dialog = inject(MatDialog);
+
+  public layout = inject(LayoutService);
+
+  labels = signal<string[]>(['Reminders', 'Inspiration', 'Personal', 'Work']);
+
+  constructor() {
     this.layout.disableScrolling();
+    this.layout.addAction({ name: 'New Note', icon: 'note_add', action: () => {} });
+  }
+
+  onSelectionChange(event: any) {
+    // this.registryService.filter(this.selectedTags);
+
+    console.log('Selection changed:', event);
+    console.log(this.selectedTags);
+    // Handle the selection change event
   }
 
   ngOnDestroy() {
@@ -55,6 +81,34 @@ export class NotesComponent implements OnDestroy {
   open(id: string) {
     const chat = this.folders.find((f) => f.id === id);
     this.chat.set(chat);
+  }
+
+  editNote(recordId: string) {
+    let data = {
+      title: '123',
+      body: '222',
+      background: 'red',
+      collaborators: ['12', '33333'],
+    };
+
+    const original = JSON.parse(JSON.stringify(data));
+
+    const dialogRef = this.dialog.open(NoteDialogComponent, {
+      maxWidth: '80vw',
+      maxHeight: '80vh',
+      data: data,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (!result) {
+        // Reset the original data if user cancels.
+        data = original;
+      }
+
+      console.log('data result:', data);
+    });
+
+    return dialogRef.afterClosed();
   }
 
   folders: Section[] = [
