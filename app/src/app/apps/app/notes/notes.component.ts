@@ -132,11 +132,13 @@ export class NotesComponent implements OnDestroy {
     this.layout.enableScrolling();
   }
 
-  chat = signal<any>(null);
-
-  open(id: string) {
-    const chat = this.folders.find((f) => f.id === id);
-    this.chat.set(chat);
+  copyNote(entry: any) {
+    this.saveNote(
+      {
+        data: entry.data,
+      },
+      entry.data,
+    );
   }
 
   editNote(entry: any) {
@@ -229,6 +231,9 @@ export class NotesComponent implements OnDestroy {
       console.log('Record status:', status);
 
       if (record) {
+        entry.record = record;
+        this.records.update((records) => [...records, entry]);
+        // await this.loadNotes();
         //send record to recipient's DWN
         // const { status } = await record.send(recipient);
         // console.log('Record sent:', status, record);
@@ -239,44 +244,4 @@ export class NotesComponent implements OnDestroy {
       }
     }
   }
-
-  folders: Section[] = [
-    {
-      id: '1',
-      name: 'Sondre',
-      message: 'Hey, how are you?',
-      updated: new Date('1/1/24'),
-      avatar: 'https://ariton.app/assets/sondre.png',
-    },
-    {
-      id: '2',
-      name: 'Dan',
-      message: 'Do you have the reports?',
-      updated: new Date('1/17/16'),
-      avatar: 'https://ariton.app/assets/dan.png',
-    },
-    {
-      id: '3',
-      name: 'Joe',
-      message: 'I need help with the project',
-      updated: new Date('1/28/16'),
-      avatar: 'https://ariton.app/assets/sondre.png',
-    },
-  ];
-  notes: Section[] = [
-    {
-      id: '4',
-      name: 'Luba',
-      message: 'I need to plan my vacation',
-      updated: new Date('2/20/16'),
-      avatar: 'https://ariton.app/assets/lu.jpg',
-    },
-    {
-      id: '5',
-      name: 'Jane',
-      message: 'I need to remodel my kitchen',
-      updated: new Date('1/18/16'),
-      avatar: 'https://ariton.app/assets/sondre.png',
-    },
-  ];
 }

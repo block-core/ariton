@@ -32,7 +32,7 @@
             <mat-icon>delete</mat-icon>
             <span>Delete note</span>
           </button>
-          <button mat-menu-item>
+          <button mat-menu-item (click)="copyNote(entry)">
             <mat-icon>file_copy</mat-icon>
             <span>Make a copy</span>
           </button>
