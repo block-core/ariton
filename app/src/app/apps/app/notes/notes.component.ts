@@ -167,7 +167,8 @@ export class NotesComponent implements OnDestroy {
 
   viewStyle = model<string>('card');
 
-  selectedTags: string[] = [];
+  // selectedTags: string[] = [];
+  selectedTag: string = '';
 
   bold = false;
 
@@ -200,6 +201,7 @@ export class NotesComponent implements OnDestroy {
 
   constructor() {
     // this.layout.disableScrolling();
+    this.layout.disableNavigation();
     this.layout.addAction({
       name: 'New Note',
       icon: 'note_add',
@@ -280,7 +282,7 @@ export class NotesComponent implements OnDestroy {
 
   onSelectionChange(event: any) {
     console.log('Selection changed:', event);
-    console.log(this.selectedTags);
+    console.log(this.selectedTag);
 
     // const formattedTags = this.selectedTags.map((tag) => {
     //   return { [this.labelMap[tag]]: tag };
@@ -293,10 +295,12 @@ export class NotesComponent implements OnDestroy {
 
     // console.log(formattedTags);
 
-    if (!this.selectedTags || this.selectedTags.length == 0) {
+    // if (!this.selectedTags || this.selectedTags.length == 0) {
+    if (!this.selectedTag) {
       this.loadNotes();
     } else {
-      const tagsString = this.selectedTags.join(',');
+      // const tagsString = this.selectedTags.join(',');
+      const tagsString = this.selectedTag;
       this.loadNotes({ labels: tagsString });
     }
   }

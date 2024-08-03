@@ -118,6 +118,14 @@ h1 {
   width: 100%;
 }
 
+.color-picker {
+  width: 0px;
+  height: 1px;
+  color: transparent;
+  background: transparent;
+  border: 1px solid transparent;
+}
+
 .sidenav-scroll-wrapper,
 .sidenav-content,
 .column-content {

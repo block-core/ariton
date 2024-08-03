@@ -1,6 +1,6 @@
 <div class="notes">
   <div class="notes-top">
-    <mat-chip-listbox [multiple]="true" [(ngModel)]="selectedTags">
+    <mat-chip-listbox [multiple]="false" [(ngModel)]="selectedTag">
       @for (tag of labels(); track tag) {
       <mat-chip-option (click)="onSelectionChange($event)" [value]="tag">{{ tag }}</mat-chip-option>
       }

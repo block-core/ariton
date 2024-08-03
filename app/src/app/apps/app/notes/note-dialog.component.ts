@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, inject, Inject } from '@angular/core';
 import { FormBuilder, FormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -19,6 +20,7 @@ export interface DialogData {
   selector: 'app-note-dialog',
   standalone: true,
   imports: [
+    CommonModule,
     MatTooltipModule,
     MatMenuModule,
     MatIconModule,
@@ -44,17 +46,22 @@ export class NoteDialogComponent {
 
   ngAfterViewInit() {}
 
-  async onSubmit() {
-    const title = this.form.controls.title.value;
-    const body = this.form.controls.body.value;
-    const collaborators = this.form.controls.collaborators.value!;
-    const background = this.form.controls.background.value!;
+  // async onSubmit() {
+  //   const title = this.form.controls.title.value;
+  //   const body = this.form.controls.body.value;
+  //   const collaborators = this.form.controls.collaborators.value!;
+  //   const background = this.form.controls.background.value!;
 
-    this.dialogRef.close({
-      title,
-      body,
-      collaborators,
-      background,
-    });
+  //   this.dialogRef.close({
+  //     title,
+  //     body,
+  //     collaborators,
+  //     background,
+  //   });
+  // }
+
+  async onColorChange(event: Event) {
+    const newValue = (event.target as HTMLInputElement).value;
+    this.data.background = newValue;
   }
 }
