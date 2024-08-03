@@ -10,7 +10,7 @@ export const routes: Routes = [
     path: 'introduction',
     loadComponent: () => import('./introduction/introduction.component').then((c) => c.IntroductionComponent),
     title: 'Introduction',
-    data: { icon: 'lightbulb' },
+    data: { hide: true, icon: 'lightbulb' },
   },
   {
     path: 'dashboard',

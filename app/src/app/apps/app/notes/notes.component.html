@@ -8,20 +8,19 @@
   </div>
   <div class="notes-items">
     @for (entry of records(); track entry) {
-    <mat-card class="marketplace-category">
+    <mat-card class="marketplace-category" [ngStyle]="{ backgroundColor: entry.data.background }">
       @if (entry.data.title){
       <mat-card-title (click)="editNote(entry)">{{ entry.data.title }}</mat-card-title>
       }
-      <mat-card-content class="note-body" (click)="editNote(entry)">
-        {{ entry.data.body }}
-      </mat-card-content>
+      <mat-card-content class="note-body" (click)="editNote(entry)">{{ entry.data.body }}</mat-card-content>
       <mat-card-footer>
         <button mat-icon-button matTooltip="Collaborator">
           <mat-icon>person_add_alt</mat-icon>
         </button>
-        <button mat-icon-button matTooltip="Background">
+        <button mat-icon-button matTooltip="Background" (click)="fileColor.click()">
           <mat-icon>palette</mat-icon>
         </button>
+        <input class="color-picker" #fileColor (change)="onColorChange($event, entry)" type="color" />
         <button mat-icon-button matTooltip="Labels">
           <mat-icon>new_label</mat-icon>
         </button>
@@ -29,7 +28,7 @@
           <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #menuActions="matMenu">
-          <button mat-menu-item>
+          <button mat-menu-item (click)="deleteNote(entry)">
             <mat-icon>delete</mat-icon>
             <span>Delete note</span>
           </button>
@@ -41,239 +40,5 @@
       </mat-card-footer>
     </mat-card>
     }
-    <mat-card class="marketplace-category">
-      <mat-card-content (click)="editNote('1')">
-        Welcome to notes. You can edit this note or make new notes with the add button on the top.
-      </mat-card-content>
-      <mat-card-footer>
-        <button mat-icon-button matTooltip="Collaborator">
-          <mat-icon>person_add_alt</mat-icon>
-        </button>
-        <button mat-icon-button matTooltip="Background">
-          <mat-icon>palette</mat-icon>
-        </button>
-        <button mat-icon-button matTooltip="Labels">
-          <mat-icon>new_label</mat-icon>
-        </button>
-        <button mat-icon-button matTooltip="Options" [matMenuTriggerFor]="menuActions">
-          <mat-icon>more_vert</mat-icon>
-        </button>
-        <mat-menu #menuActions="matMenu">
-          <button mat-menu-item>
-            <mat-icon>delete</mat-icon>
-            <span>Delete note</span>
-          </button>
-          <button mat-menu-item>
-            <mat-icon>file_copy</mat-icon>
-            <span>Make a copy</span>
-          </button>
-        </mat-menu>
-      </mat-card-footer>
-    </mat-card>
-
-    <mat-card class="marketplace-category">
-      <mat-card-content>
-        Welcome to notes. You can edit this note or make new notes with the add button on the top.
-      </mat-card-content>
-      <mat-card-footer>
-        <mat-icon>chair</mat-icon>
-      </mat-card-footer>
-    </mat-card>
-
-    <mat-card class="marketplace-category">
-      <mat-card-content>
-        Welcome to notes. You can edit this note or make new notes with the add button on the top.
-      </mat-card-content>
-      <mat-card-footer>
-        <mat-icon inline="true" matTooltip="Collaborator">person_add_alt</mat-icon>
-        <mat-icon inline="true" matTooltip="Background">palette</mat-icon>
-        <mat-icon inline="true" matTooltip="More options">more_vert</mat-icon>
-      </mat-card-footer>
-    </mat-card>
   </div>
 </div>
-<!-- 
-<div class="container">
-
-
-
-  <div class="top">
-    <mat-chip-listbox [multiple]="true" [(ngModel)]="selectedTags">
-      @for (tag of labels(); track tag) {
-      <mat-chip-option (click)="onSelectionChange($event)" [value]="tag">{{ tag }}</mat-chip-option>
-      }
-    </mat-chip-listbox>
-  </div>
-
-  <div class="body-left column-content">
-    <mat-list>
-      @for (folder of folders; track folder) {
-      <mat-list-item (click)="open(folder.id)">
-        <img matListItemAvatar src="{{ folder.avatar }}" />
-        <div matListItemLine class="right-aligned">{{ folder.updated | ago }}</div>
-        <div matListItemTitle>{{ folder.name }}</div>
-        <div matListItemLine>{{ folder.message }}</div>
-      </mat-list-item>
-      }
-    </mat-list>
-  </div>
-  <div class="body-center">
-    @if (chat()) {
-    <div class="chat-messages-container">
-      <div class="chat-header">
-        <div>
-          <div class="profile-button">
-            <img class="chat-avatar" src="{{ chat().avatar }}" />
-            <span>{{ chat().name }}</span>
-          </div>
-        </div>
-        <div>
-          <button mat-icon-button>
-            <mat-icon>favorite</mat-icon>
-          </button>
-        </div>
-      </div>
-      <div class="chat-messages column-content">
-        <p>
-          {{ chat().message }}
-        </p>
-
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla beatae soluta sed numquam accusamus? Obcaecati,
-          odit officia dicta cupiditate ad, consequatur minus voluptatibus voluptate aperiam odio et eaque quae
-          quibusdam.
-        </p>
-        <p>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quos ipsam vitae autem nostrum earum aliquid rem
-          mollitia, iste laboriosam ab ipsum ipsa molestias, numquam soluta laudantium odio facilis voluptates ea.
-        </p>
-        <p>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque reiciendis, doloremque dicta perferendis iure
-          debitis quae officia a itaque illo voluptas accusantium soluta molestias eveniet non nisi, saepe veniam
-          voluptatem!
-        </p>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla beatae soluta sed numquam accusamus? Obcaecati,
-          odit officia dicta cupiditate ad, consequatur minus voluptatibus voluptate aperiam odio et eaque quae
-          quibusdam.
-        </p>
-        <p>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quos ipsam vitae autem nostrum earum aliquid rem
-          mollitia, iste laboriosam ab ipsum ipsa molestias, numquam soluta laudantium odio facilis voluptates ea.
-        </p>
-        <p>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque reiciendis, doloremque dicta perferendis iure
-          debitis quae officia a itaque illo voluptas accusantium soluta molestias eveniet non nisi, saepe veniam
-          voluptatem!
-        </p>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla beatae soluta sed numquam accusamus? Obcaecati,
-          odit officia dicta cupiditate ad, consequatur minus voluptatibus voluptate aperiam odio et eaque quae
-          quibusdam.
-        </p>
-        <p>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quos ipsam vitae autem nostrum earum aliquid rem
-          mollitia, iste laboriosam ab ipsum ipsa molestias, numquam soluta laudantium odio facilis voluptates ea.
-        </p>
-        <p>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque reiciendis, doloremque dicta perferendis iure
-          debitis quae officia a itaque illo voluptas accusantium soluta molestias eveniet non nisi, saepe veniam
-          voluptatem!
-        </p>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla beatae soluta sed numquam accusamus? Obcaecati,
-          odit officia dicta cupiditate ad, consequatur minus voluptatibus voluptate aperiam odio et eaque quae
-          quibusdam.
-        </p>
-        <p>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quos ipsam vitae autem nostrum earum aliquid rem
-          mollitia, iste laboriosam ab ipsum ipsa molestias, numquam soluta laudantium odio facilis voluptates ea.
-        </p>
-        <p>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque reiciendis, doloremque dicta perferendis iure
-          debitis quae officia a itaque illo voluptas accusantium soluta molestias eveniet non nisi, saepe veniam
-          voluptatem!
-        </p>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla beatae soluta sed numquam accusamus? Obcaecati,
-          odit officia dicta cupiditate ad, consequatur minus voluptatibus voluptate aperiam odio et eaque quae
-          quibusdam.
-        </p>
-        <p>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quos ipsam vitae autem nostrum earum aliquid rem
-          mollitia, iste laboriosam ab ipsum ipsa molestias, numquam soluta laudantium odio facilis voluptates ea.
-        </p>
-        <p>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque reiciendis, doloremque dicta perferendis iure
-          debitis quae officia a itaque illo voluptas accusantium soluta molestias eveniet non nisi, saepe veniam
-          voluptatem!
-        </p>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla beatae soluta sed numquam accusamus? Obcaecati,
-          odit officia dicta cupiditate ad, consequatur minus voluptatibus voluptate aperiam odio et eaque quae
-          quibusdam.
-        </p>
-        <p>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quos ipsam vitae autem nostrum earum aliquid rem
-          mollitia, iste laboriosam ab ipsum ipsa molestias, numquam soluta laudantium odio facilis voluptates ea.
-        </p>
-        <p>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque reiciendis, doloremque dicta perferendis iure
-          debitis quae officia a itaque illo voluptas accusantium soluta molestias eveniet non nisi, saepe veniam
-          voluptatem!
-        </p>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla beatae soluta sed numquam accusamus? Obcaecati,
-          odit officia dicta cupiditate ad, consequatur minus voluptatibus voluptate aperiam odio et eaque quae
-          quibusdam.
-        </p>
-        <p>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quos ipsam vitae autem nostrum earum aliquid rem
-          mollitia, iste laboriosam ab ipsum ipsa molestias, numquam soluta laudantium odio facilis voluptates ea.
-        </p>
-        <p>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque reiciendis, doloremque dicta perferendis iure
-          debitis quae officia a itaque illo voluptas accusantium soluta molestias eveniet non nisi, saepe veniam
-          voluptatem!
-        </p>
-      </div>
-      <div class="chat-input">
-        <button mat-icon-button [matMenuTriggerFor]="menu">
-          <mat-icon>add_circle</mat-icon>
-        </button>
-        <mat-menu #menu="matMenu">
-          <button mat-menu-item>
-            <mat-icon>attach_money</mat-icon>
-            <span>Send money</span>
-          </button>
-          <button mat-menu-item>
-            <mat-icon>video_camera_back</mat-icon>
-            <span>Capture video</span>
-          </button>
-          <button mat-menu-item>
-            <mat-icon>photo_camera_front</mat-icon>
-            <span>Capture photo</span>
-          </button>
-          <button mat-menu-item>
-            <mat-icon>attachment</mat-icon>
-            <span>Attach a file</span>
-          </button>
-          <button mat-menu-item>
-            <mat-icon>add_a_photo</mat-icon>
-            <span>Attach a photo</span>
-          </button>
-        </mat-menu>
-
-        <mat-form-field class="chat-message-input">
-          <input matInput placeholder="Message..." />
-          <mat-icon matSuffix>emoji_emotions</mat-icon>
-        </mat-form-field>
-
-        <button mat-icon-button>
-          <mat-icon>thumb_up</mat-icon>
-        </button>
-      </div>
-    </div>
-    }
-  </div>
-</div> -->

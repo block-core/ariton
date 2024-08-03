@@ -8,7 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { LayoutService } from '../../../layout.service';
 import { OnDestroy } from '@angular/core';
 import { MatListModule } from '@angular/material/list';
-import { DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { AgoPipe } from '../../../shared/pipes/ago.pipe';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatChipsModule } from '@angular/material/chips';
@@ -32,6 +32,7 @@ export interface Section {
   selector: 'app-notes',
   standalone: true,
   imports: [
+    CommonModule,
     MatDialogModule,
     MatTooltipModule,
     MatCardModule,
@@ -69,7 +70,7 @@ export class NotesComponent implements OnDestroy {
   records = signal<any[]>([]);
 
   constructor() {
-    this.layout.disableScrolling();
+    // this.layout.disableScrolling();
     this.layout.addAction({ name: 'New Note', icon: 'note_add', action: () => {} });
 
     effect(async () => {
@@ -77,6 +78,14 @@ export class NotesComponent implements OnDestroy {
         await this.loadNotes();
       }
     });
+  }
+
+  async deleteNote(entry: any) {
+    const { status } = await entry.record.delete();
+
+    if (status) {
+      this.records.update((records) => records.filter((r) => r.record != entry.record));
+    }
   }
 
   async loadNotes() {
@@ -161,6 +170,26 @@ export class NotesComponent implements OnDestroy {
     });
 
     return dialogRef.afterClosed();
+  }
+
+  ngOnInit() {}
+
+  selectColor() {}
+
+  async onColorChange(event: Event, entry: any) {
+    // Get the new input value
+    const newValue = (event.target as HTMLInputElement).value;
+    // Perform actions based on the new value
+    console.log('Input value changed:', newValue);
+
+    entry.data.background = newValue;
+
+    const { status, record } = await entry.record.update({
+      data: entry.data,
+    });
+
+    console.log('Record created:', record);
+    console.log('Record status:', status);
   }
 
   async saveNote(entry: any, data: DialogData) {
