@@ -371,13 +371,11 @@ export class NotesComponent implements OnDestroy {
 
   async saveNote(entry: any, data: DialogData) {
     if (entry.record) {
+      // Will this work?
+      entry.record.tags.labels = data.labels;
+
       const { status, record } = await entry.record.update({
         data: data,
-        message: {
-          tags: {
-            labels: data.labels,
-          },
-        },
       });
 
       console.log('Record created:', record);
