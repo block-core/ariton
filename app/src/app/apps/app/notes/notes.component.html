@@ -7,12 +7,40 @@
     </mat-chip-listbox>
   </div>
   <div class="notes-items">
-    <mat-card appearance="outlined">
-      <mat-card-content
-        >Welcome to notes. You can edit this note or make new notes with the add button on the top.</mat-card-content
-      >
+    @for (entry of records(); track entry) {
+    <mat-card class="marketplace-category">
+      @if (entry.data.title){
+      <mat-card-title (click)="editNote(entry)">{{ entry.data.title }}</mat-card-title>
+      }
+      <mat-card-content class="note-body" (click)="editNote(entry)">
+        {{ entry.data.body }}
+      </mat-card-content>
+      <mat-card-footer>
+        <button mat-icon-button matTooltip="Collaborator">
+          <mat-icon>person_add_alt</mat-icon>
+        </button>
+        <button mat-icon-button matTooltip="Background">
+          <mat-icon>palette</mat-icon>
+        </button>
+        <button mat-icon-button matTooltip="Labels">
+          <mat-icon>new_label</mat-icon>
+        </button>
+        <button mat-icon-button matTooltip="Options" [matMenuTriggerFor]="menuActions">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menuActions="matMenu">
+          <button mat-menu-item>
+            <mat-icon>delete</mat-icon>
+            <span>Delete note</span>
+          </button>
+          <button mat-menu-item>
+            <mat-icon>file_copy</mat-icon>
+            <span>Make a copy</span>
+          </button>
+        </mat-menu>
+      </mat-card-footer>
     </mat-card>
-
+    }
     <mat-card class="marketplace-category">
       <mat-card-content (click)="editNote('1')">
         Welcome to notes. You can edit this note or make new notes with the add button on the top.

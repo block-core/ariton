@@ -1,4 +1,4 @@
-import { Component, inject, model, signal } from '@angular/core';
+import { Component, effect, inject, model, signal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -15,7 +15,10 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatCardModule } from '@angular/material/card';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { NoteDialogComponent } from './note-dialog.component';
+import { DialogData, NoteDialogComponent } from './note-dialog.component';
+import { protocolDefinition as noteDefinition } from '../../../../protocols/note';
+import { IdentityService } from '../../../identity.service';
+import { AppService } from '../../../app.service';
 
 export interface Section {
   id: string;
@@ -57,11 +60,55 @@ export class NotesComponent implements OnDestroy {
 
   public layout = inject(LayoutService);
 
+  identity = inject(IdentityService);
+
+  app = inject(AppService);
+
   labels = signal<string[]>(['Reminders', 'Inspiration', 'Personal', 'Work']);
+
+  records = signal<any[]>([]);
 
   constructor() {
     this.layout.disableScrolling();
     this.layout.addAction({ name: 'New Note', icon: 'note_add', action: () => {} });
+
+    effect(async () => {
+      if (this.app.initialized()) {
+        await this.loadNotes();
+      }
+    });
+  }
+
+  async loadNotes() {
+    var { records } = await this.identity.web5.dwn.records.query({
+      message: {
+        filter: {
+          protocol: noteDefinition.protocol,
+          schema: noteDefinition.types.note.schema,
+          dataFormat: noteDefinition.types.note.dataFormats[0],
+        },
+      },
+    });
+
+    //     let json = {};
+    // let recordEntry = null;
+
+    this.records.set([]);
+
+    if (records) {
+      // Loop through returned records and print text from each
+      for (const record of records) {
+        let data = await record.data.json();
+        let json: any = { record: record, data: data };
+
+        // if (record.author == this.identity.did) {
+        //   json.direction = 'out';
+        // }
+
+        this.records.update((records) => [...records, json]);
+        console.log('All requests:', this.records());
+      }
+    }
   }
 
   onSelectionChange(event: any) {
@@ -83,12 +130,13 @@ export class NotesComponent implements OnDestroy {
     this.chat.set(chat);
   }
 
-  editNote(recordId: string) {
-    let data = {
-      title: '123',
-      body: '222',
-      background: 'red',
+  editNote(entry: any) {
+    let data: DialogData = {
+      title: entry.data.title,
+      body: entry.data.body,
+      background: entry.data.background,
       collaborators: ['12', '33333'],
+      labels: ['label2', 'label3'],
     };
 
     const original = JSON.parse(JSON.stringify(data));
@@ -99,16 +147,68 @@ export class NotesComponent implements OnDestroy {
       data: data,
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().subscribe(async (result) => {
       if (!result) {
         // Reset the original data if user cancels.
         data = original;
-      }
+      } else {
+        console.log('data result for saving:', data);
+        await this.saveNote(entry, data);
 
-      console.log('data result:', data);
+        // Update the data so it's displayed in the UI without re-query DWN.
+        this.records().find((r) => r.record == entry.record).data = data;
+      }
     });
 
     return dialogRef.afterClosed();
+  }
+
+  async saveNote(entry: any, data: DialogData) {
+    if (entry.record) {
+      const { status, record } = await entry.record.update({
+        data: data,
+      });
+
+      console.log('Record created:', record);
+      console.log('Record status:', status);
+
+      if (record) {
+        //send record to recipient's DWN
+        // const { status } = await record.send(recipient);
+        // console.log('Record sent:', status, record);
+        // Show a toast notification
+        // this.snackBar.open('Record sent successfully!', 'Close', {
+        //   duration: 3000, // Duration in milliseconds
+        // });
+      }
+    } else {
+      const { record, status } = await this.identity.web5.dwn.records.create({
+        data: data,
+        message: {
+          tags: {
+            label2: 'inspiration',
+            label3: 'personal',
+          },
+          protocol: noteDefinition.protocol,
+          protocolPath: 'note',
+          schema: noteDefinition.types.note.schema,
+          dataFormat: noteDefinition.types.note.dataFormats[0],
+        },
+      });
+
+      console.log('Record created:', record);
+      console.log('Record status:', status);
+
+      if (record) {
+        //send record to recipient's DWN
+        // const { status } = await record.send(recipient);
+        // console.log('Record sent:', status, record);
+        // Show a toast notification
+        // this.snackBar.open('Record sent successfully!', 'Close', {
+        //   duration: 3000, // Duration in milliseconds
+        // });
+      }
+    }
   }
 
   folders: Section[] = [

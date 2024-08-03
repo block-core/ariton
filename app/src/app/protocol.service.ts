@@ -8,6 +8,7 @@ import { protocolDefinition as freeForAll } from '../protocols/free-for-all';
 import { protocolDefinition as minimal } from '../protocols/minimal';
 import { protocolDefinition as message } from '../protocols/message';
 import { protocolDefinition as registry } from '../protocols/registry';
+import { protocolDefinition as note } from '../protocols/note';
 import { IdentityService } from './identity.service';
 
 @Injectable({
@@ -19,7 +20,18 @@ export class ProtocolService {
   constructor() {}
 
   async register() {
-    const protocols = [profile, community, social, anyoneCollaborate, chat, freeForAll, minimal, message, registry];
+    const protocols = [
+      note,
+      profile,
+      community,
+      social,
+      anyoneCollaborate,
+      chat,
+      freeForAll,
+      minimal,
+      message,
+      registry,
+    ];
 
     for (const definition of protocols) {
       const { protocol, status } = await this.identityService.web5.dwn.protocols.configure({

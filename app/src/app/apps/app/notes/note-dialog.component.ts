@@ -12,6 +12,7 @@ export interface DialogData {
   body: string;
   background: string;
   collaborators: string[];
+  labels: string[];
 }
 
 @Component({
@@ -55,31 +56,5 @@ export class NoteDialogComponent {
       collaborators,
       background,
     });
-
-    // const { record } = await this.identity.web5.dwn.records.create({
-    //   data: {
-    //     name: name,
-    //     message: message,
-    //   },
-    //   store: false,
-    //   message: {
-    //     protocol: 'http://free-for-all-protocol.xyz',
-    //     protocolPath: 'post',
-    //     schema: 'eph',
-    //     // recipient: recipient,
-    //     dataFormat: 'application/json',
-    //   },
-    // });
-
-    // if (record) {
-    //   //send record to recipient's DWN
-    //   const { status } = await record.send(recipient);
-    //   console.log('Record sent:', status, record);
-
-    //   // Show a toast notification
-    //   this.snackBar.open('Record sent successfully!', 'Close', {
-    //     duration: 3000, // Duration in milliseconds
-    //   });
-    // }
   }
 }

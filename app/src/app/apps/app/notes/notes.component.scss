@@ -9,12 +9,14 @@
   height: 100%;
 }
 
+.note-body {
+  white-space: pre-wrap;
+}
+
 .notes-top {
-  background: red;
 }
 
 .notes-items {
-  background-color: blue;
 }
 
 .large-icon {
@@ -34,6 +36,10 @@ mat-card-content {
   cursor: pointer;
   padding: 0 !important;
   margin-bottom: 0.4em;
+}
+
+mat-card-title {
+  cursor: pointer;
 }
 
 mat-card-footer {
