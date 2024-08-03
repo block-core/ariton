@@ -67,11 +67,32 @@ export class NotesComponent implements OnDestroy {
 
   labels = signal<string[]>(['Reminders', 'Inspiration', 'Personal', 'Work']);
 
+  labelMap: { [key: string]: string } = {
+    Reminders: 'label1',
+    Inspiration: 'label2',
+    Personal: 'label3',
+    Work: 'label4',
+  };
+
   records = signal<any[]>([]);
 
   constructor() {
     // this.layout.disableScrolling();
-    this.layout.addAction({ name: 'New Note', icon: 'note_add', action: () => {} });
+    this.layout.addAction({
+      name: 'New Note',
+      icon: 'note_add',
+      action: () => {
+        this.editNote({
+          data: {
+            title: '',
+            body: '',
+            background: '',
+            collaborators: [],
+            labels: [],
+          },
+        });
+      },
+    });
 
     effect(async () => {
       if (this.app.initialized()) {
@@ -88,10 +109,11 @@ export class NotesComponent implements OnDestroy {
     }
   }
 
-  async loadNotes() {
+  async loadNotes(tags?: any) {
     var { records } = await this.identity.web5.dwn.records.query({
       message: {
         filter: {
+          tags: tags,
           protocol: noteDefinition.protocol,
           schema: noteDefinition.types.note.schema,
           dataFormat: noteDefinition.types.note.dataFormats[0],
@@ -121,11 +143,25 @@ export class NotesComponent implements OnDestroy {
   }
 
   onSelectionChange(event: any) {
-    // this.registryService.filter(this.selectedTags);
-
     console.log('Selection changed:', event);
     console.log(this.selectedTags);
-    // Handle the selection change event
+
+    // const formattedTags = this.selectedTags.map((tag) => {
+    //   return { [this.labelMap[tag]]: tag };
+    // });
+
+    const formattedTags: { [key: string]: string } = this.selectedTags.reduce((acc: { [key: string]: string }, tag) => {
+      acc[this.labelMap[tag]] = tag;
+      return acc;
+    }, {});
+
+    console.log(formattedTags);
+
+    if (!this.selectedTags || this.selectedTags.length == 0) {
+      this.loadNotes();
+    } else {
+      this.loadNotes(formattedTags);
+    }
   }
 
   ngOnDestroy() {
@@ -217,8 +253,8 @@ export class NotesComponent implements OnDestroy {
         data: data,
         message: {
           tags: {
-            label2: 'inspiration',
-            label3: 'personal',
+            label2: 'Inspiration',
+            label3: 'Personal',
           },
           protocol: noteDefinition.protocol,
           protocolPath: 'note',

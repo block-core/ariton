@@ -14,7 +14,7 @@
       }
       <mat-card-content class="note-body" (click)="editNote(entry)">{{ entry.data.body }}</mat-card-content>
       <mat-card-footer>
-        <button mat-icon-button matTooltip="Collaborator">
+        <button [disabled]="true" mat-icon-button matTooltip="Collaborator">
           <mat-icon>person_add_alt</mat-icon>
         </button>
         <button mat-icon-button matTooltip="Background" (click)="fileColor.click()">
@@ -28,13 +28,18 @@
           <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #menuActions="matMenu">
-          <button mat-menu-item (click)="deleteNote(entry)">
-            <mat-icon>delete</mat-icon>
-            <span>Delete note</span>
+          <button mat-menu-item (click)="editNote(entry)">
+            <mat-icon>edit</mat-icon>
+            <span>Edit note</span>
           </button>
           <button mat-menu-item (click)="copyNote(entry)">
             <mat-icon>file_copy</mat-icon>
             <span>Make a copy</span>
+          </button>
+          <mat-divider></mat-divider>
+          <button mat-menu-item (click)="deleteNote(entry)">
+            <mat-icon>delete</mat-icon>
+            <span>Delete note</span>
           </button>
         </mat-menu>
       </mat-card-footer>
