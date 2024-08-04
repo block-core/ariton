@@ -217,6 +217,12 @@ export const routes: Routes = [
     data: { hide: true, icon: 'help' },
   },
   {
+    path: 'storage',
+    loadComponent: () => import('./storage/storage.component').then((c) => c.StorageComponent),
+    title: 'Storage',
+    data: { icon: 'cloud' },
+  },
+  {
     path: 'management',
     loadComponent: () => import('./management/management.component').then((c) => c.ManagementComponent),
     title: 'Management',

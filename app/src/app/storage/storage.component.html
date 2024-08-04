@@ -1,0 +1,152 @@
+<div class="storage-container">
+  <mat-icon class="storage-icon" inline="true">cloud</mat-icon>
+  <h1>You've got 1GB of storage</h1>
+  <p>
+    Your storage is shared across Files, Photos, Notes, Chat and other Ariton apps. Manage your storage by freeing up
+    space – or get more storage with Ariton Premium.
+  </p>
+  <p>
+    <mat-button-toggle-group [(ngModel)]="premiumPeriod">
+      <mat-button-toggle value="monthly">Monthly</mat-button-toggle>
+      <mat-button-toggle value="annual">Annual</mat-button-toggle>
+    </mat-button-toggle-group>
+  </p>
+</div>
+
+<div class="offers">
+  @if (premiumPeriod === 'monthly') {
+  <mat-card class="offer-card">
+    <mat-card-header>
+      <mat-icon mat-card-avatar>cloud</mat-icon>
+      <mat-card-title>Standard (1 GB)</mat-card-title>
+      <mat-card-subtitle>Free</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p>Your current storage option.</p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button [disabled]="true">CURRENT</button>
+    </mat-card-actions>
+  </mat-card>
+
+  <mat-card class="offer-card">
+    <mat-card-header>
+      <mat-icon mat-card-avatar>cloud_done</mat-icon>
+      <mat-card-title>Basic (10 GB)</mat-card-title>
+      <mat-card-subtitle>$2 for 1 month</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p>Upgrade your current storage to 10x the amount of storage for only $2 per month.</p>
+      <!-- <mat-chip-set>
+        <mat-chip>charming</mat-chip>
+        <mat-chip>graceful</mat-chip>
+        <mat-chip>sassy</mat-chip>
+      </mat-chip-set> -->
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button>CHOOSE</button>
+    </mat-card-actions>
+  </mat-card>
+
+  <mat-card class="offer-card">
+    <mat-card-header>
+      <mat-icon mat-card-avatar>cloud_done</mat-icon>
+      <mat-card-title>Standard (50 GB)</mat-card-title>
+      <mat-card-subtitle>$8 for 1 month</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p>
+        This option is perfect for those who need more storage than the Basic plan, if you plan on storing more photos
+        and files this is a great option for you.
+      </p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button>CHOOSE</button>
+    </mat-card-actions>
+  </mat-card>
+
+  <mat-card class="offer-card">
+    <mat-card-header>
+      <mat-icon mat-card-avatar>cloud_done</mat-icon>
+      <mat-card-title>Premium (100 GB)</mat-card-title>
+      <mat-card-subtitle>$14 for 1 month</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p>
+        For only $14 per month you can get 100 GB of storage, this is perfect for those who need to store a lot of
+        files.
+      </p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button>CHOOSE</button>
+    </mat-card-actions>
+  </mat-card>
+  } @else {
+  <mat-card class="offer-card">
+    <mat-card-header>
+      <mat-icon mat-card-avatar>cloud</mat-icon>
+      <mat-card-title>Standard (1 GB)</mat-card-title>
+      <mat-card-subtitle>Free</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p>Your current storage option.</p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button [disabled]="true">CURRENT</button>
+    </mat-card-actions>
+  </mat-card>
+
+  <mat-card class="offer-card">
+    <mat-card-header>
+      <mat-icon mat-card-avatar>cloud_done</mat-icon>
+      <mat-card-title>Basic (10 GB)</mat-card-title>
+      <mat-card-subtitle>$22 for 1 years</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p>Upgrade your current storage to 10x the amount of storage for only $22 per year.</p>
+      <!-- <mat-chip-set>
+        <mat-chip>charming</mat-chip>
+        <mat-chip>graceful</mat-chip>
+        <mat-chip>sassy</mat-chip>
+      </mat-chip-set> -->
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button>CHOOSE</button>
+    </mat-card-actions>
+  </mat-card>
+
+  <mat-card class="offer-card">
+    <mat-card-header>
+      <mat-icon mat-card-avatar>cloud_done</mat-icon>
+      <mat-card-title>Standard (50 GB)</mat-card-title>
+      <mat-card-subtitle>$88 for 1 year</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p>
+        This option is perfect for those who need more storage than the Basic plan, if you plan on storing more photos
+        and files this is a great option for you.
+      </p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button>CHOOSE</button>
+    </mat-card-actions>
+  </mat-card>
+
+  <mat-card class="offer-card">
+    <mat-card-header>
+      <mat-icon mat-card-avatar>cloud_done</mat-icon>
+      <mat-card-title>Premium (100 GB)</mat-card-title>
+      <mat-card-subtitle>$322 for 1 year</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p>
+        For only $322 per year you can get 100 GB of storage, this is perfect for those who need to store a lot of
+        files.
+      </p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button>CHOOSE</button>
+    </mat-card-actions>
+  </mat-card>
+  }
+</div>
