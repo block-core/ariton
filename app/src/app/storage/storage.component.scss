@@ -29,3 +29,11 @@ mat-card-content {
   display: flex;
   justify-content: center;
 }
+
+@media (max-width: 1200px) {
+  .offers {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
