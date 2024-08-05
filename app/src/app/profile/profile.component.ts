@@ -18,6 +18,8 @@ import { AppService } from '../app.service';
 import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { protocolDefinition as messageDefinition } from '../../protocols/message';
+import { VerifiableCredential } from '@web5/credentials';
+import { BearerDid } from '@web5/dids';
 
 @Component({
   selector: 'app-profile',
@@ -101,6 +103,61 @@ export class ProfileComponent {
       this.openSnackBar(`Friend request failed.Code: ${requestStatus.code}, Details: ${requestStatus.detail}.`);
     } else {
       this.openSnackBar('Friend request sent');
+    }
+  }
+
+  async issueFriendVC() {
+    const vc = await VerifiableCredential.create({
+      type: 'FriendshipCredential',
+      issuer: this.identity.did,
+      subject: this.identity.did,
+      data: null,
+    });
+
+    console.log('VC:', vc);
+
+    const bearerDid = await this.identity.activeAgent().identity.get({ didUri: this.identity.did });
+
+    if (bearerDid) {
+      const vc_jwt = await vc.sign({ did: bearerDid.did });
+      console.log('VC JWT:', vc_jwt);
+
+      const { record } = await this.identity.web5.dwn.records.create({
+        data: vc_jwt,
+        message: {
+          schema: 'FriendsCredential',
+          dataFormat: 'application/vc+jwt',
+          published: true,
+        },
+      });
+
+      console.log('VC RECORD:', record);
+
+      const readSignedVc = await record!.data.text();
+
+      console.log('READ SIGNED VC:', readSignedVc);
+
+      const parsedVc = VerifiableCredential.parseJwt({ vcJwt: readSignedVc });
+
+      console.log('PARSED VC:', parsedVc);
+
+      const finalVC = await VerifiableCredential.create({
+        type: 'FriendshipCredential',
+        issuer: this.identity.did,
+        subject: this.identity.did,
+        data: {
+          vc: vc_jwt,
+        },
+      });
+
+      console.log('FINAL VC:', finalVC);
+
+      const vc_final_jwt = await vc.sign({ did: bearerDid.did });
+      console.log('VC FINAL JWT:', vc_final_jwt);
+
+      const parsedFinalVc = VerifiableCredential.parseJwt({ vcJwt: vc_final_jwt });
+
+      console.log('PARSED FINAL VC:', parsedFinalVc);
     }
   }
 

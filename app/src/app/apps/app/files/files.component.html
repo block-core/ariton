@@ -1,0 +1,19 @@
+<mat-list>
+  <div mat-subheader>Folders</div>
+  @for (folder of folders(); track folder) {
+  <mat-list-item>
+    <mat-icon matListItemIcon>folder</mat-icon>
+    <div matListItemTitle>{{ folder.data.name }}</div>
+    <div matListItemLine>{{ folder.record.dateCreated | ago }}</div>
+  </mat-list-item>
+  }
+  <mat-divider></mat-divider>
+  <div mat-subheader>Files</div>
+  @for (file of files(); track file) {
+  <mat-list-item>
+    <mat-icon matListItemIcon>note</mat-icon>
+    <div matListItemTitle>{{ file.name }}</div>
+    <div matListItemLine>{{ file.updated | date }}</div>
+  </mat-list-item>
+  }
+</mat-list>

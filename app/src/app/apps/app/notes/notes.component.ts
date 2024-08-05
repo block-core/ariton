@@ -250,10 +250,15 @@ export class NotesComponent implements OnDestroy {
         data = original;
       } else {
         console.log('data result for saving:', data);
+
+        // Update the data from old to new.
+        entry.data = data;
+
         await this.saveNote(entry, data);
 
         // Update the data so it's displayed in the UI without re-query DWN.
-        this.records().find((r) => r.record == entry.record).data = data;
+        // TODO: Validate if this is actually needed since we copy above now.
+        // this.records().find((r) => r.record == entry.record).data = data;
       }
     });
 

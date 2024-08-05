@@ -190,6 +190,10 @@ This is a protocol that is used to collect connections with other users. The con
 4. At the same time, User A will issue various roles to User B, to allow User B to perform additional actions. These actions are available even if User B never accept the friend request. These roles are stored in User A's DWN. One of those permissions include the ability to send Direct Messages.
 5. Maybe User A should be allowed to choose a "role" (or "circle") that User B will be added to. This will allow User A to manage their connections in a more structured way. For example "Family" and "Friends" can be two different circles, and when added to either, a user can see family photos or not.
 
+Friendship VCs:
+
+During the use case above, upon the initial friend request, a Verifiable Credential is issued to User B, that User A wants to connect. This VC is stored in User A's and B's DWN. User B can then choose to accept or reject the friend request. If User B accepts the friend request, a new VC is issued that contains reference, or the actual other VC, that User B has accepted the friend request. This VC is stored in User A's and B's DWN. This allows both to demonstrate that they are friends with each other with a single VC that contains signatures from both.
+
 The `request` type of message should support multiple kinds, including DM requests. That will allow anyone to message anyone,
 without first having to be friends. The message request appears not in the regular chat messages to avoid spam.
 

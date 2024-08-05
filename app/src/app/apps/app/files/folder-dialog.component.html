@@ -1,0 +1,38 @@
+<h2 mat-dialog-title>New folder</h2>
+<mat-dialog-content class="mat-typography">
+  <mat-form-field appearance="outline" class="full-width">
+    <input matInput required="true" placeholder="Name" maxlength="200" [(ngModel)]="data.name" />
+  </mat-form-field>
+  <!-- <mat-form-field appearance="outline" class="full-width">
+    <textarea maxlength="300" rows="6" matInput #body placeholder="Note" [(ngModel)]="data.body"></textarea>
+    <mat-hint align="end">{{ body.value.length }} / 300</mat-hint>
+  </mat-form-field> -->
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <!-- <button [disabled]="true" mat-icon-button matTooltip="Collaborator">
+    <mat-icon>person_add_alt</mat-icon>
+  </button>
+  <button mat-icon-button matTooltip="Background" (click)="fileColor.click()">
+    <mat-icon>palette</mat-icon>
+  </button>
+  <input class="color-picker" #fileColor (change)="onColorChange($event)" type="color" /> -->
+  <!-- <button mat-icon-button matTooltip="Labels">
+    <mat-icon>new_label</mat-icon>
+  </button> -->
+  <!-- <button mat-icon-button matTooltip="Options" [matMenuTriggerFor]="menuActions">
+    <mat-icon>more_vert</mat-icon>
+  </button>
+  <mat-menu #menuActions="matMenu">
+    <button mat-menu-item>
+      <mat-icon>delete</mat-icon>
+      <span>Delete note</span>
+    </button>
+    <button mat-menu-item>
+      <mat-icon>file_copy</mat-icon>
+      <span>Make a copy</span>
+    </button>
+  </mat-menu> -->
+
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-flat-button type="submit" [mat-dialog-close]="true" cdkFocusInitial>Create</button>
+</mat-dialog-actions>

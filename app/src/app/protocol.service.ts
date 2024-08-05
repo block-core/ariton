@@ -9,6 +9,7 @@ import { protocolDefinition as minimal } from '../protocols/minimal';
 import { protocolDefinition as message } from '../protocols/message';
 import { protocolDefinition as registry } from '../protocols/registry';
 import { protocolDefinition as note } from '../protocols/note';
+import { protocolDefinition as file } from '../protocols/file';
 import { IdentityService } from './identity.service';
 
 @Injectable({
@@ -31,6 +32,7 @@ export class ProtocolService {
       minimal,
       message,
       registry,
+      file,
     ];
 
     for (const definition of protocols) {
