@@ -1,0 +1,15 @@
+<nav>
+  @for(breadcrumb of breadcrumbs; track breadcrumb){ @let last = $last;
+  <ng-container>
+    @if (!last) {
+    <ng-container>
+      <a [routerLink]="breadcrumb.url">{{ breadcrumb.label }}</a> &gt;
+    </ng-container>
+    } @if (last) {
+    <ng-container>
+      {{ breadcrumb.label }}
+    </ng-container>
+    }
+  </ng-container>
+  }
+</nav>

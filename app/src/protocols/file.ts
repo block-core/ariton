@@ -2,14 +2,17 @@ export const protocolDefinition = {
   protocol: 'https://schema.ariton.app/file',
   published: true,
   types: {
-    file: {
-      schema: 'https://schema.ariton.app/file/schema/file',
+    entry: {
+      schema: 'https://schema.ariton.app/file/schema/entry',
       dataFormats: ['application/json'],
     },
-    folder: {
-      schema: 'https://schema.ariton.app/file/schema/folder',
-      dataFormats: ['application/json'],
+    attachment: {
+      schema: 'https://schema.ariton.app/file/schema/attachment',
     },
+    // folder: {
+    //   schema: 'https://schema.ariton.app/file/schema/folder',
+    //   dataFormats: ['application/json'],
+    // },
     collaborator: {
       schema: 'https://schema.ariton.app/file/schema/collaborator',
       dataFormats: ['application/json'],
@@ -19,11 +22,14 @@ export const protocolDefinition = {
     collaborator: {
       $role: true,
     },
-    file: {
+    entry: {
       $actions: [{ role: 'collaborator', can: ['create', 'update', 'read', 'delete'] }],
     },
-    folder: {
+    attachment: {
       $actions: [{ role: 'collaborator', can: ['create', 'update', 'read', 'delete'] }],
     },
+    // folder: {
+    //   $actions: [{ role: 'collaborator', can: ['create', 'update', 'read', 'delete'] }],
+    // },
   },
 };

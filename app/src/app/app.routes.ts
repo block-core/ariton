@@ -1,4 +1,6 @@
 import { Routes } from '@angular/router';
+import { FolderComponent } from './apps/app/files/folder.component';
+import { FileComponent } from './apps/app/files/file.component';
 
 export const routes: Routes = [
   {
@@ -58,7 +60,36 @@ export const routes: Routes = [
     path: 'app/files',
     loadComponent: () => import('./apps/app/files/files.component').then((c) => c.FilesComponent),
     title: 'Files',
-    data: { icon: 'folder' },
+    data: { icon: 'folder', breadcrumb: 'Files' },
+    children: [
+      {
+        path: '',
+        component: FolderComponent,
+        data: { breadcrumb: 'Folder' },
+      },
+      {
+        path: 'folder/:id',
+        component: FolderComponent,
+        data: { breadcrumb: 'Folder' },
+      },
+      {
+        path: 'file/:id',
+        component: FileComponent,
+        data: { breadcrumb: 'Folder' },
+      },
+      // {
+      //   path: 'folder/:id',
+      //   component: FolderComponent,
+      //   data: { breadcrumb: 'Folder' },
+      //   // children: [
+      //   //   {
+      //   //     path: ':lessonName',
+      //   //     component: LessonDetailComponent,
+      //   //     data: { breadcrumb: 'Lesson Name' },
+      //   //   },
+      //   // ],
+      // },
+    ],
   },
   {
     path: 'app/notes',

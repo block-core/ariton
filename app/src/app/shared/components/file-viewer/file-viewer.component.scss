@@ -1,0 +1,39 @@
+.pdf-viewer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+object {
+  width: 100%;
+  height: 100%;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.page-navigation {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+@media screen and (max-width: 768px) {
+  .controls {
+    flex-direction: column;
+  }
+}
+
+/* Enable text selection */
+// object ::selection {
+//   background-color: rgba(0, 123, 255, 0.3);
+// }
+
+.file-frame {
+  border: 0;
+}

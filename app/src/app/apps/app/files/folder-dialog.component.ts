@@ -10,6 +10,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 export interface DialogData {
   name: string;
+  entryType: 'folder' | 'file';
   // body: string;
   // background: string;
   // collaborators: string[];

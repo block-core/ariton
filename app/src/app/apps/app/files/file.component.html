@@ -1,0 +1,55 @@
+<!-- FOLDER!!! @for(file of files(); track file) {
+<div>{{ file.data.name }}</div>
+} -->
+
+<mat-toolbar color="primary">
+  <button type="button" aria-label="Toggle sidenav" mat-icon-button>
+    <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+  </button>
+  <button mat-icon-button>
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <button [title]="'Name'" mat-icon-button>
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+
+  <span class="toolbar-spacer"></span>
+  <span class="toolbar-items"> </span
+></mat-toolbar>
+
+<h1>View file</h1>
+¨
+<p>File here</p>
+
+@if(src) {
+<div class="pdf-zoom-buttons">
+  <button (click)="pdfZoomIn()">+</button>
+  <button (click)="pdfZoomOut()">-</button>
+</div>
+
+<app-file-viewer [src]="src" [type]="type" [pdfZoom]="pdfZoom">
+  <h2>This file type is unsupported (yet :)</h2>
+</app-file-viewer>
+}
+
+<!-- <mat-list>
+  @for (entry of entries(); track entry) {
+  <mat-list-item (click)="openEntry(entry)">
+    @if(entry.data.entryType === 'folder') {
+    <mat-icon matListItemIcon>folder</mat-icon>
+    } @if(entry.data.entryType === 'file') {
+    <mat-icon matListItemIcon>note</mat-icon>
+    }
+    <div matListItemTitle>{{ entry.data.name }}</div>
+    <div matListItemLine>
+      {{ entry.data.lastModified | ago }} | {{ entry.data.size | size }} | {{ entry.data.type }}
+    </div>
+  </mat-list-item>
+  }
+</mat-list>
+
+<input type="file" id="input" (change)="onFileSelected($event)" multiple style="display: none" /> -->
+
+<!-- <input type="file" (change)="onFileSelected($event)" />
+<button mat-button (click)="upload()" [disabled]="!file || isUploading">Upload</button>
+<button mat-button (click)="cancelUpload()" [disabled]="!isUploading">Cancel</button> -->
