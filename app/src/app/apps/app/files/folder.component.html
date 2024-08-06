@@ -13,10 +13,15 @@
     <mat-icon matListItemIcon>note</mat-icon>
     }
     <div matListItemTitle>{{ entry.data.name }}</div>
+
+    @if(entry.data.entryType === 'folder') {
+    <div matListItemLine>{{ entry.record.dateModified | ago }} | 'Folder'</div>
+    } @if(entry.data.entryType === 'file') {
     <div matListItemLine>
       {{ entry.data.lastModified | ago }} | {{ entry.data.size | size }} | {{ entry.data.type }}
       <!-- {{ entry.record.lastModified | ago }} -->
     </div>
+    }
   </mat-list-item>
   }
 </mat-list>

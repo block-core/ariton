@@ -14,6 +14,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BreadcrumbService } from '../../../breadcrumb.service';
 import { FileService } from '../../../file.service';
 import { SizePipe } from '../../../shared/pipes/size.pipe';
+import { DwnDateSort } from '@web5/agent';
 
 @Component({
   selector: 'app-folder',
@@ -380,6 +381,7 @@ export class FolderComponent {
           schema: fileDefinition.types.entry.schema,
           dataFormat: fileDefinition.types.entry.dataFormats[0],
         },
+        dateSort: DwnDateSort.CreatedDescending,
       },
     });
 
