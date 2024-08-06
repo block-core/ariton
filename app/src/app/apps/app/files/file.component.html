@@ -2,37 +2,44 @@
 <div>{{ file.data.name }}</div>
 } -->
 
-<mat-toolbar>
-  <button mat-icon-button [disabled]="true">
-    <mat-icon>delete</mat-icon>
-  </button>
-  <button [title]="'Download'" mat-icon-button (click)="download()">
-    <mat-icon>file_download</mat-icon>
-  </button>
-  <span class="toolbar-spacer"></span>
-  <button mat-icon-button>
-    <mat-icon>zoom_in</mat-icon>
-  </button>
-  <button mat-icon-button>
-    <mat-icon>zoom_out</mat-icon>
-  </button>
-  <button [title]="'Fullscreen'" mat-icon-button>
-    <mat-icon>fullscreen</mat-icon>
-  </button>
-</mat-toolbar>
+<div id="file-viewer">
+  <mat-toolbar>
+    <button mat-icon-button [disabled]="true">
+      <mat-icon>delete</mat-icon>
+    </button>
+    <button [title]="'Download'" mat-icon-button (click)="download()">
+      <mat-icon>file_download</mat-icon>
+    </button>
+    <span class="toolbar-spacer"></span>
+    <button mat-icon-button [disabled]="true">
+      <mat-icon>zoom_in</mat-icon>
+    </button>
+    <button mat-icon-button [disabled]="true">
+      <mat-icon>zoom_out</mat-icon>
+    </button>
+    @if(fullscreen()) {
+    <button [title]="'Exit fullscreen'" mat-icon-button (click)="toggleFullscreen()">
+      <mat-icon>fullscreen_exit</mat-icon>
+    </button>
+    } @else {
+    <button [title]="'Fullscreen'" mat-icon-button (click)="toggleFullscreen()">
+      <mat-icon>fullscreen</mat-icon>
+    </button>
+    }
+  </mat-toolbar>
 
-@if(src) {
-<!-- <div class="pdf-zoom-buttons">
+  @if(src) {
+  <!-- <div class="pdf-zoom-buttons">
   <button (click)="pdfZoomIn()">+</button>
   <button (click)="pdfZoomOut()">-</button>
 </div> -->
 
-<app-file-viewer [src]="src" [type]="type" [pdfZoom]="pdfZoom">
-  <h2>This file type is unsupported (yet :)</h2>
-</app-file-viewer>
-}
+  <app-file-viewer [src]="src" [type]="type" [pdfZoom]="pdfZoom">
+    <h2>This file type is unsupported (yet :)</h2>
+  </app-file-viewer>
+  }
 
-<!-- <mat-list>
+  <!-- <mat-list>
   @for (entry of entries(); track entry) {
   <mat-list-item (click)="openEntry(entry)">
     @if(entry.data.entryType === 'folder') {
@@ -50,6 +57,7 @@
 
 <input type="file" id="input" (change)="onFileSelected($event)" multiple style="display: none" /> -->
 
-<!-- <input type="file" (change)="onFileSelected($event)" />
+  <!-- <input type="file" (change)="onFileSelected($event)" />
 <button mat-button (click)="upload()" [disabled]="!file || isUploading">Upload</button>
 <button mat-button (click)="cancelUpload()" [disabled]="!isUploading">Cancel</button> -->
+</div>

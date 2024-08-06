@@ -124,6 +124,20 @@ export class FileComponent {
     // });
   }
 
+  fullscreen = signal<boolean>(false);
+
+  toggleFullscreen() {
+    var elem = document.getElementById('file-viewer') as any;
+
+    if (!this.fullscreen()) {
+      elem.requestFullscreen();
+      this.fullscreen.set(true);
+    } else {
+      document.exitFullscreen();
+      this.fullscreen.set(false);
+    }
+  }
+
   download() {
     // Step 1: Create a Blob object with the data you want to save
     // const data = new Blob(['Hello, world!'], { type: 'text/plain' });
