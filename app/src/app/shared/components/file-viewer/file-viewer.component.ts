@@ -22,6 +22,37 @@ export class FileViewerComponent {
 
   zoomLevel = 100;
 
+  ngAfterViewInit() {
+    const iframe = document.getElementById('frame') as any;
+    const style = document.createElement('style');
+    style.textContent = `
+    body {
+        background-color: #f0f0f0;
+   margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+    }
+
+    img {
+      width: 100%;
+  height: 100%;
+  object-fit: contain; /* Adjust as needed: contain, cover, fill */
+    }
+`;
+
+    console.log('iframe:');
+    console.log(iframe);
+
+    iframe.contentDocument.head.appendChild(style);
+
+    console.log('iframe:');
+    console.log(iframe);
+  }
+
+  ngOnInit() {}
+
   zoomIn(): void {
     this.zoomLevel += 10;
   }

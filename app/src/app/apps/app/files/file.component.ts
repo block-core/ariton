@@ -18,6 +18,7 @@ import { FileViewerComponent } from '../../../shared/components/file-viewer/file
 import { FileMimeType } from '../../../shared/components/file-viewer/file-mime-type';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-file',
@@ -32,6 +33,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     AgoPipe,
     BreadcrumbComponent,
     MatToolbarModule,
+    MatButtonModule,
   ],
   templateUrl: './file.component.html',
   styleUrl: './file.component.scss',
@@ -78,7 +80,7 @@ export class FileComponent {
     //   });
     // });
 
-    this.layout.disableNavigation();
+    // this.layout.disableNavigation();
 
     // this.layout.addAction({
     //   name: 'New File',
@@ -120,6 +122,31 @@ export class FileComponent {
     //     await this.loadFiles();
     //   }
     // });
+  }
+
+  download() {
+    // Step 1: Create a Blob object with the data you want to save
+    // const data = new Blob(['Hello, world!'], { type: 'text/plain' });
+
+    // TODO: Investigate if we should store Blob or ObjectURL on the component.
+
+    // Step 2: Create a URL for the Blob
+    const url = URL.createObjectURL(this.fileUrl);
+
+    // Step 3: Create an anchor element
+    const a = document.createElement('a');
+    console.log('File URL');
+    console.log(url);
+    a.href = url;
+
+    // Step 4: Set the download attribute with a filename
+    a.download = this.data.name;
+
+    // Step 5: Programmatically click the anchor element to trigger the download
+    a.click();
+
+    // Step 6: Revoke the Blob URL to free up memory
+    URL.revokeObjectURL(url);
   }
 
   fileMimeType = FileMimeType;
@@ -401,6 +428,9 @@ export class FileComponent {
     }
   }
 
+  private fileUrl: any;
+  private data: any;
+
   async loadEntries(tags?: any) {
     console.log('VALUE OF TAGS:', tags);
 
@@ -418,6 +448,7 @@ export class FileComponent {
 
     // First get file metadata.
     const data = await record.data.json();
+    this.data = data;
 
     const { record: recordAttachment } = await this.identity.web5.dwn.records.read({
       message: {
@@ -428,7 +459,7 @@ export class FileComponent {
     });
 
     // Second get file binary data.
-    const blob = await recordAttachment.data.blob();
+    this.fileUrl = await recordAttachment.data.blob();
 
     console.log(record);
     console.log(recordAttachment);
@@ -438,10 +469,10 @@ export class FileComponent {
     this.type = recordAttachment.dataFormat;
 
     if (recordAttachment.dataFormat === 'application/pdf') {
-      const url = URL.createObjectURL(blob) + '#toolbar=0&navpanes=0&scrollbar=0&view=FitH';
+      const url = URL.createObjectURL(this.fileUrl) + '#toolbar=0&navpanes=0&scrollbar=0&view=FitH';
       this.src = this.sanitizer.bypassSecurityTrustResourceUrl(url);
     } else {
-      const url = URL.createObjectURL(blob);
+      const url = URL.createObjectURL(this.fileUrl);
       this.src = this.sanitizer.bypassSecurityTrustResourceUrl(url);
     }
 

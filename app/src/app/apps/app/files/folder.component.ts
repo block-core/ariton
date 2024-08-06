@@ -63,7 +63,7 @@ export class FolderComponent {
     this.layout.disableNavigation();
 
     this.layout.addAction({
-      name: 'New File',
+      name: 'Upload files',
       icon: 'upload_file',
       action: () => {
         this.editFile({
@@ -79,7 +79,7 @@ export class FolderComponent {
     });
 
     this.layout.addAction({
-      name: 'New Folder',
+      name: 'New folder',
       icon: 'create_new_folder',
       action: () => {
         this.editFolder({

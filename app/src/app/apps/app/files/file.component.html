@@ -2,30 +2,30 @@
 <div>{{ file.data.name }}</div>
 } -->
 
-<mat-toolbar color="primary">
-  <button type="button" aria-label="Toggle sidenav" mat-icon-button>
-    <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+<mat-toolbar>
+  <button mat-icon-button [disabled]="true">
+    <mat-icon>delete</mat-icon>
+  </button>
+  <button [title]="'Download'" mat-icon-button (click)="download()">
+    <mat-icon>file_download</mat-icon>
+  </button>
+  <span class="toolbar-spacer"></span>
+  <button mat-icon-button>
+    <mat-icon>zoom_in</mat-icon>
   </button>
   <button mat-icon-button>
-    <mat-icon>arrow_back</mat-icon>
+    <mat-icon>zoom_out</mat-icon>
   </button>
-  <button [title]="'Name'" mat-icon-button>
-    <mat-icon>arrow_back</mat-icon>
+  <button [title]="'Fullscreen'" mat-icon-button>
+    <mat-icon>fullscreen</mat-icon>
   </button>
-
-  <span class="toolbar-spacer"></span>
-  <span class="toolbar-items"> </span
-></mat-toolbar>
-
-<h1>View file</h1>
-¨
-<p>File here</p>
+</mat-toolbar>
 
 @if(src) {
-<div class="pdf-zoom-buttons">
+<!-- <div class="pdf-zoom-buttons">
   <button (click)="pdfZoomIn()">+</button>
   <button (click)="pdfZoomOut()">-</button>
-</div>
+</div> -->
 
 <app-file-viewer [src]="src" [type]="type" [pdfZoom]="pdfZoom">
   <h2>This file type is unsupported (yet :)</h2>
