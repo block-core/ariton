@@ -19,6 +19,7 @@ import { FileMimeType } from '../../../shared/components/file-viewer/file-mime-t
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
+import { Record } from '@web5/api';
 
 @Component({
   selector: 'app-file',
@@ -57,6 +58,7 @@ export class FileComponent {
 
   fileId: string | null = null;
   sanitizer = inject(DomSanitizer);
+  record?: Record;
 
   constructor() {
     effect(async () => {
@@ -450,7 +452,19 @@ export class FileComponent {
       return;
     }
 
-    const { record } = await this.identity.web5.dwn.records.read({
+    // const { record } = await this.identity.web5.dwn.records.read({
+    //   message: {
+    //     filter: {
+    //       recordId: this.fileId,
+    //     },
+    //   },
+    // });
+
+    // First get file metadata.
+    // const data = await record.data.json();
+    // this.data = data;
+
+    const { record: recordAttachment } = await this.identity.web5.dwn.records.read({
       message: {
         filter: {
           recordId: this.fileId,
@@ -458,22 +472,12 @@ export class FileComponent {
       },
     });
 
-    // First get file metadata.
-    const data = await record.data.json();
-    this.data = data;
-
-    const { record: recordAttachment } = await this.identity.web5.dwn.records.read({
-      message: {
-        filter: {
-          recordId: data.attachment,
-        },
-      },
-    });
+    this.record = recordAttachment;
 
     // Second get file binary data.
     this.fileUrl = await recordAttachment.data.blob();
 
-    console.log(record);
+    // console.log(record);
     console.log(recordAttachment);
 
     // const blob = await record.data.blob();

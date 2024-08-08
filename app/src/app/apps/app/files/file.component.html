@@ -3,6 +3,7 @@
 } -->
 
 <div id="file-viewer">
+  @if(record) {
   <mat-toolbar>
     <button mat-icon-button [disabled]="true">
       <mat-icon>delete</mat-icon>
@@ -10,6 +11,7 @@
     <button [title]="'Download'" mat-icon-button (click)="download()">
       <mat-icon>file_download</mat-icon>
     </button>
+    <span>{{ this.record.tags['name'] }}</span>
     <span class="toolbar-spacer"></span>
     <button mat-icon-button [disabled]="true">
       <mat-icon>zoom_in</mat-icon>
@@ -27,8 +29,7 @@
     </button>
     }
   </mat-toolbar>
-
-  @if(src) {
+  } @if(src) {
   <!-- <div class="pdf-zoom-buttons">
   <button (click)="pdfZoomIn()">+</button>
   <button (click)="pdfZoomOut()">-</button>
