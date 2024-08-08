@@ -1,4 +1,4 @@
-import { Component, effect, inject, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, inject, signal, ViewChild } from '@angular/core';
 import { AppService } from '../../../app.service';
 import { LayoutService } from '../../../layout.service';
 import { IdentityService } from '../../../identity.service';
@@ -22,11 +22,31 @@ import { FileService } from '../../../file.service';
 import { SizePipe } from '../../../shared/pipes/size.pipe';
 import { DwnDateSort } from '@web5/agent';
 import { Record } from '@web5/api';
+import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+
+export interface TableEntry {
+  name: string;
+  modified: number;
+  size: number;
+  type: string;
+  entryType: string;
+}
 
 @Component({
   selector: 'app-folder',
   standalone: true,
-  imports: [SizePipe, BreadcrumbComponent, CommonModule, MatListModule, MatIconModule, AgoPipe, BreadcrumbComponent],
+  imports: [
+    MatTableModule,
+    MatSortModule,
+    SizePipe,
+    BreadcrumbComponent,
+    CommonModule,
+    MatListModule,
+    MatIconModule,
+    AgoPipe,
+    BreadcrumbComponent,
+  ],
   templateUrl: './folder.component.html',
   styleUrl: './folder.component.scss',
 })
@@ -54,6 +74,13 @@ export class FolderComponent {
   routingSub: any;
   folderLevel = 1;
 
+  displayedColumns: string[] = ['icon', 'name', 'modified', 'size'];
+  dataSource = new MatTableDataSource<Record>([]);
+
+  @ViewChild(MatSort) sort!: MatSort;
+
+  changeDetectorRefs = inject(ChangeDetectorRef);
+
   constructor() {
     console.log('FOLDER COMPONENT CONSTRUCTOR');
     effect(
@@ -70,6 +97,10 @@ export class FolderComponent {
       },
       { allowSignalWrites: true },
     );
+
+    effect(async () => {
+      this.dataSource.data = this.entries();
+    });
 
     this.routingSub = this.router.events.subscribe(async (event) => {
       if (event instanceof NavigationEnd) {
@@ -163,6 +194,12 @@ export class FolderComponent {
     //   }
     // });
   }
+
+  ngAfterViewInit() {
+    this.dataSource.sort = this.sort;
+  }
+
+  announceSortChange(sortState: Sort) {}
 
   getValueAfterFolder(url: string): string | null {
     const match = url.match(/\/folder\/(.+)/);
@@ -729,6 +766,12 @@ export class FolderComponent {
 
     this.entries.set(records ?? []);
     console.log('All entries:', this.entries());
+
+    // this.dataSource.data = records! as any;
+
+    // this.changeDetectorRefs.detectChanges();
+
+    // console.log('Changed data source:', this.dataSource);
 
     // if (records) {
     //   // Loop through returned records and print text from each

@@ -6,31 +6,83 @@ ParentID: {{ parentId }}
 <br />
 Level: {{ folderLevel }}
 
-<mat-list>
+<!-- <mat-list>
   @for (entry of entries(); track entry) {
   <mat-list-item (click)="openEntry(entry)">
-    <!-- {{ entry.data | json }} -->
-
     @if(entry.tags['entryType'] === 'folder') {
     <mat-icon matListItemIcon>folder</mat-icon>
     } @if(entry.tags['entryType'] === 'file') {
     <mat-icon matListItemIcon>note</mat-icon>
     }
     <div matListItemTitle>{{ entry.tags['name'] }}</div>
-
     @if(entry.tags['entryType'] === 'folder') {
     <div matListItemLine>{{ entry.dateModified | ago }} | Folder</div>
     } @if(entry.tags['entryType'] === 'file') {
     <div matListItemLine>
       {{ entry.tags['lastModified'] | ago }} | {{ entry.tags['size'] | size }} | {{ entry.tags['type'] }}
-      <!-- {{ entry.record.lastModified | ago }} -->
     </div>
     }
   </mat-list-item>
   }
-</mat-list>
+</mat-list> -->
 
 <input type="file" id="input" (change)="onFileSelected($event)" multiple style="display: none" />
+
+<table
+  mat-table
+  [dataSource]="dataSource"
+  matSort
+  (matSortChange)="announceSortChange($event)"
+  class="mat-elevation-z8"
+>
+  <!-- Position Column -->
+  <!-- <ng-container matColumnDef="position">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">No.</th>
+    <td mat-cell *matCellDef="let element">{{ element.position }}</td>
+  </ng-container> -->
+
+  <ng-container matColumnDef="icon">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+    <td mat-cell *matCellDef="let entry">
+      @if(entry.tags['entryType'] === 'folder') {
+      <mat-icon matListItemIcon>folder</mat-icon>
+      } @if(entry.tags['entryType'] === 'file') {
+      <mat-icon matListItemIcon>note</mat-icon>
+      }
+    </td>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">Name</th>
+    <td mat-cell *matCellDef="let entry" class="clickable" (click)="openEntry(entry)">{{ entry.tags['name'] }}</td>
+  </ng-container>
+
+  <!-- Weight Column -->
+  <ng-container matColumnDef="modified">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by modified">Modified</th>
+    <td mat-cell *matCellDef="let entry">
+      @if (entry.tags['entryType'] === 'folder') {
+      {{ entry.dateModified | ago }}
+      } @if (entry.tags['entryType'] === 'file') {
+      {{ entry.tags['lastModified'] | ago }}
+      }
+    </td>
+  </ng-container>
+
+  <!-- Symbol Column -->
+  <ng-container matColumnDef="size">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by file size">File size</th>
+    <td mat-cell *matCellDef="let element">{{ element.tags['size'] | size }}</td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
+
+<!-- Copyright 2024 Google LLC. All Rights Reserved.
+    Use of this source code is governed by an MIT-style license that
+    can be found in the LICENSE file at https://angular.io/license -->
 
 <!-- <input type="file" (change)="onFileSelected($event)" />
 <button mat-button (click)="upload()" [disabled]="!file || isUploading">Upload</button>
