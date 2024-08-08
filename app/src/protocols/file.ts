@@ -4,14 +4,21 @@ export const protocolDefinition = {
   types: {
     entry: {
       schema: 'https://schema.ariton.app/file/schema/entry',
-      dataFormats: ['application/json'],
     },
-    attachment: {
-      schema: 'https://schema.ariton.app/file/schema/attachment',
-    },
-    // folder: {
-    //   schema: 'https://schema.ariton.app/file/schema/folder',
+    // root: {
+    //   schema: 'https://schema.ariton.app/file/schema/entry',
     //   dataFormats: ['application/json'],
+    // },
+    // parent: {
+    //   schema: 'https://schema.ariton.app/file/schema/entry',
+    //   dataFormats: ['application/json'],
+    // },
+    // child: {
+    //   schema: 'https://schema.ariton.app/file/schema/entry',
+    //   dataFormats: ['application/json'],
+    // },
+    // attachment: {
+    //   schema: 'https://schema.ariton.app/file/schema/attachment',
     // },
     collaborator: {
       schema: 'https://schema.ariton.app/file/schema/collaborator',
@@ -24,10 +31,19 @@ export const protocolDefinition = {
     },
     entry: {
       $actions: [{ role: 'collaborator', can: ['create', 'update', 'read', 'delete'] }],
+      entry: {
+        $actions: [{ role: 'collaborator', can: ['create', 'update', 'read', 'delete'] }],
+        entry: {
+          $actions: [{ role: 'collaborator', can: ['create', 'update', 'read', 'delete'] }],
+          entry: {
+            $actions: [{ role: 'collaborator', can: ['create', 'update', 'read', 'delete'] }],
+          },
+        },
+      },
     },
-    attachment: {
-      $actions: [{ role: 'collaborator', can: ['create', 'update', 'read', 'delete'] }],
-    },
+    // attachment: {
+    //   $actions: [{ role: 'collaborator', can: ['create', 'update', 'read', 'delete'] }],
+    // },
     // folder: {
     //   $actions: [{ role: 'collaborator', can: ['create', 'update', 'read', 'delete'] }],
     // },

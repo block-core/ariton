@@ -1,6 +1,11 @@
-import { Routes } from '@angular/router';
+import { ResolveFn, Routes } from '@angular/router';
 import { FolderComponent } from './apps/app/files/folder.component';
 import { FileComponent } from './apps/app/files/file.component';
+
+// const wildcardSlugsResolver: ResolveFn<Array<string>> = (route) => {
+//   console.log('SLUG ROUTE', route);
+//   return route.url.map((segment) => segment.path);
+// };
 
 export const routes: Routes = [
   {
@@ -64,17 +69,20 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        component: FolderComponent,
-        data: { breadcrumb: 'Folder' },
-      },
-      {
-        path: 'folder/:id',
-        component: FolderComponent,
-        data: { breadcrumb: 'Folder' },
+        pathMatch: 'full',
+        redirectTo: 'folder/root',
       },
       {
         path: 'file/:id',
         component: FileComponent,
+        data: { breadcrumb: 'Folder' },
+      },
+      {
+        path: '**',
+        component: FolderComponent,
+        // resolve: {
+        //   slugs: wildcardSlugsResolver,
+        // },
         data: { breadcrumb: 'Folder' },
       },
       // {

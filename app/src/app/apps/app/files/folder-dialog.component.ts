@@ -9,7 +9,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 export interface DialogData {
-  name: string;
+  name: string | any;
   entryType: 'folder' | 'file';
   // body: string;
   // background: string;

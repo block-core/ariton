@@ -34,6 +34,7 @@ import { OnboardingState } from './app.service';
 export class AppComponent {
   title = 'app';
   appService = inject(AppService);
+  previousUrl = '';
 
   countChar(char: string, string: string): number {
     return string.split(char).length - 1;
@@ -55,8 +56,16 @@ export class AppComponent {
     this.router.events.subscribe((event: any) => {
       if (event instanceof NavigationStart) {
         // Navigation started
+
+        // console.log('previousUrl', this.previousUrl);
+        // console.log('event.url', event.url);
+
+        // if (event.url.startsWith(this.previousUrl)) {
+        //   console.log('Keep actions as we are still under same app');
+        // } else {
         this.layout.enableScrolling();
-        this.layout.resetActions();
+        // this.layout.resetActions();
+        // }
       } else if (event instanceof NavigationEnd) {
         // Navigation ended
         //this.layout.enableScrolling();
@@ -65,6 +74,9 @@ export class AppComponent {
         } else {
           this.layout.disableNavigation();
         }
+
+        // this.previousUrl = event.url;
+        // console.log('This is the previous url', this.previousUrl);
       }
     });
 

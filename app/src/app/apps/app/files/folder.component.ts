@@ -10,11 +10,18 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { AgoPipe } from '../../../shared/pipes/ago.pipe';
 import { BreadcrumbComponent } from '../../../breadcrumb/breadcrumb.component';
-import { ActivatedRoute, Router } from '@angular/router';
+import {
+  ActivatedRoute,
+  ActivatedRouteSnapshot,
+  NavigationEnd,
+  Router,
+  createUrlTreeFromSnapshot,
+} from '@angular/router';
 import { BreadcrumbService } from '../../../breadcrumb.service';
 import { FileService } from '../../../file.service';
 import { SizePipe } from '../../../shared/pipes/size.pipe';
 import { DwnDateSort } from '@web5/agent';
+import { Record } from '@web5/api';
 
 @Component({
   selector: 'app-folder',
@@ -24,7 +31,7 @@ import { DwnDateSort } from '@web5/agent';
   styleUrl: './folder.component.scss',
 })
 export class FolderComponent {
-  entries = signal<any[]>([]);
+  entries = signal<Record[]>([]);
   // files = signal<any[]>([]);
   app = inject(AppService);
   breadcrumb = inject(BreadcrumbService);
@@ -39,20 +46,75 @@ export class FolderComponent {
   file: File | null = null;
   uploadSuccess: boolean = false;
   fileError: string | null = null;
+  parentId: string | undefined;
+  contextId: string | undefined | null;
+  protocolPath = 'entry';
+
+  hasInitialized = false;
+  routingSub: any;
+  folderLevel = 1;
 
   constructor() {
+    console.log('FOLDER COMPONENT CONSTRUCTOR');
+
     effect(async () => {
       if (this.app.initialized()) {
-        await this.loadEntries();
-        // await this.loadFiles();
+        // TODO: See if we can have a better way to handle this, to avoid double loading of data.
+        if (this.hasInitialized) {
+          return;
+        }
+
+        const url = this.getResolvedUrl(this.route.snapshot);
+        await this.processUrl(url);
       }
     });
 
-    this.route.paramMap.subscribe((params) => {
-      console.log('ROUTING!!!', params.get('id'));
-      this.breadcrumb.parentId = params.get('id');
-      // this.id.set(params.get('id')!);
+    this.routingSub = this.router.events.subscribe(async (event) => {
+      if (event instanceof NavigationEnd) {
+        await this.processUrl(event.urlAfterRedirects);
+      }
     });
+
+    // this.route.firstChild!.params.subscribe((params) => {
+    //   console.log('CHILD ROUTE:');
+    //   console.log(params);
+    // });
+
+    // this.route.params.subscribe((params) => {
+    //   console.log(params);
+    // });
+
+    // this.route.url.subscribe((params) => {
+    //   console.log(params);
+    // });
+
+    // this.route.url.subscribe(([url]) => {
+    //   const { path, parameters } = url;
+    //   console.log('this.route.url', url);
+    //   console.log(path); // e.g. /products
+    //   console.log(parameters); // e.g. { id: 'x8klP0' }
+    // });
+
+    // this.route.paramMap.subscribe(async (params) => {
+    //   console.log('PARAMS:', params);
+
+    //   this.breadcrumb.parentId = params.get('id');
+    //   this.parentId = params.get('id')!;
+
+    //   console.log('PARENT ID:', this.parentId);
+    //   console.log('ROUTING APP INITIALIZED?', this.app.initialized());
+
+    //   // // If not initialized, ignore the routing event and loading will
+    //   // // happen when ready.
+    //   // if (!this.app.initialized()) {
+    //   //   return;
+    //   // }
+
+    //   // // Indicate we have initialized this component and avoid double data loading on routing.
+    //   // this.hasInitialized = true;
+
+    //   // await this.loadEntries();
+    // });
 
     // this.route.children.forEach((child) => {
     //   child.paramMap.subscribe((params) => {
@@ -63,37 +125,32 @@ export class FolderComponent {
 
     this.layout.disableNavigation();
 
-    this.layout.addAction({
-      name: 'Upload files',
-      icon: 'upload_file',
-      action: () => {
-        this.editFile({
-          data: {
-            title: '',
-            body: '',
-            background: '',
-            collaborators: [],
-            labels: [],
-          },
-        });
-      },
-    });
+    console.log('FOLDER COMPONENT INITIALIZED');
 
-    this.layout.addAction({
-      name: 'New folder',
-      icon: 'create_new_folder',
-      action: () => {
-        this.editFolder({
-          data: {
-            name: 'Untitled folder',
-            // body: '',
-            // background: '',
-            // collaborators: [],
-            // labels: [],
-          },
-        });
+    this.layout.setActions([
+      {
+        name: 'Upload files',
+        icon: 'upload_file',
+        action: () => {
+          this.editFile({
+            data: {
+              title: '',
+              body: '',
+              background: '',
+              collaborators: [],
+              labels: [],
+            },
+          });
+        },
       },
-    });
+      {
+        name: 'New folder',
+        icon: 'create_new_folder',
+        action: () => {
+          this.editFolder(null);
+        },
+      },
+    ]);
 
     // this.fileService.registerActions(this.layout);
 
@@ -103,6 +160,140 @@ export class FolderComponent {
     //     await this.loadFiles();
     //   }
     // });
+  }
+
+  getValueAfterFolder(url: string): string | null {
+    const match = url.match(/\/folder\/(.+)/);
+    return match ? match[1] : null;
+  }
+
+  generateUrl(x: number): string {
+    const entries = [];
+    for (let i = 0; i < x; i++) {
+      entries.push('entry');
+    }
+    return entries.join('/');
+  }
+
+  async processUrl(url: string) {
+    console.log('PROCESS URL:', url);
+
+    if (url.endsWith('root')) {
+      console.log('ROOT!!!');
+
+      this.parentId = 'root';
+      this.protocolPath = 'entry';
+
+      // When at root, reset the contextId.
+      this.contextId = undefined;
+
+      this.folderLevel = 1;
+    } else {
+      console.log('ELSE!!!');
+      console.log('URL:', url);
+
+      const valueAfterFolder = this.getValueAfterFolder(url);
+      console.log('valueAfterFolder:', valueAfterFolder);
+
+      const urlSegments = url.split('/');
+      const lastSegment = urlSegments[urlSegments.length - 1];
+      console.log('lastSegment:', lastSegment);
+
+      // Parent ID is always the last segment.
+      this.parentId = lastSegment;
+
+      // Set the contextId used to query the entries.
+      this.contextId = valueAfterFolder;
+
+      const slashCount = (valueAfterFolder!.match(/\//g) || []).length + 2;
+      console.log('SLASHCOUNT:', slashCount);
+
+      this.folderLevel = slashCount;
+
+      // We add 2 here because we are not on root but second level.
+      this.protocolPath = this.generateUrl(slashCount);
+      console.log('GENERATED PROTOCOL PATH:', this.protocolPath);
+
+      // TODO: Need a more optimal way to disable new folder when level 5 is reached.
+      if (this.folderLevel === 4) {
+        this.layout.setActions([
+          {
+            name: 'Upload files',
+            icon: 'upload_file',
+            action: () => {
+              this.editFile({
+                data: {
+                  title: '',
+                  body: '',
+                  background: '',
+                  collaborators: [],
+                  labels: [],
+                },
+              });
+            },
+          },
+        ]);
+      } else {
+        this.layout.setActions([
+          {
+            name: 'Upload files',
+            icon: 'upload_file',
+            action: () => {
+              this.editFile({
+                data: {
+                  title: '',
+                  body: '',
+                  background: '',
+                  collaborators: [],
+                  labels: [],
+                },
+              });
+            },
+          },
+          {
+            name: 'New folder',
+            icon: 'create_new_folder',
+            action: () => {
+              this.editFolder(null);
+            },
+          },
+        ]);
+      }
+
+      // /app/files/folder/bafyreiclhcf5afetlwz4hmpjqfqrqktp7qk3uywah6zroz52ipixuhprci
+    }
+
+    // If not initialized, ignore the routing event and loading will
+    // happen when ready.
+    if (!this.app.initialized()) {
+      console.log('APP NOT INITIALIZED, RETURN!');
+      return;
+    }
+
+    // Indicate we have initialized this component and avoid double data loading on routing.
+    this.hasInitialized = true;
+
+    console.log('SET INITIALIZED. LOADING ENTRIES!', this.hasInitialized);
+
+    await this.loadEntries();
+  }
+
+  getResolvedUrl(route: ActivatedRouteSnapshot): string {
+    let url = route.pathFromRoot.map((v) => v.url.map((segment) => segment.toString()).join('/')).join('/');
+    const queryParam = route.queryParamMap;
+    if (queryParam.keys.length > 0) {
+      url +=
+        '?' +
+        queryParam.keys
+          .map((key) =>
+            queryParam
+              .getAll(key)
+              .map((value) => key + '=' + value)
+              .join('&'),
+          )
+          .join('&');
+    }
+    return url;
   }
 
   // onFileSelected(event: any) {
@@ -123,6 +314,14 @@ export class FolderComponent {
     document.getElementById('input')?.click();
   }
 
+  ngOnDestroy() {
+    console.log('ON DESTROY!!!);');
+    this.routingSub.unsubscribe();
+    this.layout.resetActions();
+  }
+
+  // parentContextId: string | undefined;
+
   async onFileSelected(event: any) {
     const files = event.currentTarget.files;
 
@@ -136,62 +335,66 @@ export class FolderComponent {
       const file = files[i];
       console.log(file);
       const blob = new Blob([file], { type: file.type });
-
       console.log(blob);
-
       console.log('Parent ID:', this.breadcrumb.parentId);
+
+      const query = {
+        tags: {
+          name: file.name,
+          size: file.size,
+          type: file.type,
+          lastModified: file.lastModified,
+          entryType: 'file',
+        },
+        protocol: fileDefinition.protocol,
+        protocolPath: this.protocolPath,
+        parentContextId: (this.contextId ??= undefined),
+        schema: fileDefinition.types.entry.schema,
+        dataFormat: blob.type,
+      };
+
+      console.log(query);
 
       // const file = event.currentTarget.files[0];
       const { status: fileStatus, record } = await this.identity.web5.dwn.records.create({
         data: blob,
-        message: {
-          protocol: fileDefinition.protocol,
-          protocolPath: 'attachment',
-          // parentContextId: this.breadcrumb.parentId!,
-          schema: fileDefinition.types.attachment.schema,
-          dataFormat: blob.type,
-          // dataFormat: this.file.type,
-          // dataFormat: fileDefinition.types.attachment.dataFormats[0],
-        },
+        message: query,
       });
 
       console.log('Record created:', record);
       console.log('Record status:', fileStatus);
 
-      const data = {
-        name: file.name,
-        size: file.size,
-        type: file.type,
-        lastModified: file.lastModified,
-        entryType: 'file',
-        attachment: record!.id,
-      };
+      // record?.contextId;
 
-      const { status: fileStatus2, record: record2 } = await this.identity.web5.dwn.records.create({
-        data: data,
-        message: {
-          tags: {
-            type: file.type, // Do we ever need to index and query on file types? Perhaps to find "PDF" files only?
-            entryType: 'file',
-            attachment: record!.id, // Store a reference to download the binary file.
-          },
-          protocol: fileDefinition.protocol,
-          protocolPath: 'entry',
-          parentContextId: (this.breadcrumb.parentId ??= undefined),
-          schema: fileDefinition.types.entry.schema,
-          // dataFormat: this.file.type,
-          dataFormat: fileDefinition.types.entry.dataFormats[0],
-        },
-      });
+      // const message = {
+      //   tags: {
+      //     type: file.type, // Do we ever need to index and query on file types? Perhaps to find "PDF" files only?
+      //     entryType: 'file',
+      //     attachment: record!.id, // Store a reference to download the binary file.
+      //     root: this.parentId ? false : true,
+      //   },
+      //   protocol: fileDefinition.protocol,
+      //   protocolPath: 'entry',
+      //   parentContextId: (this.parentId ??= undefined),
+      //   schema: fileDefinition.types.entry.schema,
+      // };
 
-      console.log('Record created:', record2);
-      console.log('Record status:', fileStatus2);
+      // console.log('Data:', data);
+      // console.log('Message:', message);
 
-      if (record2) {
+      // const { status: fileStatus2, record: record2 } = await this.identity.web5.dwn.records.create({
+      //   data: data,
+      //   message: message,
+      // });
+
+      // console.log('Record created:', record2);
+      // console.log('Record status:', fileStatus2);
+
+      if (record) {
         // const data = await record2.data.blob();
         // console.log(data);
 
-        this.entries.update((records) => [...records, { record: record2, data: data }]);
+        this.entries.update((records) => [...records, record]);
       }
     }
 
@@ -273,7 +476,7 @@ export class FolderComponent {
     const { status: fileStatus, record } = await this.identity.web5.dwn.records.create({
       data: this.file,
       message: {
-        schema: fileDefinition.types.attachment.schema,
+        schema: fileDefinition.types.entry.schema,
         // dataFormat: fileDefinition.types.attachment.dataFormats[0],
       },
     });
@@ -284,14 +487,10 @@ export class FolderComponent {
     return record;
   }
 
-  async editFolder(entry: any) {
+  async editFolder(entry: Record | undefined | null) {
     let data: DialogData = {
-      name: entry.data.name,
+      name: entry ? entry.tags['name'] : 'Untitled folder',
       entryType: 'folder',
-      // body: entry.data.body,
-      // background: entry.data.background,
-      // collaborators: ['12', '33333'],
-      // labels: ['label2', 'label3'],
     };
 
     const original = JSON.parse(JSON.stringify(data));
@@ -310,7 +509,7 @@ export class FolderComponent {
         console.log('data result for saving:', data);
 
         // Update the data from old to new.
-        entry.data = data;
+        // entry.data = data;
 
         await this.saveFolder(entry, data);
 
@@ -322,89 +521,160 @@ export class FolderComponent {
     return dialogRef.afterClosed();
   }
 
-  async saveFolder(entry: any, data: DialogData) {
-    if (entry.record) {
+  async saveFolder(entry: Record | undefined | null, data: DialogData) {
+    if (entry) {
       // Will this work?
-      // entry.record.tags.labels = data.labels;
+      entry.tags['name'] = data.name;
+      entry.tags['entryType'] = data.entryType;
 
-      const { status, record } = await entry.record.update({
-        data: data,
+      const { status } = await entry.update({
+        data: {},
       });
 
-      console.log('Record created:', record);
       console.log('Record status:', status);
-
-      if (record) {
-      }
     } else {
-      const { record, status } = await this.identity.web5.dwn.records.create({
-        data: data,
-        message: {
-          // Don't know if tags will be used yet for files here, but we store it for now
-          // for consideration in the future.
-          tags: {
-            entryType: data.entryType,
-          },
-          protocol: fileDefinition.protocol,
-          protocolPath: 'entry',
-          schema: fileDefinition.types.entry.schema,
-          dataFormat: fileDefinition.types.entry.dataFormats[0],
+      // if (this.parentId) {
+      //   const { record: parent } = await this.identity.web5.dwn.records.read({
+      //     message: {
+      //       filter: {
+      //         recordId: this.parentId,
+      //       },
+      //     },
+      //   });
+
+      //   console.log('PARENT:', parent);
+
+      //   this.contextId = parent?.contextId;
+      // }
+
+      const message: any = {
+        tags: {
+          name: data.name,
+          entryType: data.entryType,
         },
+        protocol: fileDefinition.protocol,
+        protocolPath: this.protocolPath,
+        parentContextId: (this.contextId ??= undefined),
+        schema: fileDefinition.types.entry.schema,
+      };
+
+      console.log('Create folder:', message);
+
+      const { record, status } = await this.identity.web5.dwn.records.create({
+        data: {},
+        message: message,
       });
 
       console.log('Record created:', record);
       console.log('Record status:', status);
 
+      // const message2: any = {
+      //   tags: {
+      //     name: data.name,
+      //     entryType: data.entryType,
+      //   },
+      //   protocol: fileDefinition.protocol,
+      //   protocolPath: 'entry/entry',
+      //   schema: fileDefinition.types.entry.schema,
+      // };
+
+      // // Set the parent.
+      // message2.parentContextId = record?.contextId;
+
+      // // Create new item:
+      // const { record: record2, status: status2 } = await this.identity.web5.dwn.records.create({
+      //   data: {},
+      //   message: message2,
+      // });
+
+      // console.log('Record2 created:', record2);
+      // console.log('Record2 status:', status2);
+
       if (record) {
-        entry.record = record;
-        this.entries.update((records) => [...records, entry]);
+        // entry.record = record;
+        this.entries.update((records) => [...records, record]);
       }
     }
   }
 
-  async openEntry(entry: any) {
-    if (entry.entryType === 'folder') {
-      this.router.navigate(['/app/files/folder', entry.record.id]);
+  async openEntry(entry: Record) {
+    console.log(entry);
+    if (entry.tags['entryType'] === 'folder') {
+      this.router.navigate(['/app/files/folder/' + entry.contextId]);
     } else {
-      this.router.navigate(['/app/files/file', entry.record.id]);
+      this.router.navigate(['/app/files/file/' + entry.id]);
     }
   }
 
   async loadEntries(tags?: any) {
     console.log('VALUE OF TAGS:', tags);
+    console.log('PARENT ID:', this.parentId);
+
+    // if (this.parentId === 'root') {
+    //   this.parentContextId = undefined;
+    //   this.protocolPath = 'entry';
+    // } else {
+    //   console.log('FINDING PARENT!!!');
+    //   // Query for the parent context ID.
+    //   const { record: parent } = await this.identity.web5.dwn.records.read({
+    //     message: {
+    //       filter: {
+    //         recordId: this.parentId,
+    //       },
+    //     },
+    //   });
+
+    //   this.parentContextId = parent?.contextId;
+
+    //   this.protocolPath = 'entry/entry';
+
+    //   if (this.parentContextId.indexOf('/') > -1) {
+    //     this.protocolPath = 'entry/entry';
+    //   }
+    // }
+
+    console.log('PARENT CONTEXT ID:', this.contextId);
+
+    const query: any = {
+      filter: {
+        protocolPath: this.protocolPath,
+        protocol: fileDefinition.protocol,
+        schema: fileDefinition.types.entry.schema,
+        // parentId: (this.parentId ??= undefined),
+        // parentId: (this.parentId ??= undefined),
+      },
+      dateSort: DwnDateSort.CreatedDescending,
+    };
+
+    if (this.parentId && this.parentId !== 'root') {
+      query.filter.parentId = this.parentId;
+    }
+
+    console.log(query);
 
     var { records } = await this.identity.web5.dwn.records.query({
-      message: {
-        filter: {
-          protocol: fileDefinition.protocol,
-          protocolPath: 'entry',
-          schema: fileDefinition.types.entry.schema,
-          dataFormat: fileDefinition.types.entry.dataFormats[0],
-        },
-        dateSort: DwnDateSort.CreatedDescending,
-      },
+      message: query,
     });
 
     //     let json = {};
     // let recordEntry = null;
 
-    this.entries.set([]);
+    this.entries.set(records ?? []);
+    console.log('All entries:', this.entries());
 
-    if (records) {
-      // Loop through returned records and print text from each
-      for (const record of records) {
-        let data = await record.data.json();
-        let json: any = { record: record, data: data };
+    // if (records) {
+    //   // Loop through returned records and print text from each
+    //   for (const record of records) {
+    //     let data = await record.data.json();
+    //     let json: any = { record: record, data: data };
 
-        // if (record.author == this.identity.did) {
-        //   json.direction = 'out';
-        // }
+    //     // if (record.author == this.identity.did) {
+    //     //   json.direction = 'out';
+    //     // }
 
-        this.entries.update((records) => [...records, json]);
-      }
-    }
-
-    console.log('All requests:', this.entries());
+    //     this.entries.update((records) => [...records, json]);
+    //   }
+    // }
   }
 
   // async loadFiles(tags?: any) {

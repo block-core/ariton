@@ -2,23 +2,27 @@
 <div>{{ file.data.name }}</div>
 } -->
 
+ParentID: {{ parentId }}
+<br />
+Level: {{ folderLevel }}
+
 <mat-list>
   @for (entry of entries(); track entry) {
   <mat-list-item (click)="openEntry(entry)">
     <!-- {{ entry.data | json }} -->
 
-    @if(entry.data.entryType === 'folder') {
+    @if(entry.tags['entryType'] === 'folder') {
     <mat-icon matListItemIcon>folder</mat-icon>
-    } @if(entry.data.entryType === 'file') {
+    } @if(entry.tags['entryType'] === 'file') {
     <mat-icon matListItemIcon>note</mat-icon>
     }
-    <div matListItemTitle>{{ entry.data.name }}</div>
+    <div matListItemTitle>{{ entry.tags['name'] }}</div>
 
-    @if(entry.data.entryType === 'folder') {
-    <div matListItemLine>{{ entry.record.dateModified | ago }} | 'Folder'</div>
-    } @if(entry.data.entryType === 'file') {
+    @if(entry.tags['entryType'] === 'folder') {
+    <div matListItemLine>{{ entry.dateModified | ago }} | Folder</div>
+    } @if(entry.tags['entryType'] === 'file') {
     <div matListItemLine>
-      {{ entry.data.lastModified | ago }} | {{ entry.data.size | size }} | {{ entry.data.type }}
+      {{ entry.tags['lastModified'] | ago }} | {{ entry.tags['size'] | size }} | {{ entry.tags['type'] }}
       <!-- {{ entry.record.lastModified | ago }} -->
     </div>
     }

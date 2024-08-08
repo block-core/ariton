@@ -221,7 +221,7 @@ export class FileComponent {
           protocol: fileDefinition.protocol,
           protocolPath: 'attachment',
           // parentContextId: this.breadcrumb.parentId!,
-          schema: fileDefinition.types.attachment.schema,
+          schema: fileDefinition.types.entry.schema,
           dataFormat: blob.type,
           // dataFormat: this.file.type,
           // dataFormat: fileDefinition.types.attachment.dataFormats[0],
@@ -252,7 +252,6 @@ export class FileComponent {
           parentContextId: (this.breadcrumb.parentId ??= undefined),
           schema: fileDefinition.types.entry.schema,
           // dataFormat: this.file.type,
-          dataFormat: fileDefinition.types.entry.dataFormats[0],
         },
       });
 
@@ -345,7 +344,7 @@ export class FileComponent {
     const { status: fileStatus, record } = await this.identity.web5.dwn.records.create({
       data: this.file,
       message: {
-        schema: fileDefinition.types.attachment.schema,
+        schema: fileDefinition.types.entry.schema,
         // dataFormat: fileDefinition.types.attachment.dataFormats[0],
       },
     });
@@ -420,7 +419,6 @@ export class FileComponent {
           protocol: fileDefinition.protocol,
           protocolPath: 'entry',
           schema: fileDefinition.types.entry.schema,
-          dataFormat: fileDefinition.types.entry.dataFormats[0],
         },
       });
 

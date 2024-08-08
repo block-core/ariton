@@ -38,6 +38,10 @@ export class LayoutService {
 
   actions = signal<any[]>([]);
 
+  setActions(actions: LayoutAction[]) {
+    this.actions.set(actions);
+  }
+
   addAction(action: LayoutAction) {
     this.actions.update((actions) => [...actions, action]);
   }
