@@ -56,18 +56,20 @@ export class FolderComponent {
 
   constructor() {
     console.log('FOLDER COMPONENT CONSTRUCTOR');
+    effect(
+      async () => {
+        if (this.app.initialized()) {
+          // TODO: See if we can have a better way to handle this, to avoid double loading of data.
+          if (this.hasInitialized) {
+            return;
+          }
 
-    effect(async () => {
-      if (this.app.initialized()) {
-        // TODO: See if we can have a better way to handle this, to avoid double loading of data.
-        if (this.hasInitialized) {
-          return;
+          const url = this.getResolvedUrl(this.route.snapshot);
+          await this.processUrl(url);
         }
-
-        const url = this.getResolvedUrl(this.route.snapshot);
-        await this.processUrl(url);
-      }
-    });
+      },
+      { allowSignalWrites: true },
+    );
 
     this.routingSub = this.router.events.subscribe(async (event) => {
       if (event instanceof NavigationEnd) {
@@ -205,8 +207,15 @@ export class FolderComponent {
       // Set the contextId used to query the entries.
       this.contextId = valueAfterFolder;
 
-      const slashCount = (valueAfterFolder!.match(/\//g) || []).length + 2;
-      console.log('SLASHCOUNT:', slashCount);
+      let slashCount = 0;
+
+      // If there are nothing in URL after folder, we are at level 1.
+      if (!valueAfterFolder) {
+        slashCount = 1;
+      } else {
+        slashCount = (valueAfterFolder!.match(/\//g) || []).length + 2;
+        console.log('SLASHCOUNT:', slashCount);
+      }
 
       this.folderLevel = slashCount;
 
@@ -230,6 +239,45 @@ export class FolderComponent {
                   labels: [],
                 },
               });
+            },
+          },
+          {
+            name: 'Delete folder',
+            icon: 'delete_forever',
+            action: () => {
+              this.deleteFolder();
+            },
+          },
+        ]);
+      } else if (this.folderLevel > 1) {
+        this.layout.setActions([
+          {
+            name: 'Upload files',
+            icon: 'upload_file',
+            action: () => {
+              this.editFile({
+                data: {
+                  title: '',
+                  body: '',
+                  background: '',
+                  collaborators: [],
+                  labels: [],
+                },
+              });
+            },
+          },
+          {
+            name: 'New folder',
+            icon: 'create_new_folder',
+            action: () => {
+              this.editFolder(null);
+            },
+          },
+          {
+            name: 'Delete folder',
+            icon: 'delete_forever',
+            action: () => {
+              this.deleteFolder();
             },
           },
         ]);
@@ -485,6 +533,26 @@ export class FolderComponent {
     console.log('Record status:', fileStatus);
 
     return record;
+  }
+
+  async deleteFolder() {
+    const { record } = await this.identity.web5.dwn.records.read({
+      message: {
+        filter: {
+          recordId: this.parentId,
+        },
+      },
+    });
+
+    if (record) {
+      const { status } = await record.delete({ prune: true });
+      console.log('Delete status:', status);
+
+      const parentPath = this.contextId!.split('/').slice(0, -1);
+      console.log('Parent path:', parentPath);
+      this.router.navigate(['app', 'files', 'folder', ...parentPath]);
+      // this.router.navigate(['../']);
+    }
   }
 
   async editFolder(entry: Record | undefined | null) {
