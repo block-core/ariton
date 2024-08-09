@@ -25,12 +25,34 @@ import { Record } from '@web5/api';
 import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 
-export interface TableEntry {
-  name: string;
-  modified: number;
-  size: number;
-  type: string;
-  entryType: string;
+// export interface TableEntryInterface {
+//   icon: string;
+//   name: string;
+//   modified: number;
+//   size: number;
+//   type: string;
+//   entryType: string;
+//   record: Record;
+// }
+
+export class TableEntry {
+  icon: string;
+  name: string | any;
+  modified: number | any;
+  size: number | any;
+  type: string | any;
+  entryType: string | any;
+  record: Record;
+
+  constructor(entry: Record) {
+    this.icon = entry.tags['entryType'] == 'folder' ? 'folder' : 'note';
+    this.name = entry.tags['name'];
+    this.modified = entry.tags['entryType'] === 'folder' ? entry.dateModified : entry.tags['lastModified'];
+    this.size = entry.tags['size'];
+    this.type = entry.tags['type'];
+    this.entryType = entry.tags['entryType'];
+    this.record = entry;
+  }
 }
 
 @Component({
@@ -75,7 +97,7 @@ export class FolderComponent {
   folderLevel = 1;
 
   displayedColumns: string[] = ['icon', 'name', 'modified', 'size'];
-  dataSource = new MatTableDataSource<Record>([]);
+  dataSource = new MatTableDataSource<TableEntry>([]);
 
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -99,7 +121,7 @@ export class FolderComponent {
     );
 
     effect(async () => {
-      this.dataSource.data = this.entries();
+      this.updateTable();
     });
 
     this.routingSub = this.router.events.subscribe(async (event) => {
@@ -197,6 +219,36 @@ export class FolderComponent {
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
+  }
+
+  updateTable() {
+    this.dataSource.data = this.entries().map((entry) => new TableEntry(entry));
+    // this.dataSource.data = this.entries();
+  }
+
+  sortData(sort: Sort) {
+    // const data = this.entries();
+    // if (!sort.active || sort.direction === '') {
+    //   this.dataSource.data = data;
+    //   return;
+    // }
+    // this.dataSource.data = data.sort((a, b) => {
+    //   const isAsc = sort.direction === 'asc';
+    //   switch (sort.active) {
+    //     case 'name':
+    //       return compare(a.name, b.name, isAsc);
+    //     case 'calories':
+    //       return compare(a.calories, b.calories, isAsc);
+    //     case 'fat':
+    //       return compare(a.fat, b.fat, isAsc);
+    //     case 'carbs':
+    //       return compare(a.carbs, b.carbs, isAsc);
+    //     case 'protein':
+    //       return compare(a.protein, b.protein, isAsc);
+    //     default:
+    //       return 0;
+    //   }
+    // });
   }
 
   announceSortChange(sortState: Sort) {}
@@ -702,12 +754,12 @@ export class FolderComponent {
     }
   }
 
-  async openEntry(entry: Record) {
+  async openEntry(entry: TableEntry) {
     console.log(entry);
-    if (entry.tags['entryType'] === 'folder') {
-      this.router.navigate(['/app/files/folder/' + entry.contextId]);
+    if (entry.entryType === 'folder') {
+      this.router.navigate(['/app/files/folder/' + entry.record.contextId]);
     } else {
-      this.router.navigate(['/app/files/file/' + entry.id]);
+      this.router.navigate(['/app/files/file/' + entry.record.id]);
     }
   }
 
