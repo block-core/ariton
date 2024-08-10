@@ -10,6 +10,7 @@ import { IdentityService } from '../identity.service';
 import { registry } from '../../protocols';
 import { CommonModule } from '@angular/common';
 import { DidPipe } from '../shared/pipes/did.pipe';
+import { LayoutService } from '../layout.service';
 
 @Component({
   selector: 'app-registries',
@@ -31,7 +32,11 @@ export class RegistriesComponent implements AfterViewInit {
 
   records = signal<any[]>([]);
 
+  layout = inject(LayoutService);
+
   constructor(private router: Router) {
+    this.layout.resetActions();
+
     effect(async () => {
       if (this.identity.initialized()) {
         await this.load();

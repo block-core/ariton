@@ -144,13 +144,15 @@ export class CommunitiesComponent {
   }
 
   ngOnInit() {
-    this.layout.addAction({
-      name: 'Create',
-      icon: 'add',
-      action: () => {
-        this.router.navigate(['communities', 'create']);
+    this.layout.setActions([
+      {
+        name: 'Create',
+        icon: 'add',
+        action: () => {
+          this.router.navigate(['communities', 'create']);
+        },
       },
-    });
+    ]);
   }
 
   ngAfterViewInit(): void {

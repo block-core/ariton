@@ -120,21 +120,24 @@ export class NotesComponent implements OnDestroy {
   constructor() {
     // this.layout.disableScrolling();
     this.layout.disableNavigation();
-    this.layout.addAction({
-      name: 'New Note',
-      icon: 'note_add',
-      action: () => {
-        this.editNote({
-          data: {
-            title: '',
-            body: '',
-            background: '',
-            collaborators: [],
-            labels: [],
-          },
-        });
+
+    this.layout.setActions([
+      {
+        name: 'New Note',
+        icon: 'note_add',
+        action: () => {
+          this.editNote({
+            data: {
+              title: '',
+              body: '',
+              background: '',
+              collaborators: [],
+              labels: [],
+            },
+          });
+        },
       },
-    });
+    ]);
 
     effect(async () => {
       if (this.app.initialized()) {
