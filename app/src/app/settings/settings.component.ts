@@ -7,6 +7,7 @@ import { RouterLink } from '@angular/router';
 import { IdentityService } from '../identity.service';
 import { DidResolutionResult } from '@web5/dids';
 import { CommonModule } from '@angular/common';
+import { LayoutService } from '../layout.service';
 
 @Component({
   selector: 'app-settings',
@@ -22,6 +23,8 @@ export class SettingsComponent {
 
   identity = inject(IdentityService);
 
+  layout = inject(LayoutService);
+
   document = signal<DidResolutionResult | undefined>(undefined);
 
   nodes = signal<any>([]);
@@ -29,6 +32,8 @@ export class SettingsComponent {
   readonly settings = this.settingsState.state.asReadonly();
 
   constructor(private settingsState: SettingsStateService) {
+    this.layout.resetActions();
+
     effect(() => {
       if (this.identity.initialized()) {
         this.loadDIDDocument();

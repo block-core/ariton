@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { LayoutService } from './layout.service';
 
 @Injectable({
   providedIn: 'root',
@@ -6,7 +7,11 @@ import { Injectable } from '@angular/core';
 export class StorageService {
   private prefix = 'ariton-'; // Prefix for all keys
 
-  constructor() {}
+  layout = inject(LayoutService);
+
+  constructor() {
+    this.layout.resetActions();
+  }
 
   // Save data to localStorage with prefix
   save(key: string, value: any): void {
