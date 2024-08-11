@@ -9,6 +9,11 @@ import { protocolDefinition as minimalDefinition } from './minimal';
 import { protocolDefinition as messageDefinition } from './message';
 import { protocolDefinition as socialGraphDefinition } from './social';
 
+export const credential = {
+  format: 'application/vc+jwt',
+  friendship: 'FriendshipCredential',
+};
+
 export const profile = {
   uri: profileDefinition.protocol,
   definition: profileDefinition,

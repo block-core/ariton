@@ -8,7 +8,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ProfileService } from '../profile.service';
 import { MatTabsModule } from '@angular/material/tabs';
 import { IdentityService } from '../identity.service';
-import { message, profile } from '../../protocols';
+import { credential, message, profile } from '../../protocols';
 import { SafeUrlPipe } from '../shared/pipes/safe-url.pipe';
 import { DomSanitizer } from '@angular/platform-browser';
 import * as QRCode from 'qrcode';
@@ -142,8 +142,8 @@ export class ProfileComponent {
       const { record } = await this.identity.web5.dwn.records.create({
         data: vc_jwt,
         message: {
-          schema: 'FriendsCredential',
-          dataFormat: 'application/vc+jwt',
+          schema: credential.friendship,
+          dataFormat: credential.format,
           published: true,
         },
       });
@@ -159,7 +159,7 @@ export class ProfileComponent {
       console.log('PARSED VC:', parsedVc);
 
       const finalVC = await VerifiableCredential.create({
-        type: 'FriendshipCredential',
+        type: credential.friendship,
         issuer: this.identity.did,
         subject: this.identity.did,
         data: {

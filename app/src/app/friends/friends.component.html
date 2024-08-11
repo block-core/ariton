@@ -6,6 +6,8 @@
     </ng-template>
 
     <div class="container responsive-grid">
+      <p>Count: {{ friends().length }}</p>
+
       @for(request of friends(); track request) {
       <mat-card>
         <mat-card-header>
