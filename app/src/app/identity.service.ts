@@ -43,6 +43,7 @@ export class IdentityService {
 
   async initialConnect(password: string) {
     try {
+      console.log('Connecting to Web5...');
       const result = await Web5.connect({
         // didCreateOptions: { dwnEndpoints: ['https://dwn.gcda.xyz', 'https://dwn.tbddev.org/beta'] },
         // didCreateOptions: { dwnEndpoints: ['https://dwn.tbddev.org/beta'] },
@@ -68,6 +69,7 @@ export class IdentityService {
 
   async connect(connectedDid: string, password: string) {
     try {
+      console.log('Connecting to Web5...');
       const result = await Web5.connect({ connectedDid, password, sync: this.syncInterval });
       this.web5 = result.web5;
       this.did = result.did;
@@ -89,6 +91,7 @@ export class IdentityService {
 
   async restore(password: string, recoveryPhrase: string) {
     try {
+      console.log('Connecting to Web5...');
       const result = await Web5.connect({ recoveryPhrase, password, sync: this.syncInterval });
       this.web5 = result.web5;
       this.did = result.did;
@@ -129,9 +132,8 @@ export class IdentityService {
   }
 
   async unlock(password: string) {
-    console.log('Connecting to Web5...');
-
     try {
+      console.log('Connecting to Web5...');
       const { did: userDid, web5, recoveryPhrase } = await Web5.connect({ sync: this.syncInterval, password });
 
       if (recoveryPhrase) {
