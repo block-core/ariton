@@ -14,6 +14,11 @@ export const protocolDefinition = {
       schema: 'https://schema.ariton.app/message/schema/request',
       dataFormats: ['application/json'],
     },
+    /** The credential is an inbox for any VC issued from anyone to this user. Some of these will be manually accepted, other's automatically. */
+    credential: {
+      schema: 'https://schema.ariton.app/message/schema/credential',
+      dataFormats: ['application/json'],
+    },
     // attachment: {},
   },
   structure: {
@@ -37,6 +42,20 @@ export const protocolDefinition = {
       //   },
     },
     request: {
+      $actions: [
+        {
+          who: 'anyone',
+          can: ['create', 'update', 'delete'],
+        },
+
+        // The sender of a friend request can read and delete it.
+        { who: 'author', of: 'request', can: ['read', 'create', 'delete'] },
+
+        // The receiver of a friend request can delete it, this will also result in delete in the sender's DWN.
+        { who: 'recipient', of: 'request', can: ['read', 'create', 'delete', 'co-delete'] },
+      ],
+    },
+    credential: {
       $actions: [
         {
           who: 'anyone',

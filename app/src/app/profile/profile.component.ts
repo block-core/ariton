@@ -55,12 +55,7 @@ export class ProfileComponent {
     URL.revokeObjectURL(this.avatarSrc);
   }
 
-  constructor(
-    private dialog: MatDialog,
-    private sanitizer: DomSanitizer,
-    private _snackBar: MatSnackBar,
-    private route: ActivatedRoute,
-  ) {
+  constructor(private dialog: MatDialog, private sanitizer: DomSanitizer, private route: ActivatedRoute) {
     effect(() => {
       if (this.app.initialized()) {
         this.route.paramMap.subscribe((params) => {
@@ -122,9 +117,9 @@ export class ProfileComponent {
     const { status: requestStatus } = await messageRecord!.send(did);
 
     if (requestStatus.code !== 202) {
-      this.openSnackBar(`Friend request failed.Code: ${requestStatus.code}, Details: ${requestStatus.detail}.`);
+      this.app.openSnackBar(`Friend request failed.Code: ${requestStatus.code}, Details: ${requestStatus.detail}.`);
     } else {
-      this.openSnackBar('Friend request sent');
+      this.app.openSnackBar('Friend request sent');
     }
   }
 
@@ -215,14 +210,10 @@ export class ProfileComponent {
     // };
   }
 
-  openSnackBar(message: string) {
-    this._snackBar.open(message, undefined, { duration: 2000 });
-  }
-
   async copyDID(did: string) {
     try {
       await navigator.clipboard.writeText(did);
-      this.openSnackBar('DID copied to clipboard');
+      this.app.openSnackBar('DID copied to clipboard');
     } catch (err) {
       console.error('Failed to copy: ', err);
     }
@@ -246,9 +237,9 @@ export class ProfileComponent {
         text,
       });
 
-      this.openSnackBar('Thanks for sharing!');
+      this.app.openSnackBar('Thanks for sharing!');
     } catch (err) {
-      this.openSnackBar(`Couldn't share ${err}`);
+      this.app.openSnackBar(`Couldn't share ${err}`);
     }
   }
 }

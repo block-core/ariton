@@ -7,6 +7,7 @@ import * as packageInfo from '../../package.json';
 import { ProtocolService } from './protocol.service';
 import { ProfileService } from './profile.service';
 import { HashService } from './hash.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 export interface AppState {
   selectedAccount: string;
@@ -58,6 +59,8 @@ export class AppService {
   profile = inject(ProfileService);
 
   protocol = inject(ProtocolService);
+
+  snackBar = inject(MatSnackBar);
 
   state = signal<AppState>({ loginAction: '/dashboard', selectedAccount: '', hidden: {}, bundleHash: '' });
 
@@ -143,6 +146,10 @@ export class AppService {
     this.storage.save('state', state);
 
     await this.initialize();
+  }
+
+  openSnackBar(message: string) {
+    this.snackBar.open(message, undefined, { duration: 2000 });
   }
 
   async initialize() {

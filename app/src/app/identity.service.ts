@@ -8,7 +8,7 @@ import { CryptoService } from './crypto.service';
   providedIn: 'root',
 })
 export class IdentityService {
-  syncInterval = '10s';
+  syncInterval = '5s';
   //agents = signal<Web5IdentityAgent[]>([]);
 
   agents: WritableSignal<Web5IdentityAgent[]> = signal([]);
@@ -132,7 +132,7 @@ export class IdentityService {
     console.log('Connecting to Web5...');
 
     try {
-      const { did: userDid, web5, recoveryPhrase } = await Web5.connect({ sync: '5s', password });
+      const { did: userDid, web5, recoveryPhrase } = await Web5.connect({ sync: this.syncInterval, password });
 
       if (recoveryPhrase) {
       }
