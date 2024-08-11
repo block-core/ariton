@@ -187,6 +187,9 @@ export class FriendsComponent {
       this.app.openSnackBar(`Friend request failed.Code: ${requestStatus.code}, Details: ${requestStatus.detail}.`);
     } else {
       this.app.openSnackBar('Friend request accepted');
+
+      // Remove the accepted entry from the requests list
+      await this.reject(entry);
     }
   }
 
@@ -264,6 +267,9 @@ export class FriendsComponent {
 
         const { status } = await record!.send(this.identity.did);
         console.log('Record sent:', status, record);
+
+        // Delete the incoming VC record, as it has been processed.
+        await record?.delete();
       }
     }
   }
@@ -278,17 +284,30 @@ export class FriendsComponent {
       },
     });
 
-    console.log('Records from requests:');
+    console.log('Friend VCs:');
     console.log(records);
 
     let json = {};
     let recordEntry = null;
 
+    this.friends.set([]);
+
     if (records) {
       // Loop through returned records and print text from each
       for (const record of records!) {
-        let data = await record.data.json();
-        let json: any = { record: record, data: data };
+        let data = await record.data.text();
+        let vc = VerifiableCredential.parseJwt({ vcJwt: data });
+
+        let did = vc.issuer;
+
+        // If the outher issuer is us, get the inner one.
+        if (vc.issuer == this.identity.did) {
+          const subject = vc.vcDataModel.credentialSubject as any;
+          let vcInner = VerifiableCredential.parseJwt({ vcJwt: subject.vc });
+          did = vcInner.issuer;
+        }
+
+        let json: any = { record: record, data: { did } };
 
         // if (record.author == this.identity.did) {
         //   json.direction = 'out';
@@ -296,7 +315,7 @@ export class FriendsComponent {
 
         this.friends.update((requests) => [...requests, json]);
 
-        console.log('All requests:', this.requests());
+        console.log('All friends:', this.friends());
 
         // recordEntry = record;
         // let recordJson = await record.data.json();

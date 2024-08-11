@@ -6,10 +6,14 @@
     </ng-template>
 
     <div class="container responsive-grid">
-      <p>Count: {{ friends().length }}</p>
-
       @for(request of friends(); track request) {
-      <mat-card>
+
+      <app-profile-card [did]="request.data.did">
+        <button mat-flat-button [routerLink]="['/profile', request.data.did]">VIEW</button>
+        <button mat-button [disabled]="true">MESSAGE</button>
+      </app-profile-card>
+
+      <!-- <mat-card>
         <mat-card-header>
           <mat-card-title
             ><a [routerLink]="['/profile', '']">{{ request.name }}</a></mat-card-title
@@ -22,7 +26,7 @@
         </mat-card-header>
         <br />
         <img mat-card-image [src]="request.thumbnail" />
-      </mat-card>
+      </mat-card> -->
       }
     </div>
 
