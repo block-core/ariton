@@ -5,7 +5,7 @@
 <div id="file-viewer">
   @if(record) {
   <mat-toolbar>
-    <button mat-icon-button (click)="deleteFile()">
+    <button [title]="'Delete'" mat-icon-button (click)="deleteFile()">
       <mat-icon>delete</mat-icon>
     </button>
     <button [title]="'Download'" mat-icon-button (click)="download()">
