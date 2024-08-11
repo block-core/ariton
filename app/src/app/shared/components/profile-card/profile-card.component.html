@@ -7,9 +7,15 @@
     /> -->
     <mat-card-title>
       @if (data().profile?.name) {
-      <a [routerLink]="['/profile', data().profile?.did]">{{ data().profile?.name }} ({{ data().profile?.title }})</a>
+      <a [routerLink]="['/profile', data().profile?.did]"
+        >{{ data().profile?.name }} @if (data().profile?.title) { ({{ data().profile?.title }}) }</a
+      >
       } @else {
-      <em>No name set</em>
+      <em
+        ><a [routerLink]="['/profile', data().profile?.did]"
+          >No name set @if (data().profile?.title) { ({{ data().profile?.title }}) }
+        </a></em
+      >
       }
     </mat-card-title>
     <mat-card-subtitle>
