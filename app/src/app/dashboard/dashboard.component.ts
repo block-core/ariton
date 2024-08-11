@@ -12,6 +12,7 @@ import { VerifiableCredential } from '@web5/credentials';
 import { IdentityService } from '../identity.service';
 import { RouterModule } from '@angular/router';
 import { AppService } from '../app.service';
+import { LayoutService } from '../layout.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -25,7 +26,11 @@ export class DashboardComponent {
 
   appService = inject(AppService);
 
-  constructor(private identity: IdentityService) {}
+  layout = inject(LayoutService);
+
+  constructor(private identity: IdentityService) {
+    this.layout.resetActions();
+  }
 
   async ngOnInit() {
     // console.log('Connecting to Web5...');

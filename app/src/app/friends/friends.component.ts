@@ -17,6 +17,7 @@ import { RouterModule } from '@angular/router';
 import { Record } from '@web5/api';
 import { VerifiableCredential } from '@web5/credentials';
 import { protocolDefinition as messageDefinition } from '../../protocols/message';
+import { LayoutService } from '../layout.service';
 
 export interface Entry {
   record: Record;
@@ -51,9 +52,13 @@ export class FriendsComponent {
 
   identity = inject(IdentityService);
 
+  layout = inject(LayoutService);
+
   app = inject(AppService);
 
   constructor() {
+    this.layout.resetActions();
+
     effect(async () => {
       if (this.app.initialized()) {
         await this.processFriends();
