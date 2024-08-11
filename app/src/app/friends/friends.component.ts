@@ -175,6 +175,7 @@ export class FriendsComponent {
     // various connections. VCs are automatically or manually accepted by users.
     const { status: requestCreateStatus, record: messageRecord } = await this.identity.web5.dwn.records.create({
       data: { vc: vc_jwt },
+      store: false, // We don't need to store a copy of this locally.
       message: {
         recipient: targetDid,
         protocol: messageDefinition.protocol,
@@ -257,25 +258,28 @@ export class FriendsComponent {
 
       const vc = VerifiableCredential.parseJwt({ vcJwt: json.vc });
 
+      console.log('PARSED INVCOMING VC:', vc);
+      console.log('vc.issuer === this.identity.did:', vc.issuer === this.identity.did);
+
       // Validate that the inner VC is ours, if OK, we can go ahead and persist the VC.
-      if (vc.issuer === this.identity.did) {
-        // Persist the two-way VC, these are the only ones that we store for safe-keeping, not the one-way.
-        const { record } = await this.identity.web5.dwn.records.create({
-          data: json.vc,
-          message: {
-            schema: credential.friendship,
-            dataFormat: credential.format,
-            published: false,
-          },
-        });
-        console.log('TWO WAY VC RECORD:', record);
+      // if (vc.issuer === this.identity.did) {
+      // Persist the two-way VC, these are the only ones that we store for safe-keeping, not the one-way.
+      const { record: record2 } = await this.identity.web5.dwn.records.create({
+        data: json.vc,
+        message: {
+          schema: credential.friendship,
+          dataFormat: credential.format,
+          published: false,
+        },
+      });
+      console.log('TWO WAY VC RECORD:', record2);
 
-        const { status } = await record!.send(this.identity.did);
-        console.log('Record sent:', status, record);
+      const { status } = await record2!.send(this.identity.did);
+      console.log('Record sent:', status, record2);
 
-        // Delete the incoming VC record, as it has been processed.
-        await record?.delete();
-      }
+      // Delete the incoming VC record, as it has been processed.
+      await record?.delete();
+      // }
     }
   }
 
