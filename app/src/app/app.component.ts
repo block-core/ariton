@@ -1,4 +1,4 @@
-import { Component, effect, inject, signal } from '@angular/core';
+import { APP_INITIALIZER, Component, effect, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { LayoutComponent } from './layout/layout.component';
 import { Router, NavigationStart, NavigationEnd } from '@angular/router';
@@ -11,6 +11,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { RestoreComponent } from './account/create/restore/restore.component';
 import { OnboardingState } from './app.service';
+import { HashService } from './hash.service';
+
+export function initializeApp(hashService: HashService) {
+  return (): Promise<void> => hashService.loadHash();
+}
+
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -25,6 +31,12 @@ import { OnboardingState } from './app.service';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   providers: [
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeApp,
+      deps: [HashService],
+      multi: true,
+    },
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
       useValue: { appearance: 'outline' },

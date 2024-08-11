@@ -6,12 +6,14 @@ import { activatePolyfills, Web5ConnectResult } from '@web5/api';
 import * as packageInfo from '../../package.json';
 import { ProtocolService } from './protocol.service';
 import { ProfileService } from './profile.service';
+import { HashService } from './hash.service';
 
 export interface AppState {
   selectedAccount: string;
   backupConfirmed?: boolean;
   hidden: any;
   loginAction: string;
+  bundleHash: string | null;
 }
 
 export interface Account {
@@ -47,6 +49,8 @@ export class AppService {
 
   storage = inject(StorageService);
 
+  hash = inject(HashService);
+
   crypto = inject(CryptoService);
 
   identity = inject(IdentityService);
@@ -55,7 +59,7 @@ export class AppService {
 
   protocol = inject(ProtocolService);
 
-  state = signal<AppState>({ loginAction: '/dashboard', selectedAccount: '', hidden: {} });
+  state = signal<AppState>({ loginAction: '/dashboard', selectedAccount: '', hidden: {}, bundleHash: '' });
 
   account = signal<Account>({ did: '', recoveryPhrase: '', password: '', passwordHash: '' });
 
@@ -133,6 +137,7 @@ export class AppService {
       selectedAccount: '',
       hidden: {},
       loginAction: '/introduction',
+      bundleHash: '',
     };
 
     this.storage.save('state', state);
@@ -254,7 +259,22 @@ export class AppService {
 
     this.loading.set(false);
 
+    this.firstTimeInitialization();
+  }
+
+  /** Only run when the hash bundle has changed (updated app) */
+  async firstTimeInitialization() {
+    // If the previous bundle hash is the same as the current, we don't need to re-register.
+    // For local development, the getHash should be null, so we always re-register.
+    if (this.hash.getHash() != null && this.state().bundleHash === this.hash.getHash()) {
+      return;
+    }
+
     // When intialization is finished, make sure we always re-register the protocols.
     this.protocol.register();
+
+    // Save the current bundle hash to the state.
+    this.state().bundleHash = this.hash.getHash();
+    this.saveState();
   }
 }
