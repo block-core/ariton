@@ -47,7 +47,7 @@
 
       <app-profile-card [did]="request.record.recipient">
         <button mat-flat-button [disabled]="true">PENDING</button>
-        <button mat-button (click)="reject(request)">DELETE</button>
+        <button mat-button (click)="reject(request)">CANCEL</button>
 
         <!-- <ng-container *ngIf="request.direction == 'out'">
           <button mat-flat-button [disabled]="true">PENDING</button>

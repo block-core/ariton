@@ -84,8 +84,30 @@ export class ProfileComponent {
     console.log('AUTHOR DID:', this.identity.did);
     console.log('INPUT DID:', did);
 
+    const vc = await VerifiableCredential.create({
+      type: 'FriendshipCredential',
+      issuer: this.identity.did,
+      subject: did,
+      data: null,
+    });
+
+    console.log('VC:', vc);
+
+    const bearerDid = await this.identity.activeAgent().identity.get({ didUri: this.identity.did });
+    const vc_jwt = await vc.sign({ did: bearerDid!.did });
+    console.log('VC JWT:', vc_jwt);
+
+    // const { record } = await this.identity.web5.dwn.records.create({
+    //   data: vc_jwt,
+    //   message: {
+    //     schema: 'FriendsCredential',
+    //     dataFormat: 'application/vc+jwt',
+    //     published: true,
+    //   },
+    // });
+
     const { status: requestCreateStatus, record: messageRecord } = await this.identity.web5.dwn.records.create({
-      data: { message: 'I want to be your friend.' },
+      data: { message: 'I want to be your friend.', vc: vc_jwt },
       message: {
         recipient: did,
         protocol: messageDefinition.protocol,

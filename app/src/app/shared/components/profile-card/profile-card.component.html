@@ -6,7 +6,11 @@
       onerror="this.src='/avatar-placeholder.png';this.onerror='';"
     /> -->
     <mat-card-title>
+      @if (data().profile?.name) {
       <a [routerLink]="['/profile', data().profile?.did]">{{ data().profile?.name }} ({{ data().profile?.title }})</a>
+      } @else {
+      <em>No name set</em>
+      }
     </mat-card-title>
     <mat-card-subtitle>
       <!-- <app-did [did]="data().profile?.did"></app-did> -->
@@ -21,6 +25,7 @@
   </mat-card-header> -->
 
   <br />
+  @if (data().avatar) {
   <img
     class="profile-thumbnail"
     mat-card-image
@@ -28,6 +33,15 @@
     [src]="data().avatar | safeResourceUrl"
     onerror="this.src='/avatar-placeholder.png';this.onerror='';"
   />
+  } @else {
+  <img
+    class="profile-thumbnail"
+    mat-card-image
+    [routerLink]="['/profile', data().profile?.did]"
+    [src]="'/avatar-placeholder.png'"
+  />
+  }
+
   <mat-card-content>
     @if (data().message) {
     <p>{{ data().message }}</p>
