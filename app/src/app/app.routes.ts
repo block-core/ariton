@@ -139,7 +139,7 @@ export const routes: Routes = [
     path: 'data',
     loadComponent: () => import('./data/data.component').then((c) => c.DataComponent),
     title: 'Data',
-    data: { icon: 'source' },
+    data: { hide: true, icon: 'source' },
   },
   {
     path: 'data/:source/:id',
@@ -163,7 +163,7 @@ export const routes: Routes = [
     path: 'notifications',
     loadComponent: () => import('./notifications/notifications.component').then((c) => c.NotificationsComponent),
     title: 'Notifications',
-    data: { hide: false, icon: 'notifications' },
+    data: { hide: true, icon: 'notifications' },
   },
   {
     path: 'accounts',
@@ -271,6 +271,6 @@ export const routes: Routes = [
     path: 'management',
     loadComponent: () => import('./management/management.component').then((c) => c.ManagementComponent),
     title: 'Management',
-    data: { icon: 'manage_accounts' },
+    data: { hide: true, icon: 'manage_accounts' },
   },
 ];

@@ -37,7 +37,7 @@ Level: {{ folderLevel }} -->
 
   <ng-container matColumnDef="icon">
     <th mat-header-cell *matHeaderCellDef mat-sort-header class="icon-column"></th>
-    <td mat-cell *matCellDef="let entry" class="icon-column">
+    <td mat-cell *matCellDef="let entry" class="clickable icon-column" (click)="openEntry(entry)">
       <mat-icon matListItemIcon>{{ entry.icon }}</mat-icon>
     </td>
   </ng-container>
