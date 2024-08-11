@@ -49,10 +49,10 @@ export class ImageCropperComponent {
     canvas.height = height;
     context.imageSmoothingEnabled = true;
 
-    context.minWidth = 64;
-    context.minHeight = 64;
-    context.maxWidth = 512;
-    context.maxHeight = 512;
+    // context.minWidth = 64;
+    // context.minHeight = 64;
+    // context.maxWidth = 512;
+    // context.maxHeight = 512;
 
     context.drawImage(sourceCanvas, 0, 0, width, height);
     context.globalCompositeOperation = 'destination-in';
@@ -63,8 +63,11 @@ export class ImageCropperComponent {
   }
 
   crop() {
-    const croppedCanvas = this.cropper.getCroppedCanvas();
+    // Let's do 256x256 as max size for optimal loading performance.
+    const croppedCanvas = this.cropper.getCroppedCanvas({ maxHeight: 256, maxWidth: 256 });
     const roundedCanvas = this.getRoundedCanvas(croppedCanvas);
+
+    // cropper.getCroppedCanvas({ width: DESIRED_WIDTH, height: DESIRED_HEIGHT }).toDataURL(ORIGINAL_MIME_TYPE);
 
     let roundedImage = document.createElement('img');
 
