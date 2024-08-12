@@ -11,7 +11,7 @@ import { MatTable, MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { Community, TableDataSource } from './communities-datasource';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { AppService } from '../app.service';
@@ -27,6 +27,7 @@ type CardContent = {
   selector: 'app-communities',
   standalone: true,
   imports: [
+    RouterModule,
     MatButtonToggleModule,
     MatIconModule,
     MatInputModule,
@@ -144,15 +145,7 @@ export class CommunitiesComponent {
   }
 
   ngOnInit() {
-    this.layout.setActions([
-      {
-        name: 'Create',
-        icon: 'add',
-        action: () => {
-          this.router.navigate(['communities', 'create']);
-        },
-      },
-    ]);
+    this.layout.resetActions();
   }
 
   ngAfterViewInit(): void {

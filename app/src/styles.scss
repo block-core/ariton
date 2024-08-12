@@ -114,7 +114,21 @@ h1 {
   color: var(--mat-form-field-error-text-color);
 }
 
+.flex {
+  display: flex !important;
+  gap: 1em;
+}
+
 .full-width {
+  width: 100%;
+}
+
+.search-input {
+  background-color: var(--mat-app-background-color);
+  color: var(--mat-app-text-color);
+  border: 1px solid var(--mat-app-text-color);
+  border-radius: 20px;
+  padding: 0.8em 1.2em;
   width: 100%;
 }
 

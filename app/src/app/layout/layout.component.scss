@@ -84,15 +84,6 @@ mat-sidenav-content {
   width: 72px;
 }
 
-.search-input {
-  background-color: var(--mat-app-background-color);
-  color: var(--mat-app-text-color);
-  border: 1px solid var(--mat-app-text-color);
-  border-radius: 20px;
-  padding: 0.8em 1.2em;
-  width: 100%;
-}
-
 @media (max-width: 959.98px) {
   mat-sidenav-content {
     padding-right: 8px;
