@@ -30,22 +30,36 @@ Level: {{ folderLevel }} -->
   <mat-card-content>
     <button type="button" mat-button (click)="editFile({})">
       <mat-icon>upload_file</mat-icon>
-      Upload files
+      <span>Upload files</span>
     </button>
-    @if (folderLevel < 4) {
-    <button type="button" mat-button (click)="editFolder(null)">
+    @if (folderLevel < 4) { @if (layout.small()) {
+    <button mat-icon-button class="toolbar-icon-button" (click)="editFolder(null)">
       <mat-icon>create_new_folder</mat-icon>
-      New folder</button
-    >} @if (folderLevel > 1) {
+    </button>
+    } @else {
+    <button mat-button (click)="editFolder(null)">
+      <mat-icon>create_new_folder</mat-icon>
+      <span>New folder</span>
+    </button>
+    } } @if (folderLevel > 1) { @if (layout.small()) {
+
+    <button type="button" class="toolbar-icon-button" mat-icon-button (click)="editFolderById(parentId!)">
+      <mat-icon>edit</mat-icon>
+    </button>
+    <button type="button" class="toolbar-icon-button" mat-icon-button (click)="deleteFolder()">
+      <mat-icon>delete_forever</mat-icon>
+    </button>
+
+    } @else {
     <button type="button" mat-button (click)="editFolderById(parentId!)">
       <mat-icon>edit</mat-icon>
-      Rename folder
+      <span>Rename folder</span>
     </button>
     <button type="button" mat-button (click)="deleteFolder()">
       <mat-icon>delete_forever</mat-icon>
-      Delete folder
+      <span>Delete folder</span>
     </button>
-    }
+    } }
   </mat-card-content>
 </mat-card>
 

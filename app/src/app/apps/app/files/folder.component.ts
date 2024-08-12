@@ -63,7 +63,6 @@ export class TableEntry {
   imports: [
     MatCardModule,
     MatButtonModule,
-    MatIconModule,
     MatTableModule,
     MatSortModule,
     SizePipe,

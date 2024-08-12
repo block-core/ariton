@@ -1,4 +1,5 @@
-import { Injectable, effect, signal } from '@angular/core';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { Injectable, effect, inject, signal } from '@angular/core';
 
 export interface LayoutAction {
   name: string;
@@ -10,7 +11,35 @@ export interface LayoutAction {
   providedIn: 'root',
 })
 export class LayoutService {
+  search = signal<boolean>(false);
+
+  searchInput: string = '';
+
+  scrolling = signal<boolean>(true);
+
+  navigation = signal<boolean>(false);
+
+  actions = signal<any[]>([]);
+
+  private breakpointObserver = inject(BreakpointObserver);
+
+  small = signal<boolean>(false);
+
   constructor() {
+    const customBreakpoint = '(max-width: 959.98px)';
+
+    // Observe the custom breakpoint
+    this.breakpointObserver.observe([customBreakpoint]).subscribe((result) => {
+      console.log('MATCHES:', result.matches);
+      if (result.matches) {
+        // Code to execute when the viewport is 959.98px or less
+        this.small.set(true);
+      } else {
+        // Code to execute when the viewport is greater than 959.98px
+        this.small.set(false);
+      }
+    });
+
     effect(() => {
       const element = document.querySelector('.sidenav-scroll-wrapper') as any;
       if (element) {
@@ -31,16 +60,6 @@ export class LayoutService {
       }
     });
   }
-
-  search = signal<boolean>(false);
-
-  searchInput: string = '';
-
-  scrolling = signal<boolean>(true);
-
-  navigation = signal<boolean>(false);
-
-  actions = signal<any[]>([]);
 
   toggleSearch() {
     this.search.set(!this.search());

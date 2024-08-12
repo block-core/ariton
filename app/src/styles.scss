@@ -224,6 +224,15 @@ h1 {
   margin-bottom: 1em;
 }
 
+/** Makes the mat-icon-button within app toolbar look green. */
+.toolbar-icon-button .mat-icon {
+  color: var(--mdc-text-button-label-text-color);
+}
+
+[mat-icon-button] {
+  vertical-align: middle !important;
+}
+
 @media (max-width: 959.98px) {
   .hide-small {
     display: none;
