@@ -121,23 +121,7 @@ export class NotesComponent implements OnDestroy {
     // this.layout.disableScrolling();
     this.layout.disableNavigation();
 
-    this.layout.setActions([
-      {
-        name: 'New Note',
-        icon: 'note_add',
-        action: () => {
-          this.editNote({
-            data: {
-              title: '',
-              body: '',
-              background: '',
-              collaborators: [],
-              labels: [],
-            },
-          });
-        },
-      },
-    ]);
+    this.layout.resetActions();
 
     effect(async () => {
       if (this.app.initialized()) {
@@ -152,6 +136,18 @@ export class NotesComponent implements OnDestroy {
     if (status) {
       this.records.update((records) => records.filter((r) => r.record != entry.record));
     }
+  }
+
+  newNote() {
+    this.editNote({
+      data: {
+        title: '',
+        body: '',
+        background: '',
+        collaborators: [],
+        labels: [],
+      },
+    });
   }
 
   async loadNotes(tags?: any) {
@@ -235,8 +231,8 @@ export class NotesComponent implements OnDestroy {
       title: entry.data.title,
       body: entry.data.body,
       background: entry.data.background,
-      collaborators: ['12', '33333'],
-      labels: ['label2', 'label3'],
+      collaborators: [],
+      labels: [],
     };
 
     const original = JSON.parse(JSON.stringify(data));

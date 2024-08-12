@@ -1,9 +1,6 @@
-:host {
-  //   display: flex;
-  //   flex-direction: column;
-  background-color: yellow;
-  padding-bottom: 100px;
-}
+// :host {
+//   padding-bottom: 100px;
+// }
 
 .notes {
   height: 100%;
@@ -33,17 +30,17 @@
   font-size: 0.9em;
 }
 
-mat-card-content {
+.notes-items mat-card-content {
   cursor: pointer;
   padding: 0 !important;
   margin-bottom: 0.4em;
 }
 
-mat-card-title {
+.notes-items mat-card-title {
   cursor: pointer;
 }
 
-mat-card-footer {
+.notes-items mat-card-footer {
   font-size: 1.2em;
   width: 100%;
   text-align: center;
