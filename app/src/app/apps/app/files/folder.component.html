@@ -37,6 +37,10 @@ Level: {{ folderLevel }} -->
       <mat-icon>create_new_folder</mat-icon>
       New folder</button
     >} @if (folderLevel > 1) {
+    <button type="button" mat-button (click)="editFolderById(parentId!)">
+      <mat-icon>edit</mat-icon>
+      Rename folder
+    </button>
     <button type="button" mat-button (click)="deleteFolder()">
       <mat-icon>delete_forever</mat-icon>
       Delete folder

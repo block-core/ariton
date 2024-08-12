@@ -650,6 +650,18 @@ export class FolderComponent {
     }
   }
 
+  async editFolderById(recordId: string) {
+    const { record } = await this.identity.web5.dwn.records.read({
+      message: {
+        filter: {
+          recordId: recordId,
+        },
+      },
+    });
+
+    await this.editFolder(record);
+  }
+
   async editFolder(entry: Record | undefined | null) {
     let data: DialogData = {
       name: entry ? entry.tags['name'] : 'Untitled folder',
