@@ -9,7 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { routes } from '../app.routes';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle.component';
 import { LayoutService } from '../layout.service';
 import { MatMenuModule } from '@angular/material/menu';
@@ -22,6 +22,9 @@ import { NavigationService } from '../navigation.service';
 import { DidPipe } from '../shared/pipes/did.pipe';
 import { ProfileService } from '../profile.service';
 import { SafeUrlPipe } from '../shared/pipes/safe-url.pipe';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-layout',
@@ -29,6 +32,9 @@ import { SafeUrlPipe } from '../shared/pipes/safe-url.pipe';
   styleUrl: './layout.component.scss',
   standalone: true,
   imports: [
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
     CommonModule,
     SafeUrlPipe,
     MatToolbarModule,
@@ -60,12 +66,38 @@ export class LayoutComponent {
 
   private navigation = inject(NavigationService);
 
+  private router = inject(Router);
+
   rootRoutes = routes.filter((r) => r.path).filter((r) => r.data && r.data['hide'] != true);
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe('(max-width: 700px)').pipe(
     map((result) => result.matches),
     shareReplay(),
   );
+
+  private debounceTimer: any;
+
+  onSearchInput(event: any) {
+    if (event.target.value === null) {
+      clearTimeout(this.debounceTimer);
+      return;
+    }
+
+    // Debounce logic to wait until user finishes typing
+    clearTimeout(this.debounceTimer);
+    this.debounceTimer = setTimeout(() => {
+      console.log('Handle search called!');
+      this.handleSearch(event.target.value);
+    }, 750);
+  }
+
+  private handleSearch(value: string): void {
+    if (value.includes(':')) {
+      this.router.navigate(['/profile', value]);
+    } else {
+      this.router.navigate(['/search'], { queryParams: { query: value } });
+    }
+  }
 
   async wipe() {
     // Clear all data from localStorage

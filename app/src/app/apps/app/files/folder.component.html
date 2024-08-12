@@ -26,9 +26,28 @@ Level: {{ folderLevel }} -->
   }
 </mat-list> -->
 
+<mat-card class="toolbar-actions margin-bottom">
+  <mat-card-content>
+    <button type="button" mat-button (click)="editFile({})">
+      <mat-icon>upload_file</mat-icon>
+      Upload files
+    </button>
+    @if (folderLevel < 4) {
+    <button type="button" mat-button (click)="editFolder(null)">
+      <mat-icon>create_new_folder</mat-icon>
+      New folder</button
+    >} @if (folderLevel > 1) {
+    <button type="button" mat-button (click)="deleteFolder()">
+      <mat-icon>delete_forever</mat-icon>
+      Delete folder
+    </button>
+    }
+  </mat-card-content>
+</mat-card>
+
 <input type="file" id="input" (change)="onFileSelected($event)" multiple style="display: none" />
 
-<table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)" class="mat-elevation-z8">
+<table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)">
   <!-- Position Column -->
   <!-- <ng-container matColumnDef="position">
     <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">No.</th>

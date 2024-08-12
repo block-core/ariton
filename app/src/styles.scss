@@ -206,8 +206,16 @@ h1 {
 //   object-fit: contain; /* Adjust as needed: contain, cover, fill */
 // }
 
+.margin-bottom {
+  margin-bottom: 1em;
+}
+
 @media (max-width: 959.98px) {
   .hide-small {
     display: none;
+  }
+
+  .margin-bottom {
+    margin-bottom: 8px;
   }
 }

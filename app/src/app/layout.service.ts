@@ -32,11 +32,20 @@ export class LayoutService {
     });
   }
 
+  search = signal<boolean>(false);
+
+  searchInput: string = '';
+
   scrolling = signal<boolean>(true);
 
   navigation = signal<boolean>(false);
 
   actions = signal<any[]>([]);
+
+  toggleSearch() {
+    this.search.set(!this.search());
+    this.searchInput = '';
+  }
 
   setActions(actions: LayoutAction[]) {
     this.actions.set(actions);

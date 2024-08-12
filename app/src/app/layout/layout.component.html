@@ -49,8 +49,25 @@
       </button>
       }
 
-      <span class="toolbar-spacer"></span>
+      <span class="toolbar-spacer">
+        @if (layout.search()) {
+        <input type="search" class="search-input" [(ngModel)]="layout.searchInput" (input)="onSearchInput($event)" />
+        }
+
+        <!-- <mat-form-field class="small-search-input" subscriptSizing="dynamic">
+          <input type="search" matInput placeholder="Search" />
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field> -->
+      </span>
       <span class="toolbar-items">
+        <button mat-icon-button (click)="layout.toggleSearch()">
+          @if (layout.search()) {
+          <mat-icon>close</mat-icon>
+          } @else {
+          <mat-icon>search</mat-icon>
+          }
+        </button>
+
         @if (updateService.isNewVersionAvailable) {
         <button matTooltip="Update available. Click to update now." mat-icon-button (click)="applyUpdate()">
           <mat-icon>get_app</mat-icon>

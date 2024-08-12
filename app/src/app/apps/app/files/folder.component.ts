@@ -24,6 +24,8 @@ import { DwnDateSort } from '@web5/agent';
 import { Record } from '@web5/api';
 import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
 
 // export interface TableEntryInterface {
 //   icon: string;
@@ -59,6 +61,9 @@ export class TableEntry {
   selector: 'app-folder',
   standalone: true,
   imports: [
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule,
     MatTableModule,
     MatSortModule,
     SizePipe,
@@ -104,7 +109,8 @@ export class FolderComponent {
   changeDetectorRefs = inject(ChangeDetectorRef);
 
   constructor() {
-    console.log('FOLDER COMPONENT CONSTRUCTOR');
+    this.layout.resetActions();
+
     effect(
       async () => {
         if (this.app.initialized()) {
@@ -182,30 +188,30 @@ export class FolderComponent {
 
     console.log('FOLDER COMPONENT INITIALIZED');
 
-    this.layout.setActions([
-      {
-        name: 'Upload files',
-        icon: 'upload_file',
-        action: () => {
-          this.editFile({
-            data: {
-              title: '',
-              body: '',
-              background: '',
-              collaborators: [],
-              labels: [],
-            },
-          });
-        },
-      },
-      {
-        name: 'New folder',
-        icon: 'create_new_folder',
-        action: () => {
-          this.editFolder(null);
-        },
-      },
-    ]);
+    // this.layout.setActions([
+    //   {
+    //     name: 'Upload files',
+    //     icon: 'upload_file',
+    //     action: () => {
+    //       this.editFile({
+    //         data: {
+    //           title: '',
+    //           body: '',
+    //           background: '',
+    //           collaborators: [],
+    //           labels: [],
+    //         },
+    //       });
+    //     },
+    //   },
+    //   {
+    //     name: 'New folder',
+    //     icon: 'create_new_folder',
+    //     action: () => {
+    //       this.editFolder(null);
+    //     },
+    //   },
+    // ]);
 
     // this.fileService.registerActions(this.layout);
 
@@ -313,89 +319,89 @@ export class FolderComponent {
       console.log('GENERATED PROTOCOL PATH:', this.protocolPath);
 
       // TODO: Need a more optimal way to disable new folder when level 5 is reached.
-      if (this.folderLevel === 4) {
-        this.layout.setActions([
-          {
-            name: 'Upload files',
-            icon: 'upload_file',
-            action: () => {
-              this.editFile({
-                data: {
-                  title: '',
-                  body: '',
-                  background: '',
-                  collaborators: [],
-                  labels: [],
-                },
-              });
-            },
-          },
-          {
-            name: 'Delete folder',
-            icon: 'delete_forever',
-            action: () => {
-              this.deleteFolder();
-            },
-          },
-        ]);
-      } else if (this.folderLevel > 1) {
-        this.layout.setActions([
-          {
-            name: 'Upload files',
-            icon: 'upload_file',
-            action: () => {
-              this.editFile({
-                data: {
-                  title: '',
-                  body: '',
-                  background: '',
-                  collaborators: [],
-                  labels: [],
-                },
-              });
-            },
-          },
-          {
-            name: 'New folder',
-            icon: 'create_new_folder',
-            action: () => {
-              this.editFolder(null);
-            },
-          },
-          {
-            name: 'Delete folder',
-            icon: 'delete_forever',
-            action: () => {
-              this.deleteFolder();
-            },
-          },
-        ]);
-      } else {
-        this.layout.setActions([
-          {
-            name: 'Upload files',
-            icon: 'upload_file',
-            action: () => {
-              this.editFile({
-                data: {
-                  title: '',
-                  body: '',
-                  background: '',
-                  collaborators: [],
-                  labels: [],
-                },
-              });
-            },
-          },
-          {
-            name: 'New folder',
-            icon: 'create_new_folder',
-            action: () => {
-              this.editFolder(null);
-            },
-          },
-        ]);
-      }
+      // if (this.folderLevel === 4) {
+      //   this.layout.setActions([
+      //     {
+      //       name: 'Upload files',
+      //       icon: 'upload_file',
+      //       action: () => {
+      //         this.editFile({
+      //           data: {
+      //             title: '',
+      //             body: '',
+      //             background: '',
+      //             collaborators: [],
+      //             labels: [],
+      //           },
+      //         });
+      //       },
+      //     },
+      //     {
+      //       name: 'Delete folder',
+      //       icon: 'delete_forever',
+      //       action: () => {
+      //         this.deleteFolder();
+      //       },
+      //     },
+      //   ]);
+      // } else if (this.folderLevel > 1) {
+      //   this.layout.setActions([
+      //     {
+      //       name: 'Upload files',
+      //       icon: 'upload_file',
+      //       action: () => {
+      //         this.editFile({
+      //           data: {
+      //             title: '',
+      //             body: '',
+      //             background: '',
+      //             collaborators: [],
+      //             labels: [],
+      //           },
+      //         });
+      //       },
+      //     },
+      //     {
+      //       name: 'New folder',
+      //       icon: 'create_new_folder',
+      //       action: () => {
+      //         this.editFolder(null);
+      //       },
+      //     },
+      //     {
+      //       name: 'Delete folder',
+      //       icon: 'delete_forever',
+      //       action: () => {
+      //         this.deleteFolder();
+      //       },
+      //     },
+      //   ]);
+      // } else {
+      //   this.layout.setActions([
+      //     {
+      //       name: 'Upload files',
+      //       icon: 'upload_file',
+      //       action: () => {
+      //         this.editFile({
+      //           data: {
+      //             title: '',
+      //             body: '',
+      //             background: '',
+      //             collaborators: [],
+      //             labels: [],
+      //           },
+      //         });
+      //       },
+      //     },
+      //     {
+      //       name: 'New folder',
+      //       icon: 'create_new_folder',
+      //       action: () => {
+      //         this.editFolder(null);
+      //       },
+      //     },
+      //   ]);
+      // }
 
       // /app/files/folder/bafyreiclhcf5afetlwz4hmpjqfqrqktp7qk3uywah6zroz52ipixuhprci
     }
