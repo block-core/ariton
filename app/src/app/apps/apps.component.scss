@@ -1,55 +1,59 @@
 .toolbox {
-    display: flex;
-    gap: 1em;
-    align-items: baseline;
+  display: flex;
+  gap: 1em;
+  align-items: baseline;
 }
 
 .toolbox-left {
-    flex-grow: 2;
+  flex-grow: 2;
 }
 
 .tooblox-right {
-    flex-grow: 1;
+  flex-grow: 1;
 }
 
 .search-input {
-    width: 100%;
+  width: 100%;
 }
 
 .container {
-    padding: 24px;
+  padding: 24px;
 }
 
 img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
 }
 
 .responsive-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 24px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 24px;
 }
 
 .grid-container {
-    margin: 20px;
+  margin: 20px;
 }
 
 .dashboard-card {
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    right: 15px;
-    bottom: 15px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  // top: 15px;
+  // left: 15px;
+  // right: 15px;
+  // bottom: 15px;
 }
 
 .more-button {
-    position: absolute;
-    top: 5px;
-    right: 10px;
+  position: absolute;
+  top: 5px;
+  right: 10px;
 }
 
 .dashboard-card-content {
-    text-align: center;
+  text-align: center;
 }

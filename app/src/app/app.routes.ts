@@ -11,7 +11,7 @@ export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'dashboard',
+    redirectTo: 'introduction',
   },
   {
     path: 'introduction',
@@ -23,7 +23,7 @@ export const routes: Routes = [
     path: 'dashboard',
     loadComponent: () => import('./dashboard/dashboard.component').then((c) => c.DashboardComponent),
     title: 'Dashboard',
-    data: { icon: 'dashboard' },
+    data: { hide: true, icon: 'dashboard' },
   },
   {
     path: 'communities',
@@ -226,6 +226,12 @@ export const routes: Routes = [
     data: { hide: true, icon: 'settings' },
   },
   {
+    path: 'settings/help',
+    loadComponent: () => import('./settings/help/help.component').then((c) => c.HelpComponent),
+    title: 'Help',
+    data: { hide: true, icon: 'help' },
+  },
+  {
     path: 'settings/licenses',
     loadComponent: () => import('./settings/licenses/licenses.component').then((c) => c.LicensesComponent),
     title: 'Licenses',
@@ -254,12 +260,6 @@ export const routes: Routes = [
     loadComponent: () => import('./drag-drop/drag-drop.component').then((c) => c.DragDropComponent),
     title: 'Drag-Drop',
     data: { hide: true, icon: 'folder' },
-  },
-  {
-    path: 'help',
-    loadComponent: () => import('./help/help.component').then((c) => c.HelpComponent),
-    title: 'Help',
-    data: { hide: true, icon: 'help' },
   },
   {
     path: 'storage',

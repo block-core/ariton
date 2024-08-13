@@ -43,6 +43,11 @@ Language: {{ settings().language }}
     About
   </a>
 
+  <a mat-list-item [routerLink]="['help']">
+    <mat-icon matListItemIcon>help</mat-icon>
+    Help
+  </a>
+
   <a mat-list-item [routerLink]="['licenses']">
     <mat-icon matListItemIcon>description</mat-icon>
     Third Party Licenses

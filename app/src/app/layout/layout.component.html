@@ -130,10 +130,10 @@
 
           <mat-divider></mat-divider>
 
-          <button mat-menu-item [matMenuTriggerFor]="menuAccounts">
+          <!-- <button mat-menu-item [matMenuTriggerFor]="menuAccounts">
             <mat-icon>switch_account</mat-icon>
             <span>Accounts</span>
-          </button>
+          </button> -->
 
           <button mat-menu-item (click)="lock()">
             <mat-icon>lock</mat-icon>
@@ -151,7 +151,7 @@
             <span>Settings</span>
           </button>
           <mat-divider></mat-divider>
-          <button [routerLink]="['/help']" mat-menu-item>
+          <button [routerLink]="['/settings', 'help']" mat-menu-item>
             <mat-icon>help</mat-icon>
             <span>Help</span>
           </button>
@@ -195,8 +195,11 @@
           <button mat-menu-item>
             <span>English</span>
           </button>
-          <button mat-menu-item>
+          <button mat-menu-item [disabled]="true">
             <span>Norwegian</span>
+          </button>
+          <button mat-menu-item [disabled]="true">
+            <span>Serbian</span>
           </button>
         </mat-menu>
 
