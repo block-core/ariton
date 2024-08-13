@@ -232,7 +232,7 @@ export class NotesComponent implements OnDestroy {
       body: entry.data.body,
       background: entry.data.background,
       collaborators: [],
-      labels: [],
+      labels: [''],
     };
 
     const original = JSON.parse(JSON.stringify(data));
