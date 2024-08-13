@@ -67,14 +67,20 @@
     <mat-tab>
       <ng-template mat-tab-label>
         <mat-icon class="example-tab-icon">badge</mat-icon>
-        About
+        <span class="hide-small">About</span>
       </ng-template>
 
       <div class="about-tab-container">
         <div class="profile-items">
-          <mat-icon>event</mat-icon><span>{{ data().profile.birthDate }}</span> <mat-icon>place</mat-icon
-          ><span>{{ data().profilelocation }}</span> <mat-icon>event</mat-icon><span>{{ data().profile.status }}</span>
+          @if (data().profile.birthDate) {
+          <mat-icon>event</mat-icon><span>{{ data().profile.birthDate }}</span>
+          } @if (data().profile.location) {
+          <mat-icon>place</mat-icon><span>{{ data().profile.location }}</span>
+          } @if (data().profile.status) {
+          <mat-icon>event</mat-icon><span>{{ data().profile.status }}</span>
+          } @if (data().profile.links && data().profile.links.length > 0) {
           <mat-icon>link</mat-icon><span>{{ data().profile.links }}</span>
+          }
         </div>
 
         <div class="profile-bio">
@@ -86,7 +92,7 @@
     <mat-tab>
       <ng-template mat-tab-label>
         <mat-icon class="example-tab-icon">diversity_2</mat-icon>
-        Communities
+        <span class="hide-small">Communities</span>
       </ng-template>
       Not implemented yet.
     </mat-tab>
@@ -94,7 +100,7 @@
     <mat-tab>
       <ng-template mat-tab-label>
         <mat-icon class="example-tab-icon">folder_shared</mat-icon>
-        Data
+        <span class="hide-small">Data</span>
       </ng-template>
 
       Not implemented yet.
