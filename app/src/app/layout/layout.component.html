@@ -208,7 +208,10 @@
     </mat-toolbar>
 
     <div class="sidenav-scroll-wrapper">
-      <div class="sidenav-content">
+      <div
+        id="sidenav-content"
+        [ngClass]="{ 'sidenav-content': layout.margin(), 'sidenav-content-marginless': !layout.margin() }"
+      >
         <ng-content></ng-content>
       </div>
     </div>

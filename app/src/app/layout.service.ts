@@ -19,6 +19,8 @@ export class LayoutService {
 
   navigation = signal<boolean>(false);
 
+  margin = signal<boolean>(true);
+
   actions = signal<any[]>([]);
 
   private breakpointObserver = inject(BreakpointObserver);
@@ -50,7 +52,7 @@ export class LayoutService {
         }
       }
 
-      const element2 = document.querySelector('.sidenav-content') as any;
+      const element2 = document.getElementById('sidenav-content') as any;
       if (element2) {
         if (this.scrolling()) {
           element2.style.overflow = 'auto';
@@ -72,6 +74,14 @@ export class LayoutService {
 
   addAction(action: LayoutAction) {
     this.actions.update((actions) => [...actions, action]);
+  }
+
+  marginOff() {
+    this.margin.set(false);
+  }
+
+  marginOn() {
+    this.margin.set(true);
   }
 
   resetActions() {

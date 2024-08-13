@@ -334,6 +334,8 @@ export class FriendsComponent {
   }
 
   ngOnInit() {
+    this.layout.marginOff();
+
     // this.friends.set([
     //   {
     //     name: 'Lu',

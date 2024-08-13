@@ -87,6 +87,8 @@ export class AppComponent {
           this.layout.disableNavigation();
         }
 
+        this.layout.marginOn();
+
         // this.previousUrl = event.url;
         // console.log('This is the previous url', this.previousUrl);
       }
