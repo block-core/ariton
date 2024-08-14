@@ -35,6 +35,7 @@
         "@web5/crypto": "^1.0.2",
         "@web5/dids": "^1.1.2",
         "@web5/identity-agent": "^0.4.1",
+        "@zxing/ngx-scanner": "^18.0.1",
         "cropperjs": "^1.6.2",
         "crypto-browserify": "^3.12.0",
         "process": "^0.11.10",

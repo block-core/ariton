@@ -1,54 +1,27 @@
-<div class="toolbox">
-  <div class="toolbox-left">
-    <mat-form-field class="search-input">
+<mat-card class="toolbar-actions margin-bottom">
+  <mat-card-content class="flex">
+    <!-- <button type="button" mat-button [routerLink]="['/communities', 'create']">
+      <mat-icon>add</mat-icon>
+      Create
+    </button> -->
+    <span class="toolbar-spacer">
+      <input type="search" class="search-input" placeholder="Filter apps" />
+    </span>
+    <!-- <mat-form-field>
       <mat-label>Search</mat-label>
       <input matInput placeholder="Filter communities..." />
       <mat-icon matSuffix>search</mat-icon>
-    </mat-form-field>
-  </div>
-  <div class="toolbox-right">
-    <!-- <mat-slide-toggle class="example-margin" [(ngModel)]="checked">
-        Mine
-      </mat-slide-toggle> -->
-
+    </mat-form-field> -->
     <mat-button-toggle-group hideSingleSelectionIndicator="true" [(ngModel)]="viewStyle">
       <mat-button-toggle value="card">Cards</mat-button-toggle>
       <mat-button-toggle value="table">Table</mat-button-toggle>
     </mat-button-toggle-group>
-
-    <!-- <mat-button-toggle-group
-        [hideSingleSelectionIndicator]="hideSingleSelectionIndicator()"
-        [formControl]="view"
-        name="viewStyle"
-      >
-        <mat-button-toggle value="card">Cards</mat-button-toggle>
-        <mat-button-toggle value="table">Table</mat-button-toggle>
-      </mat-button-toggle-group> -->
-  </div>
-</div>
+  </mat-card-content>
+</mat-card>
 
 @if (viewStyle() == 'card') {
-<!-- <mat-card appearance="outlined">
-    <mat-card-header>
-      <mat-card-title>Dog Lovers</mat-card-title>
-      <mat-card-subtitle>If you love cats, don't join us.</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-actions>
-      <button (click)="open('bsn')" mat-button>Open</button>
-    </mat-card-actions>
-  </mat-card>
-  <br />
-  <mat-card appearance="outlined">
-    <mat-card-header>
-      <mat-card-title>Local Weekend Meetups</mat-card-title>
-      <mat-card-subtitle>Join our sub groups for different geographica locations for weekend meetups.</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-actions>
-      <button mat-button>Open</button>
-    </mat-card-actions>
-  </mat-card> -->
 
-<mat-grid-list cols="2" rowHeight="350px" gutterSize="1em">
+<!-- <mat-grid-list cols="2" rowHeight="350px" gutterSize="1em">
   @for (card of cardsHighlighted | async; track card) {
   <mat-grid-tile [colspan]="card.cols" [rowspan]="card.rows">
     <mat-card class="dashboard-card">
@@ -70,7 +43,7 @@
     </mat-card>
   </mat-grid-tile>
   }
-</mat-grid-list>
+</mat-grid-list> -->
 
 <div class="container responsive-grid">
   <mat-card *ngFor="let card of cards()">

@@ -25,6 +25,9 @@ import { SafeUrlPipe } from '../shared/pipes/safe-url.pipe';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
+import { ZXingScannerModule } from '@zxing/ngx-scanner';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { QRCodeScanDialogComponent } from '../shared/dialog/qrcode-scan-dialog/qrcode-scan-dialog.component';
 
 @Component({
   selector: 'app-layout',
@@ -32,6 +35,8 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './layout.component.scss',
   standalone: true,
   imports: [
+    MatDialogModule,
+    ZXingScannerModule,
     FormsModule,
     MatFormFieldModule,
     MatInputModule,
@@ -66,6 +71,8 @@ export class LayoutComponent {
 
   private navigation = inject(NavigationService);
 
+  dialog = inject(MatDialog);
+
   private router = inject(Router);
 
   rootRoutes = routes.filter((r) => r.path).filter((r) => r.data && r.data['hide'] != true);
@@ -76,6 +83,19 @@ export class LayoutComponent {
   );
 
   private debounceTimer: any;
+
+  qrScan() {
+    const dialogRef = this.dialog.open(QRCodeScanDialogComponent, {
+      data: { did: '' },
+      width: '100vw',
+      height: '100vh',
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('The dialog was closed', result);
+      this.router.navigate(['/profile', result]);
+    });
+  }
 
   onSearchInput(event: any) {
     if (event.target.value === null) {

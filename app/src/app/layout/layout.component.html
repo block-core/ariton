@@ -60,6 +60,15 @@
         </mat-form-field> -->
       </span>
       <span class="toolbar-items">
+        @if (layout.search()) {
+
+        <!-- <zxing-scanner [start]="true" (scanSuccess)="qrScan($event)"> </zxing-scanner> -->
+
+        <button mat-icon-button (click)="qrScan()">
+          <mat-icon>qr_code_scanner</mat-icon>
+        </button>
+        }
+
         <button mat-icon-button (click)="layout.toggleSearch()">
           @if (layout.search()) {
           <mat-icon>close</mat-icon>
