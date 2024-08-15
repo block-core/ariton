@@ -235,6 +235,7 @@ export class TextComponent implements OnDestroy {
       collaborators: [],
       labels: [''],
       published: entry.record ? entry.record.published : entry.data.published,
+      image: entry.data.image,
     };
 
     const original = JSON.parse(JSON.stringify(data));
