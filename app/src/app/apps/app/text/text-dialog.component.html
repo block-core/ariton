@@ -8,6 +8,9 @@
     <input matInput placeholder="Title" maxlength="200" [(ngModel)]="data.title" />
   </mat-form-field>
   <mat-form-field appearance="outline" class="full-width">
+    <input matInput placeholder="Image" maxlength="200" [(ngModel)]="data.image" />
+  </mat-form-field>
+  <mat-form-field appearance="outline" class="full-width">
     <textarea maxlength="300" rows="6" matInput #body placeholder="Text" [(ngModel)]="data.body"></textarea>
     <mat-hint align="end">{{ body.value.length }} / 300</mat-hint>
   </mat-form-field>

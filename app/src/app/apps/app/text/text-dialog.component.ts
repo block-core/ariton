@@ -16,6 +16,7 @@ export interface DialogData {
   collaborators: string[];
   labels: string[];
   published?: boolean;
+  image?: string;
 }
 
 @Component({
