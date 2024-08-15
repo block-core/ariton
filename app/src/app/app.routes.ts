@@ -50,6 +50,12 @@ export const routes: Routes = [
     data: { hide: false, icon: 'people' },
   },
   {
+    path: 'app/chat',
+    loadComponent: () => import('./apps/app/chat/chat.component').then((c) => c.ChatComponent),
+    title: 'Chat',
+    data: { icon: 'chat' },
+  },
+  {
     path: 'marketplace',
     loadComponent: () => import('./marketplace/marketplace.component').then((c) => c.MarketplaceComponent),
     title: 'Marketplace',
@@ -105,11 +111,12 @@ export const routes: Routes = [
     title: 'Notes',
     data: { icon: 'note' },
   },
+
   {
-    path: 'app/chat',
-    loadComponent: () => import('./apps/app/chat/chat.component').then((c) => c.ChatComponent),
-    title: 'Chat',
-    data: { icon: 'chat' },
+    path: 'app/text',
+    loadComponent: () => import('./apps/app/text/text.component').then((c) => c.TextComponent),
+    title: 'Text',
+    data: { icon: 'notes' },
   },
   {
     path: 'app/todo',

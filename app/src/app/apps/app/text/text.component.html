@@ -1,0 +1,208 @@
+<mat-card class="toolbar-actions margin-bottom">
+  <mat-card-content>
+    <button type="button" mat-button (click)="newNote()">
+      <mat-icon>create</mat-icon>
+      New text
+    </button>
+  </mat-card-content>
+</mat-card>
+
+<div class="notes">
+  <div class="notes-top">
+    <mat-chip-listbox [multiple]="false" [(ngModel)]="selectedTag">
+      @for (tag of labels(); track tag) {
+      <mat-chip-option (click)="onSelectionChange($event)" [value]="tag">{{ tag }}</mat-chip-option>
+      }
+    </mat-chip-listbox>
+  </div>
+  <div class="notes-items">
+    @for (entry of records(); track entry) {
+    <!-- @let open = false; -->
+
+    <mat-card class="marketplace-category">
+      @if (entry.data.title){
+      <mat-card-title (click)="editNote(entry)">{{ entry.data.title }}</mat-card-title>
+      }
+      <mat-card-content class="note-body" (click)="editNote(entry)">{{ entry.data.body }}</mat-card-content>
+      <mat-card-footer>
+        <button [disabled]="true" mat-icon-button matTooltip="Collaborator">
+          <mat-icon>person_add_alt</mat-icon>
+        </button>
+
+        <button
+          [matTooltip]="entry.record.published ? 'Published' : 'Not published'"
+          mat-icon-button
+          [matTooltipDisabled]="false"
+        >
+          @if (entry.record.published) {
+          <mat-icon title="Published">check_box</mat-icon>
+          } @else {
+          <mat-icon title="Not published">check_box_outline_blank</mat-icon>
+          }
+        </button>
+
+        <!-- <button mat-icon-button matTooltip="Background" (click)="fileColor.click()">
+          <mat-icon>palette</mat-icon>
+        </button> -->
+        <!-- <input class="color-picker" #fileColor (change)="onColorChange($event, entry)" type="color" /> -->
+        <button
+          mat-icon-button
+          matTooltip="Labels"
+          (click)="entry.open = !entry.open"
+          type="button"
+          cdkOverlayOrigin
+          #trigger="cdkOverlayOrigin"
+        >
+          <mat-icon>new_label</mat-icon>
+        </button>
+
+        <!-- TODO: Figure out if there is a way to make markup variable in Angular 18 instead of using entry.open. -->
+        <ng-template
+          cdkConnectedOverlay
+          [cdkConnectedOverlayHasBackdrop]="true"
+          [cdkConnectedOverlayBackdropClass]="'cdk-overlay-transparent-backdrop'"
+          [cdkConnectedOverlayOrigin]="trigger"
+          [cdkConnectedOverlayOpen]="entry.open"
+          (backdropClick)="closeLabelsMenu(entry)"
+        >
+          <mat-card>
+            <mat-form-field subscriptSizing="dynamic">
+              <mat-label>Labels</mat-label>
+              <mat-select [(ngModel)]="entry.data.labels" multiple>
+                <mat-select-trigger>
+                  {{entry.data.labels?.[0] || ''}}
+                  @if ((entry.data.labels?.length || 0) > 1) {
+                  <span class="example-additional-selection">
+                    (+{{ (entry.data.labels?.length || 0) - 1 }}
+                    {{ entry.data.labels?.length === 2 ? 'other' : 'others' }})
+                  </span>
+                  }
+                </mat-select-trigger>
+                @for (topping of labels(); track topping) {
+                <mat-option [value]="topping">{{ topping }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </mat-card>
+        </ng-template>
+
+        <!-- <mat-card #open>
+          <mat-form-field>
+            <mat-label>Toppings</mat-label>
+            <mat-select [(ngModel)]="entry.data.labels" multiple>
+              <mat-select-trigger>
+                MEE!!
+                {{toppings.value?.[0] || ''}}
+                @if ((toppings.value?.length || 0) > 1) {
+                <span class="example-additional-selection">
+                  (+{{ (toppings.value?.length || 0) - 1 }} {{ toppings.value?.length === 2 ? 'other' : 'others' }})
+                </span>
+                }
+              </mat-select-trigger>
+              @for (topping of labels(); track topping) {
+              <mat-option [value]="topping">{{ topping }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </mat-card> -->
+
+        <!-- <mat-menu #menu="matMenu">
+          @for(c of columnsCopy; track c; ) {
+          <button
+            cdkMenuItemCheckbox
+            class="example-menu-item"
+            [cdkMenuItemChecked]="bold"
+            (cdkMenuItemTriggered)="bold = !bold"
+          >
+            Bold
+          </button> -->
+
+        <!-- <button (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()" mat-menu-item>
+            <input
+              type="checkbox"
+              [value]="c"
+              (click)="$event.stopPropagation()"
+              [checked]="checkedColumns.includes(c.key)"
+              (change)="$event.stopPropagation()"
+              (keydown)="$event.stopPropagation()"
+            />
+            <label class="form-check-label small" style="margin-top: 2px">
+              {{ c.title }}
+            </label>
+          </button> -->
+        <!-- }
+        </mat-menu> -->
+
+        <!-- <mat-menu #menu="matMenu">
+          <mat-checkbox
+            #menuItems
+            *ngFor="let item of premiumAutomobilesList; let i = index"
+            [(ngModel)]="item.activated"
+            (click)="$event.stopPropagation()"
+            (change)="onVehicleSelect()"
+            (keydown)="onMenuKeyDown($event, i)"
+            >{{ item.title }}</mat-checkbox
+          >
+        </mat-menu> -->
+
+        <!-- <mat-menu #menu="matMenu" (closed)="onMenuClose(entry)">
+          <button
+            cdkMenuItemCheckbox
+            class="example-menu-item"
+            [cdkMenuItemChecked]="bold"
+            (cdkMenuItemTriggered)="bold = !bold"
+          >
+            Bold
+          </button>
+
+          <button
+            cdkMenuItemCheckbox
+            class="example-menu-item"
+            [cdkMenuItemChecked]="bold2"
+            (cdkMenuItemTriggered)="bold2 = !bold2"
+          >
+            Bold
+          </button>
+
+          <mat-form-field>
+            <mat-label>Toppings</mat-label>
+            <mat-select [(ngModel)]="entry.data.labels" multiple>
+              <mat-select-trigger>
+                MEE!!
+                {{toppings.value?.[0] || ''}}
+                @if ((toppings.value?.length || 0) > 1) {
+                <span class="example-additional-selection">
+                  (+{{ (toppings.value?.length || 0) - 1 }} {{ toppings.value?.length === 2 ? 'other' : 'others' }})
+                </span>
+                } 
+              </mat-select-trigger>
+              @for (topping of labels(); track topping) {
+              <mat-option [value]="topping">{{ topping }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </mat-menu> -->
+
+        <button mat-icon-button matTooltip="Options" [matMenuTriggerFor]="menuActions">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menuActions="matMenu">
+          <button mat-menu-item (click)="editNote(entry)">
+            <mat-icon>edit</mat-icon>
+            <span>Edit note</span>
+          </button>
+          <button mat-menu-item (click)="copyNote(entry)">
+            <mat-icon>file_copy</mat-icon>
+            <span>Make a copy</span>
+          </button>
+          <mat-divider></mat-divider>
+          <button mat-menu-item (click)="deleteNote(entry)">
+            <mat-icon>delete</mat-icon>
+            <span>Delete note</span>
+          </button>
+        </mat-menu>
+      </mat-card-footer>
+    </mat-card>
+    }
+  </div>
+</div>

@@ -15,8 +15,8 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatCardModule } from '@angular/material/card';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { DialogData, NoteDialogComponent } from './note-dialog.component';
-import { protocolDefinition as noteDefinition } from '../../../../protocols/note';
+import { DialogData, TextDialogComponent } from './text-dialog.component';
+import { protocolDefinition as textDefinition } from '../../../../protocols/text';
 import { IdentityService } from '../../../identity.service';
 import { AppService } from '../../../app.service';
 import { MatSelectModule } from '@angular/material/select';
@@ -43,7 +43,7 @@ export interface Section {
 }
 
 @Component({
-  selector: 'app-notes',
+  selector: 'app-text',
   standalone: true,
   imports: [
     CommonModule,
@@ -73,10 +73,10 @@ export interface Section {
     CdkMenuItemCheckbox,
     CdkMenuItemRadio,
   ],
-  templateUrl: './notes.component.html',
-  styleUrl: './notes.component.scss',
+  templateUrl: './text.component.html',
+  styleUrl: './text.component.scss',
 })
-export class NotesComponent implements OnDestroy {
+export class TextComponent implements OnDestroy {
   async closeLabelsMenu(entry: any) {
     entry.open = false;
     console.log('Menu closed:', entry);
@@ -146,6 +146,7 @@ export class NotesComponent implements OnDestroy {
         background: '',
         collaborators: [],
         labels: [],
+        published: true,
       },
     });
   }
@@ -157,9 +158,9 @@ export class NotesComponent implements OnDestroy {
       message: {
         filter: {
           tags: tags,
-          protocol: noteDefinition.protocol,
-          schema: noteDefinition.types.note.schema,
-          dataFormat: noteDefinition.types.note.dataFormats[0],
+          protocol: textDefinition.protocol,
+          schema: textDefinition.types.entry.schema,
+          dataFormat: textDefinition.types.entry.dataFormats[0],
         },
       },
     });
@@ -233,11 +234,12 @@ export class NotesComponent implements OnDestroy {
       background: entry.data.background,
       collaborators: [],
       labels: [''],
+      published: entry.record ? entry.record.published : entry.data.published,
     };
 
     const original = JSON.parse(JSON.stringify(data));
 
-    const dialogRef = this.dialog.open(NoteDialogComponent, {
+    const dialogRef = this.dialog.open(TextDialogComponent, {
       maxWidth: '80vw',
       maxHeight: '80vh',
       data: data,
@@ -268,29 +270,33 @@ export class NotesComponent implements OnDestroy {
 
   selectColor() {}
 
-  async onColorChange(event: Event, entry: any) {
-    // Get the new input value
-    const newValue = (event.target as HTMLInputElement).value;
-    // Perform actions based on the new value
-    console.log('Input value changed:', newValue);
+  // async onColorChange(event: Event, entry: any) {
+  //   // Get the new input value
+  //   const newValue = (event.target as HTMLInputElement).value;
+  //   // Perform actions based on the new value
+  //   console.log('Input value changed:', newValue);
 
-    entry.data.background = newValue;
+  //   entry.data.background = newValue;
 
-    const { status, record } = await entry.record.update({
-      data: entry.data,
-    });
+  //   const { status, record } = await entry.record.update({
+  //     data: entry.data,
+  //   });
 
-    console.log('Record updated:', record);
-    console.log('Record status:', status);
-  }
+  //   console.log('Record created:', record);
+  //   console.log('Record status:', status);
+  // }
 
   async saveNote(entry: any, data: DialogData) {
+    const published = data.published;
+    delete data.published;
+
     if (entry.record) {
       // Will this work?
       entry.record.tags.labels = data.labels;
 
-      const { status, record } = await entry.record.update({
+      const { status } = await entry.record.update({
         data: data,
+        published: published,
       });
 
       console.log('Record status:', status);
@@ -298,13 +304,14 @@ export class NotesComponent implements OnDestroy {
       const { record, status } = await this.identity.web5.dwn.records.create({
         data: data,
         message: {
+          published: published,
           tags: {
             labels: data.labels,
           },
-          protocol: noteDefinition.protocol,
-          protocolPath: 'note',
-          schema: noteDefinition.types.note.schema,
-          dataFormat: noteDefinition.types.note.dataFormats[0],
+          protocol: textDefinition.protocol,
+          protocolPath: 'entry',
+          schema: textDefinition.types.entry.schema,
+          dataFormat: textDefinition.types.entry.dataFormats[0],
         },
       });
 
