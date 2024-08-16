@@ -1,4 +1,4 @@
-import { Component, model, signal } from '@angular/core';
+import { Component, inject, model, signal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -11,6 +11,8 @@ import { MatListModule } from '@angular/material/list';
 import { DatePipe } from '@angular/common';
 import { AgoPipe } from '../../../shared/pipes/ago.pipe';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 export interface Section {
   id: string;
@@ -24,6 +26,8 @@ export interface Section {
   selector: 'app-chat',
   standalone: true,
   imports: [
+    MatTooltipModule,
+    MatToolbarModule,
     FormsModule,
     MatButtonModule,
     MatIconModule,
@@ -42,9 +46,14 @@ export interface Section {
 export class ChatComponent implements OnDestroy {
   viewStyle = model<string>('card');
 
-  constructor(public layout: LayoutService) {
+  layout = inject(LayoutService);
+
+  constructor() {}
+
+  ngOnInit() {
     this.layout.disableScrolling();
     this.layout.resetActions();
+    this.layout.marginOff();
   }
 
   ngOnDestroy() {

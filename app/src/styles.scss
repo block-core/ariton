@@ -240,7 +240,7 @@ h1 {
 
 @media (max-width: 959.98px) {
   .hide-small {
-    display: none;
+    display: none !important;
   }
 
   .margin-bottom {
