@@ -1,6 +1,8 @@
 <h3>Highlighted</h3>
 
-@for(record of records(); track record) {
+@if (loading()) {
+<mat-spinner></mat-spinner>
+} @else { @for(record of records(); track record) {
 <mat-card class="registry-card" appearance="outlined">
   <mat-card-header>
     <img mat-card-avatar [src]="record.data.icon" class="example-header-image" />
@@ -16,4 +18,4 @@
     <button (click)="openRegistry('bsn')" mat-button>Open</button>
   </mat-card-actions>
 </mat-card>
-}
+} }

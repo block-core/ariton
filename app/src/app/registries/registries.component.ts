@@ -12,13 +12,23 @@ import { CommonModule } from '@angular/common';
 import { DidPipe } from '../shared/pipes/did.pipe';
 import { LayoutService } from '../layout.service';
 import { AppService } from '../app.service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-registries',
   templateUrl: './registries.component.html',
   styleUrl: './registries.component.scss',
   standalone: true,
-  imports: [DidPipe, CommonModule, MatButtonModule, MatCardModule, MatTableModule, MatPaginatorModule, MatSortModule],
+  imports: [
+    DidPipe,
+    MatProgressSpinnerModule,
+    CommonModule,
+    MatButtonModule,
+    MatCardModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+  ],
 })
 export class RegistriesComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -33,6 +43,8 @@ export class RegistriesComponent implements AfterViewInit {
   records = signal<any[]>([]);
 
   layout = inject(LayoutService);
+
+  loading = signal<boolean>(true);
 
   constructor(private router: Router) {
     this.layout.resetActions();
@@ -67,6 +79,8 @@ export class RegistriesComponent implements AfterViewInit {
         this.records.update((records) => [...records, json]);
       });
     }
+
+    this.loading.set(false);
   }
 
   ngAfterViewInit() {
