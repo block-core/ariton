@@ -1,7 +1,7 @@
 .chat-container {
   display: flex;
   flex-direction: row;
-  height: calc(100vh - 64px - 16px - 16px - 16px);
+  height: calc(100vh - 64px - 16px);
 }
 
 .left-panel,
@@ -24,6 +24,14 @@
   overflow-x: hidden;
   overflow-y: auto;
   height: calc(100% - 64px);
+}
+
+.panel-content-messages {
+  height: calc(100% - 64px - 64px);
+}
+
+.chat-action {
+  vertical-align: middle !important;
 }
 
 // .left-panel .panel-content {
@@ -281,17 +289,17 @@
 //     font-size: 1.4em;
 // }
 
-// .chat-input {
-//     height: 64px;
-//     max-height: 64px;
-//     min-height: 64px;
-//     display: flex;
-//     align-items: baseline;
-// }
+.chat-input {
+  height: 64px;
+  max-height: 64px;
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+}
 
-// .chat-message-input {
-//     flex-grow: 2;
-// }
+.chat-message-input {
+  flex-grow: 2;
+}
 
 // .chat-messages {
 //     overflow-y: auto;

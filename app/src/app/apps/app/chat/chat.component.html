@@ -63,7 +63,7 @@
       </button>
     </mat-toolbar>
 
-    <div class="panel-content">
+    <div class="panel-content panel-content-messages">
       Chat Messages Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt atque non voluptatum aperiam
       doloribus expedita dolorem odit? Fugit similique consectetur earum rem? Voluptatem est, voluptatum unde ipsam
       itaque dolores quisquam? Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt atque non voluptatum
@@ -100,6 +100,43 @@
       Voluptatem est, voluptatum unde ipsam itaque dolores quisquam? Lorem ipsum dolor sit amet consectetur, adipisicing
       elit. Deserunt atque non voluptatum aperiam doloribus expedita dolorem odit? Fugit similique consectetur earum
       rem? Voluptatem est, voluptatum unde ipsam itaque dolores quisquam?
+    </div>
+
+    <div class="chat-input">
+      <button class="chat-action" mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>add_circle</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+          <mat-icon>attach_money</mat-icon>
+          <span>Send money</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>video_camera_back</mat-icon>
+          <span>Capture video</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>photo_camera_front</mat-icon>
+          <span>Capture photo</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>attachment</mat-icon>
+          <span>Attach a file</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>add_a_photo</mat-icon>
+          <span>Attach a photo</span>
+        </button>
+      </mat-menu>
+
+      <mat-form-field subscriptSizing="dynamic" class="chat-message-input">
+        <input matInput placeholder="Message..." />
+        <mat-icon matSuffix>emoji_emotions</mat-icon>
+      </mat-form-field>
+
+      <button class="chat-action" mat-icon-button>
+        <mat-icon>thumb_up</mat-icon>
+      </button>
     </div>
   </div>
   <div class="right-panel">
