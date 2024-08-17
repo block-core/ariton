@@ -58,7 +58,7 @@
       <button mat-icon-button>
         <mat-icon>more_vert</mat-icon>
       </button>
-      <button mat-icon-button>
+      <button mat-icon-button (click)="toggleDetails()">
         <mat-icon>view_sidebar</mat-icon>
       </button>
     </mat-toolbar>
@@ -139,11 +139,12 @@
       </button>
     </div>
   </div>
-  <div class="right-panel">
+  @if (details()) {
+  <div class="right-panel" [ngClass]="{ 'panel-background': detailsBig() }">
     <mat-toolbar>
       <span>User Info</span>
       <span class="toolbar-spacer"></span>
-      <button mat-icon-button>
+      <button mat-icon-button (click)="closeDetails()">
         <mat-icon>close</mat-icon>
       </button>
     </mat-toolbar>
@@ -193,4 +194,5 @@
       Fugit similique consectetur earum rem? Voluptatem est, voluptatum unde ipsam itaque dolores quisquam?
     </div>
   </div>
+  }
 </div>

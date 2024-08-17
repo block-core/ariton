@@ -8,11 +8,12 @@ import { MatInputModule } from '@angular/material/input';
 import { LayoutService } from '../../../layout.service';
 import { OnDestroy } from '@angular/core';
 import { MatListModule } from '@angular/material/list';
-import { DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { AgoPipe } from '../../../shared/pipes/ago.pipe';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { BreakpointObserver } from '@angular/cdk/layout';
 
 export interface Section {
   id: string;
@@ -26,6 +27,7 @@ export interface Section {
   selector: 'app-chat',
   standalone: true,
   imports: [
+    CommonModule,
     MatTooltipModule,
     MatToolbarModule,
     FormsModule,
@@ -48,7 +50,29 @@ export class ChatComponent implements OnDestroy {
 
   layout = inject(LayoutService);
 
-  constructor() {}
+  details = signal<boolean>(true);
+
+  detailsBig = signal<boolean>(false);
+
+  private breakpointObserver = inject(BreakpointObserver);
+
+  constructor() {
+    const customBreakpoint = '(max-width: 1024px)';
+
+    // Observe the custom breakpoint
+    this.breakpointObserver.observe([customBreakpoint]).subscribe((result) => {
+      console.log('MATCHES:', result.matches);
+      if (result.matches) {
+        // Code to execute when the viewport is 959.98px or less
+        this.details.set(false);
+        this.detailsBig.set(true);
+      } else {
+        // Code to execute when the viewport is greater than 959.98px
+        //  this.small.set(false);
+        this.detailsBig.set(false);
+      }
+    });
+  }
 
   ngOnInit() {
     this.layout.disableScrolling();
@@ -61,6 +85,14 @@ export class ChatComponent implements OnDestroy {
   }
 
   chat = signal<any>(null);
+
+  toggleDetails() {
+    this.details.set(!this.details());
+  }
+
+  closeDetails() {
+    this.details.set(false);
+  }
 
   open(id: string) {
     const chat = this.folders.find((f) => f.id === id);
