@@ -32,6 +32,8 @@ export class SettingsComponent {
   readonly settings = this.settingsState.state.asReadonly();
 
   constructor(private settingsState: SettingsStateService) {
+    this.layout.marginOn();
+
     this.layout.resetActions();
 
     effect(() => {

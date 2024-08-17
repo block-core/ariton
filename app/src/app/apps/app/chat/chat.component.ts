@@ -1,4 +1,4 @@
-import { Component, inject, model, signal } from '@angular/core';
+import { Component, inject, Input, model, Output, signal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -14,6 +14,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { BreakpointObserver } from '@angular/cdk/layout';
+import { EventEmitter } from 'stream';
+import { ActivatedRoute } from '@angular/router';
 
 export interface Section {
   id: string;
@@ -56,7 +58,20 @@ export class ChatComponent implements OnDestroy {
 
   private breakpointObserver = inject(BreakpointObserver);
 
+  @Input() fullsize: boolean = false;
+
+  route = inject(ActivatedRoute);
+
+  selectedChat = signal<string | null>(null);
+
   constructor() {
+    this.route.paramMap.subscribe((params) => {
+      console.log('ROUTING!!!', params.get('id'));
+      this.selectedChat.set(params.get('id'));
+      // this.breadcrumb.parentId = params.get('id');
+      // this.id.set(params.get('id')!);
+    });
+
     const customBreakpoint = '(max-width: 1024px)';
 
     // Observe the custom breakpoint

@@ -16,6 +16,8 @@ export class MarketplaceComponent {
   layout = inject(LayoutService);
 
   constructor() {
+    this.layout.marginOn();
+
     this.layout.resetActions();
   }
 }

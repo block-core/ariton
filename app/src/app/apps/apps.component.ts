@@ -18,6 +18,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatMenuModule } from '@angular/material/menu';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { map } from 'rxjs';
+import { LayoutService } from '../layout.service';
 
 type CardContent = {
   title: string;
@@ -96,10 +97,14 @@ export class AppsComponent {
 
   checked = model<boolean>(false);
 
+  layout = inject(LayoutService);
+
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['id', 'name'];
 
   constructor(private router: Router) {
+    this.layout.marginOn();
+
     // Register a new effect.
     effect(() => {
       setTimeout(() => {
@@ -141,7 +146,12 @@ export class AppsComponent {
           { title: 'Friends', cols: 1, rows: 1, description: 'Connect with your friends and connections.' },
           { title: 'Chat', cols: 1, rows: 1, description: 'Chat with your friends or community groups' },
           { title: 'File Sharing', cols: 1, rows: 1, description: 'Share files with friends and communities.' },
-          { title: 'Tasks', cols: 1, rows: 1, description: 'Manage tasks, either alone or with friends or communities.' },
+          {
+            title: 'Tasks',
+            cols: 1,
+            rows: 1,
+            description: 'Manage tasks, either alone or with friends or communities.',
+          },
         ];
       }
 

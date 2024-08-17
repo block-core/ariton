@@ -1,5 +1,6 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { Injectable, effect, inject, signal } from '@angular/core';
+import { ContentChildren, ElementRef, Injectable, QueryList, effect, inject, signal } from '@angular/core';
+import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 
 export interface LayoutAction {
   name: string;
@@ -25,9 +26,41 @@ export class LayoutService {
 
   private breakpointObserver = inject(BreakpointObserver);
 
+  router = inject(Router);
+
   small = signal<boolean>(false);
 
   constructor() {
+    this.router.events.subscribe((event: any) => {
+      if (event instanceof NavigationStart) {
+        // Navigation started
+
+        // console.log('previousUrl', this.previousUrl);
+        // console.log('event.url', event.url);
+
+        // if (event.url.startsWith(this.previousUrl)) {
+        //   console.log('Keep actions as we are still under same app');
+        // } else {
+        this.enableScrolling();
+        // this.layout.resetActions();
+        // }
+      } else if (event instanceof NavigationEnd) {
+        // Navigation ended
+        //this.layout.enableScrolling();
+        if (this.countChar('/', event.url) > 1) {
+          this.enableNavigation();
+        } else {
+          this.disableNavigation();
+        }
+
+        // this.marginOn();
+        // this.getChildren();
+
+        // this.previousUrl = event.url;
+        // console.log('This is the previous url', this.previousUrl);
+      }
+    });
+
     const customBreakpoint = '(max-width: 959.98px)';
 
     // Observe the custom breakpoint
@@ -61,6 +94,33 @@ export class LayoutService {
         }
       }
     });
+  }
+
+  countChar(char: string, string: string): number {
+    return string.split(char).length - 1;
+  }
+
+  // @ContentChildren(ElementRef, { descendants: true }) children!: QueryList<ElementRef>;
+
+  // isMarginless: boolean = false;
+
+  // getChildren() {
+  //   console.log('CHILDREN:', this.children);
+
+  //   this.isMarginless = this.children.toArray().some((child) => {
+  //     // Perform operations on the native element
+  //     const nativeElement = child.nativeElement;
+
+  //     console.log(nativeElement);
+  //     console.log(nativeElement.attribute('data-fullsize'));
+
+  //     // Example: Check for a specific attribute or class
+  //     return nativeElement.hasAttribute('data-fullsize');
+  //   });
+  // }
+
+  ngAfterContentInit() {
+    // this.isMarginless = this.children.toArray().some((child) => child.fullsize);
   }
 
   toggleSearch() {

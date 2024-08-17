@@ -47,6 +47,8 @@ export class RegistriesComponent implements AfterViewInit {
   loading = signal<boolean>(true);
 
   constructor(private router: Router) {
+    this.layout.marginOn();
+
     this.layout.resetActions();
 
     effect(async () => {

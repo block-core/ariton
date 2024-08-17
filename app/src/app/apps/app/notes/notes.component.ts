@@ -118,6 +118,8 @@ export class NotesComponent implements OnDestroy {
   columnsCopy: any = [{ key: 1, title: 'test' }];
 
   constructor() {
+    this.layout.marginOn();
+
     // this.layout.disableScrolling();
     this.layout.disableNavigation();
 

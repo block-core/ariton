@@ -50,7 +50,7 @@ export const routes: Routes = [
     data: { hide: false, icon: 'people' },
   },
   {
-    path: 'app/chat',
+    path: 'app/chat/:id',
     loadComponent: () => import('./apps/app/chat/chat.component').then((c) => c.ChatComponent),
     title: 'Chat',
     data: { icon: 'chat' },

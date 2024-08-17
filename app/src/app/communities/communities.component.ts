@@ -99,6 +99,8 @@ export class CommunitiesComponent {
   displayedColumns = ['name', 'description'];
 
   constructor(private router: Router) {
+    this.layout.marginOn();
+
     // Register a new effect.
     effect(() => {
       setTimeout(() => {

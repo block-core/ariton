@@ -24,7 +24,11 @@ import { FileService } from '../../../file.service';
 export class FilesComponent {
   // id = signal<string | undefined>(undefined);
 
+  layout = inject(LayoutService);
+
   constructor() {
+    this.layout.marginOn();
+
     // this.route.paramMap.subscribe((params) => {
     //   console.log('ROUTING!!!', params.get('id'));
     //   this.id.set(params.get('id')!);

@@ -26,7 +26,7 @@
     </button>
 
     <mat-menu #menuProfile="matMenu">
-      <button disabled="true" mat-menu-item [routerLink]="['/app/chat']">
+      <button mat-menu-item [routerLink]="['/app', 'chat', data().did]">
         <mat-icon>chat_bubble</mat-icon>
         <span>Message</span>
       </button>

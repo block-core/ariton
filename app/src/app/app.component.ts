@@ -48,10 +48,6 @@ export class AppComponent {
   appService = inject(AppService);
   previousUrl = '';
 
-  countChar(char: string, string: string): number {
-    return string.split(char).length - 1;
-  }
-
   constructor(private router: Router, private layout: LayoutService, public identityService: IdentityService) {
     // This must happen in the constructor on app component, or when loading in PWA, it won't
     // be possible to read the query parameters.
@@ -64,35 +60,6 @@ export class AppComponent {
 
     console.log(queryParam);
     console.log(this.appService.params);
-
-    this.router.events.subscribe((event: any) => {
-      if (event instanceof NavigationStart) {
-        // Navigation started
-
-        // console.log('previousUrl', this.previousUrl);
-        // console.log('event.url', event.url);
-
-        // if (event.url.startsWith(this.previousUrl)) {
-        //   console.log('Keep actions as we are still under same app');
-        // } else {
-        this.layout.enableScrolling();
-        // this.layout.resetActions();
-        // }
-      } else if (event instanceof NavigationEnd) {
-        // Navigation ended
-        //this.layout.enableScrolling();
-        if (this.countChar('/', event.url) > 1) {
-          this.layout.enableNavigation();
-        } else {
-          this.layout.disableNavigation();
-        }
-
-        this.layout.marginOn();
-
-        // this.previousUrl = event.url;
-        // console.log('This is the previous url', this.previousUrl);
-      }
-    });
 
     effect(() => {
       if (this.appService.initialized()) {

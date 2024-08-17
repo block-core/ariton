@@ -10,7 +10,7 @@
 
       <app-profile-card [did]="request.data.did">
         <button mat-flat-button [routerLink]="['/profile', request.data.did]">VIEW</button>
-        <button mat-button [disabled]="true">MESSAGE</button>
+        <button mat-button [routerLink]="['/app', 'chat', request.data.did]">MESSAGE</button>
       </app-profile-card>
 
       <!-- <mat-card>

@@ -20,6 +20,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { protocolDefinition as messageDefinition } from '../../protocols/message';
 import { VerifiableCredential } from '@web5/credentials';
 import { BearerDid } from '@web5/dids';
+import { LayoutService } from '../layout.service';
 
 @Component({
   selector: 'app-profile',
@@ -47,6 +48,8 @@ export class ProfileComponent {
 
   app = inject(AppService);
 
+  layout = inject(LayoutService);
+
   data = signal<any>(undefined);
 
   avatarSrc: any = null;
@@ -56,6 +59,8 @@ export class ProfileComponent {
   }
 
   constructor(private dialog: MatDialog, private sanitizer: DomSanitizer, private route: ActivatedRoute) {
+    this.layout.marginOn();
+
     effect(() => {
       if (this.app.initialized()) {
         this.route.paramMap.subscribe((params) => {
