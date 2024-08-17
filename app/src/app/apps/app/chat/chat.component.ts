@@ -15,7 +15,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { EventEmitter } from 'stream';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 
 export interface Section {
   id: string;
@@ -29,6 +29,7 @@ export interface Section {
   selector: 'app-chat',
   standalone: true,
   imports: [
+    RouterModule,
     CommonModule,
     MatTooltipModule,
     MatToolbarModule,

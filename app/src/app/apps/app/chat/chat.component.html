@@ -55,13 +55,37 @@
       <!-- <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
         <mat-icon>favorite</mat-icon>
       </button> -->
-      <button mat-icon-button>
+      <button mat-icon-button [matMenuTriggerFor]="chatMenu">
         <mat-icon>more_vert</mat-icon>
       </button>
       <button mat-icon-button (click)="toggleDetails()">
         <mat-icon>view_sidebar</mat-icon>
       </button>
     </mat-toolbar>
+
+    <mat-menu #chatMenu="matMenu">
+      <button mat-menu-item [routerLink]="['/profile', '']">
+        <mat-icon>account_circle</mat-icon>
+        <span>View profile</span>
+      </button>
+      <button mat-menu-item [disabled]="true">
+        <mat-icon>done</mat-icon>
+        <span>Mark as unread</span>
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-menu-item [disabled]="true">
+        <mat-icon>block</mat-icon>
+        <span>Block</span>
+      </button>
+      <button mat-menu-item [disabled]="true">
+        <mat-icon>archive</mat-icon>
+        <span>Archive chat</span>
+      </button>
+      <button mat-menu-item [disabled]="true">
+        <mat-icon>delete</mat-icon>
+        <span>Delete chat</span>
+      </button>
+    </mat-menu>
 
     <div class="panel-content panel-content-messages">
       Chat Messages Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt atque non voluptatum aperiam
