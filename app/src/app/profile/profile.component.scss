@@ -7,6 +7,12 @@
 .profile-header-icon {
   border-radius: 50%;
   width: 128px;
+  margin: 1em;
+}
+
+.profile-header-menu {
+  /** Needed to avoid horizontal scrolling */
+  padding-right: 4px;
 }
 
 h1 span {

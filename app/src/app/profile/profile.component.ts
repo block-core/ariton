@@ -59,7 +59,7 @@ export class ProfileComponent {
   }
 
   constructor(private dialog: MatDialog, private sanitizer: DomSanitizer, private route: ActivatedRoute) {
-    this.layout.marginOn();
+    this.layout.marginOff();
 
     effect(() => {
       if (this.app.initialized()) {

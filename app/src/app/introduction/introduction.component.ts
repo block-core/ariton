@@ -5,18 +5,25 @@ import { RouterLink } from '@angular/router';
 import { StorageService } from '../storage.service';
 import { AppService } from '../app.service';
 import { MatCardModule } from '@angular/material/card';
+import { LayoutService } from '../layout.service';
 
 @Component({
-    selector: 'app-introduction',
-    standalone: true,
-    imports: [MatCardModule, MatButtonModule, MatDividerModule, RouterLink],
-    templateUrl: './introduction.component.html',
-    styleUrl: './introduction.component.scss',
+  selector: 'app-introduction',
+  standalone: true,
+  imports: [MatCardModule, MatButtonModule, MatDividerModule, RouterLink],
+  templateUrl: './introduction.component.html',
+  styleUrl: './introduction.component.scss',
 })
 export class IntroductionComponent {
-    appService = inject(AppService);
+  appService = inject(AppService);
 
-    reset = computed(() => this.appService.account().passwordHash);
+  reset = computed(() => this.appService.account().passwordHash);
 
-    backup = computed(() => this.appService.state().backupConfirmed);
+  backup = computed(() => this.appService.state().backupConfirmed);
+
+  layout = inject(LayoutService);
+
+  constructor() {
+    this.layout.marginOn();
+  }
 }
