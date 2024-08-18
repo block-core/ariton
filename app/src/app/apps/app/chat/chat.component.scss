@@ -70,7 +70,6 @@
 .chat-icon {
   border-radius: 50%;
   max-height: 48px;
-  margin-right: 0.1em;
   border: 2px solid transparent;
 }
 
@@ -82,6 +81,7 @@
   display: flex;
   align-items: stretch;
   text-decoration: none;
+  align-items: center;
   cursor: pointer;
 }
 
@@ -90,7 +90,7 @@
 }
 
 .chat-details > div:first-child {
-  padding-top: 4px;
+  padding-top: 6px;
   height: 24px;
   //   align-self: flex-start;
 }
@@ -109,7 +109,7 @@
   flex-direction: column;
   width: 100%;
   overflow: hidden;
-  padding-left: 0.5em;
+  padding-left: 0.2em;
 }
 
 .chat-info {
@@ -122,12 +122,21 @@
   text-overflow: ellipsis; /* Render ellipses when text overflows */
 }
 
-.chat-text {
+.chat-text,
+.chat-info-name {
   display: block;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
   max-width: 100%;
+}
+
+.chat-text {
+  font-size: 0.8em;
+}
+
+.chat-time {
+  padding-right: 0.2em;
 }
 
 .router-link-active {

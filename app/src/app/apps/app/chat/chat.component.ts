@@ -69,6 +69,7 @@ export class ChatComponent implements OnDestroy {
     this.route.paramMap.subscribe((params) => {
       console.log('ROUTING!!!', params.get('id'));
       this.selectedChat.set(params.get('id'));
+      this.layout.disableScrolling();
       // this.breadcrumb.parentId = params.get('id');
       // this.id.set(params.get('id')!);
     });
