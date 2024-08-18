@@ -39,6 +39,11 @@
   height: calc(100% - 64px - 64px);
 }
 
+.panel-content-chats {
+  height: calc(100% - 64px - 64px);
+  padding: 0;
+}
+
 .chat-action {
   vertical-align: middle !important;
 }
@@ -123,6 +128,10 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   max-width: 100%;
+}
+
+.router-link-active {
+  background-color: var(--mat-option-selected-state-layer-color);
 }
 
 @media (max-width: 1024px) {

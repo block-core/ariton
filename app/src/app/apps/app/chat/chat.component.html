@@ -9,8 +9,12 @@
       </button>
     </mat-toolbar>
 
-    <div class="panel-content">
-      <a class="chat-link">
+    <div class="panel-content panel-content-chats">
+      <a
+        class="chat-link"
+        [routerLink]="['/app', 'chat', 'did:dht:1ko4cqh7c7i9z56r7qwucgpbra934rngc5eyffg1km5k6rc5991o']"
+        routerLinkActive="router-link-active"
+      >
         <div>
           <img class="chat-icon" src="https://ariton.app/assets/sondre.png" />
         </div>
@@ -22,7 +26,12 @@
           <div class="chat-text">How have you been my friend?</div>
         </div>
       </a>
-      <a class="chat-link"><img class="chat-icon" src="https://ariton.app/assets/dan.png" /></a>
+      <a
+        class="chat-link"
+        [routerLink]="['/app', 'chat', 'did:dht:1ko4cqh7c7i9z56r7qwucgpbra934rngc5eyffg1km5k6rc5992o']"
+        routerLinkActive="router-link-active"
+        ><img class="chat-icon" src="https://ariton.app/assets/dan.png"
+      /></a>
       <a class="chat-link"><img class="chat-icon" src="https://ariton.app/assets/david.jpg" /></a>
       <a class="chat-link"><img class="chat-icon" src="https://ariton.app/assets/milad.png" /></a>
       <a class="chat-link"><img class="chat-icon" src="https://ariton.app/assets/lu.jpg" /></a>
