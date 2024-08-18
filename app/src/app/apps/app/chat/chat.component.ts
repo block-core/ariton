@@ -1,4 +1,4 @@
-import { Component, inject, Input, model, Output, signal } from '@angular/core';
+import { Component, effect, inject, Input, model, Output, signal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -16,6 +16,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { EventEmitter } from 'stream';
 import { ActivatedRoute, RouterModule } from '@angular/router';
+import { IdentityService } from '../../../identity.service';
+import { AppService } from '../../../app.service';
+import { protocolDefinition as chatDefinition } from '../../../../protocols/chat';
+import { Record } from '@web5/api';
 
 export interface Section {
   id: string;
@@ -23,6 +27,24 @@ export interface Section {
   updated: Date;
   message: string;
   avatar: string;
+}
+
+export interface Message {
+  text: string;
+  sender: string;
+  recipient: string;
+  timestamp: string;
+}
+
+export interface Thread {
+  did: string;
+  text: string;
+  timestamp: string;
+}
+
+export interface MessageEntry {
+  record: Record;
+  data: Message;
 }
 
 @Component({
@@ -57,6 +79,10 @@ export class ChatComponent implements OnDestroy {
 
   detailsBig = signal<boolean>(false);
 
+  identity = inject(IdentityService);
+
+  app = inject(AppService);
+
   private breakpointObserver = inject(BreakpointObserver);
 
   @Input() fullsize: boolean = false;
@@ -65,6 +91,12 @@ export class ChatComponent implements OnDestroy {
 
   selectedChat = signal<string | null>(null);
 
+  chat = signal<any>(null);
+
+  chats = signal<MessageEntry[]>([]);
+
+  threads = signal<Thread[]>([]);
+
   constructor() {
     this.route.paramMap.subscribe((params) => {
       console.log('ROUTING!!!', params.get('id'));
@@ -72,6 +104,12 @@ export class ChatComponent implements OnDestroy {
       this.layout.disableScrolling();
       // this.breadcrumb.parentId = params.get('id');
       // this.id.set(params.get('id')!);
+    });
+
+    effect(async () => {
+      if (this.app.initialized()) {
+        await this.load();
+      }
     });
 
     const customBreakpoint = '(max-width: 1024px)';
@@ -91,7 +129,7 @@ export class ChatComponent implements OnDestroy {
     });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.layout.disableScrolling();
     this.layout.resetActions();
     this.layout.marginOff();
@@ -101,7 +139,67 @@ export class ChatComponent implements OnDestroy {
     this.layout.enableScrolling();
   }
 
-  chat = signal<any>(null);
+  async load() {
+    var { records } = await this.identity.web5.dwn.records.query({
+      message: {
+        filter: {
+          protocol: chatDefinition.protocol,
+          schema: chatDefinition.types.message.schema,
+          dataFormat: chatDefinition.types.message.dataFormats[0],
+        },
+      },
+    });
+
+    console.log('Friend VCs:');
+    console.log(records);
+
+    let json = {};
+    let recordEntry = null;
+
+    this.chats.set([]);
+    this.threads.set([]);
+
+    if (records) {
+      // Loop through returned records and print text from each
+      for (const record of records!) {
+        let data = await record.data.json();
+        // let vc = VerifiableCredential.parseJwt({ vcJwt: data });
+
+        // let did = vc.issuer;
+
+        // // If the outher issuer is us, get the inner one.
+        // if (vc.issuer == this.identity.did) {
+        //   const subject = vc.vcDataModel.credentialSubject as any;
+        //   let vcInner = VerifiableCredential.parseJwt({ vcJwt: subject.vc });
+        //   did = vcInner.issuer;
+        // }
+
+        let json: any = { record: record, data: { data } };
+
+        // if (record.author == this.identity.did) {
+        //   json.direction = 'out';
+        // }
+
+        this.chats.update((requests) => [...requests, json]);
+
+        // console.log('All friends:', this.friends());
+
+        // recordEntry = record;
+        // let recordJson = await record.data.json();
+        // json = { ...recordJson, id: record.dataCid, did: record.author, created: record.dateCreated };
+      }
+    }
+
+    const recipients = this.chats().map((chat) => chat.data.recipient); // Adjust the path to the user identifier as needed
+    const senders = this.chats().map((chat) => chat.data.sender); // Adjust the path to the user identifier as needed
+    const distinctUsers = Array.from(new Set([...recipients, ...senders]));
+
+    console.log('Distinct users:', distinctUsers);
+
+    distinctUsers.map(async (did) => {
+      this.threads.update((requests) => [...requests, { did: did, text: 'Hello', timestamp: '2021-09-01T00:00:00Z' }]);
+    });
+  }
 
   toggleDetails() {
     this.details.set(!this.details());
@@ -114,6 +212,36 @@ export class ChatComponent implements OnDestroy {
   open(id: string) {
     const chat = this.folders.find((f) => f.id === id);
     this.chat.set(chat);
+  }
+
+  async newChat() {
+    let recipientDid = this.identity.did;
+
+    const currentDate = new Date();
+
+    const data = {
+      text: 'Hello, how are you?',
+      sender: this.identity.did,
+      recipient: recipientDid, // Do we need to replicate this value, it's in the record.
+      timestamp: currentDate.toISOString(),
+    };
+
+    const { record } = await this.identity.web5.dwn.records.write({
+      data: data,
+      message: {
+        protocol: chatDefinition.protocol,
+        protocolPath: 'message',
+        schema: chatDefinition.types.message.schema,
+        recipient: recipientDid,
+      },
+    });
+
+    console.log('Chat record:', record);
+
+    let json: any = { record: record, data: { data } };
+    this.chats.update((requests) => [...requests, json]);
+
+    return record;
   }
 
   folders: Section[] = [

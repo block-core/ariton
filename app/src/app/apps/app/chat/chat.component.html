@@ -4,12 +4,31 @@
       <span class="toolbar-spacer">
         <input type="search" class="search-input" placeholder="Filter chats" />
       </span>
-      <button mat-icon-button matTooltip="New chat">
+      <button mat-icon-button matTooltip="New chat" (click)="newChat()">
         <mat-icon>add_comment</mat-icon>
       </button>
     </mat-toolbar>
 
     <div class="panel-content panel-content-chats">
+      @for (thread of threads(); track thread) {
+      <a
+        class="chat-link"
+        [routerLink]="['/app', 'chat', 'did:dht:1ko4cqh7c7i9z56r7qwucgpbra934rngc5eyffg1km5k6rc5991o']"
+        routerLinkActive="router-link-active"
+      >
+        <div>
+          <img class="chat-icon" src="https://ariton.app/assets/sondre.png" />
+        </div>
+        <div class="chat-details">
+          <div class="chat-info">
+            <div class="chat-info-name">John Doe is not a very long name, is it?</div>
+            <div class="chat-time">{{ thread.timestamp | date : 'HH:mm' }}</div>
+          </div>
+          <div class="chat-text">{{ thread.text }}</div>
+        </div>
+      </a>
+      }
+
       <a
         class="chat-link"
         [routerLink]="['/app', 'chat', 'did:dht:1ko4cqh7c7i9z56r7qwucgpbra934rngc5eyffg1km5k6rc5991o']"
