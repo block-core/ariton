@@ -112,7 +112,7 @@
     </mat-menu>
 
     <div class="panel-content panel-content-messages">
-      Chat Messages Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt atque non voluptatum aperiam
+      <!-- Chat Messages Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt atque non voluptatum aperiam
       doloribus expedita dolorem odit? Fugit similique consectetur earum rem? Voluptatem est, voluptatum unde ipsam
       itaque dolores quisquam? Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt atque non voluptatum
       aperiam doloribus expedita dolorem odit? Fugit similique consectetur earum rem? Voluptatem est, voluptatum unde
@@ -147,7 +147,7 @@
       Deserunt atque non voluptatum aperiam doloribus expedita dolorem odit? Fugit similique consectetur earum rem?
       Voluptatem est, voluptatum unde ipsam itaque dolores quisquam? Lorem ipsum dolor sit amet consectetur, adipisicing
       elit. Deserunt atque non voluptatum aperiam doloribus expedita dolorem odit? Fugit similique consectetur earum
-      rem? Voluptatem est, voluptatum unde ipsam itaque dolores quisquam?
+      rem? Voluptatem est, voluptatum unde ipsam itaque dolores quisquam? -->
     </div>
 
     <div class="chat-input">
@@ -197,8 +197,31 @@
       </button>
     </mat-toolbar>
 
-    <div class="panel-content">
-      User Profile Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt atque non voluptatum aperiam
+    <div class="panel-content profile-details">
+      @if(selectedProfile()) {
+
+      <div>
+        <strong>{{ selectedProfile().profile.name }}</strong>
+      </div>
+      <div>{{ selectedProfile().profile.status }}</div>
+      <br />
+      <mat-divider></mat-divider><br />
+      <div>{{ selectedProfile().profile.title }}</div>
+      <div class="dimmed profile-info-label">Title</div>
+
+      <div>{{ selectedProfile().profile.bio }}</div>
+      <div class="dimmed profile-info-label">Bio</div>
+
+      <div>{{ selectedProfile().profile.location }}</div>
+      <div class="dimmed profile-info-label">Location</div>
+
+      <div class="ellipsis" [matTooltip]="selectedProfile().profile.did">{{ selectedProfile().profile.did }}</div>
+      <div class="dimmed profile-info-label">Identifier</div>
+
+      <!-- {{ selectedProfile().profile | json }} -->
+      }
+
+      <!-- User Profile Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt atque non voluptatum aperiam
       doloribus expedita dolorem odit? Fugit similique consectetur earum rem? Voluptatem est, voluptatum unde ipsam
       itaque dolores quisquam? Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt atque non voluptatum
       aperiam doloribus expedita dolorem odit? Fugit similique consectetur earum rem? Voluptatem est, voluptatum unde
@@ -239,7 +262,7 @@
       consectetur, adipisicing elit. Deserunt atque non voluptatum aperiam doloribus expedita dolorem odit? Fugit
       similique consectetur earum rem? Voluptatem est, voluptatum unde ipsam itaque dolores quisquam? Lorem ipsum dolor
       sit amet consectetur, adipisicing elit. Deserunt atque non voluptatum aperiam doloribus expedita dolorem odit?
-      Fugit similique consectetur earum rem? Voluptatem est, voluptatum unde ipsam itaque dolores quisquam?
+      Fugit similique consectetur earum rem? Voluptatem est, voluptatum unde ipsam itaque dolores quisquam? -->
     </div>
   </div>
   }

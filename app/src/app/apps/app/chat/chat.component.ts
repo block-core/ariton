@@ -22,6 +22,7 @@ import { protocolDefinition as chatDefinition } from '../../../../protocols/chat
 import { Record } from '@web5/api';
 import { ProfileImageDirective } from '../../../shared/directives/profile-image.directive';
 import { ProfileNameDirective } from '../../../shared/directives/profile-name.directive';
+import { ProfileService } from '../../../profile.service';
 
 export interface Section {
   id: string;
@@ -93,7 +94,11 @@ export class ChatComponent implements OnDestroy {
 
   route = inject(ActivatedRoute);
 
+  profile = inject(ProfileService);
+
   selectedChat = signal<string | null>(null);
+
+  selectedProfile = signal<any>(null);
 
   chat = signal<any>(null);
 
@@ -115,6 +120,16 @@ export class ChatComponent implements OnDestroy {
         await this.load();
       }
     });
+
+    effect(
+      async () => {
+        if (this.selectedChat() && this.app.initialized()) {
+          const profile = await this.profile.loadProfile(this.selectedChat()!);
+          this.selectedProfile.set(profile);
+        }
+      },
+      { allowSignalWrites: true },
+    );
 
     const customBreakpoint = '(max-width: 1024px)';
 
