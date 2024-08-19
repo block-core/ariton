@@ -25,6 +25,8 @@ import { ProfileNameDirective } from '../../../shared/directives/profile-name.di
 import { ProfileService } from '../../../profile.service';
 import { DwnDateSort } from '@web5/agent';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { credential } from '../../../../protocols';
+import { VerifiableCredential } from '@web5/credentials';
 
 export interface Section {
   id: string;
@@ -390,7 +392,12 @@ export class ChatComponent implements OnDestroy {
     // console.log(this.chats());
     const recipients = this.chats().map((chat) => chat.data.recipient); // Adjust the path to the user identifier as needed
     const senders = this.chats().map((chat) => chat.data.sender); // Adjust the path to the user identifier as needed
-    const distinctUsers = Array.from(new Set([...recipients, ...senders]));
+
+    // TODO: This is a temporary solution where we get all DIDs from friends and list them in the chat.
+    // In the future, there will be a "New Chat" button where user picks a friend (and potentially paste a DID).
+    const friends = await this.loadFriends();
+
+    const distinctUsers = Array.from(new Set([...recipients, ...senders, ...friends]));
 
     // console.log(recipients);
     // console.log(senders);
@@ -413,6 +420,46 @@ export class ChatComponent implements OnDestroy {
     });
 
     console.log('Threads:', this.threads());
+  }
+
+  async loadFriends() {
+    var { records } = await this.identity.web5.dwn.records.query({
+      message: {
+        filter: {
+          schema: credential.friendship,
+          dataFormat: credential.format,
+        },
+      },
+    });
+
+    console.log('Friend VCs:');
+    console.log(records);
+
+    let json = {};
+    let recordEntry = null;
+
+    let dids = [];
+
+    if (records) {
+      for (const record of records!) {
+        let data = await record.data.text();
+        let vc = VerifiableCredential.parseJwt({ vcJwt: data });
+
+        let did = vc.issuer;
+
+        // If the outher issuer is us, get the inner one.
+        if (vc.issuer == this.identity.did) {
+          const subject = vc.vcDataModel.credentialSubject as any;
+          let vcInner = VerifiableCredential.parseJwt({ vcJwt: subject.vc });
+          did = vcInner.issuer;
+        }
+
+        dids.push(did);
+        // let json: any = { record: record, data: { did } };
+      }
+    }
+
+    return dids;
   }
 
   toggleDetails() {
