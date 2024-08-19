@@ -8,6 +8,7 @@ import { DwnDateSort } from '@web5/agent';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute, RouterModule } from '@angular/router';
+import { Record } from '@web5/api';
 
 @Component({
   selector: 'app-todo',
@@ -25,6 +26,8 @@ export class TodoComponent {
 
   list = signal<any[]>([]);
 
+  todos = signal<any[]>([]);
+
   app = inject(AppService);
 
   identity = inject(IdentityService);
@@ -33,21 +36,70 @@ export class TodoComponent {
 
   selectedList = signal<string | null>(null);
 
+  selectedRecord = signal<Record | null>(null);
+
   constructor() {
     this.layout.marginOn();
 
     this.layout.resetActions();
 
-    effect(async () => {
-      if (this.app.initialized()) {
-        await this.load();
-      }
-    });
+    effect(
+      async () => {
+        if (this.app.initialized()) {
+          await this.load();
+        }
+      },
+      { allowSignalWrites: true },
+    );
 
     this.route.paramMap.subscribe((params) => {
       this.layout.disableScrolling();
       this.selectedList.set(params.get('id'));
     });
+
+    effect(
+      async () => {
+        if (this.app.initialized() && this.selectedList() && this.selectedList() != ':id') {
+          await this.loadList(this.selectedList()!);
+        }
+      },
+      { allowSignalWrites: true },
+    );
+  }
+
+  async loadList(id: string) {
+    this.todos.set([]);
+
+    // fetch shared list details
+    const { record } = await this.identity.web5.dwn.records.read({
+      message: {
+        filter: {
+          recordId: id,
+        },
+      },
+    });
+
+    this.selectedRecord.set(record);
+
+    // fetch todos under list
+    const { records: todoRecords } = await this.identity.web5.dwn.records.query({
+      message: {
+        filter: {
+          parentId: id,
+        },
+      },
+    });
+
+    const todoList = await record.data.json();
+    console.log(todoList);
+
+    // add entry to array
+    for (let record of todoRecords!) {
+      const data = await record.data.json();
+      const todo = { record, data, id: record.id };
+
+      this.todos.update((requests) => [...requests, todo]);
+    }
   }
 
   async load() {
@@ -73,6 +125,44 @@ export class TodoComponent {
   }
 
   async newTodo() {
+    const todoRecipient = 'did:dht:bi3bzoke6rq6fbkojpo5ebtg45eqx1owqrb4esex8t9nz14ugnao';
+
+    const todoData = {
+      completed: false,
+      description: 'description',
+      author: this.identity.did,
+      parentId: this.selectedRecord()!.id,
+    };
+
+    // newTodoDescription.value = '';
+
+    const { record: todoRecord, status: createStatus } = await this.identity.web5.dwn.records.create({
+      data: todoData,
+      message: {
+        protocol: todoDefinition.protocol,
+        protocolPath: 'list/todo',
+        schema: todoDefinition.types.todo.schema,
+        dataFormat: todoDefinition.types.todo.dataFormats[0],
+        parentContextId: todoData.parentId,
+      },
+    });
+
+    const data = await todoRecord!.data.json();
+    const todo = { todoRecord, data, id: todoRecord!.id };
+
+    this.todos.update((requests) => [...requests, todo]);
+
+    const { status: sendStatus } = await todoRecord!.send(todoRecipient);
+
+    if (sendStatus.code !== 202) {
+      console.log('Unable to send to target did:' + sendStatus);
+      return;
+    } else {
+      console.log('Sent todo to recipient');
+    }
+  }
+
+  async newList() {
     const recipientDID = 'did:dht:bi3bzoke6rq6fbkojpo5ebtg45eqx1owqrb4esex8t9nz14ugnao';
 
     const sharedListData = {

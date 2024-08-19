@@ -5,17 +5,27 @@
   apps.
 </p>
 
+<button mat-flat-button (click)="newList()">New list</button><br /><br />
 <button mat-flat-button (click)="newTodo()">New todo</button><br /><br />
 
-@for(todo of list(); track todo) {
+@for(list of list(); track list) {
 <!-- {{ todo | json }} -->
-
-<div class="todo-list" [routerLink]="['/app', 'todo', todo.id]">
-  Title: {{ todo.data.title }}<br />
-  Description: {{ todo.data.description }}<br />
-  Type: {{ todo.data.type }}<br />
+<div class="todo-list" [routerLink]="['/app', 'todo', list.id]">
+  Title: {{ list.data.title }}<br />
+  Description: {{ list.data.description }}<br />
+  Type: {{ list.data.type }}<br />
 </div>
+}
 
+<br /><br />
+
+@for(todo of todos(); track todo) {
+<!-- {{ todo | json }} -->
+<div class="todo-list" [routerLink]="['/app', 'todo', todo.id]">
+  author: {{ todo.data.author }}<br />
+  Description: {{ todo.data.description }}<br />
+  completed: {{ todo.data.completed }}<br />
+</div>
 }
 
 <div class="container">
