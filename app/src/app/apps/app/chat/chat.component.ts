@@ -23,6 +23,8 @@ import { Record } from '@web5/api';
 import { ProfileImageDirective } from '../../../shared/directives/profile-image.directive';
 import { ProfileNameDirective } from '../../../shared/directives/profile-name.directive';
 import { ProfileService } from '../../../profile.service';
+import { DwnDateSort } from '@web5/agent';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 export interface Section {
   id: string;
@@ -48,6 +50,7 @@ export interface Thread {
 export interface MessageEntry {
   record: Record;
   data: Message;
+  direction?: string;
 }
 
 @Component({
@@ -71,6 +74,7 @@ export interface MessageEntry {
     ReactiveFormsModule,
     ProfileImageDirective,
     ProfileNameDirective,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.scss',
@@ -100,6 +104,10 @@ export class ChatComponent implements OnDestroy {
 
   selectedProfile = signal<any>(null);
 
+  loading = signal<boolean>(false);
+
+  messages = signal<MessageEntry[]>([]);
+
   chat = signal<any>(null);
 
   chats = signal<MessageEntry[]>([]);
@@ -124,8 +132,20 @@ export class ChatComponent implements OnDestroy {
     effect(
       async () => {
         if (this.selectedChat() && this.app.initialized()) {
+          this.selectedProfile.set(null);
+          this.messages.set([]);
+
+          if (this.selectedChat() === ':id') {
+            return;
+          }
+
+          this.loading.set(true);
+
           const profile = await this.profile.loadProfile(this.selectedChat()!);
           this.selectedProfile.set(profile);
+          await this.loadMessages(this.selectedChat()!);
+
+          this.loading.set(false);
         }
       },
       { allowSignalWrites: true },
@@ -156,6 +176,164 @@ export class ChatComponent implements OnDestroy {
 
   ngOnDestroy() {
     this.layout.enableScrolling();
+  }
+
+  async loadMessages(did: string) {
+    // this.loadNotes({ labels: tagsString });
+
+    // var { records: messages } = await this.identity.web5.dwn.records.query({
+    //   message: {
+    //     filter: {
+    //       protocol: chatDefinition.protocol,
+    //       schema: chatDefinition.types.message.schema,
+    //       dataFormat: chatDefinition.types.message.dataFormats[0],
+    //     },
+    //     dateSort: DwnDateSort.CreatedAscending,
+    //   },
+    // });
+
+    // console.log('All messages', messages);
+
+    // const senderStored = 'did:dht:bi3bzoke6rq6fbkojpo5ebtg45eqx1owqrb4esex8t9nz14ugnao';
+    // const receiverStored = 'did:dht:1ko4cqh7c7i9z56r7qwucgpbra934rngc5eyffg1km5k6rc5991o';
+
+    // var { records: messages2 } = await this.identity.web5.dwn.records.query({
+    //   message: {
+    //     filter: {
+    //       tags: {
+    //         recipient: senderStored,
+    //         sender: senderStored,
+    //       },
+    //       protocol: chatDefinition.protocol,
+    //       schema: chatDefinition.types.message.schema,
+    //       dataFormat: chatDefinition.types.message.dataFormats[0],
+    //     },
+    //     dateSort: DwnDateSort.CreatedAscending,
+    //   },
+    // });
+
+    // console.log('messages2', messages2);
+
+    // var { records: messages3 } = await this.identity.web5.dwn.records.query({
+    //   message: {
+    //     filter: {
+    //       tags: {
+    //         recipients: senderStored,
+    //       },
+    //       protocol: chatDefinition.protocol,
+    //       schema: chatDefinition.types.message.schema,
+    //       dataFormat: chatDefinition.types.message.dataFormats[0],
+    //     },
+    //     dateSort: DwnDateSort.CreatedAscending,
+    //   },
+    // });
+
+    // console.log('messages3', messages3);
+
+    // var { records: messages4 } = await this.identity.web5.dwn.records.query({
+    //   message: {
+    //     filter: {
+    //       tags: {
+    //         recipients: receiverStored,
+    //       },
+    //       protocol: chatDefinition.protocol,
+    //       schema: chatDefinition.types.message.schema,
+    //       dataFormat: chatDefinition.types.message.dataFormats[0],
+    //     },
+    //     dateSort: DwnDateSort.CreatedAscending,
+    //   },
+    // });
+
+    // console.log('messages4', messages4);
+
+    const tags = {
+      // recipient: did,
+      // sender: did,
+      recipients: did,
+    };
+
+    var { records } = await this.identity.web5.dwn.records.query({
+      message: {
+        filter: {
+          tags: tags,
+          protocol: chatDefinition.protocol,
+          schema: chatDefinition.types.message.schema,
+          dataFormat: chatDefinition.types.message.dataFormats[0],
+        },
+        dateSort: DwnDateSort.CreatedAscending,
+      },
+    });
+
+    let json = {};
+    let recordEntry = null;
+
+    // this.chats.set([]);
+    this.messages.set([]);
+
+    if (records) {
+      // Loop through returned records and print text from each
+      for (const record of records!) {
+        let data = await record.data.json();
+        // let vc = VerifiableCredential.parseJwt({ vcJwt: data });
+
+        // let did = vc.issuer;
+
+        // // If the outher issuer is us, get the inner one.
+        // if (vc.issuer == this.identity.did) {
+        //   const subject = vc.vcDataModel.credentialSubject as any;
+        //   let vcInner = VerifiableCredential.parseJwt({ vcJwt: subject.vc });
+        //   did = vcInner.issuer;
+        // }
+
+        let json: any = { record: record, data: data };
+
+        console.log('AUTHOR:', record.author);
+        console.log('this.identity.did:', this.identity.did);
+
+        if (record.author == this.identity.did) {
+          json.direction = 'out';
+          console.log('DIRECTION IS OUT!!!');
+          console.log('JSON:', json);
+        }
+
+        this.messages.update((requests) => [...requests, json]);
+
+        let json2 = JSON.parse(JSON.stringify(json));
+        json2.direction = 'in';
+
+        this.messages.update((requests) => [...requests, json2]);
+
+        // console.log('All friends:', this.friends());
+
+        // recordEntry = record;
+        // let recordJson = await record.data.json();
+        // json = { ...recordJson, id: record.dataCid, did: record.author, created: record.dateCreated };
+      }
+    }
+
+    // console.log(this.chats());
+    // const recipients = this.chats().map((chat) => chat.data.recipient); // Adjust the path to the user identifier as needed
+    // const senders = this.chats().map((chat) => chat.data.sender); // Adjust the path to the user identifier as needed
+    // const distinctUsers = Array.from(new Set([...recipients, ...senders]));
+
+    // // console.log(recipients);
+    // // console.log(senders);
+    // // console.log('Distinct users:', distinctUsers);
+
+    // const sortedChats = this.chats().sort((a, b) => {
+    //   return a.data.timestamp > b.data.timestamp ? -1 : 1;
+    // });
+
+    // distinctUsers.map(async (did) => {
+    //   const latestMessage = sortedChats.find((chat) => chat.data.recipient == did || chat.data.sender == did);
+
+    //   this.threads.update((requests) => [
+    //     ...requests,
+    //     { did: did, text: latestMessage?.data.text, timestamp: latestMessage?.data.timestamp },
+    //   ]);
+    // });
+
+    // console.log('Threads:', this.threads());
   }
 
   async load() {
@@ -247,12 +425,63 @@ export class ChatComponent implements OnDestroy {
     this.chat.set(chat);
   }
 
+  message: string = '';
+
+  async submitMessage() {
+    if (this.message.trim()) {
+      console.log('Message submitted:', this.message);
+
+      let recipientDid = this.selectedProfile().did;
+      const currentDate = new Date();
+
+      const data: Message = {
+        text: this.message,
+        sender: this.identity.did,
+        recipient: recipientDid, // Do we need to replicate this value, it's in the record.
+        timestamp: currentDate.toISOString(),
+      };
+
+      const tags = {
+        // sender: this.identity.did,
+        // recipient: recipientDid,
+        // recipients: [recipientDid, this.identity.did],
+
+        sender: recipientDid,
+        recipient: this.identity.did,
+        recipients: [this.identity.did, recipientDid],
+      };
+
+      const { record } = await this.identity.web5.dwn.records.write({
+        data: data,
+        message: {
+          tags: tags,
+          protocol: chatDefinition.protocol,
+          protocolPath: 'message',
+          schema: chatDefinition.types.message.schema,
+          recipient: recipientDid,
+        },
+      });
+
+      record?.send(recipientDid);
+
+      console.log('Chat record:', record);
+
+      let json: any = { record: record, data: data };
+
+      console.log('CHat JSON:', json);
+
+      this.messages.update((requests) => [...requests, json]);
+
+      this.message = ''; // Clear the input field after submission
+    }
+  }
+
   async deleteChat() {
-    for (let chat of this.chats()) {
-      await chat.record.delete();
+    for (let message of this.messages()) {
+      await message.record.delete();
     }
 
-    this.chats.set([]);
+    this.messages.set([]);
   }
 
   async newChat() {
@@ -268,9 +497,20 @@ export class ChatComponent implements OnDestroy {
       timestamp: currentDate.toISOString(),
     };
 
+    const tags = {
+      // sender: this.identity.did,
+      // recipient: recipientDid,
+      // recipients: [recipientDid, this.identity.did],
+
+      sender: recipientDid,
+      recipient: this.identity.did,
+      recipients: [this.identity.did, recipientDid],
+    };
+
     const { record } = await this.identity.web5.dwn.records.write({
       data: data,
       message: {
+        tags: tags,
         protocol: chatDefinition.protocol,
         protocolPath: 'message',
         schema: chatDefinition.types.message.schema,
@@ -284,7 +524,7 @@ export class ChatComponent implements OnDestroy {
 
     console.log('CHat JSON:', json);
 
-    this.chats.update((requests) => [...requests, json]);
+    this.messages.update((requests) => [...requests, json]);
 
     return record;
   }

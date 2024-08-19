@@ -37,6 +37,8 @@
 
 .panel-content-messages {
   height: calc(100% - 64px - 64px);
+  display: flex;
+  flex-direction: column;
 }
 
 .panel-content-chats {
@@ -193,4 +195,22 @@
 
 .profile-info-label {
   margin-bottom: 1em;
+}
+
+.message {
+  align-self: flex-start;
+  // color: var(--mdc-dialog-container-color);
+  // background-color: color-mix(in srgb, var(--mat-option-selected-state-layer-color) 100%, transparent);
+  background-color: color-mix(in srgb, var(--mat-option-selected-state-layer-color), transparent 40%);
+
+  border-radius: 1em 1em 1em 0;
+  padding: 0.4em 1em;
+  margin-bottom: 1em;
+}
+
+.message-inbound {
+  align-self: flex-end;
+  border-radius: 1em 1em 0 1em;
+  // background-color: color-mix(in srgb, var(--mat-full-pseudo-checkbox-selected-icon-color) 100%, transparent);
+  background-color: color-mix(in srgb, var(--mat-full-pseudo-checkbox-selected-icon-color), transparent 90%);
 }

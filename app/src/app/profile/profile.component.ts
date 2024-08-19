@@ -175,8 +175,8 @@ export class ProfileComponent {
     });
   }
 
-  async shareProfile(did: string) {
-    const title = 'SondreB (Voluntaryist)';
+  async shareProfile(profile: any) {
+    const title = profile.profile.name;
     const url = document.location.href;
     const text = 'Check out this profile on Ariton';
 
