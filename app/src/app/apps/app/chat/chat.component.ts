@@ -20,6 +20,8 @@ import { IdentityService } from '../../../identity.service';
 import { AppService } from '../../../app.service';
 import { protocolDefinition as chatDefinition } from '../../../../protocols/chat';
 import { Record } from '@web5/api';
+import { ProfileImageDirective } from '../../../shared/directives/profile-image.directive';
+import { ProfileNameDirective } from '../../../shared/directives/profile-name.directive';
 
 export interface Section {
   id: string;
@@ -38,8 +40,8 @@ export interface Message {
 
 export interface Thread {
   did: string;
-  text: string;
-  timestamp: string;
+  text?: string;
+  timestamp?: string;
 }
 
 export interface MessageEntry {
@@ -66,6 +68,8 @@ export interface MessageEntry {
     MatButtonToggleModule,
     MatFormFieldModule,
     ReactiveFormsModule,
+    ProfileImageDirective,
+    ProfileNameDirective,
   ],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.scss',
@@ -174,11 +178,11 @@ export class ChatComponent implements OnDestroy {
         //   did = vcInner.issuer;
         // }
 
-        let json: any = { record: record, data: { data } };
+        let json: any = { record: record, data: data };
 
-        // if (record.author == this.identity.did) {
-        //   json.direction = 'out';
-        // }
+        if (record.author == this.identity.did) {
+          json.direction = 'out';
+        }
 
         this.chats.update((requests) => [...requests, json]);
 
@@ -190,15 +194,29 @@ export class ChatComponent implements OnDestroy {
       }
     }
 
+    // console.log(this.chats());
     const recipients = this.chats().map((chat) => chat.data.recipient); // Adjust the path to the user identifier as needed
     const senders = this.chats().map((chat) => chat.data.sender); // Adjust the path to the user identifier as needed
     const distinctUsers = Array.from(new Set([...recipients, ...senders]));
 
-    console.log('Distinct users:', distinctUsers);
+    // console.log(recipients);
+    // console.log(senders);
+    // console.log('Distinct users:', distinctUsers);
+
+    const sortedChats = this.chats().sort((a, b) => {
+      return a.data.timestamp > b.data.timestamp ? -1 : 1;
+    });
 
     distinctUsers.map(async (did) => {
-      this.threads.update((requests) => [...requests, { did: did, text: 'Hello', timestamp: '2021-09-01T00:00:00Z' }]);
+      const latestMessage = sortedChats.find((chat) => chat.data.recipient == did || chat.data.sender == did);
+
+      this.threads.update((requests) => [
+        ...requests,
+        { did: did, text: latestMessage?.data.text, timestamp: latestMessage?.data.timestamp },
+      ]);
     });
+
+    console.log('Threads:', this.threads());
   }
 
   toggleDetails() {
@@ -214,12 +232,21 @@ export class ChatComponent implements OnDestroy {
     this.chat.set(chat);
   }
 
+  async deleteChat() {
+    for (let chat of this.chats()) {
+      await chat.record.delete();
+    }
+
+    this.chats.set([]);
+  }
+
   async newChat() {
     let recipientDid = this.identity.did;
+    recipientDid = 'did:dht:bi3bzoke6rq6fbkojpo5ebtg45eqx1owqrb4esex8t9nz14ugnao';
 
     const currentDate = new Date();
 
-    const data = {
+    const data: Message = {
       text: 'Hello, how are you?',
       sender: this.identity.did,
       recipient: recipientDid, // Do we need to replicate this value, it's in the record.
@@ -238,7 +265,10 @@ export class ChatComponent implements OnDestroy {
 
     console.log('Chat record:', record);
 
-    let json: any = { record: record, data: { data } };
+    let json: any = { record: record, data: data };
+
+    console.log('CHat JSON:', json);
+
     this.chats.update((requests) => [...requests, json]);
 
     return record;

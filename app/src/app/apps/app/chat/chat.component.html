@@ -11,24 +11,20 @@
 
     <div class="panel-content panel-content-chats">
       @for (thread of threads(); track thread) {
-      <a
-        class="chat-link"
-        [routerLink]="['/app', 'chat', 'did:dht:1ko4cqh7c7i9z56r7qwucgpbra934rngc5eyffg1km5k6rc5991o']"
-        routerLinkActive="router-link-active"
-      >
+      <a class="chat-link" [routerLink]="['/app', 'chat', thread.did]" routerLinkActive="router-link-active">
         <div>
-          <img class="chat-icon" src="https://ariton.app/assets/sondre.png" />
+          <img class="chat-icon" [appProfileImage]="thread.did" />
         </div>
         <div class="chat-details">
           <div class="chat-info">
-            <div class="chat-info-name">John Doe is not a very long name, is it?</div>
+            <div class="chat-info-name" [appProfileName]="thread.did"></div>
             <div class="chat-time">{{ thread.timestamp | date : 'HH:mm' }}</div>
           </div>
           <div class="chat-text">{{ thread.text }}</div>
         </div>
       </a>
       }
-
+      <!-- 
       <a
         class="chat-link"
         [routerLink]="['/app', 'chat', 'did:dht:1ko4cqh7c7i9z56r7qwucgpbra934rngc5eyffg1km5k6rc5991o']"
@@ -54,9 +50,9 @@
       <a class="chat-link"><img class="chat-icon" src="https://ariton.app/assets/david.jpg" /></a>
       <a class="chat-link"><img class="chat-icon" src="https://ariton.app/assets/milad.png" /></a>
       <a class="chat-link"><img class="chat-icon" src="https://ariton.app/assets/lu.jpg" /></a>
-      <a class="chat-link"><img class="chat-icon" src="https://ariton.app/assets/kosta.jpg" /></a>
+      <a class="chat-link"><img class="chat-icon" src="https://ariton.app/assets/kosta.jpg" /></a> -->
 
-      Chat History Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt atque non voluptatum aperiam
+      <!-- Chat History Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt atque non voluptatum aperiam
       doloribus expedita dolorem odit? Fugit similique consectetur earum rem? Voluptatem est, voluptatum unde ipsam
       itaque dolores quisquam? Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt atque non voluptatum
       aperiam doloribus expedita dolorem odit? Fugit similique consectetur earum rem? Voluptatem est, voluptatum unde
@@ -70,7 +66,7 @@
       elit. Deserunt atque non voluptatum aperiam doloribus expedita dolorem odit? Fugit similique consectetur earum
       rem? Voluptatem est, voluptatum unde ipsam itaque dolores quisquam? Lorem ipsum dolor sit amet consectetur,
       adipisicing elit. Deserunt atque non voluptatum aperiam doloribus expedita dolorem odit? Fugit similique
-      consectetur earum rem? Voluptatem est, voluptatum unde ipsam itaque dolores quisquam?
+      consectetur earum rem? Voluptatem est, voluptatum unde ipsam itaque dolores quisquam? -->
     </div>
   </div>
   <div class="middle-panel">
@@ -109,7 +105,7 @@
         <mat-icon>archive</mat-icon>
         <span>Archive chat</span>
       </button>
-      <button mat-menu-item [disabled]="true">
+      <button mat-menu-item (click)="deleteChat()">
         <mat-icon>delete</mat-icon>
         <span>Delete chat</span>
       </button>
