@@ -28,10 +28,12 @@ export class ProfileImageDirective {
       //   const url = this.sanitizer.bypassSecurityTrustResourceUrl(profile.avatar);
       const url = profile.avatar;
 
-      console.log(profile);
-
-      this.el.nativeElement.src = url;
-      this.el.nativeElement.onerror = "this.src='/avatar-placeholder.png';this.onerror='';";
+      if (url) {
+        this.el.nativeElement.src = url;
+        this.el.nativeElement.onerror = "this.src='/avatar-placeholder.png';this.onerror='';";
+      } else {
+        this.el.nativeElement.src = '/avatar-placeholder.png';
+      }
     }
   }
 }

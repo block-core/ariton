@@ -47,10 +47,12 @@
     </mat-toolbar>
 
     <mat-menu #chatMenu="matMenu">
-      <button mat-menu-item [routerLink]="['/profile', '']">
+      @if (selectedProfile()) {
+      <button mat-menu-item [routerLink]="['/profile', selectedProfile().profile.did]">
         <mat-icon>account_circle</mat-icon>
         <span>View profile</span>
       </button>
+      }
       <button mat-menu-item [disabled]="true">
         <mat-icon>done</mat-icon>
         <span>Mark as unread</span>
