@@ -1,63 +1,97 @@
-<h1>Todo</h1>
+<mat-tab-group>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <span class="hide-small">Personal</span>
+    </ng-template>
 
-<p>
-  This is a demonstration app that shows the power of Ariton as a platform for building user centric data driven mini
-  apps.
-</p>
+    <div>
+      <br />
+      <button mat-flat-button (click)="newList()">New list</button>&nbsp;
+      <button mat-flat-button [disabled]="!selectedList()" (click)="newTodo()">New todo</button><br /><br />
 
-<button mat-flat-button (click)="newList()">New list</button><br /><br />
-<button mat-flat-button (click)="newTodo()">New todo</button><br /><br />
+      @for(list of list(); track list) {
 
-@for(list of list(); track list) {
-<!-- {{ todo | json }} -->
-<div class="todo-list" [routerLink]="['/app', 'todo', list.id]">
+      <div class="container">
+        <h2 class="clickable" [routerLink]="['/app', 'todo', list.id]">{{ list.data.title }}</h2>
+
+        <div
+          cdkDropList
+          #todoList="cdkDropList"
+          [cdkDropListData]="todo"
+          [cdkDropListConnectedTo]="doneList"
+          class="list"
+          (cdkDropListDropped)="drop($event)"
+        >
+          @for (item of list.todos; track item) {
+          <div class="list-item" cdkDrag>{{ item.data.description }} ({{ item.data.completed }})</div>
+          }
+        </div>
+      </div>
+
+      <!-- <div class="todo-list" [routerLink]="['/app', 'todo', list.id]">
   Title: {{ list.data.title }}<br />
   Description: {{ list.data.description }}<br />
   Type: {{ list.data.type }}<br />
-</div>
-}
+</div> -->
+      }
 
-<br /><br />
+      <br /><br />
 
-@for(todo of todos(); track todo) {
-<!-- {{ todo | json }} -->
+      <!-- @for(todo of todos(); track todo) {
 <div class="todo-list" [routerLink]="['/app', 'todo', todo.id]">
   author: {{ todo.data.author }}<br />
   Description: {{ todo.data.description }}<br />
   completed: {{ todo.data.completed }}<br />
 </div>
-}
+} -->
 
-<div class="container">
-  <h2>To do</h2>
+      <div class="container">
+        <h2>To do</h2>
 
-  <div
-    cdkDropList
-    #todoList="cdkDropList"
-    [cdkDropListData]="todo"
-    [cdkDropListConnectedTo]="doneList"
-    class="list"
-    (cdkDropListDropped)="drop($event)"
-  >
-    @for (item of todo; track item) {
-    <div class="list-item" cdkDrag>{{ item }}</div>
-    }
-  </div>
-</div>
+        <div
+          cdkDropList
+          #todoList="cdkDropList"
+          [cdkDropListData]="todo"
+          [cdkDropListConnectedTo]="doneList"
+          class="list"
+          (cdkDropListDropped)="drop($event)"
+        >
+          @for (item of todo; track item) {
+          <div class="list-item" cdkDrag>{{ item }}</div>
+          }
+        </div>
+      </div>
 
-<div class="container">
-  <h2>Done</h2>
+      <div class="container">
+        <h2>Done</h2>
 
-  <div
-    cdkDropList
-    #doneList="cdkDropList"
-    [cdkDropListData]="done"
-    [cdkDropListConnectedTo]="todoList"
-    class="list"
-    (cdkDropListDropped)="drop($event)"
-  >
-    @for (item of done; track item) {
-    <div class="list-item" cdkDrag>{{ item }}</div>
-    }
-  </div>
-</div>
+        <div
+          cdkDropList
+          #doneList="cdkDropList"
+          [cdkDropListData]="done"
+          [cdkDropListConnectedTo]="todoList"
+          class="list"
+          (cdkDropListDropped)="drop($event)"
+        >
+          @for (item of done; track item) {
+          <div class="list-item" cdkDrag>{{ item }}</div>
+          }
+        </div>
+      </div>
+    </div>
+  </mat-tab>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <span class="hide-small">Business</span>
+    </ng-template>
+
+    <div class="container responsive-grid"></div>
+  </mat-tab>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <span class="hide-small">Groceries</span>
+    </ng-template>
+
+    <div class="container responsive-grid"></div>
+  </mat-tab>
+</mat-tab-group>

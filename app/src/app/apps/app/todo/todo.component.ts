@@ -9,11 +9,13 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Record } from '@web5/api';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-todo',
   standalone: true,
-  imports: [CdkDrag, CdkDropList, CommonModule, MatButtonModule, RouterModule],
+  imports: [CdkDrag, CdkDropList, CommonModule, MatButtonModule, RouterModule, MatTabsModule, MatIconModule],
   templateUrl: './todo.component.html',
   styleUrl: './todo.component.scss',
 })
@@ -53,13 +55,20 @@ export class TodoComponent {
     );
 
     this.route.paramMap.subscribe((params) => {
-      this.layout.disableScrolling();
-      this.selectedList.set(params.get('id'));
+      this.layout.marginOff();
+      // this.layout.disableScrolling();
+      const id = params.get('id');
+
+      if (!id || id == ':id') {
+        this.selectedList.set(null);
+      } else {
+        this.selectedList.set(params.get('id'));
+      }
     });
 
     effect(
       async () => {
-        if (this.app.initialized() && this.selectedList() && this.selectedList() != ':id') {
+        if (this.app.initialized() && this.selectedList()) {
           await this.loadList(this.selectedList()!);
         }
       },
@@ -102,6 +111,41 @@ export class TodoComponent {
     }
   }
 
+  async getList(id: string) {
+    console.log('GET LIST:', id);
+
+    // fetch shared list details
+    const { record } = await this.identity.web5.dwn.records.read({
+      message: {
+        filter: {
+          recordId: id,
+        },
+      },
+    });
+
+    // fetch todos under list
+    const { records: todoRecords } = await this.identity.web5.dwn.records.query({
+      message: {
+        filter: {
+          parentId: id,
+        },
+      },
+    });
+
+    const todoList = await record.data.json();
+
+    const todos = [];
+
+    // add entry to array
+    for (let record of todoRecords!) {
+      const data = await record.data.json();
+      const todo = { record, data, id: record.id };
+      todos.push(todo);
+    }
+
+    return todos;
+  }
+
   async load() {
     // Fetch shared todo lists
     const { records } = await this.identity.web5.dwn.records.query({
@@ -118,7 +162,10 @@ export class TodoComponent {
     // add entry to sharedList
     for (let record of records!) {
       const data = await record.data.json();
-      const list = { record, data, id: record.id };
+      let list: any = { record, data, id: record.id };
+
+      // fetch todos under list
+      list.todos = await this.getList(list.id);
 
       this.list.update((requests) => [...requests, list]);
     }
