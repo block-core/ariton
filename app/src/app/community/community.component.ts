@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -10,6 +10,8 @@ import { CommonModule } from '@angular/common';
 import { SizePipe } from '../shared/pipes/size.pipe';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatInputModule } from '@angular/material/input';
+import { AppService } from '../app.service';
+import { LayoutService } from '../layout.service';
 
 @Component({
   selector: 'app-community',
@@ -35,7 +37,15 @@ export class CommunityComponent {
 
   photos = signal<any[]>([]);
 
+  app = inject(AppService);
+
+  layout = inject(LayoutService);
+
+  constructor() {}
+
   ngOnInit() {
+    this.layout.marginOff();
+
     const photos: any[] = [];
     for (let i = 0; i < this.images.length; i++) {
       photos.push({

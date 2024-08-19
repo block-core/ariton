@@ -5,68 +5,72 @@
       <span class="hide-small">Discussions</span>
     </ng-template>
 
-    <mat-card class="toolbar-actions">
-      <mat-card-content>
-        <button type="button" mat-button>
-          <mat-icon>chat</mat-icon>
-          Post
-        </button>
-        <button type="button" mat-button>
-          <mat-icon>event</mat-icon>
-          Event
-        </button>
-        <button type="button" mat-button>
-          <mat-icon>photo_library</mat-icon>
-          Media
-        </button>
-        <button type="button" mat-button>
-          <mat-icon>attach_file</mat-icon>
-          File
-        </button>
-      </mat-card-content>
-    </mat-card>
+    <ng-template matTabContent>
+      <div class="tab-content">
+        <mat-card class="toolbar-actions">
+          <mat-card-content>
+            <button type="button" mat-button>
+              <mat-icon>chat</mat-icon>
+              Post
+            </button>
+            <button type="button" mat-button>
+              <mat-icon>event</mat-icon>
+              Event
+            </button>
+            <button type="button" mat-button>
+              <mat-icon>photo_library</mat-icon>
+              Media
+            </button>
+            <button type="button" mat-button>
+              <mat-icon>attach_file</mat-icon>
+              File
+            </button>
+          </mat-card-content>
+        </mat-card>
 
-    <mat-card class="discussion-card">
-      <mat-card-header>
-        <img mat-card-avatar src="https://ariton.app/assets/sondre.png" />
-        <mat-card-title>Sondre</mat-card-title>
-        <mat-card-subtitle>{{ '2024-07-16 10:00' | ago }}</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse cupiditate omnis consectetur facere modi dolore
-          ipsum harum, distinctio corrupti aliquam possimus explicabo! Distinctio, adipisci. Ipsum, repellat! Velit eos
-          consectetur in. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Culpa vero accusantium rem
-          repudiandae velit praesentium explicabo sit! Amet nulla repellat beatae pariatur, velit eius ut sunt, placeat
-          labore, esse saepe?
-        </p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-button>LIKE</button>
-        <button mat-button>COMMENT</button>
-      </mat-card-actions>
-    </mat-card>
+        <mat-card class="discussion-card">
+          <mat-card-header>
+            <img mat-card-avatar src="https://ariton.app/assets/sondre.png" />
+            <mat-card-title>Sondre</mat-card-title>
+            <mat-card-subtitle>{{ '2024-07-16 10:00' | ago }}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse cupiditate omnis consectetur facere modi
+              dolore ipsum harum, distinctio corrupti aliquam possimus explicabo! Distinctio, adipisci. Ipsum, repellat!
+              Velit eos consectetur in. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Culpa vero accusantium
+              rem repudiandae velit praesentium explicabo sit! Amet nulla repellat beatae pariatur, velit eius ut sunt,
+              placeat labore, esse saepe?
+            </p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-button>LIKE</button>
+            <button mat-button>COMMENT</button>
+          </mat-card-actions>
+        </mat-card>
 
-    <mat-card class="discussion-card">
-      <mat-card-header>
-        <img mat-card-avatar src="https://ariton.app/assets/lu.jpg" />
-        <mat-card-title>Lu</mat-card-title>
-        <mat-card-subtitle>{{ '2024-07-16 14:00' | ago }}</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse cupiditate omnis consectetur facere modi dolore
-          ipsum harum, distinctio corrupti aliquam possimus explicabo! Distinctio, adipisci. Ipsum, repellat! Velit eos
-          consectetur in. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Culpa vero accusantium rem
-          repudiandae velit praesentium explicabo sit! Amet nulla repellat beatae pariatur, velit eius ut sunt, placeat
-          labore, esse saepe?
-        </p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-button>LIKE</button>
-        <button mat-button>COMMENT</button>
-      </mat-card-actions>
-    </mat-card>
+        <mat-card class="discussion-card">
+          <mat-card-header>
+            <img mat-card-avatar src="https://ariton.app/assets/lu.jpg" />
+            <mat-card-title>Lu</mat-card-title>
+            <mat-card-subtitle>{{ '2024-07-16 14:00' | ago }}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse cupiditate omnis consectetur facere modi
+              dolore ipsum harum, distinctio corrupti aliquam possimus explicabo! Distinctio, adipisci. Ipsum, repellat!
+              Velit eos consectetur in. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Culpa vero accusantium
+              rem repudiandae velit praesentium explicabo sit! Amet nulla repellat beatae pariatur, velit eius ut sunt,
+              placeat labore, esse saepe?
+            </p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-button>LIKE</button>
+            <button mat-button>COMMENT</button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </ng-template>
   </mat-tab>
   <mat-tab>
     <ng-template mat-tab-label>
@@ -74,61 +78,65 @@
       <span class="hide-small">Members</span>
     </ng-template>
 
-    <mat-card class="toolbar-actions">
-      <mat-card-content class="toolbar-actions-content">
-        @if (searchingMembers()) {
-        <mat-form-field subscriptSizing="dynamic" class="search-input">
-          <mat-label>Search</mat-label>
-          <input matInput placeholder="Filter members..." />
-          <mat-icon matSuffix>search</mat-icon>
-        </mat-form-field>
-        <button class="search-close" mat-icon-button (click)="hideMembersSearch()">
-          <mat-icon>close</mat-icon>
-        </button>
-        } @else {
-        <button type="button" mat-button>
-          <mat-icon>chat</mat-icon>
-          Add Member
-        </button>
-        <button type="button" mat-button>
-          <mat-icon>event</mat-icon>
-          Invite
-        </button>
-        <button type="button" mat-button (click)="searchMembers()">
-          <mat-icon>seardh</mat-icon>
-          Search
-        </button>
+    <ng-template matTabContent>
+      <div class="tab-content">
+        <mat-card class="toolbar-actions">
+          <mat-card-content class="toolbar-actions-content">
+            @if (searchingMembers()) {
+            <mat-form-field subscriptSizing="dynamic" class="search-input">
+              <mat-label>Search</mat-label>
+              <input matInput placeholder="Filter members..." />
+              <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
+            <button class="search-close" mat-icon-button (click)="hideMembersSearch()">
+              <mat-icon>close</mat-icon>
+            </button>
+            } @else {
+            <button type="button" mat-button>
+              <mat-icon>chat</mat-icon>
+              Add Member
+            </button>
+            <button type="button" mat-button>
+              <mat-icon>event</mat-icon>
+              Invite
+            </button>
+            <button type="button" mat-button (click)="searchMembers()">
+              <mat-icon>seardh</mat-icon>
+              Search
+            </button>
 
-        }
-      </mat-card-content>
-    </mat-card>
+            }
+          </mat-card-content>
+        </mat-card>
 
-    <div class="favorites">
-      <a
-        [routerLink]="['/profile', 'did:dht:my6nm5s1n9xmuuh5yixe668k7xbkmmuddzatn1fojzgdg5f5to8y']"
-        routerLinkActive="router-link-active"
-        ><img class="favorites-icon" src="https://ariton.app/assets/sondre.png"
-      /></a>
-      <a [routerLink]="['/profile', 'did:dht:my6nm5s1n9xmuuh5yixe668k7xbkmmuddzatn1fojzgdg5f5to8y']"
-        ><img class="favorites-icon" src="https://ariton.app/assets/dan.png"
-      /></a>
+        <div class="favorites">
+          <a
+            [routerLink]="['/profile', 'did:dht:my6nm5s1n9xmuuh5yixe668k7xbkmmuddzatn1fojzgdg5f5to8y']"
+            routerLinkActive="router-link-active"
+            ><img class="favorites-icon" src="https://ariton.app/assets/sondre.png"
+          /></a>
+          <a [routerLink]="['/profile', 'did:dht:my6nm5s1n9xmuuh5yixe668k7xbkmmuddzatn1fojzgdg5f5to8y']"
+            ><img class="favorites-icon" src="https://ariton.app/assets/dan.png"
+          /></a>
 
-      <a [routerLink]="['/profile', 'did:dht:my6nm5s1n9xmuuh5yixe668k7xbkmmuddzatn1fojzgdg5f5to8y']"
-        ><img class="favorites-icon" src="https://ariton.app/assets/david.jpg"
-      /></a>
+          <a [routerLink]="['/profile', 'did:dht:my6nm5s1n9xmuuh5yixe668k7xbkmmuddzatn1fojzgdg5f5to8y']"
+            ><img class="favorites-icon" src="https://ariton.app/assets/david.jpg"
+          /></a>
 
-      <a [routerLink]="['/profile', 'did:dht:my6nm5s1n9xmuuh5yixe668k7xbkmmuddzatn1fojzgdg5f5to8y']"
-        ><img class="favorites-icon" src="https://ariton.app/assets/milad.png"
-      /></a>
+          <a [routerLink]="['/profile', 'did:dht:my6nm5s1n9xmuuh5yixe668k7xbkmmuddzatn1fojzgdg5f5to8y']"
+            ><img class="favorites-icon" src="https://ariton.app/assets/milad.png"
+          /></a>
 
-      <a [routerLink]="['/profile', 'did:dht:my6nm5s1n9xmuuh5yixe668k7xbkmmuddzatn1fojzgdg5f5to8y']"
-        ><img class="favorites-icon" src="https://ariton.app/assets/lu.jpg"
-      /></a>
+          <a [routerLink]="['/profile', 'did:dht:my6nm5s1n9xmuuh5yixe668k7xbkmmuddzatn1fojzgdg5f5to8y']"
+            ><img class="favorites-icon" src="https://ariton.app/assets/lu.jpg"
+          /></a>
 
-      <a [routerLink]="['/profile', 'did:dht:my6nm5s1n9xmuuh5yixe668k7xbkmmuddzatn1fojzgdg5f5to8y']"
-        ><img class="favorites-icon" src="https://ariton.app/assets/kosta.jpg"
-      /></a>
-    </div>
+          <a [routerLink]="['/profile', 'did:dht:my6nm5s1n9xmuuh5yixe668k7xbkmmuddzatn1fojzgdg5f5to8y']"
+            ><img class="favorites-icon" src="https://ariton.app/assets/kosta.jpg"
+          /></a>
+        </div>
+      </div>
+    </ng-template>
   </mat-tab>
   <mat-tab>
     <ng-template mat-tab-label>
@@ -136,55 +144,59 @@
       <span class="hide-small">Events</span>
     </ng-template>
 
-    <mat-card class="toolbar-actions">
-      <mat-card-content>
-        <button type="button" mat-button>
-          <mat-icon>add</mat-icon>
-          Create event
-        </button>
-      </mat-card-content>
-    </mat-card>
+    <ng-template matTabContent>
+      <div class="tab-content">
+        <mat-card class="toolbar-actions">
+          <mat-card-content>
+            <button type="button" mat-button>
+              <mat-icon>add</mat-icon>
+              Create event
+            </button>
+          </mat-card-content>
+        </mat-card>
 
-    <mat-card class="events-card">
-      <mat-card-header>
-        <mat-card-title>Upcoming events</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <mat-list>
-          <mat-list-item>
-            <mat-icon matListItemIcon>event</mat-icon>
-            <div matListItemTitle>Summer Party 2024</div>
-            <div matListItemLine>{{ '2024-07-16 10:00' | date }}</div>
-          </mat-list-item>
-          <mat-list-item>
-            <mat-icon matListItemIcon>event</mat-icon>
-            <div matListItemTitle>Workshop #5</div>
-            <div matListItemLine>{{ '2024-07-30 10:00' | date }}</div>
-          </mat-list-item>
-        </mat-list>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-button>SEE MORE</button>
-      </mat-card-actions>
-    </mat-card>
+        <mat-card class="events-card">
+          <mat-card-header>
+            <mat-card-title>Upcoming events</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <mat-list>
+              <mat-list-item>
+                <mat-icon matListItemIcon>event</mat-icon>
+                <div matListItemTitle>Summer Party 2024</div>
+                <div matListItemLine>{{ '2024-07-16 10:00' | date }}</div>
+              </mat-list-item>
+              <mat-list-item>
+                <mat-icon matListItemIcon>event</mat-icon>
+                <div matListItemTitle>Workshop #5</div>
+                <div matListItemLine>{{ '2024-07-30 10:00' | date }}</div>
+              </mat-list-item>
+            </mat-list>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-button>SEE MORE</button>
+          </mat-card-actions>
+        </mat-card>
 
-    <mat-card class="events-card">
-      <mat-card-header>
-        <mat-card-title>Past events</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <mat-list>
-          <mat-list-item>
-            <mat-icon matListItemIcon>event</mat-icon>
-            <div matListItemTitle>Workshop #4</div>
-            <div matListItemLine>{{ '2024-07-30 10:00' | date }}</div>
-          </mat-list-item>
-        </mat-list>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-button>SEE MORE</button>
-      </mat-card-actions>
-    </mat-card>
+        <mat-card class="events-card">
+          <mat-card-header>
+            <mat-card-title>Past events</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <mat-list>
+              <mat-list-item>
+                <mat-icon matListItemIcon>event</mat-icon>
+                <div matListItemTitle>Workshop #4</div>
+                <div matListItemLine>{{ '2024-07-30 10:00' | date }}</div>
+              </mat-list-item>
+            </mat-list>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-button>SEE MORE</button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </ng-template>
   </mat-tab>
   <mat-tab>
     <ng-template mat-tab-label>
@@ -192,11 +204,14 @@
       <span class="hide-small">Media</span>
     </ng-template>
 
-    <div class="media responsive-grid">
-      <mat-card *ngFor="let photo of photos()">
-        <img class="media-thumbnail" mat-card-image [src]="photo.thumbnail" />
-      </mat-card>
-    </div>
+    <ng-template matTabContent>
+      <div class="tab-content">
+        <div class="media responsive-grid">
+          <mat-card *ngFor="let photo of photos()">
+            <img class="media-thumbnail" mat-card-image [src]="photo.thumbnail" />
+          </mat-card>
+        </div></div
+    ></ng-template>
   </mat-tab>
   <mat-tab>
     <ng-template mat-tab-label>
@@ -204,31 +219,33 @@
       <span class="hide-small">Files</span>
     </ng-template>
 
-    <mat-card class="toolbar-actions">
-      <mat-card-content class="toolbar-actions-content">
-        @if (searchingMembers()) {
-        <mat-form-field subscriptSizing="dynamic" class="search-input">
-          <mat-label>Search</mat-label>
-          <input matInput placeholder="Filter members..." />
-          <mat-icon matSuffix>search</mat-icon>
-        </mat-form-field>
-        <button class="search-close" mat-icon-button (click)="hideMembersSearch()">
-          <mat-icon>close</mat-icon>
-        </button>
-        } @else {
-        <button type="button" mat-button>
-          <mat-icon>attach_file</mat-icon>
-          Upload file
-        </button>
-        <!-- <button type="button" mat-button (click)="searchMembers()">
+    <ng-template matTabContent>
+      <div class="tab-content">
+        <mat-card class="toolbar-actions">
+          <mat-card-content class="toolbar-actions-content">
+            @if (searchingMembers()) {
+            <mat-form-field subscriptSizing="dynamic" class="search-input">
+              <mat-label>Search</mat-label>
+              <input matInput placeholder="Filter members..." />
+              <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
+            <button class="search-close" mat-icon-button (click)="hideMembersSearch()">
+              <mat-icon>close</mat-icon>
+            </button>
+            } @else {
+            <button type="button" mat-button>
+              <mat-icon>attach_file</mat-icon>
+              Upload file
+            </button>
+            <!-- <button type="button" mat-button (click)="searchMembers()">
           <mat-icon>seardh</mat-icon>
           Search
         </button> -->
-        }
-      </mat-card-content>
-    </mat-card>
+            }
+          </mat-card-content>
+        </mat-card>
 
-    <!--
+        <!--
     <mat-toolbar>
       <button type="button" aria-label="Toggle sidenav" mat-icon-button>
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
@@ -244,8 +261,8 @@
       <span class="toolbar-items"> </span
     ></mat-toolbar>-->
 
-    <mat-card class="files-card">
-      <!-- <mat-card-header>
+        <mat-card class="files-card">
+          <!-- <mat-card-header>
         <mat-card-title>Files</mat-card-title>
         <span class="toolbar-spacer"></span>
         <div class="card-actions-top">
@@ -255,8 +272,8 @@
           </button>
         </div>
       </mat-card-header> -->
-      <mat-card-content>
-        <!-- <mat-toolbar class="card-toolbar">
+          <mat-card-content>
+            <!-- <mat-toolbar class="card-toolbar">
       
           <button mat-icon-button>
             <mat-icon>add</mat-icon>
@@ -273,19 +290,21 @@
             </mat-form-field> </span
         ></mat-toolbar> -->
 
-        <mat-list>
-          <mat-list-item>
-            <mat-icon matListItemIcon>attach_file</mat-icon>
-            <div matListItemTitle>Community Rules.pdf</div>
-            <div matListItemLine>{{ '2024-07-16 10:00' | date }} | {{ '100000' | size }}</div>
-          </mat-list-item>
-          <mat-list-item>
-            <mat-icon matListItemIcon>attach_file</mat-icon>
-            <div matListItemTitle>Admin instructions.pdf</div>
-            <div matListItemLine>{{ '2024-07-30 10:00' | date }} | {{ '350000' | size }}</div>
-          </mat-list-item>
-        </mat-list>
-      </mat-card-content>
-    </mat-card>
+            <mat-list>
+              <mat-list-item>
+                <mat-icon matListItemIcon>attach_file</mat-icon>
+                <div matListItemTitle>Community Rules.pdf</div>
+                <div matListItemLine>{{ '2024-07-16 10:00' | date }} | {{ '100000' | size }}</div>
+              </mat-list-item>
+              <mat-list-item>
+                <mat-icon matListItemIcon>attach_file</mat-icon>
+                <div matListItemTitle>Admin instructions.pdf</div>
+                <div matListItemLine>{{ '2024-07-30 10:00' | date }} | {{ '350000' | size }}</div>
+              </mat-list-item>
+            </mat-list>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </ng-template>
   </mat-tab>
 </mat-tab-group>
