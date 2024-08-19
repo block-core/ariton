@@ -117,6 +117,8 @@
     </mat-menu>
 
     <div class="panel-content panel-content-messages">
+      LENGTH: {{ messages().length }}<br />
+
       @for (message of messages(); track message) {
 
       <div
@@ -127,56 +129,9 @@
         {{ message.data.text }}
       </div>
 
-      <!-- <a class="chat-link" routerLinkActive="router-link-active">
-        <div>
-        </div>
-        <div class="chat-details">
-          <div class="chat-info">
-            <div class="chat-time">{{ message.data.timestamp | date : 'HH:mm' }}</div>
-          </div>
-          <div class="chat-text">{{ message.data.text }}</div>
-        </div>
-      </a> -->
       } @if(loading()){
       <mat-spinner></mat-spinner>
       }
-
-      <!-- Chat Messages Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt atque non voluptatum aperiam
-      doloribus expedita dolorem odit? Fugit similique consectetur earum rem? Voluptatem est, voluptatum unde ipsam
-      itaque dolores quisquam? Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt atque non voluptatum
-      aperiam doloribus expedita dolorem odit? Fugit similique consectetur earum rem? Voluptatem est, voluptatum unde
-      ipsam itaque dolores quisquam? Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt atque non
-      voluptatum aperiam doloribus expedita dolorem odit? Fugit similique consectetur earum rem? Voluptatem est,
-      voluptatum unde ipsam itaque dolores quisquam? Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt
-      atque non voluptatum aperiam doloribus expedita dolorem odit? Fugit similique consectetur earum rem? Voluptatem
-      est, voluptatum unde ipsam itaque dolores quisquam? Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-      Deserunt atque non voluptatum aperiam doloribus expedita dolorem odit? Fugit similique consectetur earum rem?
-      Voluptatem est, voluptatum unde ipsam itaque dolores quisquam? Lorem ipsum dolor sit amet consectetur, adipisicing
-      elit. Deserunt atque non voluptatum aperiam doloribus expedita dolorem odit? Fugit similique consectetur earum
-      rem? Voluptatem est, voluptatum unde ipsam itaque dolores quisquam? Lorem ipsum dolor sit amet consectetur,
-      adipisicing elit. Deserunt atque non voluptatum aperiam doloribus expedita dolorem odit? Fugit similique
-      consectetur earum rem? Voluptatem est, voluptatum unde ipsam itaque dolores quisquam? Lorem ipsum dolor sit amet
-      consectetur, adipisicing elit. Deserunt atque non voluptatum aperiam doloribus expedita dolorem odit? Fugit
-      similique consectetur earum rem? Voluptatem est, voluptatum unde ipsam itaque dolores quisquam? Lorem ipsum dolor
-      sit amet consectetur, adipisicing elit. Deserunt atque non voluptatum aperiam doloribus expedita dolorem odit?
-      Fugit similique consectetur earum rem? Voluptatem est, voluptatum unde ipsam itaque dolores quisquam? Lorem ipsum
-      dolor sit amet consectetur, adipisicing elit. Deserunt atque non voluptatum aperiam doloribus expedita dolorem
-      odit? Fugit similique consectetur earum rem? Voluptatem est, voluptatum unde ipsam itaque dolores quisquam? Lorem
-      ipsum dolor sit amet consectetur, adipisicing elit. Deserunt atque non voluptatum aperiam doloribus expedita
-      dolorem odit? Fugit similique consectetur earum rem? Voluptatem est, voluptatum unde ipsam itaque dolores
-      quisquam? Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt atque non voluptatum aperiam
-      doloribus expedita dolorem odit? Fugit similique consectetur earum rem? Voluptatem est, voluptatum unde ipsam
-      itaque dolores quisquam? Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt atque non voluptatum
-      aperiam doloribus expedita dolorem odit? Fugit similique consectetur earum rem? Voluptatem est, voluptatum unde
-      ipsam itaque dolores quisquam? Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt atque non
-      voluptatum aperiam doloribus expedita dolorem odit? Fugit similique consectetur earum rem? Voluptatem est,
-      voluptatum unde ipsam itaque dolores quisquam? Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt
-      atque non voluptatum aperiam doloribus expedita dolorem odit? Fugit similique consectetur earum rem? Voluptatem
-      est, voluptatum unde ipsam itaque dolores quisquam? Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-      Deserunt atque non voluptatum aperiam doloribus expedita dolorem odit? Fugit similique consectetur earum rem?
-      Voluptatem est, voluptatum unde ipsam itaque dolores quisquam? Lorem ipsum dolor sit amet consectetur, adipisicing
-      elit. Deserunt atque non voluptatum aperiam doloribus expedita dolorem odit? Fugit similique consectetur earum
-      rem? Voluptatem est, voluptatum unde ipsam itaque dolores quisquam? -->
     </div>
 
     <div class="chat-input">
@@ -246,52 +201,7 @@
 
       <div class="ellipsis" [matTooltip]="selectedProfile().profile.did">{{ selectedProfile().profile.did }}</div>
       <div class="dimmed profile-info-label">Identifier</div>
-
-      <!-- {{ selectedProfile().profile | json }} -->
       }
-
-      <!-- User Profile Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt atque non voluptatum aperiam
-      doloribus expedita dolorem odit? Fugit similique consectetur earum rem? Voluptatem est, voluptatum unde ipsam
-      itaque dolores quisquam? Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt atque non voluptatum
-      aperiam doloribus expedita dolorem odit? Fugit similique consectetur earum rem? Voluptatem est, voluptatum unde
-      ipsam itaque dolores quisquam? Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt atque non
-      voluptatum aperiam doloribus expedita dolorem odit? Fugit similique consectetur earum rem? Voluptatem est,
-      voluptatum unde ipsam itaque dolores quisquam? Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt
-      atque non voluptatum aperiam doloribus expedita dolorem odit? Fugit similique consectetur earum rem? Voluptatem
-      est, voluptatum unde ipsam itaque dolores quisquam? Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-      Deserunt atque non voluptatum aperiam doloribus expedita dolorem odit? Fugit similique consectetur earum rem?
-      Voluptatem est, voluptatum unde ipsam itaque dolores quisquam? Lorem ipsum dolor sit amet consectetur, adipisicing
-      elit. Deserunt atque non voluptatum aperiam doloribus expedita dolorem odit? Fugit similique consectetur earum
-      rem? Voluptatem est, voluptatum unde ipsam itaque dolores quisquam? Lorem ipsum dolor sit amet consectetur,
-      adipisicing elit. Deserunt atque non voluptatum aperiam doloribus expedita dolorem odit? Fugit similique
-      consectetur earum rem? Voluptatem est, voluptatum unde ipsam itaque dolores quisquam? Lorem ipsum dolor sit amet
-      consectetur, adipisicing elit. Deserunt atque non voluptatum aperiam doloribus expedita dolorem odit? Fugit
-      similique consectetur earum rem? Voluptatem est, voluptatum unde ipsam itaque dolores quisquam? Lorem ipsum dolor
-      sit amet consectetur, adipisicing elit. Deserunt atque non voluptatum aperiam doloribus expedita dolorem odit?
-      Fugit similique consectetur earum rem? Voluptatem est, voluptatum unde ipsam itaque dolores quisquam? Lorem ipsum
-      dolor sit amet consectetur, adipisicing elit. Deserunt atque non voluptatum aperiam doloribus expedita dolorem
-      odit? Fugit similique consectetur earum rem? Voluptatem est, voluptatum unde ipsam itaque dolores quisquam? Lorem
-      ipsum dolor sit amet consectetur, adipisicing elit. Deserunt atque non voluptatum aperiam doloribus expedita
-      dolorem odit? Fugit similique consectetur earum rem? Voluptatem est, voluptatum unde ipsam itaque dolores
-      quisquam? Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt atque non voluptatum aperiam
-      doloribus expedita dolorem odit? Fugit similique consectetur earum rem? Voluptatem est, voluptatum unde ipsam
-      itaque dolores quisquam? Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt atque non voluptatum
-      aperiam doloribus expedita dolorem odit? Fugit similique consectetur earum rem? Voluptatem est, voluptatum unde
-      ipsam itaque dolores quisquam? Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt atque non
-      voluptatum aperiam doloribus expedita dolorem odit? Fugit similique consectetur earum rem? Voluptatem est,
-      voluptatum unde ipsam itaque dolores quisquam? Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt
-      atque non voluptatum aperiam doloribus expedita dolorem odit? Fugit similique consectetur earum rem? Voluptatem
-      est, voluptatum unde ipsam itaque dolores quisquam? Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-      Deserunt atque non voluptatum aperiam doloribus expedita dolorem odit? Fugit similique consectetur earum rem?
-      Voluptatem est, voluptatum unde ipsam itaque dolores quisquam? Lorem ipsum dolor sit amet consectetur, adipisicing
-      elit. Deserunt atque non voluptatum aperiam doloribus expedita dolorem odit? Fugit similique consectetur earum
-      rem? Voluptatem est, voluptatum unde ipsam itaque dolores quisquam? Lorem ipsum dolor sit amet consectetur,
-      adipisicing elit. Deserunt atque non voluptatum aperiam doloribus expedita dolorem odit? Fugit similique
-      consectetur earum rem? Voluptatem est, voluptatum unde ipsam itaque dolores quisquam? Lorem ipsum dolor sit amet
-      consectetur, adipisicing elit. Deserunt atque non voluptatum aperiam doloribus expedita dolorem odit? Fugit
-      similique consectetur earum rem? Voluptatem est, voluptatum unde ipsam itaque dolores quisquam? Lorem ipsum dolor
-      sit amet consectetur, adipisicing elit. Deserunt atque non voluptatum aperiam doloribus expedita dolorem odit?
-      Fugit similique consectetur earum rem? Voluptatem est, voluptatum unde ipsam itaque dolores quisquam? -->
     </div>
   </div>
   }

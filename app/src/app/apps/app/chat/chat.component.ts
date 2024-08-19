@@ -248,6 +248,8 @@ export class ChatComponent implements OnDestroy {
 
     // console.log('messages4', messages4);
 
+    this.messages.set([]);
+
     const tags = {
       // recipient: did,
       // sender: did,
@@ -266,11 +268,10 @@ export class ChatComponent implements OnDestroy {
       },
     });
 
+    console.log('RECORDS!!!!!', records);
+
     let json = {};
     let recordEntry = null;
-
-    // this.chats.set([]);
-    this.messages.set([]);
 
     if (records) {
       // Loop through returned records and print text from each
@@ -299,11 +300,6 @@ export class ChatComponent implements OnDestroy {
         }
 
         this.messages.update((requests) => [...requests, json]);
-
-        let json2 = JSON.parse(JSON.stringify(json));
-        json2.direction = 'in';
-
-        this.messages.update((requests) => [...requests, json2]);
 
         // console.log('All friends:', this.friends());
 
@@ -517,7 +513,7 @@ export class ChatComponent implements OnDestroy {
 
       console.log('Chat record:', record);
 
-      let json: any = { record: record, data: data };
+      let json: any = { record: record, data: data, direction: 'out' };
 
       console.log('CHat JSON:', json);
 
