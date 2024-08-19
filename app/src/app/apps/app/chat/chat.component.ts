@@ -403,10 +403,13 @@ export class ChatComponent implements OnDestroy {
     distinctUsers.map(async (did) => {
       const latestMessage = sortedChats.find((chat) => chat.data.recipient == did || chat.data.sender == did);
 
-      this.threads.update((requests) => [
-        ...requests,
-        { did: did, text: latestMessage?.data.text, timestamp: latestMessage?.data.timestamp },
-      ]);
+      // Don't list the current user as his own thread.
+      if (did != this.identity.did) {
+        this.threads.update((requests) => [
+          ...requests,
+          { did: did, text: latestMessage?.data.text, timestamp: latestMessage?.data.timestamp },
+        ]);
+      }
     });
 
     console.log('Threads:', this.threads());
@@ -428,6 +431,8 @@ export class ChatComponent implements OnDestroy {
   message: string = '';
 
   async submitMessage() {
+    console.log('SUBMIT MESSAGE', this.message);
+
     if (this.message.trim()) {
       console.log('Message submitted:', this.message);
 
@@ -445,9 +450,8 @@ export class ChatComponent implements OnDestroy {
         // sender: this.identity.did,
         // recipient: recipientDid,
         // recipients: [recipientDid, this.identity.did],
-
-        sender: recipientDid,
-        recipient: this.identity.did,
+        // sender: recipientDid,
+        // recipient: this.identity.did,
         recipients: [this.identity.did, recipientDid],
       };
 
@@ -502,8 +506,8 @@ export class ChatComponent implements OnDestroy {
       // recipient: recipientDid,
       // recipients: [recipientDid, this.identity.did],
 
-      sender: recipientDid,
-      recipient: this.identity.did,
+      // sender: recipientDid,
+      // recipient: this.identity.did,
       recipients: [this.identity.did, recipientDid],
     };
 

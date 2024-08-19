@@ -207,11 +207,11 @@
       </mat-menu>
 
       <mat-form-field subscriptSizing="dynamic" class="chat-message-input">
-        <input matInput placeholder="Message..." (keydown.enter)="submitMessage()" />
+        <input matInput placeholder="Message..." [(ngModel)]="message" (keydown.enter)="submitMessage()" />
         <mat-icon matSuffix>emoji_emotions</mat-icon>
       </mat-form-field>
 
-      <button class="chat-action" mat-icon-button>
+      <button class="chat-action" mat-icon-button [disabled]="true">
         <mat-icon>thumb_up</mat-icon>
       </button>
     </div>
