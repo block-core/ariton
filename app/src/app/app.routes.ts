@@ -119,7 +119,7 @@ export const routes: Routes = [
     data: { icon: 'notes' },
   },
   {
-    path: 'app/todo',
+    path: 'app/todo/:id',
     loadComponent: () => import('./apps/app/todo/todo.component').then((c) => c.TodoComponent),
     title: 'Todo',
     data: { icon: 'task' },
