@@ -214,3 +214,13 @@
   // background-color: color-mix(in srgb, var(--mat-full-pseudo-checkbox-selected-icon-color) 100%, transparent);
   background-color: color-mix(in srgb, var(--mat-full-pseudo-checkbox-selected-icon-color), transparent 90%);
 }
+
+@media (max-width: 400px) {
+  .name-ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    width: 60px;
+  }
+}
