@@ -91,6 +91,13 @@ h1 {
   word-wrap: break-word;
 }
 
+/** TODO: Validate if we want to do this on all, or only on textarea. */
+textarea,
+select,
+input {
+  field-sizing: content;
+}
+
 .info-card {
   padding: 2em;
 }
