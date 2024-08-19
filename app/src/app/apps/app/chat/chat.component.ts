@@ -110,19 +110,19 @@ export class ChatComponent implements OnDestroy {
 
   messages = signal<MessageEntry[]>([]);
 
-  chat = signal<any>(null);
+  message: string = '';
 
+  // chat = signal<any>(null);
+
+  /** Used on initial load to get all chat messages and render the threads list */
   chats = signal<MessageEntry[]>([]);
 
   threads = signal<Thread[]>([]);
 
   constructor() {
     this.route.paramMap.subscribe((params) => {
-      console.log('ROUTING!!!', params.get('id'));
-      this.selectedChat.set(params.get('id'));
       this.layout.disableScrolling();
-      // this.breadcrumb.parentId = params.get('id');
-      // this.id.set(params.get('id')!);
+      this.selectedChat.set(params.get('id'));
     });
 
     effect(async () => {
@@ -155,16 +155,12 @@ export class ChatComponent implements OnDestroy {
 
     const customBreakpoint = '(max-width: 1024px)';
 
-    // Observe the custom breakpoint
     this.breakpointObserver.observe([customBreakpoint]).subscribe((result) => {
       console.log('MATCHES:', result.matches);
       if (result.matches) {
-        // Code to execute when the viewport is 959.98px or less
         this.details.set(false);
         this.detailsBig.set(true);
       } else {
-        // Code to execute when the viewport is greater than 959.98px
-        //  this.small.set(false);
         this.detailsBig.set(false);
       }
     });
@@ -181,78 +177,9 @@ export class ChatComponent implements OnDestroy {
   }
 
   async loadMessages(did: string) {
-    // this.loadNotes({ labels: tagsString });
-
-    // var { records: messages } = await this.identity.web5.dwn.records.query({
-    //   message: {
-    //     filter: {
-    //       protocol: chatDefinition.protocol,
-    //       schema: chatDefinition.types.message.schema,
-    //       dataFormat: chatDefinition.types.message.dataFormats[0],
-    //     },
-    //     dateSort: DwnDateSort.CreatedAscending,
-    //   },
-    // });
-
-    // console.log('All messages', messages);
-
-    // const senderStored = 'did:dht:bi3bzoke6rq6fbkojpo5ebtg45eqx1owqrb4esex8t9nz14ugnao';
-    // const receiverStored = 'did:dht:1ko4cqh7c7i9z56r7qwucgpbra934rngc5eyffg1km5k6rc5991o';
-
-    // var { records: messages2 } = await this.identity.web5.dwn.records.query({
-    //   message: {
-    //     filter: {
-    //       tags: {
-    //         recipient: senderStored,
-    //         sender: senderStored,
-    //       },
-    //       protocol: chatDefinition.protocol,
-    //       schema: chatDefinition.types.message.schema,
-    //       dataFormat: chatDefinition.types.message.dataFormats[0],
-    //     },
-    //     dateSort: DwnDateSort.CreatedAscending,
-    //   },
-    // });
-
-    // console.log('messages2', messages2);
-
-    // var { records: messages3 } = await this.identity.web5.dwn.records.query({
-    //   message: {
-    //     filter: {
-    //       tags: {
-    //         recipients: senderStored,
-    //       },
-    //       protocol: chatDefinition.protocol,
-    //       schema: chatDefinition.types.message.schema,
-    //       dataFormat: chatDefinition.types.message.dataFormats[0],
-    //     },
-    //     dateSort: DwnDateSort.CreatedAscending,
-    //   },
-    // });
-
-    // console.log('messages3', messages3);
-
-    // var { records: messages4 } = await this.identity.web5.dwn.records.query({
-    //   message: {
-    //     filter: {
-    //       tags: {
-    //         recipients: receiverStored,
-    //       },
-    //       protocol: chatDefinition.protocol,
-    //       schema: chatDefinition.types.message.schema,
-    //       dataFormat: chatDefinition.types.message.dataFormats[0],
-    //     },
-    //     dateSort: DwnDateSort.CreatedAscending,
-    //   },
-    // });
-
-    // console.log('messages4', messages4);
-
     this.messages.set([]);
 
     const tags = {
-      // recipient: did,
-      // sender: did,
       recipients: did,
     };
 
@@ -268,70 +195,20 @@ export class ChatComponent implements OnDestroy {
       },
     });
 
-    console.log('RECORDS!!!!!', records);
-
-    let json = {};
-    let recordEntry = null;
-
     if (records) {
       // Loop through returned records and print text from each
       for (const record of records!) {
         let data = await record.data.json();
-        // let vc = VerifiableCredential.parseJwt({ vcJwt: data });
-
-        // let did = vc.issuer;
-
-        // // If the outher issuer is us, get the inner one.
-        // if (vc.issuer == this.identity.did) {
-        //   const subject = vc.vcDataModel.credentialSubject as any;
-        //   let vcInner = VerifiableCredential.parseJwt({ vcJwt: subject.vc });
-        //   did = vcInner.issuer;
-        // }
 
         let json: any = { record: record, data: data };
 
-        console.log('AUTHOR:', record.author);
-        console.log('this.identity.did:', this.identity.did);
-
         if (record.author == this.identity.did) {
           json.direction = 'out';
-          console.log('DIRECTION IS OUT!!!');
-          console.log('JSON:', json);
         }
 
         this.messages.update((requests) => [...requests, json]);
-
-        // console.log('All friends:', this.friends());
-
-        // recordEntry = record;
-        // let recordJson = await record.data.json();
-        // json = { ...recordJson, id: record.dataCid, did: record.author, created: record.dateCreated };
       }
     }
-
-    // console.log(this.chats());
-    // const recipients = this.chats().map((chat) => chat.data.recipient); // Adjust the path to the user identifier as needed
-    // const senders = this.chats().map((chat) => chat.data.sender); // Adjust the path to the user identifier as needed
-    // const distinctUsers = Array.from(new Set([...recipients, ...senders]));
-
-    // // console.log(recipients);
-    // // console.log(senders);
-    // // console.log('Distinct users:', distinctUsers);
-
-    // const sortedChats = this.chats().sort((a, b) => {
-    //   return a.data.timestamp > b.data.timestamp ? -1 : 1;
-    // });
-
-    // distinctUsers.map(async (did) => {
-    //   const latestMessage = sortedChats.find((chat) => chat.data.recipient == did || chat.data.sender == did);
-
-    //   this.threads.update((requests) => [
-    //     ...requests,
-    //     { did: did, text: latestMessage?.data.text, timestamp: latestMessage?.data.timestamp },
-    //   ]);
-    // });
-
-    // console.log('Threads:', this.threads());
   }
 
   async load() {
@@ -345,12 +222,6 @@ export class ChatComponent implements OnDestroy {
       },
     });
 
-    console.log('Friend VCs:');
-    console.log(records);
-
-    let json = {};
-    let recordEntry = null;
-
     this.chats.set([]);
     this.threads.set([]);
 
@@ -358,17 +229,6 @@ export class ChatComponent implements OnDestroy {
       // Loop through returned records and print text from each
       for (const record of records!) {
         let data = await record.data.json();
-        // let vc = VerifiableCredential.parseJwt({ vcJwt: data });
-
-        // let did = vc.issuer;
-
-        // // If the outher issuer is us, get the inner one.
-        // if (vc.issuer == this.identity.did) {
-        //   const subject = vc.vcDataModel.credentialSubject as any;
-        //   let vcInner = VerifiableCredential.parseJwt({ vcJwt: subject.vc });
-        //   did = vcInner.issuer;
-        // }
-
         let json: any = { record: record, data: data };
 
         if (record.author == this.identity.did) {
@@ -376,12 +236,6 @@ export class ChatComponent implements OnDestroy {
         }
 
         this.chats.update((requests) => [...requests, json]);
-
-        // console.log('All friends:', this.friends());
-
-        // recordEntry = record;
-        // let recordJson = await record.data.json();
-        // json = { ...recordJson, id: record.dataCid, did: record.author, created: record.dateCreated };
       }
     }
 
@@ -394,10 +248,6 @@ export class ChatComponent implements OnDestroy {
     const friends = await this.loadFriends();
 
     const distinctUsers = Array.from(new Set([...recipients, ...senders, ...friends]));
-
-    // console.log(recipients);
-    // console.log(senders);
-    // console.log('Distinct users:', distinctUsers);
 
     const sortedChats = this.chats().sort((a, b) => {
       return a.data.timestamp > b.data.timestamp ? -1 : 1;
@@ -414,8 +264,6 @@ export class ChatComponent implements OnDestroy {
         ]);
       }
     });
-
-    console.log('Threads:', this.threads());
   }
 
   async loadFriends() {
@@ -427,12 +275,6 @@ export class ChatComponent implements OnDestroy {
         },
       },
     });
-
-    console.log('Friend VCs:');
-    console.log(records);
-
-    let json = {};
-    let recordEntry = null;
 
     let dids = [];
 
@@ -451,7 +293,6 @@ export class ChatComponent implements OnDestroy {
         }
 
         dids.push(did);
-        // let json: any = { record: record, data: { did } };
       }
     }
 
@@ -466,19 +307,8 @@ export class ChatComponent implements OnDestroy {
     this.details.set(false);
   }
 
-  open(id: string) {
-    const chat = this.folders.find((f) => f.id === id);
-    this.chat.set(chat);
-  }
-
-  message: string = '';
-
   async submitMessage() {
-    console.log('SUBMIT MESSAGE', this.message);
-
     if (this.message.trim()) {
-      console.log('Message submitted:', this.message);
-
       let recipientDid = this.selectedProfile().did;
       const currentDate = new Date();
 
@@ -490,11 +320,6 @@ export class ChatComponent implements OnDestroy {
       };
 
       const tags = {
-        // sender: this.identity.did,
-        // recipient: recipientDid,
-        // recipients: [recipientDid, this.identity.did],
-        // sender: recipientDid,
-        // recipient: this.identity.did,
         recipients: [this.identity.did, recipientDid],
       };
 
@@ -510,16 +335,10 @@ export class ChatComponent implements OnDestroy {
       });
 
       record?.send(recipientDid);
-
-      console.log('Chat record:', record);
-
       let json: any = { record: record, data: data, direction: 'out' };
 
-      console.log('CHat JSON:', json);
-
       this.messages.update((requests) => [...requests, json]);
-
-      this.message = ''; // Clear the input field after submission
+      this.message = '';
     }
   }
 
@@ -532,8 +351,7 @@ export class ChatComponent implements OnDestroy {
   }
 
   async newChat() {
-    let recipientDid = this.identity.did;
-    recipientDid = 'did:dht:bi3bzoke6rq6fbkojpo5ebtg45eqx1owqrb4esex8t9nz14ugnao';
+    let recipientDid = this.selectedProfile().did;
 
     const currentDate = new Date();
 
@@ -545,12 +363,6 @@ export class ChatComponent implements OnDestroy {
     };
 
     const tags = {
-      // sender: this.identity.did,
-      // recipient: recipientDid,
-      // recipients: [recipientDid, this.identity.did],
-
-      // sender: recipientDid,
-      // recipient: this.identity.did,
       recipients: [this.identity.did, recipientDid],
     };
 
@@ -565,54 +377,9 @@ export class ChatComponent implements OnDestroy {
       },
     });
 
-    console.log('Chat record:', record);
-
     let json: any = { record: record, data: data };
-
-    console.log('CHat JSON:', json);
-
     this.messages.update((requests) => [...requests, json]);
 
     return record;
   }
-
-  folders: Section[] = [
-    {
-      id: '1',
-      name: 'Sondre',
-      message: 'Hey, how are you?',
-      updated: new Date('1/1/24'),
-      avatar: 'https://ariton.app/assets/sondre.png',
-    },
-    {
-      id: '2',
-      name: 'Dan',
-      message: 'Do you have the reports?',
-      updated: new Date('1/17/16'),
-      avatar: 'https://ariton.app/assets/dan.png',
-    },
-    {
-      id: '3',
-      name: 'Joe',
-      message: 'I need help with the project',
-      updated: new Date('1/28/16'),
-      avatar: 'https://ariton.app/assets/sondre.png',
-    },
-  ];
-  notes: Section[] = [
-    {
-      id: '4',
-      name: 'Luba',
-      message: 'I need to plan my vacation',
-      updated: new Date('2/20/16'),
-      avatar: 'https://ariton.app/assets/lu.jpg',
-    },
-    {
-      id: '5',
-      name: 'Jane',
-      message: 'I need to remodel my kitchen',
-      updated: new Date('1/18/16'),
-      avatar: 'https://ariton.app/assets/sondre.png',
-    },
-  ];
 }
