@@ -17,10 +17,20 @@
 
       <div class="container">
         <h2 class="list-header">
+          @if(list.editing) {
+          <mat-form-field subscriptSizing="dynamic">
+            <input matInput placeholder="Message..." [(ngModel)]="list.data.title" (keydown.enter)="saveList(list)" />
+          </mat-form-field>
+          <button mat-icon-button (click)="saveList(list)">
+            <mat-icon>save</mat-icon>
+          </button>
+          } @else {
           {{ list.data.title }}
-          <button mat-icon-button>
+          <button mat-icon-button (click)="editList(list)">
             <mat-icon>edit</mat-icon>
           </button>
+          }
+
           <button mat-icon-button matTooltip="Add new todo" (click)="addTodo(list.id)">
             <mat-icon>add_box</mat-icon>
           </button>

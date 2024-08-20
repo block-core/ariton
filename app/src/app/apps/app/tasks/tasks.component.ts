@@ -12,14 +12,19 @@ import { Record } from '@web5/api';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-todo',
   standalone: true,
   imports: [
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatInputModule,
     FormsModule,
     MatCheckboxModule,
     CdkDrag,
@@ -205,6 +210,21 @@ export class TasksComponent {
     }
   }
 
+  editList(list: any) {
+    list.editing = true;
+  }
+
+  async saveList(list: any) {
+    list.editing = false;
+
+    const { status, record } = await list.record.update({
+      data: list.data,
+    });
+
+    // Send to all collaborators.
+    // record.send();
+  }
+
   async deleteList(list: any) {
     await list.record.delete({ prune: true });
     this.list = this.list.filter((l) => l.id !== list.id);
@@ -258,7 +278,11 @@ export class TasksComponent {
 
     console.log('LIST:', list);
 
-    this.list.find((l) => l.id === listId)!.todos.push(todoEntry);
+    if (!list.todos) {
+      list.todos = [];
+    }
+
+    list.todos.push(todoEntry);
 
     console.log(list);
 
