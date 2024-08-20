@@ -205,9 +205,13 @@ export class TasksComponent {
     }
   }
 
+  async deleteList(list: any) {
+    await list.record.delete({ prune: true });
+    this.list = this.list.filter((l) => l.id !== list.id);
+  }
+
   async deleteTodo(record: Record, list: any) {
     await record.delete();
-
     list.todos = list.todos.filter((t: any) => t.id !== record.id);
   }
 
