@@ -11,11 +11,27 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Record } from '@web5/api';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { FormsModule } from '@angular/forms';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-todo',
   standalone: true,
-  imports: [CdkDrag, CdkDropList, CommonModule, MatButtonModule, RouterModule, MatTabsModule, MatIconModule],
+  imports: [
+    FormsModule,
+    MatCheckboxModule,
+    CdkDrag,
+    CdkDropList,
+    CommonModule,
+    MatButtonModule,
+    RouterModule,
+    MatTabsModule,
+    MatIconModule,
+    MatMenuModule,
+    MatDividerModule,
+  ],
   templateUrl: './todo.component.html',
   styleUrl: './todo.component.scss',
 })
@@ -214,7 +230,7 @@ export class TodoComponent {
 
     const sharedListData = {
       type: 'list',
-      title: 'Hello',
+      title: 'New list',
       description: 'What to do?',
       author: this.identity.did,
       recipient: recipientDID,

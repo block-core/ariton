@@ -6,8 +6,10 @@
 
     <div>
       <br />
-      <button mat-flat-button (click)="newList()">New list</button>&nbsp;
-      <button mat-flat-button [disabled]="!selectedList()" (click)="newTodo()">New todo</button><br /><br />
+      <button mat-flat-button (click)="newList()">
+        <mat-icon>add</mat-icon>
+        New list</button
+      >&nbsp; <button mat-flat-button [disabled]="!selectedList()" (click)="newTodo()">New todo</button><br /><br />
 
       @for(list of list(); track list) {
 
@@ -23,7 +25,25 @@
           (cdkDropListDropped)="drop($event)"
         >
           @for (item of list.todos; track item) {
-          <div class="list-item" cdkDrag>{{ item.data.description }} ({{ item.data.completed }})</div>
+          <div class="list-item" cdkDrag>
+            <span [ngClass]="{ strikeout: item.data.completed }">{{ item.data.description }}</span>
+            <div class="spacer"></div>
+            <mat-checkbox [(ngModel)]="item.data.completed"></mat-checkbox>
+            <button mat-icon-button [matMenuTriggerFor]="menuActions">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+          </div>
+          <mat-menu #menuActions="matMenu">
+            <button mat-menu-item>
+              <mat-icon>edit</mat-icon>
+              <span>Edit</span>
+            </button>
+            <mat-divider></mat-divider>
+            <button mat-menu-item>
+              <mat-icon>delete</mat-icon>
+              <span>Delete</span>
+            </button>
+          </mat-menu>
           }
         </div>
       </div>
