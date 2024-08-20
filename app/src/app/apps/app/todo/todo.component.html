@@ -14,7 +14,15 @@
       @for(list of list(); track list) {
 
       <div class="container">
-        <h2 class="clickable" [routerLink]="['/app', 'todo', list.id]">{{ list.data.title }}</h2>
+        <h2 class="clickable" [routerLink]="['/app', 'todo', list.id]">
+          {{ list.data.title }}
+          <button mat-icon-button>
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button [disabled]="true" mat-icon-button matTooltip="Collaborator">
+            <mat-icon>person_add_alt</mat-icon>
+          </button>
+        </h2>
 
         <div
           cdkDropList
@@ -28,7 +36,7 @@
           <div class="list-item" cdkDrag>
             <span [ngClass]="{ strikeout: item.data.completed }">{{ item.data.description }}</span>
             <div class="spacer"></div>
-            <mat-checkbox [(ngModel)]="item.data.completed"></mat-checkbox>
+            <mat-checkbox color="primary" [(ngModel)]="item.data.completed"></mat-checkbox>
             <button mat-icon-button [matMenuTriggerFor]="menuActions">
               <mat-icon>more_vert</mat-icon>
             </button>
