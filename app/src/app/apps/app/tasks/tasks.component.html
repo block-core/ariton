@@ -62,9 +62,7 @@
             <mat-icon>save</mat-icon>
           </button>
           } @else {
-          <span [ngClass]="{ strikeout: item.data.completed }"
-            >{{ item.data.index }} : {{ item.data.description }}</span
-          >
+          <span [ngClass]="{ strikeout: item.data.completed }">{{ item.data.description }}</span>
           }
           <div class="spacer"></div>
           @if(item.loading) {
