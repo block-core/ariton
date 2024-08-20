@@ -19,7 +19,7 @@
         <h2 class="list-header">
           @if(list.editing) {
           <mat-form-field subscriptSizing="dynamic">
-            <input matInput placeholder="Message..." [(ngModel)]="list.data.title" (keydown.enter)="saveList(list)" />
+            <input matInput [(ngModel)]="list.data.title" (keydown.enter)="saveList(list)" />
           </mat-form-field>
           <button mat-icon-button (click)="saveList(list)">
             <mat-icon>save</mat-icon>
@@ -60,7 +60,21 @@
         >
           @for (item of list.todos; track item) {
           <div class="list-item" cdkDrag>
+            @if(item.editing) {
+            <mat-form-field subscriptSizing="dynamic">
+              <input matInput [(ngModel)]="item.data.description" (keydown.enter)="saveTodo(item)" />
+            </mat-form-field>
+            <button mat-icon-button (click)="saveTodo(item)">
+              <mat-icon>save</mat-icon>
+            </button>
+            } @else {
             <span [ngClass]="{ strikeout: item.data.completed }">{{ item.data.description }}</span>
+
+            <!-- <button mat-icon-button (click)="editList(list)">
+            <mat-icon>edit</mat-icon>
+          </button> -->
+            }
+
             <div class="spacer"></div>
             <mat-checkbox color="primary" [(ngModel)]="item.data.completed"></mat-checkbox>
             <button mat-icon-button [matMenuTriggerFor]="menuActions">
@@ -68,7 +82,7 @@
             </button>
           </div>
           <mat-menu #menuActions="matMenu">
-            <button mat-menu-item>
+            <button mat-menu-item (click)="editTodo(item)">
               <mat-icon>edit</mat-icon>
               <span>Edit</span>
             </button>

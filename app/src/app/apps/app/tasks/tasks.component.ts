@@ -221,8 +221,24 @@ export class TasksComponent {
       data: list.data,
     });
 
-    // Send to all collaborators.
+    console.log('Update status:', status);
+
+    // TODO: Send to all collaborators.
     // record.send();
+  }
+
+  editTodo(todo: any) {
+    todo.editing = true;
+  }
+
+  async saveTodo(todo: any) {
+    todo.editing = false;
+
+    const { status, record } = await todo.record.update({
+      data: todo.data,
+    });
+
+    console.log('Update status:', status);
   }
 
   async deleteList(list: any) {
