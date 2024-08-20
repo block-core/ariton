@@ -9,18 +9,23 @@
       <button mat-flat-button (click)="newList()">
         <mat-icon>add</mat-icon>
         New list</button
-      >&nbsp; <button mat-flat-button [disabled]="!selectedList()" (click)="newTodo()">New todo</button><br /><br />
+      >&nbsp;
+      <!-- <button mat-flat-button [disabled]="!selectedList()" (click)="newTodo()">New todo</button> -->
+      <br /><br />
 
-      @for(list of list(); track list) {
+      @for(list of list; track list) {
 
       <div class="container">
-        <h2 class="clickable" [routerLink]="['/app', 'todo', list.id]">
+        <h2 class="clickable" class="list-header" [routerLink]="['/app', 'todo', list.id]">
           {{ list.data.title }}
           <button mat-icon-button>
             <mat-icon>edit</mat-icon>
           </button>
           <button [disabled]="true" mat-icon-button matTooltip="Collaborator">
             <mat-icon>person_add_alt</mat-icon>
+          </button>
+          <button mat-icon-button matTooltip="Add new todo" (click)="addTodo(list.id)">
+            <mat-icon>add_box</mat-icon>
           </button>
         </h2>
 
@@ -47,7 +52,7 @@
               <span>Edit</span>
             </button>
             <mat-divider></mat-divider>
-            <button mat-menu-item>
+            <button mat-menu-item (click)="deleteTodo(item.record, list)">
               <mat-icon>delete</mat-icon>
               <span>Delete</span>
             </button>
