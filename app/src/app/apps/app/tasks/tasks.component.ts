@@ -1,4 +1,11 @@
-import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import {
+  CdkDrag,
+  CdkDragDrop,
+  CdkDropList,
+  CdkDropListGroup,
+  moveItemInArray,
+  transferArrayItem,
+} from '@angular/cdk/drag-drop';
 import { ChangeDetectorRef, Component, effect, inject, signal } from '@angular/core';
 import { LayoutService } from '../../../layout.service';
 import { protocolDefinition as todoDefinition } from '../../../../protocols/todo';
@@ -17,6 +24,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-todo',
@@ -29,6 +37,7 @@ import { MatInputModule } from '@angular/material/input';
     MatCheckboxModule,
     CdkDrag,
     CdkDropList,
+    CdkDropListGroup,
     CommonModule,
     MatButtonModule,
     RouterModule,
@@ -36,6 +45,7 @@ import { MatInputModule } from '@angular/material/input';
     MatIconModule,
     MatMenuModule,
     MatDividerModule,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.scss',
@@ -90,52 +100,7 @@ export class TasksComponent {
         this.selectedList.set(params.get('id'));
       }
     });
-
-    // effect(
-    //   async () => {
-    //     if (this.app.initialized() && this.selectedList()) {
-    //       await this.load();
-    //       // await this.loadList(this.selectedList()!);
-    //     }
-    //   },
-    //   { allowSignalWrites: true },
-    // );
   }
-
-  // async loadList(id: string) {
-  //   // this.todos.set([]);
-
-  //   // fetch shared list details
-  //   const { record } = await this.identity.web5.dwn.records.read({
-  //     message: {
-  //       filter: {
-  //         recordId: id,
-  //       },
-  //     },
-  //   });
-
-  //   this.selectedRecord.set(record);
-
-  //   // fetch todos under list
-  //   const { records: todoRecords } = await this.identity.web5.dwn.records.query({
-  //     message: {
-  //       filter: {
-  //         parentId: id,
-  //       },
-  //     },
-  //   });
-
-  //   const todoList = await record.data.json();
-  //   console.log(todoList);
-
-  //   // add entry to array
-  //   for (let record of todoRecords!) {
-  //     const data = await record.data.json();
-  //     const todo = { record, data, id: record.id };
-
-  //     // this.todos.update((requests) => [...requests, todo]);
-  //   }
-  // }
 
   async getList(id: string) {
     console.log('GET TODO FOR LIST:', id);
@@ -158,18 +123,16 @@ export class TasksComponent {
       },
     });
 
-    // const todoList = await record.data.json();
-    // const todos = signal<any[]>([]);
-    const todos: any[] = [];
+    let todos: any[] = [];
 
     // add entry to array
     for (let record of todoRecords!) {
       const todo = await this.getTodoEntryFromRecord(record);
       todos.push(todo);
-
-      // todos.update((requests) => [...requests, todo]);
-      // todos.push(todo);
     }
+
+    // Ensure the array is sorted by the new indices
+    todos = todos.sort((a, b) => a.data.index - b.data.index);
 
     return todos;
   }
@@ -251,14 +214,29 @@ export class TasksComponent {
     list.todos = list.todos.filter((t: any) => t.id !== record.id);
   }
 
-  async addTodo(listId: string) {
-    const todoRecipient = 'did:dht:bi3bzoke6rq6fbkojpo5ebtg45eqx1owqrb4esex8t9nz14ugnao';
+  initializeIndices(entries: any[]): void {
+    entries.forEach((entry, i) => {
+      entry.index = i + 1; // Start indices from 1 to avoid zero
+    });
+  }
+
+  calculateNewIndex(previousIndex: number, nextIndex: number): number {
+    return (previousIndex + nextIndex) / 2;
+  }
+
+  async addTodo(list: any) {
+    // const todoRecipient = 'did:dht:bi3bzoke6rq6fbkojpo5ebtg45eqx1owqrb4esex8t9nz14ugnao';
+
+    if (!list.todos) {
+      list.todos = [];
+    }
 
     const todoData = {
       completed: false,
       description: 'New todo...',
       author: this.identity.did,
-      parentId: listId,
+      parentId: list.id,
+      index: list.todos.length + 1, // Start indices from 1 to avoid zero
     };
 
     // newTodoDescription.value = '';
@@ -275,73 +253,30 @@ export class TasksComponent {
     });
 
     const data = await todoRecord!.data.json();
-    const todo = { todoRecord, data, id: todoRecord!.id };
+    // const todo = { todoRecord, data, id: todoRecord!.id };
 
     // this.todos.update((requests) => [...requests, todo]);
 
-    const { status: sendStatus } = await todoRecord!.send(todoRecipient);
+    // TODO: Send to collaborators.
+    // const { status: sendStatus } = await todoRecord!.send(todoRecipient);
 
-    if (sendStatus.code !== 202) {
-      console.log('Unable to send to target did:' + sendStatus);
-      // return;
-    } else {
-      console.log('Sent todo to recipient');
-    }
+    // if (sendStatus.code !== 202) {
+    //   console.log('Unable to send to target did:' + sendStatus);
+    //   // return;
+    // } else {
+    //   console.log('Sent todo to recipient');
+    // }
 
     const todoEntry = await this.getTodoEntryFromRecord(todoRecord!);
 
-    const list = this.list.find((l) => l.id === listId);
-
-    console.log('LIST:', list);
-
-    if (!list.todos) {
-      list.todos = [];
-    }
+    // const list = this.list.find((l) => l.id === listId);
+    // console.log('LIST:', list);
 
     list.todos.push(todoEntry);
-
     console.log(list);
 
     this.changeRef.markForCheck();
   }
-
-  // async newTodo() {
-  //   const todoRecipient = 'did:dht:bi3bzoke6rq6fbkojpo5ebtg45eqx1owqrb4esex8t9nz14ugnao';
-
-  //   const todoData = {
-  //     completed: false,
-  //     description: 'description',
-  //     author: this.identity.did,
-  //     parentId: this.selectedRecord()!.id,
-  //   };
-
-  //   // newTodoDescription.value = '';
-
-  //   const { record: todoRecord, status: createStatus } = await this.identity.web5.dwn.records.create({
-  //     data: todoData,
-  //     message: {
-  //       protocol: todoDefinition.protocol,
-  //       protocolPath: 'list/todo',
-  //       schema: todoDefinition.types.todo.schema,
-  //       dataFormat: todoDefinition.types.todo.dataFormats[0],
-  //       parentContextId: todoData.parentId,
-  //     },
-  //   });
-
-  //   const data = await todoRecord!.data.json();
-  //   const todo = { todoRecord, data, id: todoRecord!.id };
-
-  //   // this.todos.update((requests) => [...requests, todo]);
-
-  //   const { status: sendStatus } = await todoRecord!.send(todoRecipient);
-
-  //   if (sendStatus.code !== 202) {
-  //     console.log('Unable to send to target did:' + sendStatus);
-  //     return;
-  //   } else {
-  //     console.log('Sent todo to recipient');
-  //   }
-  // }
 
   async newList() {
     const recipientDID = 'did:dht:bi3bzoke6rq6fbkojpo5ebtg45eqx1owqrb4esex8t9nz14ugnao';
@@ -375,11 +310,78 @@ export class TasksComponent {
     console.log('Send status:', sendStatus);
   }
 
-  drop(event: CdkDragDrop<string[]>): void {
+  async drop(event: CdkDragDrop<string[]>) {
+    console.log('DROP:', event);
+
+    const entry = event.item.data;
+
+    entry.loading = true;
+
+    const data = event.container.data as any;
+    const array = data.todos;
+
+    const previousData = event.previousContainer.data as any;
+    const previousArray = previousData.todos;
+
     if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      moveItemInArray(array, event.previousIndex, event.currentIndex);
+
+      const previousIndex = event.currentIndex > 0 ? array[event.currentIndex - 1].data.index : 0;
+      const nextIndex =
+        event.currentIndex < array.length - 1 ? array[event.currentIndex + 1].data.index : array.length + 1;
+
+      entry.data.index = this.calculateNewIndex(previousIndex, nextIndex);
+
+      console.log(previousIndex, nextIndex, entry.data.index);
+
+      const { status } = await entry.record.update({
+        data: entry.data,
+      });
+
+      console.log('Status:', status);
+
+      entry.loading = false;
     } else {
-      transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
+      transferArrayItem(previousArray, array, event.previousIndex, event.currentIndex);
+
+      // Set the new parentId, keep other values the same.
+      entry.data.parentId = data.id;
+
+      const previousIndex = event.currentIndex > 0 ? array[event.currentIndex - 1].data.index : 0;
+      const nextIndex =
+        event.currentIndex < array.length - 1 ? array[event.currentIndex + 1].data.index : array.length + 1;
+
+      entry.data.index = this.calculateNewIndex(previousIndex, nextIndex);
+
+      console.log(previousIndex, nextIndex, entry.data.index);
+
+      // When moving across lists, we must create a new record and delete the old, as the parentId cannot be updated.
+      const { record: todoRecord, status: createStatus } = await this.identity.web5.dwn.records.create({
+        data: entry.data,
+        message: {
+          protocol: todoDefinition.protocol,
+          protocolPath: 'list/todo',
+          schema: todoDefinition.types.todo.schema,
+          dataFormat: todoDefinition.types.todo.dataFormats[0],
+          parentContextId: entry.data.parentId,
+        },
+      });
+
+      console.log('Create status:', createStatus);
+
+      // TODO: Send the record to the recipients.
+
+      // Delete the old record.
+      await entry.record.delete();
+
+      // Replace reference to the record with the new one.
+      entry.record = todoRecord;
+      entry.id = todoRecord?.id;
+
+      entry.loading = false;
+
+      // TODO: Send to all collaborators.
+      // record.send();
     }
   }
 }

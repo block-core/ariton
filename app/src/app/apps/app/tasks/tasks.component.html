@@ -8,9 +8,7 @@
   <button mat-flat-button (click)="newList()">
     <mat-icon>add</mat-icon>
     New list</button
-  >&nbsp;
-  <!-- <button mat-flat-button [disabled]="!selectedList()" (click)="newTodo()">New todo</button> -->
-  <br /><br />
+  ><br />
 
   <div cdkDropListGroup>
     @for(list of list; track list) {
@@ -31,12 +29,15 @@
         </button>
         }
 
-        <button mat-icon-button matTooltip="Add new todo" (click)="addTodo(list.id)">
+        <button mat-icon-button matTooltip="Add new todo" (click)="addTodo(list)">
           <mat-icon>add_box</mat-icon>
         </button>
         <button mat-icon-button [matMenuTriggerFor]="menuListActions">
           <mat-icon>more_vert</mat-icon>
         </button>
+        @if(list.loading) {
+        <mat-spinner diameter="20"></mat-spinner>
+        }
         <mat-menu #menuListActions="matMenu">
           <button mat-menu-item [disabled]="true">
             <mat-icon>person_add_alt</mat-icon>
@@ -50,7 +51,7 @@
         </mat-menu>
       </h2>
 
-      <div cdkDropList [cdkDropListData]="list.todos" class="list" (cdkDropListDropped)="drop($event)">
+      <div cdkDropList [cdkDropListData]="list" class="list" (cdkDropListDropped)="drop($event)">
         @for (item of list.todos; track item) {
         <div class="list-item" cdkDrag [cdkDragData]="item">
           @if(item.editing) {
@@ -61,10 +62,16 @@
             <mat-icon>save</mat-icon>
           </button>
           } @else {
-          <span [ngClass]="{ strikeout: item.data.completed }">{{ item.data.description }}</span>
+          <span [ngClass]="{ strikeout: item.data.completed }"
+            >{{ item.data.index }} : {{ item.data.description }}</span
+          >
           }
           <div class="spacer"></div>
+          @if(item.loading) {
+          <mat-spinner diameter="20"></mat-spinner>
+          } @else {
           <mat-checkbox color="primary" [(ngModel)]="item.data.completed"></mat-checkbox>
+          }
           <button mat-icon-button [matMenuTriggerFor]="menuActions">
             <mat-icon>more_vert</mat-icon>
           </button>
@@ -96,7 +103,7 @@
 </div>
 } -->
 
-  <div class="container">
+  <!-- <div class="container">
     <h2>To do</h2>
 
     <div
@@ -128,7 +135,7 @@
       <div class="list-item" cdkDrag>{{ item }}</div>
       }
     </div>
-  </div>
+  </div> -->
 </div>
 
 <!-- </mat-tab>
