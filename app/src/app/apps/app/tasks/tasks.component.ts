@@ -80,7 +80,7 @@ export class TasksComponent {
     );
 
     this.route.paramMap.subscribe((params) => {
-      this.layout.marginOff();
+      // this.layout.marginOff();
       // this.layout.disableScrolling();
       const id = params.get('id');
 
