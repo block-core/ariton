@@ -160,7 +160,7 @@ export class TasksComponent {
     let data = {
       title: list.data.title,
       id: list.id,
-      collaborators: [],
+      collaborators: ['111', '222', '', ''],
     };
 
     const original = JSON.parse(JSON.stringify(data));

@@ -45,7 +45,13 @@ export class CollaboratorDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<CollaboratorDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
-  ) {}
+  ) {
+    const collaboratorsInput = data.collaborators.map((collaborator) => {
+      return this.fb.control(collaborator);
+    });
+
+    this.form.controls.collaborators = this.fb.array(collaboratorsInput);
+  }
 
   ngAfterViewInit() {}
 
@@ -77,59 +83,8 @@ export class CollaboratorDialogComponent {
   }
 
   async onSubmit() {
-    console.log(this.form.value.collaborators);
-    // const formData = {
-    //   name: this.form.value.name,
-    //   title: this.form.value.title,
-    //   bio: this.form.value.bio,
-    //   status: this.form.value.status,
-    //   location: this.form.value.location,
-    //   // birthDate: this.form.value.birthDate,
-    //   // avatar: this.form.value.avatar,
-    //   // hero: this.form.value.hero,
-    // };
-
-    // // If record exists, update it.
-    // if (this.data().record) {
-    //   const { status, record } = await this.data().record.update({
-    //     published: true,
-    //     data: formData,
-    //   });
-
-    //   console.log('Update profile status:', status, record);
-
-    //   // Send the record immediately to user public DWN.
-    //   const { status: recordSendStatus } = await this.data().record.send(this.identity.did);
-    //   console.log('Send profile status:', recordSendStatus);
-    // } else {
-    //   const { status, record } = await this.identity.web5.dwn.records.create({
-    //     data: formData,
-    //     message: {
-    //       // TODO: Remove this line when the DWN supports query by protocol access.
-    //       published: true,
-    //       protocol: profileDefinition.protocol,
-    //       protocolPath: 'profile',
-    //       schema: profileDefinition.types.profile.schema,
-    //       dataFormat: profileDefinition.types.profile.dataFormats[0],
-    //     },
-    //   });
-    //   console.log('Save profile status:', status, record);
-
-    //   // Send the record immediately to user public DWN.
-    //   const { status: recordSendStatus } = await record!.send(this.identity.did);
-    //   console.log('Send profile status:', recordSendStatus);
-    // }
-
-    // // TODO: Check if the avatar has changed before uploading. Don't upload if it hasn't.
-    // const avatarRecord = await this.upload(this.form.controls.avatar.value, this.data().avatarRecord);
-
-    // if (avatarRecord) {
-    //   // Send the record immediately to user public DWN.
-    //   const { status: recordSendStatus } = await avatarRecord!.send(this.identity.did);
-    //   console.log('Send avatar status:', recordSendStatus);
-    // }
-    // // }
-
-    // this.router.navigate(['/profile', this.identity.did]);
+    // Trim the collaborators array to exclude empty string values
+    const trimmedCollaborators = this.form.value.collaborators!.filter((n) => n);
+    this.data.collaborators = trimmedCollaborators as string[];
   }
 }
