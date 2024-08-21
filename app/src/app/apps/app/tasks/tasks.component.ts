@@ -8,7 +8,7 @@ import {
 } from '@angular/cdk/drag-drop';
 import { ChangeDetectorRef, Component, effect, inject, signal } from '@angular/core';
 import { LayoutService } from '../../../layout.service';
-import { protocolDefinition as todoDefinition } from '../../../../protocols/todo';
+import { protocolDefinition as taskDefinition } from '../../../../protocols/task';
 import { AppService } from '../../../app.service';
 import { IdentityService } from '../../../identity.service';
 import { DwnDateSort } from '@web5/agent';
@@ -119,6 +119,8 @@ export class TasksComponent {
     // Ensure the array is sorted by the new indices
     todos = todos.sort((a, b) => a.data.index - b.data.index);
 
+    console.log('ALL TODOS:', todos);
+
     return todos;
   }
 
@@ -134,8 +136,8 @@ export class TasksComponent {
     const { records } = await this.identity.web5.dwn.records.query({
       message: {
         filter: {
-          protocol: todoDefinition.protocol,
-          schema: todoDefinition.types.list.schema,
+          protocol: taskDefinition.protocol,
+          schema: taskDefinition.types.list.schema,
         },
         dateSort: DwnDateSort.CreatedAscending,
       },
@@ -319,10 +321,10 @@ export class TasksComponent {
     const { record: todoRecord, status: createStatus } = await this.identity.web5.dwn.records.create({
       data: todoData,
       message: {
-        protocol: todoDefinition.protocol,
-        protocolPath: 'list/todo',
-        schema: todoDefinition.types.todo.schema,
-        dataFormat: todoDefinition.types.todo.dataFormats[0],
+        protocol: taskDefinition.protocol,
+        protocolPath: 'list/task',
+        schema: taskDefinition.types.task.schema,
+        dataFormat: taskDefinition.types.task.dataFormats[0],
         parentContextId: todoData.parentId,
       },
     });
@@ -353,10 +355,10 @@ export class TasksComponent {
     const { record } = await this.identity.web5.dwn.records.create({
       data: sharedListData,
       message: {
-        protocol: todoDefinition.protocol,
+        protocol: taskDefinition.protocol,
         protocolPath: 'list',
-        schema: todoDefinition.types.list.schema,
-        dataFormat: todoDefinition.types.list.dataFormats[0],
+        schema: taskDefinition.types.list.schema,
+        dataFormat: taskDefinition.types.list.dataFormats[0],
         // recipient: recipientDID,
       },
     });
@@ -420,10 +422,10 @@ export class TasksComponent {
       const { record: todoRecord, status: createStatus } = await this.identity.web5.dwn.records.create({
         data: entry.data,
         message: {
-          protocol: todoDefinition.protocol,
-          protocolPath: 'list/todo',
-          schema: todoDefinition.types.todo.schema,
-          dataFormat: todoDefinition.types.todo.dataFormats[0],
+          protocol: taskDefinition.protocol,
+          protocolPath: 'list/task',
+          schema: taskDefinition.types.task.schema,
+          dataFormat: taskDefinition.types.task.dataFormats[0],
           parentContextId: entry.data.parentId,
         },
       });

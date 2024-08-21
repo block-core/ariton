@@ -11,7 +11,7 @@ import { protocolDefinition as registry } from '../protocols/registry';
 import { protocolDefinition as note } from '../protocols/note';
 import { protocolDefinition as file } from '../protocols/file';
 import { protocolDefinition as text } from '../protocols/text';
-import { protocolDefinition as todo } from '../protocols/todo';
+import { protocolDefinition as todo } from '../protocols/task';
 import { IdentityService } from './identity.service';
 
 @Injectable({
