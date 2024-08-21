@@ -160,8 +160,12 @@ export class TasksComponent {
     let data = {
       title: list.data.title,
       id: list.id,
-      collaborators: ['111', '222', '', ''],
+      collaborators: list.data.collaborators,
     };
+
+    if (data.collaborators == null) {
+      data.collaborators = [];
+    }
 
     const original = JSON.parse(JSON.stringify(data));
 
@@ -176,16 +180,11 @@ export class TasksComponent {
         // Reset the original data if user cancels.
         data = original;
       } else {
-        console.log('data result for saving:', data);
+        // Copy the collaborators.
+        list.data.collaborators = data.collaborators;
 
-        // Update the data from old to new.
-        // entry.data = data;
-
-        // await this.saveNote(entry, data);
-
-        // Update the data so it's displayed in the UI without re-query DWN.
-        // TODO: Validate if this is actually needed since we copy above now.
-        // this.records().find((r) => r.record == entry.record).data = data;
+        const { status } = await list.record.update({ data: list.data });
+        console.log('Save status for collaborators:', status);
       }
     });
 

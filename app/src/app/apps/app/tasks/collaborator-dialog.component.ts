@@ -39,18 +39,17 @@ export class CollaboratorDialogComponent {
   private fb = inject(FormBuilder);
 
   form = this.fb.group({
-    collaborators: this.fb.array([this.fb.control('')]),
+    collaborators: this.fb.array([]),
   });
 
   constructor(
     public dialogRef: MatDialogRef<CollaboratorDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
   ) {
-    const collaboratorsInput = data.collaborators.map((collaborator) => {
-      return this.fb.control(collaborator);
+    // Populate the FormArray with existing values.
+    data.collaborators.map((collaborator) => {
+      this.form.controls.collaborators.push(this.fb.control(collaborator));
     });
-
-    this.form.controls.collaborators = this.fb.array(collaboratorsInput);
   }
 
   ngAfterViewInit() {}

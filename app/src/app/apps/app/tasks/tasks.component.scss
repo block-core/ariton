@@ -31,6 +31,15 @@
   align-items: center;
 }
 
+.list-selection {
+  text-decoration: none;
+  padding-right: 0.2em;
+}
+
+.list-selection:hover {
+  text-decoration: underline;
+}
+
 .strikeout {
   text-decoration: line-through;
 }

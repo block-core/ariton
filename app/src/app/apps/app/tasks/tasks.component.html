@@ -23,7 +23,7 @@
           <mat-icon>save</mat-icon>
         </button>
         } @else {
-        <a [routerLink]="['/app', 'tasks', list.id]">{{ list.data.title }}</a>
+        <a class="list-selection" [routerLink]="['/app', 'tasks', list.id]">{{ list.data.title }}</a>
         <button mat-icon-button (click)="editList(list)">
           <mat-icon>edit</mat-icon>
         </button>
