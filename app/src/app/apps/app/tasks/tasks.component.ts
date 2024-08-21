@@ -25,6 +25,8 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CollaboratorDialogComponent } from './collaborator-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-todo',
@@ -63,14 +65,13 @@ export class TasksComponent {
 
   changeRef = inject(ChangeDetectorRef);
 
+  dialog = inject(MatDialog);
+
   selectedList = signal<string | null>(null);
 
   selectedRecord = signal<Record | null>(null);
 
   constructor() {
-    this.layout.marginOn();
-    this.layout.resetActions();
-
     effect(
       async () => {
         if (this.app.initialized()) {
@@ -81,8 +82,9 @@ export class TasksComponent {
     );
 
     this.route.paramMap.subscribe((params) => {
-      // this.layout.marginOff();
-      // this.layout.disableScrolling();
+      this.layout.marginOn();
+      this.layout.resetActions();
+
       const id = params.get('id');
 
       if (!id || id == ':id') {
@@ -93,19 +95,9 @@ export class TasksComponent {
     });
   }
 
+  /** Gets a list of tasks with the supplied parent id. */
   async getList(id: string) {
-    console.log('GET TODO FOR LIST:', id);
-
-    // fetch shared list details
-    // const { record } = await this.identity.web5.dwn.records.read({
-    //   message: {
-    //     filter: {
-    //       recordId: id,
-    //     },
-    //   },
-    // });
-
-    // fetch todos under list
+    // Fetch tasks under list
     const { records: todoRecords } = await this.identity.web5.dwn.records.query({
       message: {
         filter: {
@@ -116,7 +108,6 @@ export class TasksComponent {
 
     let todos: any[] = [];
 
-    // add entry to array
     for (let record of todoRecords!) {
       const todo = await this.getTodoEntryFromRecord(record);
       todos.push(todo);
@@ -137,7 +128,6 @@ export class TasksComponent {
   async load() {
     this.list = [];
 
-    // Fetch shared todo lists
     const { records } = await this.identity.web5.dwn.records.query({
       message: {
         filter: {
@@ -148,20 +138,58 @@ export class TasksComponent {
       },
     });
 
-    console.log('Saved records', records);
-
-    // add entry to sharedList
     for (let record of records!) {
       const data = await record.data.json();
       let list: any = { record, data, id: record.id };
 
-      // fetch todos under list
       list.todos = await this.getList(list.id);
 
       this.list.push(list);
-
-      // this.list.update((requests) => [...requests, list]);
     }
+  }
+
+  collaboratorDialog(list: any) {
+    // let data: DialogData = {
+    //   title: entry.data.title,
+    //   body: entry.data.body,
+    //   background: entry.data.background,
+    //   collaborators: [],
+    //   labels: [''],
+    // };
+
+    let data = {
+      title: list.data.title,
+      id: list.id,
+      collaborators: [],
+    };
+
+    const original = JSON.parse(JSON.stringify(data));
+
+    const dialogRef = this.dialog.open(CollaboratorDialogComponent, {
+      // maxWidth: '80vw',
+      // maxHeight: '80vh',
+      data: data,
+    });
+
+    dialogRef.afterClosed().subscribe(async (result: any) => {
+      if (!result) {
+        // Reset the original data if user cancels.
+        data = original;
+      } else {
+        console.log('data result for saving:', data);
+
+        // Update the data from old to new.
+        // entry.data = data;
+
+        // await this.saveNote(entry, data);
+
+        // Update the data so it's displayed in the UI without re-query DWN.
+        // TODO: Validate if this is actually needed since we copy above now.
+        // this.records().find((r) => r.record == entry.record).data = data;
+      }
+    });
+
+    return dialogRef.afterClosed();
   }
 
   editList(list: any) {

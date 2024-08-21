@@ -39,9 +39,9 @@
         <mat-spinner diameter="20"></mat-spinner>
         }
         <mat-menu #menuListActions="matMenu">
-          <button mat-menu-item [disabled]="true">
+          <button mat-menu-item (click)="collaboratorDialog(list)">
             <mat-icon>person_add_alt</mat-icon>
-            <span>Collaborator</span>
+            <span>Collaborators</span>
           </button>
           <mat-divider></mat-divider>
           <button mat-menu-item (click)="deleteList(list)">
