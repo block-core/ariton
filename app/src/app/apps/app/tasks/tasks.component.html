@@ -56,9 +56,9 @@
         <div class="list-item" cdkDrag [cdkDragData]="item">
           @if(item.editing) {
           <mat-form-field subscriptSizing="dynamic">
-            <input matInput [(ngModel)]="item.data.description" (keydown.enter)="saveTodo(item)" />
+            <input matInput [(ngModel)]="item.data.description" (keydown.enter)="saveTodo(item, list)" />
           </mat-form-field>
-          <button mat-icon-button (click)="saveTodo(item)">
+          <button mat-icon-button (click)="saveTodo(item, list)">
             <mat-icon>save</mat-icon>
           </button>
           } @else {
@@ -68,7 +68,11 @@
           @if(item.loading) {
           <mat-spinner diameter="20"></mat-spinner>
           } @else {
-          <mat-checkbox color="primary" [(ngModel)]="item.data.completed"></mat-checkbox>
+          <mat-checkbox
+            color="primary"
+            [(ngModel)]="item.data.completed"
+            (change)="saveTodo(item, list)"
+          ></mat-checkbox>
           }
           <button mat-icon-button [matMenuTriggerFor]="menuActions">
             <mat-icon>more_vert</mat-icon>

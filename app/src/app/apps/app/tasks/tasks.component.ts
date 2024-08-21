@@ -185,10 +185,20 @@ export class TasksComponent {
 
         const { status } = await list.record.update({ data: list.data });
         console.log('Save status for collaborators:', status);
+
+        // Send to all collaborators.
+        await this.sendToCollaborators(list.record, list.data.collaborators);
       }
     });
 
     return dialogRef.afterClosed();
+  }
+
+  async sendToCollaborators(record: Record, collaborators: string[]) {
+    for (let collaborator of collaborators) {
+      const { status } = await record.send(collaborator);
+      console.log('Send status to collaborator:', status);
+    }
   }
 
   editList(list: any) {
@@ -198,28 +208,31 @@ export class TasksComponent {
   async saveList(list: any) {
     list.editing = false;
 
-    const { status, record } = await list.record.update({
+    const { status } = await list.record.update({
       data: list.data,
     });
 
     console.log('Update status:', status);
 
-    // TODO: Send to all collaborators.
-    // record.send();
+    // Send to all collaborators.
+    this.sendToCollaborators(list.record, list.data.collaborators);
   }
 
   editTodo(todo: any) {
     todo.editing = true;
   }
 
-  async saveTodo(todo: any) {
+  async saveTodo(todo: any, list: any) {
     todo.editing = false;
 
-    const { status, record } = await todo.record.update({
+    const { status } = await todo.record.update({
       data: todo.data,
     });
 
     console.log('Update status:', status);
+
+    // Send to all collaborators.
+    this.sendToCollaborators(todo.record, list.data.collaborators);
   }
 
   async deleteList(list: any) {
@@ -230,6 +243,8 @@ export class TasksComponent {
   async deleteTodo(record: Record, list: any) {
     await record.delete();
     list.todos = list.todos.filter((t: any) => t.id !== record.id);
+
+    this.sendToCollaborators(record, list.data.collaborators);
   }
 
   initializeIndices(entries: any[]): void {
