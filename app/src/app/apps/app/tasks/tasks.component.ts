@@ -183,10 +183,20 @@ export class TasksComponent {
         // Copy the collaborators.
         list.data.collaborators = data.collaborators;
 
+        // Compute the difference between the original and new collaborators
+        const originalCollaborators = new Set(original.collaborators);
+
+        const newCollaborators = data.collaborators.filter(
+          (collaborator: any) => !originalCollaborators.has(collaborator),
+        );
+        console.log('New collaborators added:', newCollaborators);
+
+        await this.sendToCollaborators(list.record, newCollaborators, true);
+
         const { status } = await list.record.update({ data: list.data });
         console.log('Save status for collaborators:', status);
 
-        // Send to all collaborators.
+        // Send the list (parent) to all collaborators.
         await this.sendToCollaborators(list.record, list.data.collaborators);
       }
     });
@@ -194,10 +204,23 @@ export class TasksComponent {
     return dialogRef.afterClosed();
   }
 
-  async sendToCollaborators(record: Record, collaborators: string[]) {
+  async sendToCollaborators(record: Record, collaborators: string[], everything: boolean = false) {
     for (let collaborator of collaborators) {
       const { status } = await record.send(collaborator);
-      console.log('Send status to collaborator:', status);
+      console.log('Send list to collaborator:', status);
+    }
+
+    if (everything) {
+      const tasks = await this.getList(record.id);
+
+      for (let collaborator of collaborators) {
+        for (let task of tasks) {
+          const { status } = await task.record.send(collaborator);
+          console.log('Send task to collaborator:', status);
+        }
+        // const { status } = await record.send(collaborator);
+        // console.log('Send status to collaborator:', status);
+      }
     }
   }
 
@@ -215,7 +238,7 @@ export class TasksComponent {
     console.log('Update status:', status);
 
     // Send to all collaborators.
-    this.sendToCollaborators(list.record, list.data.collaborators);
+    await this.sendToCollaborators(list.record, list.data.collaborators);
   }
 
   editTodo(todo: any) {
@@ -232,7 +255,7 @@ export class TasksComponent {
     console.log('Update status:', status);
 
     // Send to all collaborators.
-    this.sendToCollaborators(todo.record, list.data.collaborators);
+    await this.sendToCollaborators(todo.record, list.data.collaborators);
   }
 
   async deleteList(list: any) {
@@ -244,7 +267,7 @@ export class TasksComponent {
     await record.delete();
     list.todos = list.todos.filter((t: any) => t.id !== record.id);
 
-    this.sendToCollaborators(record, list.data.collaborators);
+    await this.sendToCollaborators(record, list.data.collaborators);
   }
 
   initializeIndices(entries: any[]): void {
@@ -285,41 +308,27 @@ export class TasksComponent {
       },
     });
 
-    const data = await todoRecord!.data.json();
-    // const todo = { todoRecord, data, id: todoRecord!.id };
-
-    // this.todos.update((requests) => [...requests, todo]);
-
-    // TODO: Send to collaborators.
-    // const { status: sendStatus } = await todoRecord!.send(todoRecipient);
-
-    // if (sendStatus.code !== 202) {
-    //   console.log('Unable to send to target did:' + sendStatus);
-    //   // return;
-    // } else {
-    //   console.log('Sent todo to recipient');
-    // }
-
+    // const data = await todoRecord!.data.json();
     const todoEntry = await this.getTodoEntryFromRecord(todoRecord!);
-
-    // const list = this.list.find((l) => l.id === listId);
-    // console.log('LIST:', list);
 
     list.todos.push(todoEntry);
     console.log(list);
 
     this.changeRef.markForCheck();
+
+    await this.sendToCollaborators(todoRecord!, list.data.collaborators);
   }
 
   async newList() {
-    const recipientDID = 'did:dht:bi3bzoke6rq6fbkojpo5ebtg45eqx1owqrb4esex8t9nz14ugnao';
+    // const recipientDID = 'did:dht:bi3bzoke6rq6fbkojpo5ebtg45eqx1owqrb4esex8t9nz14ugnao';
 
     const sharedListData = {
       type: 'list',
       title: 'New list',
       description: 'What to do?',
       author: this.identity.did,
-      recipient: recipientDID,
+      // recipient: recipientDID,
+      collaborators: [],
     };
 
     const { record } = await this.identity.web5.dwn.records.create({
@@ -329,7 +338,7 @@ export class TasksComponent {
         protocolPath: 'list',
         schema: todoDefinition.types.list.schema,
         dataFormat: todoDefinition.types.list.dataFormats[0],
-        recipient: recipientDID,
+        // recipient: recipientDID,
       },
     });
 
@@ -339,7 +348,7 @@ export class TasksComponent {
     this.list.push(list);
     // this.list.update((requests) => [...requests, list]);
 
-    const { status: sendStatus } = await record!.send(recipientDID);
+    const { status: sendStatus } = await record!.send(this.identity.did);
     console.log('Send status:', sendStatus);
   }
 
@@ -402,19 +411,18 @@ export class TasksComponent {
 
       console.log('Create status:', createStatus);
 
-      // TODO: Send the record to the recipients.
+      // Send the record to the recipients.
+      await this.sendToCollaborators(todoRecord!, entry.data.collaborators);
 
       // Delete the old record.
       await entry.record.delete();
+      await this.sendToCollaborators(entry.record, entry.data.collaborators);
 
       // Replace reference to the record with the new one.
       entry.record = todoRecord;
       entry.id = todoRecord?.id;
 
       entry.loading = false;
-
-      // TODO: Send to all collaborators.
-      // record.send();
     }
   }
 }
