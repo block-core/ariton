@@ -27,6 +27,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CollaboratorDialogComponent } from './collaborator-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-todo',
@@ -66,6 +67,8 @@ export class TasksComponent {
   changeRef = inject(ChangeDetectorRef);
 
   dialog = inject(MatDialog);
+
+  snackBar = inject(MatSnackBar);
 
   selectedList = signal<string | null>(null);
 
@@ -189,15 +192,19 @@ export class TasksComponent {
         const newCollaborators = data.collaborators.filter(
           (collaborator: any) => !originalCollaborators.has(collaborator),
         );
-        console.log('New collaborators added:', newCollaborators);
 
-        await this.sendToCollaborators(list.record, newCollaborators, true);
+        const originalCollaboratorsList = data.collaborators.filter((collaborator: any) =>
+          originalCollaborators.has(collaborator),
+        );
 
         const { status } = await list.record.update({ data: list.data });
-        console.log('Save status for collaborators:', status);
 
-        // Send the list (parent) to all collaborators.
-        await this.sendToCollaborators(list.record, list.data.collaborators);
+        console.log('Save status for list:', status);
+        console.log('New collaborators:', newCollaborators);
+        console.log('Existing collaborators:', originalCollaboratorsList);
+
+        await this.sendToCollaborators(list.record, originalCollaboratorsList);
+        await this.sendToCollaborators(list.record, newCollaborators, true);
       }
     });
 
@@ -207,7 +214,13 @@ export class TasksComponent {
   async sendToCollaborators(record: Record, collaborators: string[], everything: boolean = false) {
     for (let collaborator of collaborators) {
       const { status } = await record.send(collaborator);
-      console.log('Send list to collaborator:', status);
+      console.log('Send record to collaborator:', status, record);
+
+      if (status.code !== 202) {
+        this.snackBar.open(`Code: ${status.code}, Error: ${status.detail}`, 'Close', {
+          duration: 3000,
+        });
+      }
     }
 
     if (everything) {
@@ -217,6 +230,12 @@ export class TasksComponent {
         for (let task of tasks) {
           const { status } = await task.record.send(collaborator);
           console.log('Send task to collaborator:', status);
+
+          if (status.code !== 202) {
+            this.snackBar.open(`Code: ${status.code}, Error: ${status.detail}`, 'Close', {
+              duration: 3000,
+            });
+          }
         }
         // const { status } = await record.send(collaborator);
         // console.log('Send status to collaborator:', status);
