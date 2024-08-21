@@ -28,6 +28,7 @@ import { FormsModule } from '@angular/forms';
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { QRCodeScanDialogComponent } from '../shared/dialog/qrcode-scan-dialog/qrcode-scan-dialog.component';
+import { AppService } from '../app.service';
 
 @Component({
   selector: 'app-layout',
@@ -67,6 +68,8 @@ export class LayoutComponent {
 
   public profileService = inject(ProfileService);
 
+  private app = inject(AppService);
+
   public layout = inject(LayoutService);
 
   private navigation = inject(NavigationService);
@@ -83,6 +86,15 @@ export class LayoutComponent {
   );
 
   private debounceTimer: any;
+
+  async copyDID(did: string) {
+    try {
+      await navigator.clipboard.writeText(did);
+      this.app.openSnackBar('Your DID copied to clipboard');
+    } catch (err) {
+      console.error('Failed to copy: ', err);
+    }
+  }
 
   qrScan() {
     const dialogRef = this.dialog.open(QRCodeScanDialogComponent, {

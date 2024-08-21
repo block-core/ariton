@@ -137,6 +137,11 @@
             <span>View Profile</span>
           </button>
 
+          <button (click)="copyDID(identity.did)" mat-menu-item class="account-menu-item">
+            <mat-icon>content_copy</mat-icon>
+            <span>Copy My DID</span>
+          </button>
+
           <mat-divider></mat-divider>
 
           <!-- <button mat-menu-item [matMenuTriggerFor]="menuAccounts">
