@@ -11,7 +11,7 @@
   ><br />
 
   <div cdkDropListGroup>
-    @for(list of list; track list) {
+    @for(list of list; track list) { @if(!selectedList() || selectedList() === list.id) {
 
     <div class="container">
       <h2 class="list-header">
@@ -23,7 +23,7 @@
           <mat-icon>save</mat-icon>
         </button>
         } @else {
-        {{ list.data.title }}
+        <a [routerLink]="['/app', 'tasks', list.id]">{{ list.data.title }}</a>
         <button mat-icon-button (click)="editList(list)">
           <mat-icon>edit</mat-icon>
         </button>
@@ -88,7 +88,7 @@
         }
       </div>
     </div>
-    }
+    } }
   </div>
 
   <br /><br />

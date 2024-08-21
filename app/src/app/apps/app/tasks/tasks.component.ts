@@ -51,17 +51,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   styleUrl: './tasks.component.scss',
 })
 export class TasksComponent {
-  todo = ['Get to work', 'Pick up groceries', 'Go home', 'Fall asleep'];
-
-  done = ['Get up', 'Brush teeth', 'Take a shower', 'Check e-mail', 'Walk dog'];
+  list: any[] = [];
 
   layout = inject(LayoutService);
-
-  // list = signal<any[]>([]);
-
-  // todos = signal<any[]>([]);
-
-  list: any[] = [];
 
   app = inject(AppService);
 
@@ -69,15 +61,14 @@ export class TasksComponent {
 
   route = inject(ActivatedRoute);
 
+  changeRef = inject(ChangeDetectorRef);
+
   selectedList = signal<string | null>(null);
 
   selectedRecord = signal<Record | null>(null);
 
-  changeRef = inject(ChangeDetectorRef);
-
   constructor() {
     this.layout.marginOn();
-
     this.layout.resetActions();
 
     effect(

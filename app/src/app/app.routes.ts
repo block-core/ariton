@@ -119,7 +119,7 @@ export const routes: Routes = [
     data: { icon: 'notes' },
   },
   {
-    path: 'app/tasks',
+    path: 'app/tasks/:id',
     loadComponent: () => import('./apps/app/tasks/tasks.component').then((c) => c.TasksComponent),
     title: 'Tasks',
     data: { icon: 'task' },
