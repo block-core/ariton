@@ -5,10 +5,12 @@
     </ng-template> -->
 
 <div>
+  @if (!selectedList()) {
   <button mat-flat-button (click)="newList()">
     <mat-icon>add</mat-icon>
     New list</button
   ><br />
+  }
 
   <div cdkDropListGroup>
     @for(list of list; track list) { @if(!selectedList() || selectedList() === list.id) {
