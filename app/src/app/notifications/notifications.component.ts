@@ -1,11 +1,19 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { LayoutService } from '../layout.service';
+import { MatCardModule } from '@angular/material/card';
+import { NotificationEvent, NotificationService } from '../notification.service';
+import { MatIconModule } from '@angular/material/icon';
+import { AgoPipe } from '../shared/pipes/ago.pipe';
+import { AppService } from '../app.service';
+import { MatMenuModule } from '@angular/material/menu';
+import { RouterModule } from '@angular/router';
+import { ProfileCardComponent } from '../shared/components/profile-card/profile-card.component';
 
 @Component({
   selector: 'app-notifications',
   standalone: true,
-  imports: [MatButtonModule],
+  imports: [ProfileCardComponent, MatButtonModule, MatCardModule, MatIconModule, MatMenuModule, RouterModule, AgoPipe],
   templateUrl: './notifications.component.html',
   styleUrl: './notifications.component.scss',
 })
@@ -14,8 +22,30 @@ export class NotificationsComponent {
 
   layout = inject(LayoutService);
 
+  notification = inject(NotificationService);
+
+  app = inject(AppService);
+
+  notifications = signal<NotificationEvent[]>([]);
+
   constructor() {
     this.layout.resetActions();
+
+    effect(async () => {
+      if (this.app.initialized()) {
+        await this.loadNotifications();
+      }
+    });
+  }
+
+  async generateNotification() {
+    const event = await this.notification.create({ title: 'Incoming friend request', app: 'Friends', icon: 'people' });
+    this.notifications.update((list) => [...list, event]);
+  }
+
+  async loadNotifications() {
+    const notifications = await this.notification.load();
+    this.notifications.set(notifications);
   }
 
   async enableNotifications() {

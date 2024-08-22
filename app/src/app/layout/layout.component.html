@@ -97,13 +97,22 @@
             <span>Notification Settings</span>
           </button>
           <mat-divider></mat-divider>
-          <button mat-menu-item>
+          @for (notification of notifications(); track notification) {
+          <button mat-menu-item [routerLink]="['/notifications']">
+            <mat-icon>{{ notification.data.icon }}</mat-icon>
+            <span>{{ notification.data.title }}</span>
+            <div class="notification-details dimmed">{{ notification.data.app }} ({{ '2024-08-22 12:00' | ago }})</div>
+          </button>
+          }
+          <button mat-menu-item [routerLink]="['/notifications']">
             <mat-icon>forum</mat-icon>
             <span>Knitting Community posted new pattern</span>
+            <div class="notification-details dimmed">Community ({{ '2024-08-22 12:00' | ago }})</div>
           </button>
-          <button mat-menu-item>
+          <button mat-menu-item [routerLink]="['/notifications']">
             <mat-icon>face</mat-icon>
             <span>Joe sent you a message</span>
+            <div class="notification-details dimmed">Chat ({{ '2024-08-22 12:00' | ago }})</div>
           </button>
           <button mat-menu-item>
             <mat-icon>key</mat-icon>

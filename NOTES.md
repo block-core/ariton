@@ -118,14 +118,14 @@ Apps will also have a protocol that must be installed on the DWN of the user. Th
 
 ### Proposed Apps
 
-- **Tasks**: A simple task manager that allows shared items, either in read-only mode or collaboration mode.
+- **Tasks** (✅): A simple task manager that allows shared items, either in read-only mode or collaboration mode.
 - **Recipies**: Collect and share food recipies.
 - **Calendar**: A simple calendar app that allows shared events.
 - **Media Player**: This will integrate into the window frame with media playback controls.
 - **Video Chat**: A simple video chat app that allows for group video calls.
 - **Marketplace**: A simple marketplace app that allows users to buy and sell goods and services.
 - **Data Editor**: A generic data editor that allows users to manage their data.
-- **Chat**: A simple chat app that allows for group chat.
+- **Chat** (✅): A simple chat app that allows for group chat.
 - **Forum**: A simple forum app that allows for threaded discussions.
 - **Blog**: A simple blog app that allows for blog posts.
 - **Game**: Simple games such as Tic-Tac-Toe style games, chess and others could be implemented.
@@ -218,3 +218,17 @@ schema: https://schema.ariton.app/message
   "message": "Hello, how are you?"
 }
 ```
+
+# Public Data Write (Connection Requests)
+
+There will always be a challenge with spam when any protocol on the DWN is open for public writing. If someone knows the user's DID, they can begin writing spam to the user's DWN.
+
+Without this access, it becomes impossible to send messages to users that have not first initiated contact.
+
+We also want to distinguish between friends and connections. We will need to accept a connection request before we allow data to be sent to us from other users. This is to avoid spam other than the initial connection, which we will be filtering on unique DIDs anyway.
+
+When an incoming connection request arrives, it will include the record ID that the user wants to store. This is because on the initial share, the requester user does not have write access to secondary user yet.
+
+Upon accepting the connection, all of the connection requests will be processed and approved. There might be N connection requests from different apps to be processed.
+
+When declining connection request, all of the requests will be deleted locally.

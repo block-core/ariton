@@ -29,6 +29,8 @@ import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { QRCodeScanDialogComponent } from '../shared/dialog/qrcode-scan-dialog/qrcode-scan-dialog.component';
 import { AppService } from '../app.service';
+import { NotificationEvent, NotificationService } from '../notification.service';
+import { AgoPipe } from '../shared/pipes/ago.pipe';
 
 @Component({
   selector: 'app-layout',
@@ -55,6 +57,7 @@ import { AppService } from '../app.service';
     ThemeToggleComponent,
     MatTooltipModule,
     DidPipe,
+    AgoPipe,
   ],
 })
 export class LayoutComponent {
@@ -74,6 +77,8 @@ export class LayoutComponent {
 
   private navigation = inject(NavigationService);
 
+  private notification = inject(NotificationService);
+
   dialog = inject(MatDialog);
 
   private router = inject(Router);
@@ -86,6 +91,21 @@ export class LayoutComponent {
   );
 
   private debounceTimer: any;
+
+  public notifications = signal<NotificationEvent[]>([]);
+
+  constructor() {
+    effect(async () => {
+      if (this.app.initialized()) {
+        await this.loadNotifications();
+      }
+    });
+  }
+
+  async loadNotifications() {
+    const notifications = await this.notification.load();
+    this.notifications.set(notifications);
+  }
 
   async copyDID(did: string) {
     try {
