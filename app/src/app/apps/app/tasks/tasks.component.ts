@@ -314,6 +314,7 @@ export class TasksComponent {
       author: this.identity.did,
       parentId: list.id,
       index: list.todos.length + 1, // Start indices from 1 to avoid zero
+      collaborators: [],
     };
 
     // newTodoDescription.value = '';
