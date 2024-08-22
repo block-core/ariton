@@ -55,7 +55,7 @@ export class NotificationsComponent {
     const event2 = await this.notification.create({
       title: 'Accept connect request',
       description:
-        'This user wants to connect with you, you have to accept an initial connection request to be able to receive other sharing requests, such as shared Tasks, collabrative apps and more. Only accept this request if you know the user. This is to avoid spam messages.',
+        'This user wants to connect with you, you have to accept an initial connect request to be able to receive other sharing requests, such as shared Tasks, collabrative apps and more. Only accept this request if you know the user. This is to avoid spam messages.',
       app: 'Connect',
       icon: 'connect_without_contact',
     });
