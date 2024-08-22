@@ -1,0 +1,35 @@
+@if (data().avatar) {
+<img
+  class="profile-thumbnail"
+  mat-card-avatar
+  [routerLink]="['/profile', data().profile?.did]"
+  [src]="data().avatar | safeResourceUrl"
+  onerror="this.src='/avatar-placeholder.png';this.onerror='';"
+/>
+} @else {
+<img
+  class="profile-thumbnail"
+  mat-card-avatar
+  [routerLink]="['/profile', data().profile?.did]"
+  [src]="'/avatar-placeholder.png'"
+/>
+}
+<div>
+  <div class="profile-header-title">
+    @if (data().profile?.name) {
+    <a [routerLink]="['/profile', data().profile?.did]"
+      >{{ data().profile?.name }} @if (data().profile?.title) { ({{ data().profile?.title }}) }</a
+    >
+    } @else {
+    <em
+      ><a [routerLink]="['/profile', data().profile?.did]"
+        >No name set @if (data().profile?.title) { ({{ data().profile?.title }}) }
+      </a></em
+    >
+    }
+  </div>
+  <div class="profile-header-subtitle">
+    <!-- <app-did [did]="data().profile?.did"></app-did> -->
+    <a [routerLink]="['/profile', data().profile?.did]">{{ data().profile?.did | did }}</a>
+  </div>
+</div>

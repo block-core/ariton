@@ -1,4 +1,4 @@
-<mat-card class="toolbar-actions margin-bottom">
+<mat-card class="toolbar-actions margin-bottom notifications-card">
   <mat-card-content>
     <h1>Notifications</h1>
     <button type="button" mat-button>
@@ -63,11 +63,26 @@
           </button>
         </ng-container> -->
         </app-profile-card>
+        } @else if(notification.data.app === 'Connect') {
+
+        <div class="notification-description">{{ notification.data.description }}</div>
+        <!-- 
+        <h3>Profile</h3> -->
+
+        <app-profile-header [did]="notification.record.author">
+          <button mat-flat-button>CONFIRM</button>
+          <button mat-button>DELETE</button>
+        </app-profile-header>
+
         }
 
         <!-- <span>{{ notification.data.title }}</span> -->
         <!-- <div class="notification-details dimmed">{{ notification.data.app }} ({{ '2024-08-22 12:00' | ago }})</div> -->
       </mat-card-content>
+      <mat-card-actions>
+        <button mat-flat-button>CONFIRM</button>
+        <button mat-button>DELETE</button>
+      </mat-card-actions>
     </mat-card>
     }
   </mat-card-content>

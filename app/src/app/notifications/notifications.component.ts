@@ -9,11 +9,21 @@ import { AppService } from '../app.service';
 import { MatMenuModule } from '@angular/material/menu';
 import { RouterModule } from '@angular/router';
 import { ProfileCardComponent } from '../shared/components/profile-card/profile-card.component';
+import { ProfileHeaderComponent } from '../shared/components/profile-header/profile-header.component';
 
 @Component({
   selector: 'app-notifications',
   standalone: true,
-  imports: [ProfileCardComponent, MatButtonModule, MatCardModule, MatIconModule, MatMenuModule, RouterModule, AgoPipe],
+  imports: [
+    ProfileHeaderComponent,
+    ProfileCardComponent,
+    MatButtonModule,
+    MatCardModule,
+    MatIconModule,
+    MatMenuModule,
+    RouterModule,
+    AgoPipe,
+  ],
   templateUrl: './notifications.component.html',
   styleUrl: './notifications.component.scss',
 })
@@ -41,6 +51,15 @@ export class NotificationsComponent {
   async generateNotification() {
     const event = await this.notification.create({ title: 'Incoming friend request', app: 'Friends', icon: 'people' });
     this.notifications.update((list) => [...list, event]);
+
+    const event2 = await this.notification.create({
+      title: 'Accept connect request',
+      description:
+        'This user wants to connect with you, you have to accept an initial connection request to be able to receive other sharing requests, such as shared Tasks, collabrative apps and more. Only accept this request if you know the user. This is to avoid spam messages.',
+      app: 'Connect',
+      icon: 'connect_without_contact',
+    });
+    this.notifications.update((list) => [...list, event2]);
   }
 
   async loadNotifications() {
