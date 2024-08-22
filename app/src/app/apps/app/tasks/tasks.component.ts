@@ -112,7 +112,7 @@ export class TasksComponent {
     let todos: any[] = [];
 
     for (let record of todoRecords!) {
-      const todo = await this.getTodoEntryFromRecord(record);
+      const todo = await this.getTaskEntryFromRecord(record);
       todos.push(todo);
     }
 
@@ -124,7 +124,7 @@ export class TasksComponent {
     return todos;
   }
 
-  async getTodoEntryFromRecord(record: Record) {
+  async getTaskEntryFromRecord(record: Record) {
     const data = await record.data.json();
     const todo = { record, data, id: record.id };
     return todo;
@@ -262,11 +262,11 @@ export class TasksComponent {
     await this.sendToCollaborators(list.record, list.data.collaborators);
   }
 
-  editTodo(todo: any) {
+  editTask(todo: any) {
     todo.editing = true;
   }
 
-  async saveTodo(todo: any, list: any) {
+  async saveTask(todo: any, list: any) {
     todo.editing = false;
 
     const { status } = await todo.record.update({
@@ -284,7 +284,7 @@ export class TasksComponent {
     this.list = this.list.filter((l) => l.id !== list.id);
   }
 
-  async deleteTodo(record: Record, list: any) {
+  async deleteTask(record: Record, list: any) {
     await record.delete();
     list.todos = list.todos.filter((t: any) => t.id !== record.id);
 
@@ -301,16 +301,16 @@ export class TasksComponent {
     return (previousIndex + nextIndex) / 2;
   }
 
-  async addTodo(list: any) {
+  async addTask(list: any) {
     // const todoRecipient = 'did:dht:bi3bzoke6rq6fbkojpo5ebtg45eqx1owqrb4esex8t9nz14ugnao';
 
     if (!list.todos) {
       list.todos = [];
     }
 
-    const todoData = {
+    const taskData = {
       completed: false,
-      description: 'New todo...',
+      description: 'New task...',
       author: this.identity.did,
       parentId: list.id,
       index: list.todos.length + 1, // Start indices from 1 to avoid zero
@@ -319,18 +319,18 @@ export class TasksComponent {
     // newTodoDescription.value = '';
 
     const { record: todoRecord, status: createStatus } = await this.identity.web5.dwn.records.create({
-      data: todoData,
+      data: taskData,
       message: {
         protocol: taskDefinition.protocol,
         protocolPath: 'list/task',
         schema: taskDefinition.types.task.schema,
         dataFormat: taskDefinition.types.task.dataFormats[0],
-        parentContextId: todoData.parentId,
+        parentContextId: taskData.parentId,
       },
     });
 
     // const data = await todoRecord!.data.json();
-    const todoEntry = await this.getTodoEntryFromRecord(todoRecord!);
+    const todoEntry = await this.getTaskEntryFromRecord(todoRecord!);
 
     list.todos.push(todoEntry);
     console.log(list);

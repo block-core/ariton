@@ -31,7 +31,7 @@
         </button>
         }
 
-        <button mat-icon-button matTooltip="Add new todo" (click)="addTodo(list)">
+        <button mat-icon-button matTooltip="Add new task" (click)="addTask(list)">
           <mat-icon>add_box</mat-icon>
         </button>
         <button mat-icon-button [matMenuTriggerFor]="menuListActions">
@@ -58,9 +58,9 @@
         <div class="list-item" cdkDrag [cdkDragData]="item">
           @if(item.editing) {
           <mat-form-field subscriptSizing="dynamic">
-            <input matInput [(ngModel)]="item.data.description" (keydown.enter)="saveTodo(item, list)" />
+            <input matInput [(ngModel)]="item.data.description" (keydown.enter)="saveTask(item, list)" />
           </mat-form-field>
-          <button mat-icon-button (click)="saveTodo(item, list)">
+          <button mat-icon-button (click)="saveTask(item, list)">
             <mat-icon>save</mat-icon>
           </button>
           } @else {
@@ -73,7 +73,7 @@
           <mat-checkbox
             color="primary"
             [(ngModel)]="item.data.completed"
-            (change)="saveTodo(item, list)"
+            (change)="saveTask(item, list)"
           ></mat-checkbox>
           }
           <button mat-icon-button [matMenuTriggerFor]="menuActions">
@@ -81,12 +81,12 @@
           </button>
         </div>
         <mat-menu #menuActions="matMenu">
-          <button mat-menu-item (click)="editTodo(item)">
+          <button mat-menu-item (click)="editTask(item)">
             <mat-icon>edit</mat-icon>
             <span>Edit</span>
           </button>
           <mat-divider></mat-divider>
-          <button mat-menu-item (click)="deleteTodo(item.record, list)">
+          <button mat-menu-item (click)="deleteTask(item.record, list)">
             <mat-icon>delete</mat-icon>
             <span>Delete</span>
           </button>
