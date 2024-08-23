@@ -11,6 +11,7 @@ import { RouterModule } from '@angular/router';
 import { ProfileCardComponent } from '../shared/components/profile-card/profile-card.component';
 import { ProfileHeaderComponent } from '../shared/components/profile-header/profile-header.component';
 import { ConnectionService } from '../connection.service';
+import { IdentityService } from '../identity.service';
 
 @Component({
   selector: 'app-notifications',
@@ -37,6 +38,8 @@ export class NotificationsComponent {
 
   connection = inject(ConnectionService);
 
+  identity = inject(IdentityService);
+
   app = inject(AppService);
 
   notifications = signal<NotificationEvent[]>([]);
@@ -59,6 +62,26 @@ export class NotificationsComponent {
     this.notifications.set([]);
   }
 
+  async deleteNotification(entry: NotificationEvent) {
+    const did = entry.record.author;
+
+    // Find all connection requests from this user and delete them.
+    const connectionsFromUser = await this.connection.loadConnections(did);
+
+    for (const connection of connectionsFromUser) {
+      await connection.record.delete();
+
+      // Update the list of connections on external DWNs for user.
+      await connection.record.send(this.identity.did);
+    }
+
+    // Delete the notification event from the list, which should be only one pr. user.
+    const { status } = await entry.record.delete();
+    console.log('Delete status: ', status);
+
+    this.notifications.update((list) => [...list.filter((n) => n.id !== entry.id)]);
+  }
+
   async block(entry: NotificationEvent) {
     console.log('Blocking user', entry);
 
@@ -67,12 +90,23 @@ export class NotificationsComponent {
     const result = await this.connection.block(did);
     console.log('Block result: ', result);
 
-    // TODO: Find all connection requests from this user and delete them.
+    await this.deleteNotification(entry);
 
-    const { status } = await entry.record.delete();
-    console.log('Delete status: ', status);
+    // // Find all connection requests from this user and delete them.
+    // const connectionsFromUser = await this.connection.loadConnections(did);
 
-    this.notifications.update((list) => [...list.filter((n) => n.id !== entry.id)]);
+    // for (const connection of connectionsFromUser) {
+    //   await connection.record.delete();
+
+    //   // Update the list of connections on external DWNs for user.
+    //   await connection.record.send(this.identity.did);
+    // }
+
+    // // Delete the notification event from the list, which should be only one pr. user.
+    // const { status } = await entry.record.delete();
+    // console.log('Delete status: ', status);
+
+    // this.notifications.update((list) => [...list.filter((n) => n.id !== entry.id)]);
   }
 
   async generateNotification() {

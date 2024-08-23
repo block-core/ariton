@@ -86,7 +86,7 @@
       </mat-card-content>
       <mat-card-actions>
         <button mat-flat-button>ACCEPT</button>
-        <button mat-button>DELETE</button>
+        <button mat-button (click)="deleteNotification(notification)">DELETE</button>
         <button mat-button (click)="block(notification)">BLOCK</button>
       </mat-card-actions>
     </mat-card>

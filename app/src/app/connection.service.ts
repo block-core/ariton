@@ -98,16 +98,19 @@ export class ConnectionService {
     return list;
   }
 
-  async loadConnections() {
+  async loadConnections(did: string) {
     const list: ConnectionEntry[] = [];
+
+    const filter = {
+      author: did ? did : undefined,
+      protocol: connectionDefinition.protocol,
+      protocolPath: 'connections',
+      schema: connectionDefinition.types.connection.schema,
+    };
 
     const { records } = await this.identity.web5.dwn.records.query({
       message: {
-        filter: {
-          protocol: connectionDefinition.protocol,
-          protocolPath: 'connections',
-          schema: connectionDefinition.types.connection.schema,
-        },
+        filter,
         dateSort: DwnDateSort.CreatedAscending,
       },
     });
