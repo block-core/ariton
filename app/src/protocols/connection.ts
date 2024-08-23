@@ -6,8 +6,8 @@ export const protocolDefinition = {
       schema: 'https://schema.ariton.app/connections/schema/request',
       dataFormats: ['application/json'],
     },
-    connections: {
-      schema: 'https://schema.ariton.app/connections/schema/connections',
+    connection: {
+      schema: 'https://schema.ariton.app/connections/schema/connection',
       dataFormats: ['application/json'],
     },
     // Used to "block" a user from sending messages to the owner of the DWN.
@@ -20,7 +20,7 @@ export const protocolDefinition = {
   },
   structure: {
     block: {},
-    connections: {},
+    connection: {},
     request: {
       $actions: [
         {

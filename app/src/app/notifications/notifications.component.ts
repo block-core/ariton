@@ -59,9 +59,18 @@ export class NotificationsComponent {
     this.notifications.set([]);
   }
 
+  async block(entry: any) {
+    console.log('Blocking user', entry);
+
+    const did = entry.record.author;
+
+    const result = await this.connection.block(did);
+    console.log('Block result: ', result);
+  }
+
   async generateNotification() {
     // First simulate an incoming connection request.
-    await this.connection.create();
+    await this.connection.create({});
 
     const event = await this.notification.create({ title: 'Friend Request', app: 'Friends', icon: 'people' });
     this.notifications.update((list) => [...list, event]);

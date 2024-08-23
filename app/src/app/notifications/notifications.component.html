@@ -45,7 +45,7 @@
       <mat-card-header>
         <mat-icon class="card-icon" inline="true" mat-card-avatar>{{ notification.data.icon }}</mat-icon>
         <mat-card-title>{{ notification.data.title }}</mat-card-title>
-        <mat-card-subtitle>{{ notification.data.app }} ({{ '2024-08-22 12:00' | ago }})</mat-card-subtitle>
+        <mat-card-subtitle>App: {{ notification.data.app }} ({{ '2024-08-22 12:00' | ago }})</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
         @if (notification.data.app === 'Friends') {
@@ -74,8 +74,9 @@
         <h3>Profile</h3> -->
 
         <app-profile-header [did]="notification.record.author">
-          <button mat-flat-button>CONFIRM</button>
+          <button mat-flat-button>ACCEPT</button>
           <button mat-button>DELETE</button>
+          <button mat-button>BLOCK</button>
         </app-profile-header>
 
         }
@@ -84,8 +85,9 @@
         <!-- <div class="notification-details dimmed">{{ notification.data.app }} ({{ '2024-08-22 12:00' | ago }})</div> -->
       </mat-card-content>
       <mat-card-actions>
-        <button mat-flat-button>CONFIRM</button>
+        <button mat-flat-button>ACCEPT</button>
         <button mat-button>DELETE</button>
+        <button mat-button (click)="block(notification)">BLOCK</button>
       </mat-card-actions>
     </mat-card>
     }
