@@ -10,6 +10,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { RouterModule } from '@angular/router';
 import { ProfileCardComponent } from '../shared/components/profile-card/profile-card.component';
 import { ProfileHeaderComponent } from '../shared/components/profile-header/profile-header.component';
+import { ConnectionService } from '../connection.service';
 
 @Component({
   selector: 'app-notifications',
@@ -34,6 +35,8 @@ export class NotificationsComponent {
 
   notification = inject(NotificationService);
 
+  connection = inject(ConnectionService);
+
   app = inject(AppService);
 
   notifications = signal<NotificationEvent[]>([]);
@@ -48,16 +51,28 @@ export class NotificationsComponent {
     });
   }
 
+  async deleteNotifications() {
+    for (const notification of this.notifications()) {
+      await notification.record.delete();
+    }
+
+    this.notifications.set([]);
+  }
+
   async generateNotification() {
-    const event = await this.notification.create({ title: 'Incoming friend request', app: 'Friends', icon: 'people' });
+    // First simulate an incoming connection request.
+    await this.connection.create();
+
+    const event = await this.notification.create({ title: 'Friend Request', app: 'Friends', icon: 'people' });
     this.notifications.update((list) => [...list, event]);
 
     const event2 = await this.notification.create({
-      title: 'Accept connect request',
+      title: 'Connect Request',
       description:
         'This user wants to connect with you, you have to accept an initial connect request to be able to receive other sharing requests, such as shared Tasks, collabrative apps and more. Only accept this request if you know the user. This is to avoid spam messages.',
       app: 'Connect',
       icon: 'connect_without_contact',
+      connectRecordId: '123',
     });
     this.notifications.update((list) => [...list, event2]);
   }

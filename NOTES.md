@@ -227,8 +227,10 @@ Without this access, it becomes impossible to send messages to users that have n
 
 We also want to distinguish between friends and connections. We will need to accept a connection request before we allow data to be sent to us from other users. This is to avoid spam other than the initial connection, which we will be filtering on unique DIDs anyway.
 
-When an incoming connection request arrives, it will include the record ID that the user wants to store. This is because on the initial share, the requester user does not have write access to secondary user yet.
+When an incoming connection request arrives (path `request` in protocol), it will include the record ID that the user wants to store. This is because on the initial share, the requester user does not have write access to secondary user yet.
+
+When declining connection request, all of the requests will be deleted locally.
 
 Upon accepting the connection, all of the connection requests will be processed and approved. There might be N connection requests from different apps to be processed.
 
-When declining connection request, all of the requests will be deleted locally.
+The accepted connection requests will be stored in the user's DWN under the connection protocol and path `connections`.

@@ -1,0 +1,91 @@
+import { inject, Injectable } from '@angular/core';
+import { IdentityService } from './identity.service';
+import { protocolDefinition as connectionDefinition } from '../protocols/connection';
+import { Record } from '@web5/api';
+import { RecordEntry } from './data';
+import { DwnDateSort } from '@web5/agent';
+
+export interface ConnectionData {
+  title: string;
+}
+
+export interface ConnectionEntry extends RecordEntry<ConnectionData> {}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class ConnectionService {
+  identity = inject(IdentityService);
+
+  constructor() {}
+
+  async create(data: any) {
+    // Create a new connection that is sent to external DWN.
+    // We save a local copy to see our outgoing connection requests.
+    const eventData = data;
+
+    const { record, status } = await this.identity.web5.dwn.records.create({
+      data: eventData,
+      message: {
+        protocol: connectionDefinition.protocol,
+        protocolPath: 'request',
+        schema: connectionDefinition.types.request.schema,
+        dataFormat: connectionDefinition.types.request.dataFormats[0],
+      },
+    });
+
+    console.log('Notification created:', status, record);
+
+    return {
+      record,
+      data: eventData,
+      id: record!.id,
+    } as ConnectionEntry;
+  }
+
+  async loadRequests() {
+    const list: ConnectionEntry[] = [];
+
+    const { records } = await this.identity.web5.dwn.records.query({
+      message: {
+        filter: {
+          protocol: connectionDefinition.protocol,
+          protocolPath: 'request',
+          schema: connectionDefinition.types.request.schema,
+        },
+        dateSort: DwnDateSort.CreatedAscending,
+      },
+    });
+
+    for (let record of records!) {
+      const data = await record.data.json();
+      let notifiationEvent: ConnectionEntry = { record, data, id: record.id };
+      list.push(notifiationEvent);
+    }
+
+    return list;
+  }
+
+  async loadConnections() {
+    const list: ConnectionEntry[] = [];
+
+    const { records } = await this.identity.web5.dwn.records.query({
+      message: {
+        filter: {
+          protocol: connectionDefinition.protocol,
+          protocolPath: 'connections',
+          schema: connectionDefinition.types.request.schema,
+        },
+        dateSort: DwnDateSort.CreatedAscending,
+      },
+    });
+
+    for (let record of records!) {
+      const data = await record.data.json();
+      let notifiationEvent: ConnectionEntry = { record, data, id: record.id };
+      list.push(notifiationEvent);
+    }
+
+    return list;
+  }
+}
