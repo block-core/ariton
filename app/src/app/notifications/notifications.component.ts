@@ -59,13 +59,20 @@ export class NotificationsComponent {
     this.notifications.set([]);
   }
 
-  async block(entry: any) {
+  async block(entry: NotificationEvent) {
     console.log('Blocking user', entry);
 
     const did = entry.record.author;
 
     const result = await this.connection.block(did);
     console.log('Block result: ', result);
+
+    // TODO: Find all connection requests from this user and delete them.
+
+    const { status } = await entry.record.delete();
+    console.log('Delete status: ', status);
+
+    this.notifications.update((list) => [...list.filter((n) => n.id !== entry.id)]);
   }
 
   async generateNotification() {
