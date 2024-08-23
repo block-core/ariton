@@ -113,10 +113,19 @@ export class NotificationsComponent {
     // First simulate an incoming connection request.
     await this.connection.create({});
 
-    const event = await this.notification.create({ title: 'Friend Request', app: 'Friends', icon: 'people' });
+    const event = await this.notification.create({
+      author: 'did:dht:bi3bzoke6rq6fbkojpo5ebtg45eqx1owqrb4esex8t9nz14ugnao',
+      title: 'Friend Request',
+      description:
+        'This user wants to be your friend, do you accept? This will give them access to send you sharing requets, such as shared Tasks, collabrative apps and more.',
+      app: 'Friends',
+      icon: 'people',
+      connectRecordId: '123',
+    });
     this.notifications.update((list) => [...list, event]);
 
     const event2 = await this.notification.create({
+      author: 'did:dht:1ko4cqh7c7i9z56r7qwucgpbra934rngc5eyffg1km5k6rc5991o',
       title: 'Connect Request',
       description:
         'This user wants to connect with you, you have to accept an initial connect request to be able to receive other sharing requests, such as shared Tasks, collabrative apps and more. Only accept this request if you know the user. This is to avoid spam messages.',
