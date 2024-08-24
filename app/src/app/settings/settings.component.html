@@ -27,7 +27,17 @@ Language: {{ settings().language }}
 <button mat-flat-button (click)="toggleDebug()">Toggle debug</button>
 
 <mat-nav-list>
-  <div mat-subheader>Other Actions</div>
+  <div mat-subheader>Actions</div>
+
+  <a mat-list-item [routerLink]="['connections']">
+    <mat-icon matListItemIcon>connect_without_contact</mat-icon>
+    Manage Connections
+  </a>
+
+  <a mat-list-item [routerLink]="['blocks']">
+    <mat-icon matListItemIcon>block</mat-icon>
+    Manage Blocks
+  </a>
 
   <a mat-list-item [routerLink]="['handler']">
     <mat-icon matListItemIcon>search</mat-icon>

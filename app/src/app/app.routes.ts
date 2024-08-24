@@ -257,6 +257,12 @@ export const routes: Routes = [
     data: { hide: true, icon: 'search' },
   },
   {
+    path: 'settings/blocks',
+    loadComponent: () => import('./settings/blocks/blocks.component').then((c) => c.BlocksComponent),
+    title: 'Blocks',
+    data: { hide: true, icon: 'block' },
+  },
+  {
     path: 'tree',
     loadComponent: () => import('./tree/tree.component').then((c) => c.TreeComponent),
     title: 'Tree',

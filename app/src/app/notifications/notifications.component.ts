@@ -44,21 +44,12 @@ export class NotificationsComponent {
 
   notifications = signal<NotificationEvent[]>([]);
 
-  blocks = signal<ConnectionEntry[]>([]);
-
-  connections = signal<ConnectionEntry[]>([]);
-
   constructor() {
     this.layout.resetActions();
 
     effect(async () => {
       if (this.app.initialized()) {
         await this.loadNotifications();
-        await this.loadConnections();
-        await this.loadBlocks();
-
-        console.log('Blocks:', this.blocks());
-        console.log('Connections:', this.connections());
       }
     });
   }
@@ -171,16 +162,6 @@ export class NotificationsComponent {
   async loadNotifications() {
     const notifications = await this.notification.load();
     this.notifications.set(notifications);
-  }
-
-  async loadConnections() {
-    const records = await this.connection.loadConnections();
-    this.connections.set(records);
-  }
-
-  async loadBlocks() {
-    const records = await this.connection.loadBlocks();
-    this.blocks.set(records);
   }
 
   async enableNotifications() {

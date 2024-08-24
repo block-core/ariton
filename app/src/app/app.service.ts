@@ -8,6 +8,7 @@ import { ProtocolService } from './protocol.service';
 import { ProfileService } from './profile.service';
 import { HashService } from './hash.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ConnectionService } from './connection.service';
 
 export interface AppState {
   selectedAccount: string;
@@ -57,6 +58,8 @@ export class AppService {
   identity = inject(IdentityService);
 
   profile = inject(ProfileService);
+
+  connection = inject(ConnectionService);
 
   protocol = inject(ProtocolService);
 
@@ -264,11 +267,22 @@ export class AppService {
     // Load the user profile.
     await this.profile.openCurrentUserProfile(this.account().did);
 
+    // Load user and app data.
+    await this.loadAppData();
+
     this.initialized.set(true);
 
     this.loading.set(false);
 
     this.firstTimeInitialization();
+  }
+
+  private async loadAppData() {
+    console.log('Loading app data...');
+    // Loads the connections and blocks, used by various app and services on Ariton.
+    await this.connection.initialize();
+
+    console.log('App data loaded.');
   }
 
   /** Only run when the hash bundle has changed (updated app) */

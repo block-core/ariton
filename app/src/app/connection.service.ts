@@ -1,8 +1,9 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { IdentityService } from './identity.service';
 import { protocolDefinition as connectionDefinition } from '../protocols/connection';
 import { Record } from '@web5/api';
 import { RecordEntry } from './data';
+import { connect } from '../../node_modules/undici-types/api.d';
 import { DwnDateSort } from '@web5/agent';
 
 export interface ConnectionData {
@@ -22,6 +23,10 @@ export interface ConnectionBlockEntry extends RecordEntry<ConnectionBlockData> {
 })
 export class ConnectionService {
   identity = inject(IdentityService);
+
+  blocks = signal<ConnectionBlockEntry[]>([]);
+
+  connections = signal<ConnectionEntry[]>([]);
 
   constructor() {}
 
@@ -51,6 +56,15 @@ export class ConnectionService {
     } as ConnectionEntry;
   }
 
+  /** Loads the connections and blocks */
+  async initialize() {
+    const blocks = await this.loadBlocks();
+    this.blocks.set(blocks);
+
+    const connections = await this.loadConnections();
+    this.connections.set(connections);
+  }
+
   async request(data: any) {
     // Create a new connection that is sent to external DWN.
     // We save a local copy to see our outgoing connection requests.
@@ -73,6 +87,12 @@ export class ConnectionService {
       data: eventData,
       id: record!.id,
     } as ConnectionEntry;
+  }
+
+  async deleteBlock(entry: any) {
+    await entry.record.delete();
+    entry.record.send(this.identity.did);
+    this.blocks.update((list) => [...list.filter((n) => n.id !== entry.id)]);
   }
 
   async block(did: string) {
@@ -151,7 +171,7 @@ export class ConnectionService {
   }
 
   async loadBlocks() {
-    const list: ConnectionEntry[] = [];
+    const list: ConnectionBlockEntry[] = [];
 
     const { records } = await this.identity.web5.dwn.records.query({
       message: {
@@ -166,7 +186,7 @@ export class ConnectionService {
 
     for (let record of records!) {
       const data = await record.data.json();
-      let notifiationEvent: ConnectionEntry = { record, data, id: record.id };
+      let notifiationEvent: ConnectionBlockEntry = { record, data, id: record.id };
       list.push(notifiationEvent);
     }
 
