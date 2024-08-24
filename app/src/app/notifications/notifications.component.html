@@ -58,22 +58,14 @@
         <!--
         TODO: Use the record.author, not from data. From data is for temporary prototyping.
         <app-profile-header [did]="notification.record.author"> -->
-        <app-profile-header [did]="notification.data.author">
-          <button mat-flat-button>ACCEPT</button>
-          <button mat-button>DELETE</button>
-          <button mat-button>BLOCK</button>
-        </app-profile-header>
+        <app-profile-header [did]="notification.data.author"></app-profile-header>
         } @else if(notification.data.app === 'Connect') {
         <div class="notification-description">{{ notification.data.description }}</div>
-        <app-profile-header [did]="notification.record.author">
-          <button mat-flat-button>ACCEPT</button>
-          <button mat-button>DELETE</button>
-          <button mat-button>BLOCK</button>
-        </app-profile-header>
+        <app-profile-header [did]="notification.record.author"></app-profile-header>
         }
       </mat-card-content>
       <mat-card-actions>
-        <button mat-flat-button>ACCEPT</button>
+        <button mat-flat-button (click)="accept(notification)">ACCEPT</button>
         <button mat-button (click)="deleteNotification(notification)">DELETE</button>
         <button mat-button (click)="block(notification)">BLOCK</button>
       </mat-card-actions>

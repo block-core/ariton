@@ -25,7 +25,33 @@ export class ConnectionService {
 
   constructor() {}
 
+  /** Creates a connection entry that opens up a trust line between identities. */
   async create(data: any) {
+    // Create a new connection that is sent to external DWN.
+    // We save a local copy to see our outgoing connection requests.
+    const eventData = data;
+
+    const { record, status } = await this.identity.web5.dwn.records.create({
+      data: eventData,
+      message: {
+        recipient: eventData.did,
+        protocol: connectionDefinition.protocol,
+        protocolPath: 'connection',
+        schema: connectionDefinition.types.connection.schema,
+        dataFormat: connectionDefinition.types.connection.dataFormats[0],
+      },
+    });
+
+    console.log('Connection created:', status, record);
+
+    return {
+      record,
+      data: eventData,
+      id: record!.id,
+    } as ConnectionEntry;
+  }
+
+  async request(data: any) {
     // Create a new connection that is sent to external DWN.
     // We save a local copy to see our outgoing connection requests.
     const eventData = data;
@@ -98,13 +124,13 @@ export class ConnectionService {
     return list;
   }
 
-  async loadConnections(did: string) {
+  async loadConnections(did?: string) {
     const list: ConnectionEntry[] = [];
 
     const filter = {
       author: did ? did : undefined,
       protocol: connectionDefinition.protocol,
-      protocolPath: 'connections',
+      protocolPath: 'connection',
       schema: connectionDefinition.types.connection.schema,
     };
 
@@ -131,7 +157,7 @@ export class ConnectionService {
       message: {
         filter: {
           protocol: connectionDefinition.protocol,
-          protocolPath: 'blocks',
+          protocolPath: 'block',
           schema: connectionDefinition.types.block.schema,
         },
         dateSort: DwnDateSort.CreatedAscending,

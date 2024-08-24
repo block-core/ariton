@@ -10,7 +10,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { RouterModule } from '@angular/router';
 import { ProfileCardComponent } from '../shared/components/profile-card/profile-card.component';
 import { ProfileHeaderComponent } from '../shared/components/profile-header/profile-header.component';
-import { ConnectionService } from '../connection.service';
+import { ConnectionEntry, ConnectionService } from '../connection.service';
 import { IdentityService } from '../identity.service';
 
 @Component({
@@ -44,14 +44,46 @@ export class NotificationsComponent {
 
   notifications = signal<NotificationEvent[]>([]);
 
+  blocks = signal<ConnectionEntry[]>([]);
+
+  connections = signal<ConnectionEntry[]>([]);
+
   constructor() {
     this.layout.resetActions();
 
     effect(async () => {
       if (this.app.initialized()) {
         await this.loadNotifications();
+        await this.loadConnections();
+        await this.loadBlocks();
+
+        console.log('Blocks:', this.blocks());
+        console.log('Connections:', this.connections());
       }
     });
+  }
+
+  async accept(entry: NotificationEvent) {
+    console.log('Accepting connection request');
+
+    if (entry.data.app === 'Friends') {
+      // If friends request, we will reply with a Verifiable Credential in addition to the connection request.
+
+      this.connection.create({
+        did: entry.data.author, // TODO: Change to record.author
+      });
+
+      this.deleteNotification(entry);
+
+      // Accept as friend.
+    } else if (entry.data.app === 'Connect') {
+      // If connect request, we will only reply with a connection request.
+      this.connection.create({
+        did: entry.data.author, // TODO: Change to record.author
+      });
+
+      this.deleteNotification(entry);
+    }
   }
 
   async deleteNotifications() {
@@ -111,7 +143,7 @@ export class NotificationsComponent {
 
   async generateNotification() {
     // First simulate an incoming connection request.
-    await this.connection.create({});
+    await this.connection.request({});
 
     const event = await this.notification.create({
       author: 'did:dht:bi3bzoke6rq6fbkojpo5ebtg45eqx1owqrb4esex8t9nz14ugnao',
@@ -139,6 +171,16 @@ export class NotificationsComponent {
   async loadNotifications() {
     const notifications = await this.notification.load();
     this.notifications.set(notifications);
+  }
+
+  async loadConnections() {
+    const records = await this.connection.loadConnections();
+    this.connections.set(records);
+  }
+
+  async loadBlocks() {
+    const records = await this.connection.loadBlocks();
+    this.blocks.set(records);
   }
 
   async enableNotifications() {
