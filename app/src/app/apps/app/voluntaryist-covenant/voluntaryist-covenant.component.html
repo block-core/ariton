@@ -122,7 +122,7 @@
         </mat-card-content>
         <mat-card-actions>
           <button mat-flat-button (click)="sign()" [disabled]="loading || signed">
-            @if (signed) { Signed } @else { Sign the Covenant }</button
+            @if (signed) { Signed Covenant } @else { Sign the Covenant }</button
           >&nbsp;
           <button mat-button (click)="withdraw()" [disabled]="!signed">Withdraw the signature</button>
         </mat-card-actions>
@@ -156,7 +156,7 @@
               <mat-icon class="signature-icon" inline="true">gpp_bad</mat-icon>
               }
             </p>
-            <p>The identity with the following DID has signed the convenant:</p>
+            <p>The identity with the following DID has @if (!lookupSigned) { not } signed the convenant:</p>
             <p class="ellipsis">
               {{ did }}
             </p>
