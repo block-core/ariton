@@ -5,6 +5,7 @@ import { Record } from '@web5/api';
 import { RecordEntry } from './data';
 import { connect } from '../../node_modules/undici-types/api.d';
 import { DwnDateSort } from '@web5/agent';
+import { UtilityService } from './utility.service';
 
 export interface ConnectionData {
   did: string;
@@ -24,6 +25,8 @@ export interface ConnectionBlockEntry extends RecordEntry<ConnectionBlockData> {
 })
 export class ConnectionService {
   identity = inject(IdentityService);
+
+  utility = inject(UtilityService);
 
   blocks = signal<ConnectionBlockEntry[]>([]);
 
@@ -94,16 +97,16 @@ export class ConnectionService {
     } as ConnectionEntry;
   }
 
-  async deleteBlock(entry: any) {
+  async deleteBlock(entry: ConnectionEntry) {
     await entry.record.delete();
-    entry.record.send(this.identity.did);
     this.blocks.update((list) => [...list.filter((n) => n.id !== entry.id)]);
+    this.utility.executeAsyncWithToast(entry.record.send(this.identity.did));
   }
 
   async deleteConnection(entry: any) {
     await entry.record.delete();
-    entry.record.send(this.identity.did);
     this.connections.update((list) => [...list.filter((n) => n.id !== entry.id)]);
+    this.utility.executeAsyncWithToast(entry.record.send(this.identity.did));
   }
 
   async block(did: string) {

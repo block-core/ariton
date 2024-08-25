@@ -33,6 +33,8 @@ export class BlocksComponent {
   // }
 
   deleteBlock(entry: any) {
+    entry.loading = true;
+
     this.service.deleteBlock(entry);
   }
 }

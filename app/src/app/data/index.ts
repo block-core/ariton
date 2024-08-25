@@ -10,4 +10,5 @@ export interface RecordEntry<T> {
   record: Record;
   id: string;
   data: T;
+  loading?: boolean;
 }

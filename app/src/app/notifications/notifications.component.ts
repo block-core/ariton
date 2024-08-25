@@ -55,10 +55,6 @@ export class NotificationsComponent {
   }
 
   async accept(entry: NotificationEvent) {
-    if (entry.loading) {
-      return;
-    }
-
     entry.loading = true;
 
     console.log('Accepting connection request');
@@ -92,10 +88,6 @@ export class NotificationsComponent {
   }
 
   async deleteNotification(entry: NotificationEvent) {
-    if (entry.loading) {
-      return;
-    }
-
     entry.loading = true;
 
     const did = entry.record.author;
@@ -118,10 +110,6 @@ export class NotificationsComponent {
   }
 
   async block(entry: NotificationEvent) {
-    if (entry.loading) {
-      return;
-    }
-
     entry.loading = true;
 
     console.log('Blocking user', entry);

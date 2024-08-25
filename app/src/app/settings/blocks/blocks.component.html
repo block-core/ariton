@@ -15,7 +15,7 @@
       </mat-card-content>
       <mat-card-actions>
         <button mat-flat-button [routerLink]="['/profile', entry.data.did]">VIEW PROFILE</button>
-        <button mat-button (click)="deleteBlock(entry)">DELETE</button>
+        <button mat-button (click)="deleteBlock(entry)" [disabled]="entry.loading">DELETE</button>
       </mat-card-actions>
     </mat-card>
     } @empty { No blocks found. }

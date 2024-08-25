@@ -32,7 +32,9 @@ export class ConnectionsComponent {
   //   this.blocks.set(blocks);
   // }
 
-  deleteBlock(entry: any) {
+  deleteConnection(entry: any) {
+    entry.loading = true;
+
     this.service.deleteConnection(entry);
   }
 }
