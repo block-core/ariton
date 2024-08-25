@@ -50,13 +50,13 @@ export class ConnectionService {
 
     console.log('Connection created:', status, record);
 
-    this.connections.update((list) => [...list, entry]);
-
     const entry = {
       record,
       data: eventData,
       id: record!.id,
     } as ConnectionEntry;
+
+    this.connections.update((list) => [...list, entry]);
 
     return entry;
   }
