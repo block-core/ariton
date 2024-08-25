@@ -7,6 +7,7 @@ import { connect } from '../../node_modules/undici-types/api.d';
 import { DwnDateSort } from '@web5/agent';
 
 export interface ConnectionData {
+  did: string;
   title: string;
 }
 
@@ -93,6 +94,12 @@ export class ConnectionService {
     await entry.record.delete();
     entry.record.send(this.identity.did);
     this.blocks.update((list) => [...list.filter((n) => n.id !== entry.id)]);
+  }
+
+  async deleteConnection(entry: any) {
+    await entry.record.delete();
+    entry.record.send(this.identity.did);
+    this.connections.update((list) => [...list.filter((n) => n.id !== entry.id)]);
   }
 
   async block(did: string) {

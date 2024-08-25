@@ -263,6 +263,12 @@ export const routes: Routes = [
     data: { hide: true, icon: 'search' },
   },
   {
+    path: 'settings/connections',
+    loadComponent: () => import('./settings/connections/connections.component').then((c) => c.ConnectionsComponent),
+    title: 'Connections',
+    data: { hide: true, icon: 'people' },
+  },
+  {
     path: 'settings/blocks',
     loadComponent: () => import('./settings/blocks/blocks.component').then((c) => c.BlocksComponent),
     title: 'Blocks',

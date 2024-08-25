@@ -1,5 +1,9 @@
 # Ariton Documentation / Dev Notes
 
+## Readings
+
+[Web5 Specification v1.0](https://tbd54566975.github.io/web5-spec/)
+
 ## Communities
 
 Communities are public accessible lists of curated data. A community must be pre-approved by the Ariton team in order to be listed in the Ariton app.
