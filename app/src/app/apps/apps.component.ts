@@ -24,6 +24,7 @@ type CardContent = {
   title: string;
   description: string;
   imageUrl: string;
+  id?: string;
 };
 
 @Component({
@@ -121,9 +122,23 @@ export class AppsComponent {
     });
 
     const cards: CardContent[] = [];
+
+    // The "id" of apps should be unique and should not be a number, maybe a hash or potentially
+    // mapped to a DID?
+
+    cards.push({
+      title: 'Voluntaryist Covenant',
+      id: 'voluntaryist-covenant',
+      description:
+        'The covenant is based on the natural rights of self-ownership, non-aggression, and property rights. Use this app to sign the covenant and store the credential.',
+      imageUrl:
+        'https://static.wixstatic.com/media/b8788b_e8db1fae306c4f4d95423ae5861f8fb3~mv2.png/v1/fill/w_128,h_128,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/World_Voluntaryist_Organisation-removebg-preview.png',
+    });
+
     for (let i = 0; i < this.images.length; i++) {
       cards.push({
         title: `App ${i + 1}`,
+        // id: `${i + 1}`,
         description: `This is a description of app. Add this app to your community.`,
         imageUrl: `https://picsum.photos/seed/${this.images[i]}x/200/300`,
       });

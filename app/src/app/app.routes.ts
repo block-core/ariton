@@ -56,6 +56,15 @@ export const routes: Routes = [
     data: { icon: 'chat' },
   },
   {
+    path: 'app/voluntaryist-covenant',
+    loadComponent: () =>
+      import('./apps/app/voluntaryist-covenant/voluntaryist-covenant.component').then(
+        (c) => c.VoluntaryistCovenantComponent,
+      ),
+    title: 'Voluntaryist Covenant',
+    data: { icon: 'assured_workload' },
+  },
+  {
     path: 'marketplace',
     loadComponent: () => import('./marketplace/marketplace.component').then((c) => c.MarketplaceComponent),
     title: 'Marketplace',
