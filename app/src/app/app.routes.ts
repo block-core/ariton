@@ -62,7 +62,7 @@ export const routes: Routes = [
         (c) => c.VoluntaryistCovenantComponent,
       ),
     title: 'Voluntaryist Covenant',
-    data: { icon: 'assured_workload' },
+    data: { hide: true, icon: 'assured_workload' },
   },
   {
     path: 'marketplace',
