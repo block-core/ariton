@@ -50,11 +50,15 @@ export class ConnectionService {
 
     console.log('Connection created:', status, record);
 
-    return {
+    this.connections.update((list) => [...list, entry]);
+
+    const entry = {
       record,
       data: eventData,
       id: record!.id,
     } as ConnectionEntry;
+
+    return entry;
   }
 
   /** Loads the connections and blocks */
@@ -121,11 +125,15 @@ export class ConnectionService {
 
     console.log('Block created:', status, record);
 
-    return {
+    const entry = {
       record,
       data,
       id: record!.id,
     } as ConnectionBlockEntry;
+
+    this.blocks.update((list) => [...list, entry]);
+
+    return entry;
   }
 
   async loadRequests() {

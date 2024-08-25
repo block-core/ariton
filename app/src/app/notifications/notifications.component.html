@@ -65,9 +65,9 @@
         }
       </mat-card-content>
       <mat-card-actions>
-        <button mat-flat-button (click)="accept(entry)">ACCEPT</button>
-        <button mat-button (click)="deleteNotification(entry)">DELETE</button>
-        <button mat-button (click)="block(entry)">BLOCK</button>
+        <button mat-flat-button (click)="accept(entry)" [disabled]="entry.loading">ACCEPT</button>
+        <button mat-button (click)="deleteNotification(entry)" [disabled]="entry.loading">DELETE</button>
+        <button mat-button (click)="block(entry)" [disabled]="entry.loading">BLOCK</button>
       </mat-card-actions>
     </mat-card>
     }

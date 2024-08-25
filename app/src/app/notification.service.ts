@@ -8,6 +8,7 @@ export interface NotificationEvent {
   record: Record;
   id: string;
   data: any;
+  loading?: boolean;
 }
 
 @Injectable({

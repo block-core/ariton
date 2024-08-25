@@ -55,6 +55,12 @@ export class NotificationsComponent {
   }
 
   async accept(entry: NotificationEvent) {
+    if (entry.loading) {
+      return;
+    }
+
+    entry.loading = true;
+
     console.log('Accepting connection request');
 
     if (entry.data.app === 'Friends') {
@@ -86,6 +92,12 @@ export class NotificationsComponent {
   }
 
   async deleteNotification(entry: NotificationEvent) {
+    if (entry.loading) {
+      return;
+    }
+
+    entry.loading = true;
+
     const did = entry.record.author;
 
     // Find all connection requests from this user and delete them.
@@ -106,6 +118,12 @@ export class NotificationsComponent {
   }
 
   async block(entry: NotificationEvent) {
+    if (entry.loading) {
+      return;
+    }
+
+    entry.loading = true;
+
     console.log('Blocking user', entry);
 
     const did = entry.record.author;
