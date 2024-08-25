@@ -131,8 +131,14 @@ export const routes: Routes = [
     data: { icon: 'folder_shared' },
   },
   {
-    path: 'registries/:id',
+    path: 'registry/bsn',
     loadComponent: () => import('./registries/registry/registry.component').then((c) => c.RegistryComponent),
+    title: 'Registry',
+    data: { hide: true, icon: 'folder_shared' },
+  },
+  {
+    path: 'registry/freeid',
+    loadComponent: () => import('./registries/registry//freeid/freeid.component').then((c) => c.FreeIDComponent),
     title: 'Registry',
     data: { hide: true, icon: 'folder_shared' },
   },

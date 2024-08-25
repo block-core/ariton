@@ -183,6 +183,14 @@ input {
   width: 100%; /* Ensure the element has a defined width */
 }
 
+.wrap {
+  word-wrap: break-word;
+}
+
+.full-size {
+  width: 100%;
+}
+
 .toolbar-spacer {
   flex: 1 1 auto;
 }

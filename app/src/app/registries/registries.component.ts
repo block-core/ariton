@@ -94,6 +94,6 @@ export class RegistriesComponent implements AfterViewInit {
   }
 
   openRegistry(registry: string) {
-    this.router.navigate(['registries', registry]);
+    this.router.navigate(['registry', registry]);
   }
 }
