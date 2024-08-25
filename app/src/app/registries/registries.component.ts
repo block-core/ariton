@@ -13,6 +13,7 @@ import { DidPipe } from '../shared/pipes/did.pipe';
 import { LayoutService } from '../layout.service';
 import { AppService } from '../app.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-registries',
@@ -28,6 +29,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
+    MatTooltipModule,
   ],
 })
 export class RegistriesComponent implements AfterViewInit {
