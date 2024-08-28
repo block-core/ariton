@@ -8,7 +8,7 @@ import { CryptoService } from './crypto.service';
   providedIn: 'root',
 })
 export class IdentityService {
-  syncInterval = '5s';
+  syncInterval = '30s';
   //agents = signal<Web5IdentityAgent[]>([]);
 
   agents: WritableSignal<Web5IdentityAgent[]> = signal([]);
