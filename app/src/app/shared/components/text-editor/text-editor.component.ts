@@ -3,11 +3,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-text-editor',
   standalone: true,
-  imports: [MatButtonModule, MatCardModule, MatIconModule, MatMenuModule],
+  imports: [MatButtonModule, MatCardModule, MatIconModule, MatMenuModule, MatTooltipModule],
   templateUrl: './text-editor.component.html',
   styleUrls: ['./text-editor.component.scss'],
 })
@@ -30,6 +31,28 @@ export class TextEditorComponent implements AfterViewInit {
         this.contentChange.emit(this.editor.nativeElement.innerHTML);
       });
     }
+  }
+
+  pasteAsPlainText() {
+    navigator.clipboard
+      .readText()
+      .then((text) => {
+        const selection = window.getSelection();
+
+        if (!selection) {
+          return;
+        }
+
+        if (!selection.rangeCount) {
+          return;
+        }
+
+        selection.deleteFromDocument();
+        selection.getRangeAt(0).insertNode(document.createTextNode(text));
+      })
+      .catch((err) => {
+        console.error('Failed to read clipboard contents: ', err);
+      });
   }
 
   execCommand(command: string, value: string | null = null) {

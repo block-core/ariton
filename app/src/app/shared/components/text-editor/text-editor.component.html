@@ -1,5 +1,9 @@
 <mat-card class="toolbar-actions margin-bottom">
   <mat-card-content class="toolbar-actions">
+    <button mat-icon-button matTooltip="Paste as text" (click)="pasteAsPlainText()">
+      <mat-icon>content_paste</mat-icon>
+    </button>
+
     <button type="button" mat-icon-button (click)="execCommand('bold')">
       <mat-icon>format_bold</mat-icon>
     </button>
