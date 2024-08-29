@@ -3,6 +3,7 @@ import { Web5 } from '@web5/api';
 import { DidDht } from '@web5/dids';
 import { Web5IdentityAgent } from '@web5/identity-agent';
 import { CryptoService } from './crypto.service';
+import { Web5PlatformAgent } from '@web5/agent';
 
 @Injectable({
   providedIn: 'root',
@@ -73,6 +74,11 @@ export class IdentityService {
       const result = await Web5.connect({ connectedDid, password, sync: this.syncInterval });
       this.web5 = result.web5;
       this.did = result.did;
+
+      const agent = result.web5.agent as Web5PlatformAgent;
+      const identites = await agent.identity.list();
+
+      console.log('Identites:', identites);
 
       console.log('Web5 Connected.');
       // console.log('IDENTITY SERVICE:', this.web5);
