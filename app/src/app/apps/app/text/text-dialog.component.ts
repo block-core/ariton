@@ -49,6 +49,8 @@ export class TextDialogComponent {
   });
 
   constructor(public dialogRef: MatDialogRef<TextDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData) {
+    this.dialogRef.updateSize('100vw', '100vh');
+
     // Ensure data.body is initialized
     if (!this.data.body) {
       this.data.body = '';

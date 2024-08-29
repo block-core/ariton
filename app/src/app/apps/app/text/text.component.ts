@@ -44,6 +44,7 @@ import {
   CdkMenuModule,
 } from '@angular/cdk/menu';
 import { TextEditorComponent } from '../../../shared/components/text-editor/text-editor.component';
+import { StripHtmlPipe } from '../../../shared/pipes/stripHtml';
 
 export interface Section {
   id: string;
@@ -85,6 +86,7 @@ export interface Section {
     CdkMenuItemCheckbox,
     CdkMenuItemRadio,
     TextEditorComponent,
+    StripHtmlPipe,
   ],
   templateUrl: './text.component.html',
   styleUrl: './text.component.scss',
@@ -166,21 +168,7 @@ export class TextComponent implements OnDestroy {
     });
   }
 
-  save() {
-    // console.log('TEXT EDITOR', this.editor);
-    // console.log(RawTool.output);
-    // this.editor!.save().then((outputData) => {
-    //   console.log('Article data: ', outputData);
-    // });
-  }
-
   async loadNotes(tags?: any) {
-    // this.editor = new EditorJS({
-    //   tools: {
-    //     raw: RawTool,
-    //   },
-    // });
-
     console.log('VALUE OF TAGS:', tags);
 
     var { records } = await this.identity.web5.dwn.records.query({
@@ -270,9 +258,12 @@ export class TextComponent implements OnDestroy {
     const original = JSON.parse(JSON.stringify(data));
 
     const dialogRef = this.dialog.open(TextDialogComponent, {
-      maxWidth: '80vw',
-      maxHeight: '80vh',
-      data: data,
+      width: '100vw',
+      height: '100vh',
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      panelClass: 'full-screen-dialog',
+      data,
     });
 
     dialogRef.afterClosed().subscribe(async (result) => {

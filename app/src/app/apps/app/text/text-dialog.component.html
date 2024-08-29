@@ -1,50 +1,18 @@
-<!-- <h2 mat-dialog-title>
-  <mat-form-field appearance="outline" class="full-width">
-    <input matInput placeholder="Title" maxlength="200" [(ngModel)]="data.title" />
-  </mat-form-field>
-</h2> -->
-<mat-dialog-content>
-  <mat-form-field appearance="outline" class="full-width">
-    <input matInput placeholder="Title" maxlength="200" [(ngModel)]="data.title" />
-  </mat-form-field>
-  <mat-form-field appearance="outline" class="full-width">
-    <input matInput placeholder="Image" maxlength="200" [(ngModel)]="data.image" />
-  </mat-form-field>
-  <!-- <mat-form-field appearance="outline" class="full-width">
-    <textarea maxlength="300" rows="6" matInput #body placeholder="Text" [(ngModel)]="data.body"></textarea>
-    <mat-hint align="end">{{ body.value.length }} / 300</mat-hint>
-  </mat-form-field> -->
-
-  <div class="editor">
-    <app-text-editor [(content)]="data.body"></app-text-editor>
-  </div>
-</mat-dialog-content>
-<mat-dialog-actions align="end" [ngStyle]="{ backgroundColor: data.background }">
-  <button [disabled]="true" mat-icon-button matTooltip="Collaborator">
-    <mat-icon>person_add_alt</mat-icon>
-  </button>
-  <mat-checkbox class="published-checkbox" [(ngModel)]="data.published">Publish</mat-checkbox>
-  <!-- <button mat-icon-button matTooltip="Background" (click)="fileColor.click()">
-    <mat-icon>palette</mat-icon>
-  </button> -->
-  <!-- <input class="color-picker" #fileColor (change)="onColorChange($event)" type="color" /> -->
-  <!-- <button mat-icon-button matTooltip="Labels">
-    <mat-icon>new_label</mat-icon>
-  </button> -->
-  <!-- <button mat-icon-button matTooltip="Options" [matMenuTriggerFor]="menuActions">
-    <mat-icon>more_vert</mat-icon>
-  </button>
-  <mat-menu #menuActions="matMenu">
-    <button mat-menu-item>
-      <mat-icon>delete</mat-icon>
-      <span>Delete note</span>
-    </button>
-    <button mat-menu-item>
-      <mat-icon>file_copy</mat-icon>
-      <span>Make a copy</span>
-    </button>
-  </mat-menu> -->
-
-  <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-flat-button type="submit" [mat-dialog-close]="true" cdkFocusInitial>Save</button>
-</mat-dialog-actions>
+<div class="dialog-container">
+  <mat-dialog-content class="dialog-content">
+    <mat-form-field appearance="outline" class="full-width">
+      <input matInput placeholder="Title" maxlength="200" [(ngModel)]="data.title" />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="full-width">
+      <input matInput placeholder="Image" maxlength="200" [(ngModel)]="data.image" />
+    </mat-form-field>
+    <div class="editor">
+      <app-text-editor [(content)]="data.body"></app-text-editor>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions class="dialog-actions" align="end">
+    <mat-checkbox class="published-checkbox" [(ngModel)]="data.published">Publish</mat-checkbox>
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-flat-button type="submit" [mat-dialog-close]="true" cdkFocusInitial>Save</button>
+  </mat-dialog-actions>
+</div>

@@ -1,14 +1,20 @@
 .rich-text-editor {
-  border: 1px solid #ccc;
+  border: 1px solid var(--mat-divider-color);
   padding: 10px;
   min-height: 200px;
   margin-top: 10px;
   box-sizing: border-box;
 }
 
-.toolbar-actions {
-  display: flex;
-  align-items: center;
+/** TODO: This does not work. The border becomes white. */
+.rich-text-editor:focus,
+.rich-text-editor:active {
+  border-color: var(--mdc-outlined-text-field-caret-color, var(--mat-app-primary));
+}
+
+.toolbar-actions > * {
+  display: inline-block;
+  vertical-align: middle;
 }
 
 input[type='color'] {

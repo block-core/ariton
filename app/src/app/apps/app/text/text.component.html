@@ -16,11 +16,6 @@
     </mat-chip-listbox>
   </div>
   <div class="notes-items">
-    <!-- <div class="editor">
-      <app-text-editor></app-text-editor>
-    </div> -->
-
-    <button (click)="save()">HTML</button>
     @for (entry of records(); track entry) {
     <!-- @let open = false; -->
 
@@ -28,12 +23,10 @@
       @if (entry.data.title){
       <mat-card-title (click)="editNote(entry)">{{ entry.data.title }}</mat-card-title>
       }
-      <mat-card-content class="note-body" (click)="editNote(entry)">{{ entry.data.body }}</mat-card-content>
+      <mat-card-content class="note-body" (click)="editNote(entry)"
+        >{{ entry.data.body | stripHtml : 200 }}
+      </mat-card-content>
       <mat-card-footer>
-        <button [disabled]="true" mat-icon-button matTooltip="Collaborator">
-          <mat-icon>person_add_alt</mat-icon>
-        </button>
-
         <button
           [matTooltip]="entry.record.published ? 'Published' : 'Not published'"
           mat-icon-button
