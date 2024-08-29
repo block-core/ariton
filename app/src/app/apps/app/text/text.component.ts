@@ -1,4 +1,14 @@
-import { Component, effect, inject, model, QueryList, signal, ViewChild, ViewChildren } from '@angular/core';
+import {
+  Component,
+  CUSTOM_ELEMENTS_SCHEMA,
+  effect,
+  inject,
+  model,
+  QueryList,
+  signal,
+  ViewChild,
+  ViewChildren,
+} from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButton, MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -33,6 +43,7 @@ import {
   CdkMenuBar,
   CdkMenuModule,
 } from '@angular/cdk/menu';
+import { TextEditorComponent } from '../../../shared/components/text-editor/text-editor.component';
 
 export interface Section {
   id: string;
@@ -45,6 +56,7 @@ export interface Section {
 @Component({
   selector: 'app-text',
   standalone: true,
+  // schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
     CommonModule,
     MatSelectModule,
@@ -72,6 +84,7 @@ export interface Section {
     CdkMenuGroup,
     CdkMenuItemCheckbox,
     CdkMenuItemRadio,
+    TextEditorComponent,
   ],
   templateUrl: './text.component.html',
   styleUrl: './text.component.scss',
@@ -153,7 +166,21 @@ export class TextComponent implements OnDestroy {
     });
   }
 
+  save() {
+    // console.log('TEXT EDITOR', this.editor);
+    // console.log(RawTool.output);
+    // this.editor!.save().then((outputData) => {
+    //   console.log('Article data: ', outputData);
+    // });
+  }
+
   async loadNotes(tags?: any) {
+    // this.editor = new EditorJS({
+    //   tools: {
+    //     raw: RawTool,
+    //   },
+    // });
+
     console.log('VALUE OF TAGS:', tags);
 
     var { records } = await this.identity.web5.dwn.records.query({

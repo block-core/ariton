@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { TextEditorComponent } from '../../../shared/components/text-editor/text-editor.component';
 
 export interface DialogData {
   title: string;
@@ -32,6 +33,7 @@ export interface DialogData {
     MatDialogModule,
     FormsModule,
     MatCheckboxModule,
+    TextEditorComponent,
   ],
   templateUrl: './text-dialog.component.html',
   styleUrl: './text-dialog.component.scss',
@@ -46,7 +48,12 @@ export class TextDialogComponent {
     background: [null],
   });
 
-  constructor(public dialogRef: MatDialogRef<TextDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+  constructor(public dialogRef: MatDialogRef<TextDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData) {
+    // Ensure data.body is initialized
+    if (!this.data.body) {
+      this.data.body = '';
+    }
+  }
 
   ngAfterViewInit() {}
 

@@ -1,0 +1,62 @@
+<mat-card class="toolbar-actions margin-bottom">
+  <mat-card-content class="toolbar-actions">
+    <button type="button" mat-icon-button (click)="execCommand('bold')">
+      <mat-icon>format_bold</mat-icon>
+    </button>
+    <button type="button" mat-icon-button (click)="execCommand('italic')">
+      <mat-icon>format_italic</mat-icon>
+    </button>
+    <button type="button" mat-icon-button (click)="execCommand('underline')">
+      <mat-icon>format_underlined</mat-icon>
+    </button>
+    <button type="button" mat-icon-button (click)="execCommand('strikeThrough')">
+      <mat-icon>format_strikethrough</mat-icon>
+    </button>
+    <input type="color" (change)="changeColor('foreColor', $event)" title="Font Color" />
+    <input type="color" (change)="changeColor('hiliteColor', $event)" title="Highlight Color" />
+    <select (change)="changeFontSize($event)">
+      <option value="1">Small</option>
+      <option value="2">Normal</option>
+      <option value="3">Large</option>
+      <option value="4">X-Large</option>
+      <option value="5">XX-Large</option>
+    </select>
+    <button type="button" mat-icon-button (click)="execCommand('insertOrderedList')">
+      <mat-icon>format_list_numbered</mat-icon>
+    </button>
+    <button type="button" mat-icon-button (click)="execCommand('insertUnorderedList')">
+      <mat-icon>format_list_bulleted</mat-icon>
+    </button>
+    <button type="button" mat-icon-button (click)="createLink()">
+      <mat-icon>insert_link</mat-icon>
+    </button>
+    <button type="button" mat-icon-button (click)="execCommand('unlink')">
+      <mat-icon>link_off</mat-icon>
+    </button>
+    <button type="button" mat-icon-button (click)="execCommand('indent')">
+      <mat-icon>format_indent_increase</mat-icon>
+    </button>
+    <button type="button" mat-icon-button (click)="execCommand('outdent')">
+      <mat-icon>format_indent_decrease</mat-icon>
+    </button>
+    <button mat-icon-button [matMenuTriggerFor]="moreOptionsMenu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #moreOptionsMenu="matMenu">
+      <button mat-menu-item (click)="execCommand('superscript')">
+        <mat-icon>superscript</mat-icon>
+        <span>Superscript</span>
+      </button>
+      <button mat-menu-item (click)="execCommand('subscript')">
+        <mat-icon>subscript</mat-icon>
+        <span>Subscript</span>
+      </button>
+      <button mat-menu-item (click)="execCommand('insertHorizontalRule')">
+        <mat-icon>horizontal_rule</mat-icon>
+        <span>Horizontal Rule</span>
+      </button>
+    </mat-menu>
+  </mat-card-content>
+</mat-card>
+
+<div #editor id="editor" contenteditable="true" class="rich-text-editor"></div>

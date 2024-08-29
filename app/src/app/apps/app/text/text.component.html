@@ -16,6 +16,11 @@
     </mat-chip-listbox>
   </div>
   <div class="notes-items">
+    <!-- <div class="editor">
+      <app-text-editor></app-text-editor>
+    </div> -->
+
+    <button (click)="save()">HTML</button>
     @for (entry of records(); track entry) {
     <!-- @let open = false; -->
 

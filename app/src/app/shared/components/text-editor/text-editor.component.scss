@@ -1,0 +1,22 @@
+.rich-text-editor {
+  border: 1px solid #ccc;
+  padding: 10px;
+  min-height: 200px;
+  margin-top: 10px;
+  box-sizing: border-box;
+}
+
+.toolbar-actions {
+  display: flex;
+  align-items: center;
+}
+
+input[type='color'] {
+  border: none;
+  background: none;
+  height: 32px;
+  width: 32px;
+  padding: 0;
+  margin: 0 4px;
+  cursor: pointer;
+}

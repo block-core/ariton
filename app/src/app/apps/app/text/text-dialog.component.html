@@ -10,10 +10,14 @@
   <mat-form-field appearance="outline" class="full-width">
     <input matInput placeholder="Image" maxlength="200" [(ngModel)]="data.image" />
   </mat-form-field>
-  <mat-form-field appearance="outline" class="full-width">
+  <!-- <mat-form-field appearance="outline" class="full-width">
     <textarea maxlength="300" rows="6" matInput #body placeholder="Text" [(ngModel)]="data.body"></textarea>
     <mat-hint align="end">{{ body.value.length }} / 300</mat-hint>
-  </mat-form-field>
+  </mat-form-field> -->
+
+  <div class="editor">
+    <app-text-editor [(content)]="data.body"></app-text-editor>
+  </div>
 </mat-dialog-content>
 <mat-dialog-actions align="end" [ngStyle]="{ backgroundColor: data.background }">
   <button [disabled]="true" mat-icon-button matTooltip="Collaborator">
