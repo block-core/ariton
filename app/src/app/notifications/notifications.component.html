@@ -1,7 +1,7 @@
 <mat-card class="toolbar-actions margin-bottom notifications-card">
   <mat-card-content>
     <h1>Notifications</h1>
-    <button type="button" mat-button>
+    <button type="button" mat-button [disabled]="true">
       <mat-icon>check</mat-icon>
       <span>Mark all as read</span>
     </button>
@@ -9,7 +9,7 @@
       <mat-icon>delete</mat-icon>
       <span>Delete all</span>
     </button>
-    <button type="button" mat-button>
+    <button type="button" mat-button [routerLink]="['/settings', 'notifications']">
       <mat-icon>settings</mat-icon>
       <span>Notification Settings</span>
     </button>
