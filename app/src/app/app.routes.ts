@@ -284,6 +284,13 @@ export const routes: Routes = [
     data: { hide: true, icon: 'block' },
   },
   {
+    path: 'settings/notifications',
+    loadComponent: () =>
+      import('./settings/notifications/notifications.component').then((c) => c.NotificationsComponent),
+    title: 'Notifications',
+    data: { hide: true, icon: 'settings' },
+  },
+  {
     path: 'tree',
     loadComponent: () => import('./tree/tree.component').then((c) => c.TreeComponent),
     title: 'Tree',

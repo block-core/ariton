@@ -88,11 +88,11 @@
         </button>
         <mat-menu #menuNotifications="matMenu">
           <button mat-menu-item (click)="wipe()">
-            <mat-icon>settings</mat-icon>
+            <mat-icon>delete</mat-icon>
             <span>Reset All Data (Wipe)</span>
           </button>
           <mat-divider></mat-divider>
-          <button mat-menu-item [routerLink]="['/settings']">
+          <button mat-menu-item [routerLink]="['/settings', 'notifications']">
             <mat-icon>settings</mat-icon>
             <span>Notification Settings</span>
           </button>
@@ -104,7 +104,7 @@
             <div class="notification-details dimmed">{{ notification.data.app }} ({{ '2024-08-22 12:00' | ago }})</div>
           </button>
           }
-          <button mat-menu-item [routerLink]="['/notifications']">
+          <!-- <button mat-menu-item [routerLink]="['/notifications']">
             <mat-icon>forum</mat-icon>
             <span>Knitting Community posted new pattern</span>
             <div class="notification-details dimmed">Community ({{ '2024-08-22 12:00' | ago }})</div>
@@ -121,7 +121,7 @@
           <button mat-menu-item>
             <mat-icon>verified_user</mat-icon>
             <span>Social account recovery request</span>
-          </button>
+          </button> -->
         </mat-menu>
 
         <button mat-icon-button [matMenuTriggerFor]="menu">

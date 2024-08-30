@@ -39,6 +39,11 @@ Language: {{ settings().language }}
     Manage Blocks
   </a>
 
+  <a mat-list-item [routerLink]="['notifications']">
+    <mat-icon matListItemIcon>settings</mat-icon>
+    Notifications Settings
+  </a>
+
   <a mat-list-item [routerLink]="['handler']">
     <mat-icon matListItemIcon>search</mat-icon>
     Register Protocol Handler (Web Only)

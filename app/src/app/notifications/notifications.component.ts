@@ -45,6 +45,7 @@ export class NotificationsComponent {
   notifications = signal<NotificationEvent[]>([]);
 
   constructor() {
+    this.layout.marginOn();
     this.layout.resetActions();
 
     effect(async () => {
