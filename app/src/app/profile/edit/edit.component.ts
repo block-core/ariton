@@ -42,8 +42,8 @@ export class ProfileEditComponent {
   data = signal<any>({});
 
   form = this.fb.group({
-    name: null,
-    title: [null, Validators.required],
+    name: [null],
+    title: [null],
     status: [null],
     bio: [null],
     location: [null],

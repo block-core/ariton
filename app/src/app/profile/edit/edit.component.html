@@ -6,14 +6,14 @@
       <mat-form-field class="full-width">
         <mat-label>Name</mat-label>
         <input matInput #name placeholder="Name" maxlength="200" formControlName="name" />
+        <!-- @if (form.controls['name'].hasError('required')) {
+        <mat-error>Name is <strong>required</strong></mat-error>
+        } -->
       </mat-form-field>
 
       <mat-form-field class="full-width">
         <mat-label>Title</mat-label>
         <input matInput #title placeholder="Title" formControlName="title" />
-        @if (form.controls['title'].hasError('required')) {
-        <mat-error>Title is <strong>required</strong></mat-error>
-        }
       </mat-form-field>
 
       <mat-form-field class="full-width">
