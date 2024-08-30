@@ -21,6 +21,7 @@ import { protocolDefinition as messageDefinition } from '../../protocols/message
 import { VerifiableCredential } from '@web5/credentials';
 import { BearerDid } from '@web5/dids';
 import { LayoutService } from '../layout.service';
+import { FriendService } from '../friend.service';
 
 @Component({
   selector: 'app-profile',
@@ -49,6 +50,8 @@ export class ProfileComponent {
   app = inject(AppService);
 
   layout = inject(LayoutService);
+
+  friend = inject(FriendService);
 
   data = signal<any>(undefined);
 
@@ -79,47 +82,10 @@ export class ProfileComponent {
   async loadData() {}
 
   async addFriend(did: string) {
-    console.log('TARGET DID 1:', this.profileService.selected().did);
-    console.log('TARGET DID 2:', this.profileService.current().did);
-    console.log('AUTHOR DID:', this.identity.did);
-    console.log('INPUT DID:', did);
+    const { record } = await this.friend.createRequest(did);
 
-    const vc = await VerifiableCredential.create({
-      type: 'FriendshipCredential',
-      issuer: this.identity.did,
-      subject: did,
-      data: null,
-    });
-
-    console.log('VC:', vc);
-
-    const bearerDid = await this.identity.activeAgent().identity.get({ didUri: this.identity.did });
-    const vc_jwt = await vc.sign({ did: bearerDid!.did });
-    console.log('VC JWT:', vc_jwt);
-
-    // const { record } = await this.identity.web5.dwn.records.create({
-    //   data: vc_jwt,
-    //   message: {
-    //     schema: 'FriendsCredential',
-    //     dataFormat: 'application/vc+jwt',
-    //     published: true,
-    //   },
-    // });
-
-    const { status: requestCreateStatus, record: messageRecord } = await this.identity.web5.dwn.records.create({
-      data: { message: 'I want to be your friend.', vc: vc_jwt },
-      message: {
-        recipient: did,
-        protocol: messageDefinition.protocol,
-        protocolPath: 'request',
-        schema: messageDefinition.types.request.schema,
-        dataFormat: messageDefinition.types.request.dataFormats[0],
-      },
-    });
-
-    console.log('Request create status:', requestCreateStatus);
-
-    const { status: requestStatus } = await messageRecord!.send(did);
+    // TODO: Perform this without waiting, or perhaps wait?
+    const { status: requestStatus } = await record!.send(did);
 
     if (requestStatus.code !== 202) {
       this.app.openSnackBar(`Friend request failed.Code: ${requestStatus.code}, Details: ${requestStatus.detail}.`);

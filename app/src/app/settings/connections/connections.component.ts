@@ -37,4 +37,10 @@ export class ConnectionsComponent {
 
     this.service.deleteConnection(entry);
   }
+
+  deleteRequest(entry: any) {
+    entry.loading = true;
+
+    this.service.deleteRequest(entry);
+  }
 }

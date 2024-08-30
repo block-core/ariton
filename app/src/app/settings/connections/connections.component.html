@@ -1,7 +1,9 @@
 <h1>Connections Management</h1>
 
 <mat-card class="notifications-card">
-  <mat-card-header> </mat-card-header>
+  <mat-card-header>
+    <mat-card-title>Inbound</mat-card-title>
+  </mat-card-header>
   <mat-card-content>
     @for(entry of service.connections(); track entry) {
     <mat-card class="card-notification" appearance="outlined">
@@ -18,6 +20,35 @@
         <button mat-button (click)="deleteConnection(entry)" [disabled]="entry.loading">DELETE</button>
       </mat-card-actions>
     </mat-card>
-    } @empty { No connections found. }
+    } @empty { No inbound connections found. }
+  </mat-card-content>
+</mat-card>
+
+<br />
+
+<mat-card class="notifications-card">
+  <mat-card-header>
+    <mat-card-title>Outbound</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    @for(entry of service.requests(); track entry) {
+    <mat-card class="card-notification" appearance="outlined">
+      <!-- <mat-card-header>
+        <mat-icon class="card-icon" inline="true" mat-card-avatar></mat-icon>
+        <mat-card-title>{{ entry.data }}</mat-card-title>
+        <mat-card-subtitle>{{ entry.record.dateCreated | ago }}</mat-card-subtitle>
+      </mat-card-header> -->
+      <mat-card-content>
+        <!-- {{ entry.data | json }}<br /><br />
+        {{ entry.record | json }} -->
+
+        {{ entry.record.recipient }}
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-flat-button [routerLink]="['/profile', entry.record.recipient]">VIEW PROFILE</button>
+        <button mat-button (click)="deleteRequest(entry)" [disabled]="entry.loading">DELETE</button>
+      </mat-card-actions>
+    </mat-card>
+    } @empty { No outbound connections found. }
   </mat-card-content>
 </mat-card>

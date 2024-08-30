@@ -5,6 +5,7 @@ import { protocolDefinition as messageDefinition } from '../protocols/message';
 import { Record } from '@web5/api';
 import { VerifiableCredential } from '@web5/credentials';
 import { credential, message } from '../protocols';
+import { ConnectionService } from './connection.service';
 
 export interface Entry {
   record: Record;
@@ -23,9 +24,33 @@ export class FriendService {
 
   identity = inject(IdentityService);
 
+  connection = inject(ConnectionService);
+
   app = inject(AppService);
 
   constructor() {}
+
+  /** Creates a VC for friendship and attempts to write a connection request to the supplied DID. */
+  async createRequest(did: string) {
+    const vc = await VerifiableCredential.create({
+      type: 'FriendshipCredential',
+      issuer: this.identity.did,
+      subject: did,
+      data: null,
+    });
+
+    console.log('VC:', vc);
+
+    const bearerDid = await this.identity.activeAgent().identity.get({ didUri: this.identity.did });
+    const vc_jwt = await vc.sign({ did: bearerDid!.did });
+    console.log('VC JWT:', vc_jwt);
+
+    const result = await this.connection.request(did, { message: 'I want to be your friend.', vc: vc_jwt });
+
+    return {
+      record: result.record,
+    };
+  }
 
   async accept(entry: Entry) {
     // TOOD: We should obviously verify the incoming VC is correct, that it belongs to the

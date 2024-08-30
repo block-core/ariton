@@ -32,6 +32,8 @@ export class ConnectionService {
 
   connections = signal<ConnectionEntry[]>([]);
 
+  requests = signal<ConnectionEntry[]>([]);
+
   constructor() {}
 
   /** Creates a connection entry that opens up a trust line between identities. */
@@ -71,9 +73,12 @@ export class ConnectionService {
 
     const connections = await this.loadConnections();
     this.connections.set(connections);
+
+    const requests = await this.loadRequests();
+    this.requests.set(requests);
   }
 
-  async request(data: any) {
+  async request(did: string, data: any) {
     // Create a new connection that is sent to external DWN.
     // We save a local copy to see our outgoing connection requests.
     const eventData = data;
@@ -81,6 +86,7 @@ export class ConnectionService {
     const { record, status } = await this.identity.web5.dwn.records.create({
       data: eventData,
       message: {
+        recipient: did,
         protocol: connectionDefinition.protocol,
         protocolPath: 'request',
         schema: connectionDefinition.types.request.schema,
@@ -90,11 +96,15 @@ export class ConnectionService {
 
     console.log('Notification created:', status, record);
 
-    return {
+    const entry = {
       record,
       data: eventData,
       id: record!.id,
     } as ConnectionEntry;
+
+    this.requests.update((list) => [...list, entry]);
+
+    return entry;
   }
 
   async deleteBlock(entry: ConnectionEntry) {
@@ -106,6 +116,12 @@ export class ConnectionService {
   async deleteConnection(entry: any) {
     await entry.record.delete();
     this.connections.update((list) => [...list.filter((n) => n.id !== entry.id)]);
+    this.utility.executeAsyncWithToast(entry.record.send(this.identity.did));
+  }
+
+  async deleteRequest(entry: any) {
+    await entry.record.delete();
+    this.requests.update((list) => [...list.filter((n) => n.id !== entry.id)]);
     this.utility.executeAsyncWithToast(entry.record.send(this.identity.did));
   }
 
@@ -158,6 +174,8 @@ export class ConnectionService {
       let notifiationEvent: ConnectionEntry = { record, data, id: record.id };
       list.push(notifiationEvent);
     }
+
+    console.log('REQUESTS: ', list);
 
     return list;
   }
