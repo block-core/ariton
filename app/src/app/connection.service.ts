@@ -161,6 +161,7 @@ export class ConnectionService {
     const { records } = await this.identity.web5.dwn.records.query({
       message: {
         filter: {
+          // recipient: inbound ? this.identity.did : undefined,
           protocol: connectionDefinition.protocol,
           protocolPath: 'request',
           schema: connectionDefinition.types.request.schema,
@@ -172,6 +173,11 @@ export class ConnectionService {
     for (let record of records!) {
       const data = await record.data.json();
       let notifiationEvent: ConnectionEntry = { record, data, id: record.id };
+
+      if (record.author == this.identity.did) {
+        notifiationEvent.direction = 'out';
+      }
+
       list.push(notifiationEvent);
     }
 

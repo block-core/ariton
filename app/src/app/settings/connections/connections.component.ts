@@ -7,11 +7,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
 import { AgoPipe } from '../../shared/pipes/ago.pipe';
+import { ProfileHeaderComponent } from '../../shared/components/profile-header/profile-header.component';
 
 @Component({
   selector: 'app-connections',
   standalone: true,
-  imports: [AgoPipe, CommonModule, MatCardModule, MatButtonModule, MatIconModule, RouterModule],
+  imports: [ProfileHeaderComponent, AgoPipe, CommonModule, MatCardModule, MatButtonModule, MatIconModule, RouterModule],
   templateUrl: './connections.component.html',
   styleUrl: './connections.component.scss',
 })
@@ -20,17 +21,7 @@ export class ConnectionsComponent {
 
   app = inject(AppService);
 
-  constructor() {
-    // effect(async () => {
-    //   if (this.app.initialized()) {
-    //   }
-    // });
-  }
-
-  // async load() {
-  //   const blocks = await this.service.loadBlocks();
-  //   this.blocks.set(blocks);
-  // }
+  constructor() {}
 
   deleteConnection(entry: any) {
     entry.loading = true;
@@ -38,7 +29,9 @@ export class ConnectionsComponent {
     this.service.deleteConnection(entry);
   }
 
-  deleteRequest(entry: any) {
+  accept(entry: any) {}
+
+  reject(entry: any) {
     entry.loading = true;
 
     this.service.deleteRequest(entry);

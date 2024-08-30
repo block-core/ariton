@@ -11,4 +11,5 @@ export interface RecordEntry<T> {
   id: string;
   data: T;
   loading?: boolean;
+  direction?: 'in' | 'out' | any;
 }

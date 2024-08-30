@@ -2,7 +2,7 @@
 
 <mat-card class="notifications-card">
   <mat-card-header>
-    <mat-card-title>Inbound</mat-card-title>
+    <mat-card-title>Connections</mat-card-title>
   </mat-card-header>
   <mat-card-content>
     @for(entry of service.connections(); track entry) {
@@ -20,7 +20,7 @@
         <button mat-button (click)="deleteConnection(entry)" [disabled]="entry.loading">DELETE</button>
       </mat-card-actions>
     </mat-card>
-    } @empty { No inbound connections found. }
+    } @empty { No connections found. }
   </mat-card-content>
 </mat-card>
 
@@ -28,27 +28,32 @@
 
 <mat-card class="notifications-card">
   <mat-card-header>
-    <mat-card-title>Outbound</mat-card-title>
+    <mat-card-title>Requests</mat-card-title>
   </mat-card-header>
   <mat-card-content>
     @for(entry of service.requests(); track entry) {
     <mat-card class="card-notification" appearance="outlined">
-      <!-- <mat-card-header>
-        <mat-icon class="card-icon" inline="true" mat-card-avatar></mat-icon>
-        <mat-card-title>{{ entry.data }}</mat-card-title>
-        <mat-card-subtitle>{{ entry.record.dateCreated | ago }}</mat-card-subtitle>
-      </mat-card-header> -->
       <mat-card-content>
-        <!-- {{ entry.data | json }}<br /><br />
-        {{ entry.record | json }} -->
-
-        {{ entry.record.recipient }}
+        @if (entry.direction == 'out') {
+        <app-profile-header [did]="entry.record.recipient"> </app-profile-header>
+        } @else {
+        <app-profile-header [did]="entry.record.author"> </app-profile-header>
+        }
       </mat-card-content>
       <mat-card-actions>
-        <button mat-flat-button [routerLink]="['/profile', entry.record.recipient]">VIEW PROFILE</button>
-        <button mat-button (click)="deleteRequest(entry)" [disabled]="entry.loading">DELETE</button>
+        @if (entry.direction == 'out') {
+        <button mat-flat-button [routerLink]="['/profile', entry.record.recipient]">VIEW PROFILE</button>&nbsp;
+        <button mat-flat-button [disabled]="true">PENDING</button>&nbsp;
+        <button mat-button (click)="reject(entry)" [disabled]="entry.loading">CANCEL</button>
+
+        } @else {
+        <button mat-flat-button [routerLink]="['/profile', entry.record.author]">VIEW PROFILE</button>&nbsp;
+        <button mat-flat-button (click)="accept(entry)" [disabled]="entry.loading">CONFIRM</button>&nbsp;
+        <button mat-button (click)="reject(entry)" [disabled]="entry.loading">DELETE</button>
+
+        }
       </mat-card-actions>
     </mat-card>
-    } @empty { No outbound connections found. }
+    } @empty { No requests found. }
   </mat-card-content>
 </mat-card>
