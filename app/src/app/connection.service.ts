@@ -79,6 +79,10 @@ export class ConnectionService {
 
     this.connections.update((list) => [...list, entry]);
 
+    // Send to self and recipient.
+    this.utility.executeAsyncWithToast(entry.record.send(this.identity.did));
+    this.utility.executeAsyncWithToast(entry.record.send(eventData.did));
+
     return entry;
   }
 
@@ -125,6 +129,10 @@ export class ConnectionService {
 
     this.requests.update((list) => [...list, entry]);
 
+    // Send to self and recipient.
+    this.utility.executeAsyncWithToast(entry.record.send(this.identity.did));
+    this.utility.executeAsyncWithToast(entry.record.send(did));
+
     return entry;
   }
 
@@ -148,6 +156,10 @@ export class ConnectionService {
 
   /** Deletes all incoming requests from the specified DID. */
   async deleteRequests(did: string) {
+    if (!did) {
+      return;
+    }
+
     // Find all connection requests from this user and delete them.
     const entries = await this.loadRequests(did);
 
@@ -163,6 +175,10 @@ export class ConnectionService {
 
   /** Deletes all connections from the specified DID. */
   async deleteConnections(did: string) {
+    if (!did) {
+      return;
+    }
+
     // Find all connection requests from this user and delete them.
     const entries = await this.loadConnections(did);
 
@@ -178,7 +194,12 @@ export class ConnectionService {
 
   /** Blocks a specif DID, this also deletes all the incoming requests. */
   async block(did: string) {
+    if (!did) {
+      return;
+    }
+
     await this.deleteRequests(did);
+    await this.deleteConnections(did);
 
     const data = {
       did: did,

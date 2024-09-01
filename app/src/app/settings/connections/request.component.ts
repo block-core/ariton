@@ -9,6 +9,7 @@ import { RouterModule } from '@angular/router';
 import { AgoPipe } from '../../shared/pipes/ago.pipe';
 import { ProfileHeaderComponent } from '../../shared/components/profile-header/profile-header.component';
 import { RecordEntry } from '../../data';
+import { IdentityService } from '../../identity.service';
 
 @Component({
   selector: 'app-request',
@@ -21,6 +22,8 @@ export class RequestComponent {
   @Input() public entry?: ConnectionEntry = undefined;
 
   connection = inject(ConnectionService);
+
+  identity = inject(IdentityService);
 
   app = inject(AppService);
 
@@ -38,9 +41,15 @@ export class RequestComponent {
     entry.loading = true;
     console.log('Accepting connection request', entry);
 
+    // Get the DID from author of the request. We store this as recipient in the connection.
+    entry.data.did = entry.record.author;
+
+    // Grab type from the request and copy to connection.
     const type = entry.record.tags.type;
 
     await this.connection.create(entry.data, type);
+
+    await this.connection.deleteRequest(entry);
 
     // TODO: We should delete notifications related to this connection.
     // this.deleteNotification(entry);

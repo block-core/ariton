@@ -33,4 +33,11 @@ export class ConnectionComponent {
 
     // TODO: We should delete notifications related to this connection.
   }
+
+  block(entry: any) {
+    entry.loading = true;
+
+    this.connection.block(entry.recipient);
+    // TODO: We should delete notifications related to this connection.
+  }
 }

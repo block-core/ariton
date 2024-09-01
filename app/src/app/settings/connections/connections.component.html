@@ -22,7 +22,7 @@
   <mat-card-content>
     <p>
       @for(entry of connection.connections(); track entry) {
-      <app-request [entry]="entry"></app-request>
+      <app-connection [entry]="entry"></app-connection>
 
       } @empty { No connections found. }
     </p>
