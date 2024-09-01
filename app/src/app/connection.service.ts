@@ -20,6 +20,14 @@ export interface ConnectionBlockData {
 
 export interface ConnectionBlockEntry extends RecordEntry<ConnectionBlockData> {}
 
+export enum ConnectionType {
+  /** Used for sharing access to data, such as Tasks or Notes. */
+  Data = 'data',
+
+  /** Used for storing friendships. */
+  Friend = 'friend',
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -37,14 +45,19 @@ export class ConnectionService {
   constructor() {}
 
   /** Creates a connection entry that opens up a trust line between identities. */
-  async create(data: any) {
+  async create(data: any, type: ConnectionType) {
     // Create a new connection that is sent to external DWN.
     // We save a local copy to see our outgoing connection requests.
     const eventData = data;
 
+    const tags = {
+      type: type,
+    };
+
     const { record, status } = await this.identity.web5.dwn.records.create({
       data: eventData,
       message: {
+        tags: tags,
         recipient: eventData.did,
         protocol: connectionDefinition.protocol,
         protocolPath: 'connection',
@@ -78,14 +91,19 @@ export class ConnectionService {
     this.requests.set(requests);
   }
 
-  async request(did: string, data: any) {
+  async request(did: string, data: any, type: ConnectionType) {
     // Create a new connection that is sent to external DWN.
     // We save a local copy to see our outgoing connection requests.
     const eventData = data;
 
+    const tags = {
+      type: type,
+    };
+
     const { record, status } = await this.identity.web5.dwn.records.create({
       data: eventData,
       message: {
+        tags: tags,
         recipient: did,
         protocol: connectionDefinition.protocol,
         protocolPath: 'request',
@@ -128,15 +146,30 @@ export class ConnectionService {
   /** Deletes all incoming requests from the specified DID. */
   async deleteRequests(did: string) {
     // Find all connection requests from this user and delete them.
-    const connectionsFromUser = await this.loadConnections(did);
+    const entries = await this.loadRequests(did);
 
-    for (const connection of connectionsFromUser) {
-      await connection.record.delete();
+    for (const entry of entries) {
+      await entry.record.delete();
 
       // Update the list of connections on external DWNs for user.
-      await connection.record.send(this.identity.did);
+      await entry.record.send(this.identity.did);
 
-      this.connections.update((list) => [...list.filter((n) => n.id !== connection.id)]);
+      this.requests.update((list) => [...list.filter((n) => n.id !== entry.id)]);
+    }
+  }
+
+  /** Deletes all connections from the specified DID. */
+  async deleteConnections(did: string) {
+    // Find all connection requests from this user and delete them.
+    const entries = await this.loadConnections(did);
+
+    for (const entry of entries) {
+      await entry.record.delete();
+
+      // Update the list of connections on external DWNs for user.
+      await entry.record.send(this.identity.did);
+
+      this.connections.update((list) => [...list.filter((n) => n.id !== entry.id)]);
     }
   }
 
@@ -173,17 +206,50 @@ export class ConnectionService {
     return entry;
   }
 
-  async loadRequests() {
+  // async loadRequests() {
+  //   const list: ConnectionEntry[] = [];
+
+  //   const { records } = await this.identity.web5.dwn.records.query({
+  //     message: {
+  //       filter: {
+  //         // recipient: inbound ? this.identity.did : undefined,
+  //         protocol: connectionDefinition.protocol,
+  //         protocolPath: 'request',
+  //         schema: connectionDefinition.types.request.schema,
+  //       },
+  //       dateSort: DwnDateSort.CreatedAscending,
+  //     },
+  //   });
+
+  //   for (let record of records!) {
+  //     const data = await record.data.json();
+  //     let notifiationEvent: ConnectionEntry = { record, data, id: record.id };
+
+  //     if (record.author == this.identity.did) {
+  //       notifiationEvent.direction = 'out';
+  //     }
+
+  //     list.push(notifiationEvent);
+  //   }
+
+  //   console.log('REQUESTS: ', list);
+
+  //   return list;
+  // }
+
+  async loadRequests(did?: string) {
     const list: ConnectionEntry[] = [];
+
+    const filter = {
+      author: did ? did : undefined,
+      protocol: connectionDefinition.protocol,
+      protocolPath: 'request',
+      schema: connectionDefinition.types.request.schema,
+    };
 
     const { records } = await this.identity.web5.dwn.records.query({
       message: {
-        filter: {
-          // recipient: inbound ? this.identity.did : undefined,
-          protocol: connectionDefinition.protocol,
-          protocolPath: 'request',
-          schema: connectionDefinition.types.request.schema,
-        },
+        filter,
         dateSort: DwnDateSort.CreatedAscending,
       },
     });

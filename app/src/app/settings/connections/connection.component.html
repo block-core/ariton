@@ -1,0 +1,11 @@
+@if (entry) {
+<mat-card class="card-notification" appearance="outlined">
+  <mat-card-content>
+    {{ entry.data.did }}
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-flat-button [routerLink]="['/profile', entry.data.did]">VIEW PROFILE</button>
+    <button mat-button (click)="deleteConnection(entry)" [disabled]="entry.loading">DELETE</button>
+  </mat-card-actions>
+</mat-card>
+}

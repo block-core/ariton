@@ -5,7 +5,7 @@ import { protocolDefinition as messageDefinition } from '../protocols/message';
 import { Record } from '@web5/api';
 import { VerifiableCredential } from '@web5/credentials';
 import { credential, message } from '../protocols';
-import { ConnectionService } from './connection.service';
+import { ConnectionService, ConnectionType } from './connection.service';
 
 export interface Entry {
   record: Record;
@@ -45,7 +45,11 @@ export class FriendService {
     const vc_jwt = await vc.sign({ did: bearerDid!.did });
     console.log('VC JWT:', vc_jwt);
 
-    const result = await this.connection.request(did, { message: 'I want to be your friend.', vc: vc_jwt });
+    const result = await this.connection.request(
+      did,
+      { message: 'I want to be your friend.', vc: vc_jwt },
+      ConnectionType.Friend,
+    );
 
     return {
       record: result.record,

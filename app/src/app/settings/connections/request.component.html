@@ -1,0 +1,22 @@
+@if (entry) {
+<mat-card class="card-notification" appearance="outlined">
+  <mat-card-content>
+    @if (entry.direction == 'out') {
+    <app-profile-header [did]="entry.record.recipient"> </app-profile-header>
+    } @else {
+    <app-profile-header [did]="entry.record.author"> </app-profile-header>
+    }
+  </mat-card-content>
+  <mat-card-actions>
+    @if (entry.direction == 'out') {
+    <button mat-flat-button [disabled]="true">PENDING</button>&nbsp;
+    <button mat-button (click)="reject(entry)" [disabled]="entry.loading">CANCEL</button>
+
+    } @else {
+    <button mat-flat-button (click)="accept(entry)" [disabled]="entry.loading">ACCEPT</button>&nbsp;
+    <button mat-button (click)="reject(entry)" [disabled]="entry.loading">DELETE</button>&nbsp;
+    <button mat-button (click)="block(entry)" [disabled]="entry.loading">BLOCK</button>
+    }
+  </mat-card-actions>
+</mat-card>
+}

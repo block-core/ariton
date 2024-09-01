@@ -10,7 +10,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { RouterModule } from '@angular/router';
 import { ProfileCardComponent } from '../shared/components/profile-card/profile-card.component';
 import { ProfileHeaderComponent } from '../shared/components/profile-header/profile-header.component';
-import { ConnectionEntry, ConnectionService } from '../connection.service';
+import { ConnectionEntry, ConnectionService, ConnectionType } from '../connection.service';
 import { IdentityService } from '../identity.service';
 
 @Component({
@@ -56,28 +56,22 @@ export class NotificationsComponent {
   }
 
   async accept(entry: NotificationEvent) {
-    entry.loading = true;
-
-    console.log('Accepting connection request');
-
-    if (entry.data.app === 'Friends') {
-      // If friends request, we will reply with a Verifiable Credential in addition to the connection request.
-
-      this.connection.create({
-        did: entry.data.author, // TODO: Change to record.author
-      });
-
-      this.deleteNotification(entry);
-
-      // Accept as friend.
-    } else if (entry.data.app === 'Connect') {
-      // If connect request, we will only reply with a connection request.
-      this.connection.create({
-        did: entry.data.author, // TODO: Change to record.author
-      });
-
-      this.deleteNotification(entry);
-    }
+    // entry.loading = true;
+    // console.log('Accepting connection request');
+    // if (entry.data.app === 'Friends') {
+    //   // If friends request, we will reply with a Verifiable Credential in addition to the connection request.
+    //   this.connection.create({
+    //     did: entry.data.author, // TODO: Change to record.author
+    //   });
+    //   this.deleteNotification(entry);
+    //   // Accept as friend.
+    // } else if (entry.data.app === 'Connect') {
+    //   // If connect request, we will only reply with a connection request.
+    //   this.connection.create({
+    //     did: entry.data.author, // TODO: Change to record.author
+    //   });
+    //   this.deleteNotification(entry);
+    // }
   }
 
   async deleteNotifications() {
@@ -141,7 +135,11 @@ export class NotificationsComponent {
 
   async generateNotification() {
     // First simulate an incoming connection request.
-    await this.connection.request('did:dht:bi3bzoke6rq6fbkojpo5ebtg45eqx1owqrb4esex8t9nz14ugnao', {});
+    await this.connection.request(
+      'did:dht:bi3bzoke6rq6fbkojpo5ebtg45eqx1owqrb4esex8t9nz14ugnao',
+      {},
+      ConnectionType.Friend,
+    );
 
     const event = await this.notification.create({
       author: 'did:dht:bi3bzoke6rq6fbkojpo5ebtg45eqx1owqrb4esex8t9nz14ugnao',
