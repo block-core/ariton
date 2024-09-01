@@ -194,38 +194,75 @@ export class ConnectionService {
 
   /** Blocks a specif DID, this also deletes all the incoming requests. */
   async block(did: string) {
+    console.log('BLOCKS THIS DID:', did);
+
     if (!did) {
       return;
     }
-
-    await this.deleteRequests(did);
-    await this.deleteConnections(did);
 
     const data = {
       did: did,
     };
 
-    const { record, status } = await this.identity.web5.dwn.records.create({
-      data: {
-        did: did,
-      },
+    const { records } = await this.identity.web5.dwn.records.query({
       message: {
-        protocol: connectionDefinition.protocol,
-        protocolPath: 'block',
-        schema: connectionDefinition.types.block.schema,
-        dataFormat: connectionDefinition.types.block.dataFormats[0],
+        filter: {
+          recipient: did,
+          protocol: connectionDefinition.protocol,
+          protocolPath: 'block',
+          schema: connectionDefinition.types.block.schema,
+          dataFormat: connectionDefinition.types.block.dataFormats[0],
+        },
+        dateSort: DwnDateSort.CreatedAscending,
       },
     });
 
-    console.log('Block created:', status, record);
+    let blockRecord: Record;
+
+    if (records!.length == 0) {
+      const { record, status } = await this.identity.web5.dwn.records.create({
+        data: {
+          did: did,
+        },
+        message: {
+          protocol: connectionDefinition.protocol,
+          protocolPath: 'block',
+          schema: connectionDefinition.types.block.schema,
+          dataFormat: connectionDefinition.types.block.dataFormats[0],
+        },
+      });
+
+      blockRecord = record!;
+    } else {
+      blockRecord = records![0];
+    }
+
+    // const { record, status } = await this.identity.web5.dwn.records.create({
+    //   data: {
+    //     did: did,
+    //   },
+    //   message: {
+    //     recipient: did,
+    //     protocol: connectionDefinition.protocol,
+    //     protocolPath: 'block',
+    //     schema: connectionDefinition.types.block.schema,
+    //     dataFormat: connectionDefinition.types.block.dataFormats[0],
+    //   },
+    // });
+
+    // console.log('Block created:', status, record);
 
     const entry = {
-      record,
+      record: blockRecord,
       data,
-      id: record!.id,
+      id: blockRecord!.id,
     } as ConnectionBlockEntry;
 
     this.blocks.update((list) => [...list, entry]);
+
+    // After creating the block, we clean up data from this blocked user.
+    await this.deleteRequests(did);
+    await this.deleteConnections(did);
 
     return entry;
   }
@@ -309,7 +346,7 @@ export class ConnectionService {
     const list: ConnectionEntry[] = [];
 
     const filter = {
-      author: did ? did : undefined,
+      recipient: did ? did : undefined,
       protocol: connectionDefinition.protocol,
       protocolPath: 'connection',
       schema: connectionDefinition.types.connection.schema,

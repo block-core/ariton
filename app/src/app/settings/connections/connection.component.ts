@@ -37,7 +37,9 @@ export class ConnectionComponent {
   block(entry: any) {
     entry.loading = true;
 
-    this.connection.block(entry.recipient);
+    console.log('Blocking user', entry);
+
+    this.connection.block(entry.record.recipient);
     // TODO: We should delete notifications related to this connection.
   }
 }
