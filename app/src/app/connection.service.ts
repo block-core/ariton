@@ -258,6 +258,14 @@ export class ConnectionService {
     });
 
     for (let record of records!) {
+      if (this.blocked(record.author)) {
+        console.log('REQUEST FROM BLOCKED USER!!', record);
+        // Call delete without waiting and continue. This will normally be processed by background process
+        // which will remove all requests from blocked identities.
+        record.delete();
+        continue;
+      }
+
       const data = await record.data.json();
       let notifiationEvent: ConnectionEntry = { record, data, id: record.id };
 
@@ -271,6 +279,10 @@ export class ConnectionService {
     console.log('REQUESTS: ', list);
 
     return list;
+  }
+
+  blocked(did: string) {
+    return this.blocks().find((b) => b.data.did == did) !== undefined;
   }
 
   async loadConnections(did?: string) {
