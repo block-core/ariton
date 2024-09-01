@@ -1,5 +1,5 @@
 import { Component, effect, inject, Input, signal } from '@angular/core';
-import { ConnectionEntry, ConnectionService } from '../../connection.service';
+import { ConnectionEntry, ConnectionService, ConnectionType } from '../../connection.service';
 import { AppService } from '../../app.service';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
@@ -10,6 +10,7 @@ import { AgoPipe } from '../../shared/pipes/ago.pipe';
 import { ProfileHeaderComponent } from '../../shared/components/profile-header/profile-header.component';
 import { RecordEntry } from '../../data';
 import { IdentityService } from '../../identity.service';
+import { FriendService } from '../../friend.service';
 
 @Component({
   selector: 'app-request',
@@ -22,6 +23,8 @@ export class RequestComponent {
   @Input() public entry?: ConnectionEntry = undefined;
 
   connection = inject(ConnectionService);
+
+  friend = inject(FriendService);
 
   identity = inject(IdentityService);
 
@@ -37,7 +40,7 @@ export class RequestComponent {
     // TODO: We should delete notifications related to this connection.
   }
 
-  async accept(entry: any) {
+  async accept(entry: ConnectionEntry) {
     entry.loading = true;
     console.log('Accepting connection request', entry);
 
@@ -45,9 +48,17 @@ export class RequestComponent {
     entry.data.did = entry.record.author;
 
     // Grab type from the request and copy to connection.
-    const type = entry.record.tags.type;
+    const type = entry.record.tags['type'] as ConnectionType;
 
-    await this.connection.create(entry.data, type);
+    if (type == ConnectionType.Friend) {
+      // This will issue a two-way VC, persist it locally and send to remote party.
+      const acceptEntry = await this.friend.accept(entry);
+      entry.data.vc = acceptEntry?.data.vc;
+      entry.data.recordId = acceptEntry?.id; // Store a link between Connection and stored Credential. This is needed when deleting an connection so we get rid of the Credential.
+    }
+
+    // Persist the connection locally. This is the foundation for permissions checks, friends lists and more.
+    await this.connection.create(entry, type);
 
     await this.connection.deleteRequest(entry);
 
@@ -76,5 +87,7 @@ export class RequestComponent {
     entry.loading = true;
 
     this.connection.deleteRequest(entry);
+
+    // Next step is to delete the request at the sender / receiver.
   }
 }

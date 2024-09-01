@@ -61,15 +61,8 @@ export class FriendService {
     };
   }
 
+  /** Accepts the incoming VC and creates a two-way VC. */
   async accept(entry: ConnectionEntry) {
-    // TOOD: We should obviously verify the incoming VC is correct, that it belongs to the
-    // user that sent it, etc. But for now, we'll just accept it. If we don't validate, anyone
-    // could send us a VC and we'd accept it, opening up a friend connection that is incorrect.
-    // This validation should be done before even showing the request to the user, and a delete
-    // request should be sent to the sender if the validation fails.
-    //
-    // We will perform additional verification here, to avoid accepting a request that is invalid.
-
     const signedVcJwt = entry.data.vc;
 
     if (!signedVcJwt) {
@@ -169,8 +162,14 @@ export class FriendService {
       this.app.openSnackBar('Friend request accepted');
 
       // Remove the accepted entry from the requests list
-      await this.reject(entry);
+      // await this.reject(entry);
     }
+
+    return {
+      record: messageRecord,
+      data: recordData,
+      id: messageRecord!.id,
+    };
   }
 
   async reject(entry: ConnectionEntry) {

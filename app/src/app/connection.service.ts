@@ -53,20 +53,26 @@ export class ConnectionService {
   constructor() {}
 
   /** Creates a connection entry that opens up a trust line between identities. */
-  async create(data: any, type: ConnectionType) {
-    // Create a new connection that is sent to external DWN.
-    // We save a local copy to see our outgoing connection requests.
-    const eventData = data;
+  async create(entry: ConnectionEntry, type: ConnectionType) {
+    // const eventData = data;
+
+    // If the connection is a friend request, we need to create a VC for the friend.
+    // if (type == ConnectionType.Friend) {
+    //   // Create a reverse connection for the friend and issue them a VC.
+    //   await this.approveFriendRequest(entry);
+    // }
 
     const tags = {
       type: type,
     };
 
+    let entryData = entry.data;
+
     const { record, status } = await this.identity.web5.dwn.records.create({
-      data: eventData,
+      data: entry.data, // Copy the data over
       message: {
         tags: tags,
-        recipient: eventData.did,
+        recipient: entry.record.author, // The recipient is the author of previous request.
         protocol: connectionDefinition.protocol,
         protocolPath: 'connection',
         schema: connectionDefinition.types.connection.schema,
@@ -76,22 +82,18 @@ export class ConnectionService {
 
     console.log('Connection created:', status, record);
 
-    const entry = {
+    const connectionEntry = {
       record,
-      data: eventData,
+      data: entryData,
       id: record!.id,
     } as ConnectionEntry;
 
-    this.connections.update((list) => [...list, entry]);
+    this.connections.update((list) => [...list, connectionEntry]);
 
-    // Send to self and recipient.
+    // Send to self, not to recipient.
     this.utility.executeAsyncWithToast(entry.record.send(this.identity.did));
-    this.utility.executeAsyncWithToast(entry.record.send(eventData.did));
 
-    if (type == ConnectionType.Friend) {
-      // Create a reverse connection for the friend and issue them a VC.
-      await this.acceptFriendRequest(entry);
-    }
+    // this.utility.executeAsyncWithToast(entry.record.send(entryData.did));
 
     return entry;
   }
@@ -145,6 +147,8 @@ export class ConnectionService {
 
     console.log('Friend request validated');
   }
+
+  async removeFriendship(entry: ConnectionEntry) {}
 
   async acceptFriendRequest(entry: ConnectionEntry) {
     // TOOD: We should obviously verify the incoming VC is correct, that it belongs to the
@@ -307,6 +311,104 @@ export class ConnectionService {
     // }
   }
 
+  async approveFriendRequest(entry: ConnectionEntry) {
+    const signedVcJwt = entry.data.vc;
+
+    if (!signedVcJwt) {
+      throw new Error('The incoming VC is missing.');
+    }
+
+    console.log('signedVcJwt:', signedVcJwt);
+
+    if (!signedVcJwt) {
+      return;
+    }
+
+    try {
+      await VerifiableCredential.verify({ vcJwt: signedVcJwt });
+    } catch (error) {
+      console.error('Error verifying VC:', error);
+      return;
+    }
+
+    const vc = VerifiableCredential.parseJwt({ vcJwt: signedVcJwt });
+
+    // First validate if the VC has been issued to us.
+    if (vc.subject != this.identity.did) {
+      console.error('VC is not valid.');
+      return;
+    }
+
+    // Validae that the record and VC is same.
+    if (vc.issuer != entry.record.author) {
+      console.error('VC is not valid.');
+      return;
+    }
+
+    // Persist the two-way VC, these are the only ones that we store for safe-keeping, not the one-way.
+    const { record } = await this.identity.web5.dwn.records.create({
+      data: signedVcJwt,
+      message: {
+        schema: credential.friendship,
+        dataFormat: credential.format,
+        published: false,
+      },
+    });
+    console.log('TWO WAY VC RECORD:', record);
+
+    // Send to self, don't wait.
+    record!.send(this.identity.did);
+
+    // Delete the incoming VC record, as it has been processed.
+    await this.deleteRequest(entry);
+
+    // const recordData: ConnectionData = {
+    //   vc: signedVcJwt,
+    //   app: 'friends',
+    // };
+
+    // const tags = {
+    //   type: ConnectionType.Credential,
+    // };
+
+    // // Next step is to send the VC to the sender of the request, so they can also have a two-way VC.
+    // // VCs can be sent to anyone, even if they are not in the user's DWN. This is a way to establish
+    // // various connections. VCs are automatically or manually accepted by users.
+    // const { status: requestCreateStatus, record: messageRecord } = await this.identity.web5.dwn.records.create({
+    //   data: recordData,
+    //   store: false, // We don't need to store a copy of this locally.
+    //   message: {
+    //     tags,
+    //     recipient: targetDid,
+    //     protocol: connectionDefinition.protocol,
+    //     protocolPath: 'request',
+    //     schema: connectionDefinition.types.request.schema,
+    //     dataFormat: connectionDefinition.types.request.dataFormats[0],
+
+    //     // protocol: messageDefinition.protocol,
+    //     // protocolPath: 'credential',
+    //     // schema: messageDefinition.types.credential.schema,
+    //     // dataFormat: messageDefinition.types.credential.dataFormats[0],
+    //   },
+    // });
+
+    // console.log('Request create status:', requestCreateStatus);
+
+    // const { status: requestStatus } = await messageRecord!.send(targetDid);
+
+    // Remove the accepted entry from the requests list
+    // await this.reject(entry);
+
+    // if (requestStatus.code !== 202) {
+    //   this.app.openSnackBar(`Friend request failed.Code: ${requestStatus.code}, Details: ${requestStatus.detail}.`);
+    // } else {
+    //   this.app.openSnackBar('Friend request accepted');
+
+    //   // Remove the accepted entry from the requests list
+    //   await this.reject(entry);
+    // }
+  }
+
   /** Loads the connections and blocks */
   async initialize() {
     const blocks = await this.loadBlocks();
@@ -372,7 +474,17 @@ export class ConnectionService {
   async deleteRequest(entry: any) {
     await entry.record.delete();
     this.requests.update((list) => [...list.filter((n) => n.id !== entry.id)]);
+
+    // Send delete both to self and the recipient.
     this.utility.executeAsyncWithToast(entry.record.send(this.identity.did));
+
+    // If we are the author of this request, the recipient is the target DID.
+    if (entry.record.author == this.identity.did) {
+      this.utility.executeAsyncWithToast(entry.record.send(entry.record.recipient));
+    } else {
+      // If we are the recipient of this request, the author is the target DID.
+      this.utility.executeAsyncWithToast(entry.record.send(entry.record.author));
+    }
   }
 
   /** Deletes all incoming requests from the specified DID. */

@@ -31,6 +31,11 @@ export class ConnectionComponent {
 
     this.connection.deleteConnection(entry);
 
+    // After we delete the connection, we also need to delete the VC for this friendship.
+    if (entry.record.tags.type === 'credential') {
+      this.connection.removeFriendship(entry);
+    }
+
     // TODO: We should delete notifications related to this connection.
   }
 
