@@ -47,7 +47,11 @@ export class FriendService {
 
     const result = await this.connection.request(
       did,
-      { message: 'I want to be your friend.', vc: vc_jwt },
+      {
+        app: 'friend',
+        title: 'I want to be your friend.',
+        vc: vc_jwt,
+      },
       ConnectionType.Friend,
     );
 

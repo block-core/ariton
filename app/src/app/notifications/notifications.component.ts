@@ -135,11 +135,11 @@ export class NotificationsComponent {
 
   async generateNotification() {
     // First simulate an incoming connection request.
-    await this.connection.request(
-      'did:dht:bi3bzoke6rq6fbkojpo5ebtg45eqx1owqrb4esex8t9nz14ugnao',
-      {},
-      ConnectionType.Friend,
-    );
+    // await this.connection.request(
+    //   'did:dht:bi3bzoke6rq6fbkojpo5ebtg45eqx1owqrb4esex8t9nz14ugnao',
+    //   {},
+    //   ConnectionType.Friend,
+    // );
 
     const event = await this.notification.create({
       author: 'did:dht:bi3bzoke6rq6fbkojpo5ebtg45eqx1owqrb4esex8t9nz14ugnao',

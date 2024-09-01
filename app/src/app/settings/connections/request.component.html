@@ -17,8 +17,14 @@
     <div class="notification-description">
       @if (entry.record.tags['type'] == 'friend') { This user wants to be your friend, do you accept? This will give
       them access to send you sharing requets, such as shared Tasks, collabrative apps and more. } @else if
-      (entry.record.tags['type'] == 'data') { This is a data sharing request. This user wants to connect with you to
-      share data. }
+      (entry.record.tags['type'] == 'data') { This is a data sharing request. Do you want to accept?
+      <p>
+        App: <span class="capitalize">{{ entry.data.app }}</span
+        ><br />Title: {{ entry.data.title }}
+      </p>
+      } @else {
+      <br />
+      }
     </div>
 
     @if (entry.direction == 'out') {

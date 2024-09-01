@@ -210,7 +210,7 @@ export class TasksComponent {
 
         // Send a connect request to all new collaborators. We won't be able to send them any data
         // unless they approve us.
-        await this.sendConnectRequests(list.record, newCollaborators);
+        await this.sendConnectRequests(list.record, list.data, newCollaborators);
         await this.sendToCollaborators(list.record, originalCollaboratorsList);
         // await this.sendToCollaborators(list.record, newCollaborators, true);
       }
@@ -219,11 +219,12 @@ export class TasksComponent {
     return dialogRef.afterClosed();
   }
 
-  async sendConnectRequests(record: Record, collaborators: string[]) {
+  async sendConnectRequests(record: Record, recordData: any, collaborators: string[]) {
     for (let collaborator of collaborators) {
       const data = {
         recordId: record.id,
         app: 'tasks',
+        title: recordData.title,
       };
 
       // Create a connection request to the collaborator.

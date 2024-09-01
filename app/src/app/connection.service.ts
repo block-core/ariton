@@ -8,8 +8,11 @@ import { DwnDateSort } from '@web5/agent';
 import { UtilityService } from './utility.service';
 
 export interface ConnectionData {
-  did: string;
-  title: string;
+  did?: string;
+  title?: string;
+  app: string;
+  recordId?: string;
+  vc?: string;
 }
 
 export interface ConnectionEntry extends RecordEntry<ConnectionData> {}
@@ -91,7 +94,7 @@ export class ConnectionService {
     this.requests.set(requests);
   }
 
-  async request(did: string, data: any, type: ConnectionType) {
+  async request(did: string, data: ConnectionData, type: ConnectionType) {
     // Create a new connection that is sent to external DWN.
     // We save a local copy to see our outgoing connection requests.
     const eventData = data;
