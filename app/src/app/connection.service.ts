@@ -259,7 +259,6 @@ export class ConnectionService {
 
     for (let record of records!) {
       if (this.blocked(record.author)) {
-        console.log('REQUEST FROM BLOCKED USER!!', record);
         // Call delete without waiting and continue. This will normally be processed by background process
         // which will remove all requests from blocked identities.
         record.delete();
