@@ -5,9 +5,11 @@
     <mat-card-title>Requests</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    @for(entry of connection.requests(); track entry) {
-    <app-request [entry]="entry"></app-request>
-    } @empty { No requests found. }
+    <p>
+      @for(entry of connection.requests(); track entry) {
+      <app-request [entry]="entry"></app-request>
+      } @empty { No requests found. }
+    </p>
   </mat-card-content>
 </mat-card>
 
@@ -18,9 +20,11 @@
     <mat-card-title>Connections</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    @for(entry of connection.connections(); track entry) {
-    <app-request [entry]="entry"></app-request>
+    <p>
+      @for(entry of connection.connections(); track entry) {
+      <app-request [entry]="entry"></app-request>
 
-    } @empty { No connections found. }
+      } @empty { No connections found. }
+    </p>
   </mat-card-content>
 </mat-card>

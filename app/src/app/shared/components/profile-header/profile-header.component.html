@@ -30,6 +30,8 @@
   </div>
   <div class="profile-header-subtitle">
     <!-- <app-did [did]="data().profile?.did"></app-did> -->
-    <a [routerLink]="['/profile', data().profile?.did]">{{ data().profile?.did | did }}</a>
+    <a [routerLink]="['/profile', data().profile?.did]" [matTooltip]="data().profile?.did">{{
+      data().profile?.did | did
+    }}</a>
   </div>
 </div>

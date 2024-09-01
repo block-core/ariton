@@ -1,6 +1,26 @@
 @if (entry) {
 <mat-card class="card-notification" appearance="outlined">
+  <mat-card-header>
+    <mat-icon class="card-icon" inline="true" mat-card-avatar>
+      @if(entry.record.tags['type'] == 'friend') { people } @else { connect_without_contact }
+    </mat-icon>
+    <mat-card-title>
+      @if(entry.record.tags['type'] == 'friend') { Friend Request } @else { Connect Request }
+    </mat-card-title>
+    <mat-card-subtitle
+      >Type: <span class="capitalize">{{ entry.record.tags['type'] }}</span> ({{
+        entry.record.dateCreated | ago
+      }})</mat-card-subtitle
+    >
+  </mat-card-header>
   <mat-card-content>
+    <div class="notification-description">
+      @if (entry.record.tags['type'] == 'friend') { This user wants to be your friend, do you accept? This will give
+      them access to send you sharing requets, such as shared Tasks, collabrative apps and more. } @else if
+      (entry.record.tags['type'] == 'data') { This is a data sharing request. This user wants to connect with you to
+      share data. }
+    </div>
+
     @if (entry.direction == 'out') {
     <app-profile-header [did]="entry.record.recipient"> </app-profile-header>
     } @else {
