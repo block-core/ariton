@@ -22,6 +22,7 @@
         App: <span class="capitalize">{{ entry.data.app }}</span
         ><br />Title: {{ entry.data.title }}
       </p>
+      } @else if (entry.record.tags['type'] == 'credential') { Shared Credential. This will be automatically processed.
       } @else {
       <br />
       }
@@ -33,6 +34,9 @@
     <app-profile-header [did]="entry.record.author"> </app-profile-header>
     }
   </mat-card-content>
+
+  @if (entry.record.tags['type'] == 'credential') {} @else {
+
   <mat-card-actions>
     @if (entry.direction == 'out') {
     <button mat-flat-button [disabled]="true">PENDING</button>&nbsp;
@@ -44,5 +48,6 @@
     <button mat-button (click)="block(entry)" [disabled]="entry.loading">BLOCK</button>
     }
   </mat-card-actions>
+  }
 </mat-card>
 }

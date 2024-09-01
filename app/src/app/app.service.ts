@@ -9,6 +9,7 @@ import { ProfileService } from './profile.service';
 import { HashService } from './hash.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConnectionService } from './connection.service';
+import { WorkerService } from './worker.service';
 
 export interface AppState {
   selectedAccount: string;
@@ -52,6 +53,8 @@ export class AppService {
   storage = inject(StorageService);
 
   hash = inject(HashService);
+
+  worker = inject(WorkerService);
 
   crypto = inject(CryptoService);
 
@@ -273,6 +276,9 @@ export class AppService {
     this.initialized.set(true);
 
     this.loading.set(false);
+
+    // Start the background worker that will process data in the background.
+    this.worker.start();
 
     this.firstTimeInitialization();
   }

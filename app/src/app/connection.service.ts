@@ -96,6 +96,56 @@ export class ConnectionService {
     return entry;
   }
 
+  /** Called when a user has replied to a friend request and there is an incoming two-way VC to be persisted. */
+  async validateAndStoreCredential(entry: ConnectionEntry) {
+    const signedVcJwt = entry.data.vc;
+
+    if (!signedVcJwt) {
+      throw new Error('The incoming VC is missing.');
+    }
+
+    try {
+      await VerifiableCredential.verify({ vcJwt: signedVcJwt });
+    } catch (error) {
+      console.error('Error verifying VC:', error);
+      return;
+    }
+
+    const vc = VerifiableCredential.parseJwt({ vcJwt: signedVcJwt });
+    const targetDid = vc.issuer;
+
+    console.log('PARSED INVCOMING VC:', vc);
+    console.log('vc.issuer === this.identity.did:', vc.issuer === this.identity.did);
+
+    // Validate that the inner VC is ours, if OK, we can go ahead and persist the VC.
+    // if (vc.issuer === this.identity.did) {
+    // Persist the two-way VC, these are the only ones that we store for safe-keeping, not the one-way.
+    const { record: record2 } = await this.identity.web5.dwn.records.create({
+      data: signedVcJwt,
+      message: {
+        schema: credential.friendship,
+        dataFormat: credential.format,
+        published: false,
+      },
+    });
+    console.log('TWO WAY VC RECORD:', record2);
+
+    const { status } = await record2!.send(this.identity.did);
+    console.log('Record sent:', status, record2);
+
+    // Delete the incoming VC record, as it has been processed.
+    await entry.record.delete();
+    entry.record.send(this.identity.did);
+
+    // // If the VC issuer is different than data recipient, then reject the request.
+    // if (vc.issuer != entry.record.recipient) {
+    //   console.error('VC issuer is different than the recipient of the request.');
+    //   return;
+    // }
+
+    console.log('Friend request validated');
+  }
+
   async acceptFriendRequest(entry: ConnectionEntry) {
     // TOOD: We should obviously verify the incoming VC is correct, that it belongs to the
     // user that sent it, etc. But for now, we'll just accept it. If we don't validate, anyone
@@ -125,34 +175,77 @@ export class ConnectionService {
     }
 
     const vc = VerifiableCredential.parseJwt({ vcJwt: signedVcJwt });
-    const targetDid = vc.issuer;
 
-    // If the VC issuer is different than data recipient, then reject the request.
-    if (vc.issuer != entry.record.recipient) {
-      console.error('VC issuer is different than the recipient of the request.');
+    // First validate if the VC has been issued to us.
+    if (vc.subject != this.identity.did) {
+      console.error('VC is not valid.');
+      return;
+    }
+
+    // Validae that the record and VC is same.
+    if (vc.issuer != entry.record.author) {
+      console.error('VC is not valid.');
+      return;
+    }
+
+    // const targetDid = vc.issuer;
+
+    // // If the VC issuer is different than data author, then reject the request.
+    // if (vc.issuer != entry.record.author) {
+    //   console.error('VC issuer is different than the recipient of the request.');
+    //   return;
+    // }
+
+    // Also verify that the incoming VC contains an inner VC that we have issued to the sender.
+    const subject = vc.vcDataModel.credentialSubject as any;
+    const innerVcJwt = subject.vc;
+
+    console.log('INNER VC JWT:', innerVcJwt);
+
+    try {
+      await VerifiableCredential.verify({ vcJwt: innerVcJwt });
+    } catch (error) {
+      console.error('Error verifying VC:', error);
+      return;
+    }
+
+    const vcInner = VerifiableCredential.parseJwt({ vcJwt: innerVcJwt });
+
+    console.log('VC issuer: ', vcInner.issuer);
+    console.log('this.identity.did', this.identity.did);
+
+    // The inner issuer must be us.
+    if (vcInner.issuer != this.identity.did) {
+      console.error('VC is not valid.');
+      return;
+    }
+
+    // The subject of inner must be issuer of outer.
+    if (vcInner.subject != vc.issuer) {
+      console.error('VC is not valid.');
       return;
     }
 
     console.log('Friend request validated');
 
-    const twoWayVC = await VerifiableCredential.create({
-      type: credential.friendship,
-      issuer: this.identity.did,
-      subject: targetDid,
-      data: {
-        vc: signedVcJwt,
-      },
-    });
+    // const twoWayVC = await VerifiableCredential.create({
+    //   type: credential.friendship,
+    //   issuer: this.identity.did,
+    //   subject: targetDid,
+    //   data: {
+    //     vc: signedVcJwt,
+    //   },
+    // });
 
-    console.log('TWO WAY VC:', twoWayVC);
+    // console.log('TWO WAY VC:', twoWayVC);
 
-    const bearerDid = await this.identity.activeAgent().identity.get({ didUri: this.identity.did });
-    const vc_jwt = await twoWayVC.sign({ did: bearerDid!.did });
-    console.log('TWO WAY VC JWT:', vc_jwt);
+    // const bearerDid = await this.identity.activeAgent().identity.get({ didUri: this.identity.did });
+    // const vc_jwt = await twoWayVC.sign({ did: bearerDid!.did });
+    // console.log('TWO WAY VC JWT:', vc_jwt);
 
     // Persist the two-way VC, these are the only ones that we store for safe-keeping, not the one-way.
     const { record } = await this.identity.web5.dwn.records.create({
-      data: vc_jwt,
+      data: signedVcJwt,
       message: {
         schema: credential.friendship,
         dataFormat: credential.format,
@@ -164,39 +257,42 @@ export class ConnectionService {
     // Send to self, don't wait.
     record!.send(this.identity.did);
 
-    const recordData: ConnectionData = {
-      vc: vc_jwt,
-      app: 'friends',
-    };
+    // Delete the incoming VC record, as it has been processed.
+    await this.deleteRequest(entry);
 
-    const tags = {
-      type: ConnectionType.Credential,
-    };
+    // const recordData: ConnectionData = {
+    //   vc: signedVcJwt,
+    //   app: 'friends',
+    // };
 
-    // Next step is to send the VC to the sender of the request, so they can also have a two-way VC.
-    // VCs can be sent to anyone, even if they are not in the user's DWN. This is a way to establish
-    // various connections. VCs are automatically or manually accepted by users.
-    const { status: requestCreateStatus, record: messageRecord } = await this.identity.web5.dwn.records.create({
-      data: recordData,
-      store: false, // We don't need to store a copy of this locally.
-      message: {
-        tags,
-        recipient: targetDid,
-        protocol: connectionDefinition.protocol,
-        protocolPath: 'request',
-        schema: connectionDefinition.types.request.schema,
-        dataFormat: connectionDefinition.types.request.dataFormats[0],
+    // const tags = {
+    //   type: ConnectionType.Credential,
+    // };
 
-        // protocol: messageDefinition.protocol,
-        // protocolPath: 'credential',
-        // schema: messageDefinition.types.credential.schema,
-        // dataFormat: messageDefinition.types.credential.dataFormats[0],
-      },
-    });
+    // // Next step is to send the VC to the sender of the request, so they can also have a two-way VC.
+    // // VCs can be sent to anyone, even if they are not in the user's DWN. This is a way to establish
+    // // various connections. VCs are automatically or manually accepted by users.
+    // const { status: requestCreateStatus, record: messageRecord } = await this.identity.web5.dwn.records.create({
+    //   data: recordData,
+    //   store: false, // We don't need to store a copy of this locally.
+    //   message: {
+    //     tags,
+    //     recipient: targetDid,
+    //     protocol: connectionDefinition.protocol,
+    //     protocolPath: 'request',
+    //     schema: connectionDefinition.types.request.schema,
+    //     dataFormat: connectionDefinition.types.request.dataFormats[0],
 
-    console.log('Request create status:', requestCreateStatus);
+    //     // protocol: messageDefinition.protocol,
+    //     // protocolPath: 'credential',
+    //     // schema: messageDefinition.types.credential.schema,
+    //     // dataFormat: messageDefinition.types.credential.dataFormats[0],
+    //   },
+    // });
 
-    const { status: requestStatus } = await messageRecord!.send(targetDid);
+    // console.log('Request create status:', requestCreateStatus);
+
+    // const { status: requestStatus } = await messageRecord!.send(targetDid);
 
     // Remove the accepted entry from the requests list
     // await this.reject(entry);
