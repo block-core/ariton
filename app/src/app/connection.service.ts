@@ -448,6 +448,7 @@ export class ConnectionService {
       record,
       data: eventData,
       id: record!.id,
+      direction: 'out',
     } as ConnectionEntry;
 
     this.requests.update((list) => [...list, entry]);
