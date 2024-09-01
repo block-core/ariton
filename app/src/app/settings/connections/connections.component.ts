@@ -17,7 +17,7 @@ import { ProfileHeaderComponent } from '../../shared/components/profile-header/p
   styleUrl: './connections.component.scss',
 })
 export class ConnectionsComponent {
-  service = inject(ConnectionService);
+  connection = inject(ConnectionService);
 
   app = inject(AppService);
 
@@ -26,14 +26,37 @@ export class ConnectionsComponent {
   deleteConnection(entry: any) {
     entry.loading = true;
 
-    this.service.deleteConnection(entry);
+    this.connection.deleteConnection(entry);
+
+    // TODO: We should delete notifications related to this connection.
   }
 
-  accept(entry: any) {}
+  async accept(entry: any) {
+    entry.loading = true;
+    console.log('Accepting connection request', entry);
+
+    await this.connection.create({
+      did: entry.record.author,
+    });
+
+    // TODO: We should delete notifications related to this connection.
+    // this.deleteNotification(entry);
+  }
+
+  async block(entry: any) {
+    entry.loading = true;
+    console.log('Blocking user', entry);
+
+    const result = await this.connection.block(entry.record.author);
+    console.log('Block result: ', result);
+
+    // TODO: We should delete notifications related to this connection.
+    // await this.deleteNotification(entry);
+  }
 
   reject(entry: any) {
     entry.loading = true;
 
-    this.service.deleteRequest(entry);
+    this.connection.deleteRequest(entry);
   }
 }

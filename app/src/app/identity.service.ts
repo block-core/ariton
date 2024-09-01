@@ -9,7 +9,7 @@ import { Web5PlatformAgent } from '@web5/agent';
   providedIn: 'root',
 })
 export class IdentityService {
-  syncInterval = '30s';
+  syncInterval = '15s';
   //agents = signal<Web5IdentityAgent[]>([]);
 
   agents: WritableSignal<Web5IdentityAgent[]> = signal([]);

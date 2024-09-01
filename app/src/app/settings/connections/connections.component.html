@@ -5,7 +5,7 @@
     <mat-card-title>Connections</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    @for(entry of service.connections(); track entry) {
+    @for(entry of connection.connections(); track entry) {
     <mat-card class="card-notification" appearance="outlined">
       <!-- <mat-card-header>
         <mat-icon class="card-icon" inline="true" mat-card-avatar></mat-icon>
@@ -31,7 +31,7 @@
     <mat-card-title>Requests</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    @for(entry of service.requests(); track entry) {
+    @for(entry of connection.requests(); track entry) {
     <mat-card class="card-notification" appearance="outlined">
       <mat-card-content>
         @if (entry.direction == 'out') {
@@ -42,15 +42,13 @@
       </mat-card-content>
       <mat-card-actions>
         @if (entry.direction == 'out') {
-        <button mat-flat-button [routerLink]="['/profile', entry.record.recipient]">VIEW PROFILE</button>&nbsp;
         <button mat-flat-button [disabled]="true">PENDING</button>&nbsp;
         <button mat-button (click)="reject(entry)" [disabled]="entry.loading">CANCEL</button>
 
         } @else {
-        <button mat-flat-button [routerLink]="['/profile', entry.record.author]">VIEW PROFILE</button>&nbsp;
-        <button mat-flat-button (click)="accept(entry)" [disabled]="entry.loading">CONFIRM</button>&nbsp;
-        <button mat-button (click)="reject(entry)" [disabled]="entry.loading">DELETE</button>
-
+        <button mat-flat-button (click)="accept(entry)" [disabled]="entry.loading">ACCEPT</button>&nbsp;
+        <button mat-button (click)="reject(entry)" [disabled]="entry.loading">DELETE</button>&nbsp;
+        <button mat-button (click)="block(entry)" [disabled]="entry.loading">BLOCK</button>
         }
       </mat-card-actions>
     </mat-card>

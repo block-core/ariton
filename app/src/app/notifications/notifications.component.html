@@ -17,28 +17,6 @@
 </mat-card>
 
 <mat-card class="notifications-card">
-  <mat-card-header>
-    <!-- <mat-card-title class="notifications-title"
-      >Notifications
-
-      <span class="spacer"></span>
-
-      <button class="right" mat-icon-button [matMenuTriggerFor]="menu">
-        <mat-icon>more_vert</mat-icon>
-      </button>
-
-      <mat-menu #menu="matMenu">
-        <button mat-menu-item>
-          <mat-icon>check</mat-icon>
-          <span>Mark all as read</span>
-        </button>
-        <button mat-menu-item [disabled]="true">
-          <mat-icon>settings</mat-icon>
-          <span>Notification Settings</span>
-        </button>
-      </mat-menu>
-    </mat-card-title> -->
-  </mat-card-header>
   <mat-card-content>
     @for(entry of notifications(); track entry) {
     <mat-card class="card-notification" appearance="outlined">
@@ -49,12 +27,7 @@
       </mat-card-header>
       <mat-card-content>
         @if (entry.data.app === 'Friends') {
-        <!-- <app-profile-card [did]="notification.record.author">
-          <button mat-flat-button>CONFIRM</button>
-          <button mat-button>DELETE</button>
-        </app-profile-card> -->
         <div class="notification-description">{{ entry.data.description }}</div>
-
         <!--
         TODO: Use the record.author, not from data. From data is for temporary prototyping.
         <app-profile-header [did]="notification.record.author"> -->

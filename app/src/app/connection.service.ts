@@ -125,7 +125,25 @@ export class ConnectionService {
     this.utility.executeAsyncWithToast(entry.record.send(this.identity.did));
   }
 
+  /** Deletes all incoming requests from the specified DID. */
+  async deleteRequests(did: string) {
+    // Find all connection requests from this user and delete them.
+    const connectionsFromUser = await this.loadConnections(did);
+
+    for (const connection of connectionsFromUser) {
+      await connection.record.delete();
+
+      // Update the list of connections on external DWNs for user.
+      await connection.record.send(this.identity.did);
+
+      this.connections.update((list) => [...list.filter((n) => n.id !== connection.id)]);
+    }
+  }
+
+  /** Blocks a specif DID, this also deletes all the incoming requests. */
   async block(did: string) {
+    await this.deleteRequests(did);
+
     const data = {
       did: did,
     };

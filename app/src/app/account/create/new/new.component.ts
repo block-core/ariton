@@ -35,7 +35,7 @@ export class NewComponent {
 
     console.log('Creating agents...');
 
-    const { web5, did: userDid } = await Web5.connect({ sync: '30s', recoveryPhrase: recoveryPhrase1 });
+    const { web5, did: userDid } = await Web5.connect({ sync: '15s', recoveryPhrase: recoveryPhrase1 });
 
     console.log(userDid);
     console.log(web5);
