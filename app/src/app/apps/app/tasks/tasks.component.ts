@@ -28,6 +28,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CollaboratorDialogComponent } from './collaborator-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ConnectionService, ConnectionType } from '../../../connection.service';
 
 @Component({
   selector: 'app-todo',
@@ -61,6 +62,8 @@ export class TasksComponent {
   app = inject(AppService);
 
   identity = inject(IdentityService);
+
+  connection = inject(ConnectionService);
 
   route = inject(ActivatedRoute);
 
@@ -205,12 +208,38 @@ export class TasksComponent {
         console.log('New collaborators:', newCollaborators);
         console.log('Existing collaborators:', originalCollaboratorsList);
 
+        // Send a connect request to all new collaborators. We won't be able to send them any data
+        // unless they approve us.
+        await this.sendConnectRequests(list.record, newCollaborators);
         await this.sendToCollaborators(list.record, originalCollaboratorsList);
-        await this.sendToCollaborators(list.record, newCollaborators, true);
+        // await this.sendToCollaborators(list.record, newCollaborators, true);
       }
     });
 
     return dialogRef.afterClosed();
+  }
+
+  async sendConnectRequests(record: Record, collaborators: string[]) {
+    for (let collaborator of collaborators) {
+      const data = {
+        recordId: record.id,
+        app: 'tasks',
+      };
+
+      // Create a connection request to the collaborator.
+      const entry = await this.connection.request(collaborator, data, ConnectionType.Data);
+
+      // Send the connection request to the collaborator.
+      await entry.record.send(collaborator);
+
+      // const { status } = await record.send(collaborator);
+      // console.log('Send record to collaborator:', status, record);
+
+      // if (status.code !== 202) {
+      //   this.snackBar.open(`Code: ${status.code}, Error: ${status.detail}`, 'Close', {
+      //     duration: 3000,
+      //   });
+    }
   }
 
   async sendToCollaborators(record: Record, collaborators: string[], everything: boolean = false) {
