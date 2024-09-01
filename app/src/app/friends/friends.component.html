@@ -53,7 +53,7 @@
 
       <app-profile-card [did]="request.record.recipient">
         <button mat-flat-button [disabled]="true">PENDING</button>
-        <button mat-button (click)="reject(request)">CANCEL</button>
+        <button mat-button (click)="friend.reject(request)">CANCEL</button>
 
         <!-- <ng-container *ngIf="request.direction == 'out'">
           <button mat-flat-button [disabled]="true">PENDING</button>
@@ -72,8 +72,8 @@
       </app-profile-card>
       } @else {
       <app-profile-card [did]="request.record.author">
-        <button mat-flat-button (click)="accept(request)">CONFIRM</button>
-        <button mat-button (click)="reject(request)">DELETE</button>
+        <button mat-flat-button (click)="friend.accept(request)">CONFIRM</button>
+        <button mat-button (click)="friend.reject(request)">DELETE</button>
         <!-- <ng-container *ngIf="request.direction == 'out'">
           <button mat-flat-button [disabled]="true">PENDING</button>
           <button mat-button (click)="reject('did:dht:my6nm5s1n9xmuuh5yixe668k7xbkmmuddzatn1fojzgdg5f5to8y')">

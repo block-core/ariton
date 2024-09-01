@@ -5,20 +5,21 @@ import { protocolDefinition as messageDefinition } from '../protocols/message';
 import { Record } from '@web5/api';
 import { VerifiableCredential } from '@web5/credentials';
 import { credential, message } from '../protocols';
-import { ConnectionService, ConnectionType } from './connection.service';
+import { ConnectionData, ConnectionEntry, ConnectionService, ConnectionType } from './connection.service';
+import { protocolDefinition as connectionDefinition } from '../protocols/connection';
 
-export interface Entry {
-  record: Record;
-  data: any;
-  id: string;
-  direction: 'in' | 'out' | any;
-}
+// export interface Entry {
+//   record: Record;
+//   data: any;
+//   id: string;
+//   direction: 'in' | 'out' | any;
+// }
 
 @Injectable({
   providedIn: 'root',
 })
 export class FriendService {
-  requests = signal<Entry[]>([]);
+  requests = signal<ConnectionEntry[]>([]);
 
   friends = signal<any[]>([]);
 
@@ -60,7 +61,7 @@ export class FriendService {
     };
   }
 
-  async accept(entry: Entry) {
+  async accept(entry: ConnectionEntry) {
     // TOOD: We should obviously verify the incoming VC is correct, that it belongs to the
     // user that sent it, etc. But for now, we'll just accept it. If we don't validate, anyone
     // could send us a VC and we'd accept it, opening up a friend connection that is incorrect.
@@ -70,6 +71,10 @@ export class FriendService {
     // We will perform additional verification here, to avoid accepting a request that is invalid.
 
     const signedVcJwt = entry.data.vc;
+
+    if (!signedVcJwt) {
+      throw new Error('The incoming VC is missing.');
+    }
 
     console.log('signedVcJwt:', signedVcJwt);
 
@@ -121,21 +126,36 @@ export class FriendService {
     });
     console.log('TWO WAY VC RECORD:', record);
 
-    const { status } = await record!.send(this.identity.did);
-    console.log('Record sent:', status, record);
+    // Send to self, don't wait.
+    record!.send(this.identity.did);
+
+    const recordData: ConnectionData = {
+      vc: vc_jwt,
+      app: 'friends',
+    };
+
+    const tags = {
+      type: ConnectionType.Credential,
+    };
 
     // Next step is to send the VC to the sender of the request, so they can also have a two-way VC.
     // VCs can be sent to anyone, even if they are not in the user's DWN. This is a way to establish
     // various connections. VCs are automatically or manually accepted by users.
     const { status: requestCreateStatus, record: messageRecord } = await this.identity.web5.dwn.records.create({
-      data: { vc: vc_jwt },
+      data: recordData,
       store: false, // We don't need to store a copy of this locally.
       message: {
+        tags,
         recipient: targetDid,
-        protocol: messageDefinition.protocol,
-        protocolPath: 'credential',
-        schema: messageDefinition.types.credential.schema,
-        dataFormat: messageDefinition.types.credential.dataFormats[0],
+        protocol: connectionDefinition.protocol,
+        protocolPath: 'request',
+        schema: connectionDefinition.types.request.schema,
+        dataFormat: connectionDefinition.types.request.dataFormats[0],
+
+        // protocol: messageDefinition.protocol,
+        // protocolPath: 'credential',
+        // schema: messageDefinition.types.credential.schema,
+        // dataFormat: messageDefinition.types.credential.dataFormats[0],
       },
     });
 
@@ -153,7 +173,7 @@ export class FriendService {
     }
   }
 
-  async reject(entry: Entry) {
+  async reject(entry: ConnectionEntry) {
     console.log('Rejecting request:', entry);
 
     // If the recipinent is the current user, then use the author as the target DID.
