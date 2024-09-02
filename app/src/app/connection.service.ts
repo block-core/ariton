@@ -466,13 +466,24 @@ export class ConnectionService {
     this.utility.executeAsyncWithToast(entry.record.send(this.identity.did));
   }
 
-  async deleteConnection(entry: any) {
+  async deleteConnection(entry: ConnectionEntry) {
     await entry.record.delete();
     this.connections.update((list) => [...list.filter((n) => n.id !== entry.id)]);
     this.utility.executeAsyncWithToast(entry.record.send(this.identity.did));
   }
 
-  async deleteRequest(entry: any) {
+  // getAuthor(record: Record) {
+  //   if (record.initialWrite) {
+  //     return record.initialWrite.authorization.ownerSignature.;
+  //   } else {
+  //     return record.author;
+  //   }
+  // }
+
+  async deleteRequest(entry: ConnectionEntry) {
+    // Original author, must be read before updating the record (like delete).
+    const author = entry.record.author;
+
     await entry.record.delete();
     this.requests.update((list) => [...list.filter((n) => n.id !== entry.id)]);
 
@@ -480,11 +491,13 @@ export class ConnectionService {
     this.utility.executeAsyncWithToast(entry.record.send(this.identity.did));
 
     // If we are the author of this request, the recipient is the target DID.
-    if (entry.record.author == this.identity.did) {
+    if (author == this.identity.did) {
       this.utility.executeAsyncWithToast(entry.record.send(entry.record.recipient));
+      console.log('Deleting request (recipient):', entry.record.recipient);
     } else {
       // If we are the recipient of this request, the author is the target DID.
-      this.utility.executeAsyncWithToast(entry.record.send(entry.record.author));
+      this.utility.executeAsyncWithToast(entry.record.send(author));
+      console.log('Deleting request (author):', author);
     }
   }
 

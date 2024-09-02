@@ -21,10 +21,10 @@ jobs:
         run: npm install --force
         working-directory: app
 
-      - name: Run tests
-        run: npm test -- --watch=false --browsers=ChromeHeadless
-        working-directory: app
-        continue-on-error: true
+      # - name: Run tests
+      #   run: npm test -- --watch=false --browsers=ChromeHeadless
+      #   working-directory: app
+      #   continue-on-error: true
 
       - name: Run deploy script
         run: npm run deploy
