@@ -83,7 +83,7 @@
         </button>
         }
 
-        <button mat-icon-button [matMenuTriggerFor]="menuNotifications">
+        <button class="notification-toolbar" mat-icon-button [matMenuTriggerFor]="menuNotifications">
           <mat-icon>notifications</mat-icon>
         </button>
         <mat-menu #menuNotifications="matMenu">
@@ -169,6 +169,12 @@
             <span>Language: English</span>
           </button>
           <mat-divider></mat-divider>
+
+          <button class="notification-menu" [routerLink]="['/notifications']" mat-menu-item>
+            <mat-icon>notifications</mat-icon>
+            <span>Notifications</span>
+          </button>
+
           <button [routerLink]="['/settings']" mat-menu-item>
             <mat-icon>settings</mat-icon>
             <span>Settings</span>

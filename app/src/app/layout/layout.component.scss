@@ -116,3 +116,17 @@
     padding: 0;
   }
 }
+
+.notification-menu {
+  display: none;
+}
+
+@media (max-width: 420px) {
+  .notification-toolbar {
+    display: none;
+  }
+
+  .notification-menu {
+    display: block;
+  }
+}

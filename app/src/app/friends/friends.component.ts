@@ -19,7 +19,8 @@ import { VerifiableCredential } from '@web5/credentials';
 import { protocolDefinition as messageDefinition } from '../../protocols/message';
 import { LayoutService } from '../layout.service';
 import { FriendService } from '../friend.service';
-import { ConnectionEntry } from '../connection.service';
+import { ConnectionEntry, ConnectionService } from '../connection.service';
+import { RequestComponent } from '../settings/connections/request.component';
 
 // export interface Entry {
 //   record: Record;
@@ -43,18 +44,23 @@ import { ConnectionEntry } from '../connection.service';
     ProfileImageDirective,
     DidComponent,
     RouterModule,
+    RequestComponent,
   ],
   templateUrl: './friends.component.html',
   styleUrl: './friends.component.scss',
 })
 export class FriendsComponent {
-  requests = signal<ConnectionEntry[]>([]);
+  // requests = signal<ConnectionEntry[]>([]);
 
-  friends = signal<any[]>([]);
+  friends: ConnectionEntry[] = [];
+
+  requests: ConnectionEntry[] = [];
 
   identity = inject(IdentityService);
 
   friend = inject(FriendService);
+
+  connection = inject(ConnectionService);
 
   layout = inject(LayoutService);
 
@@ -64,50 +70,56 @@ export class FriendsComponent {
     this.layout.resetActions();
 
     effect(async () => {
-      if (this.app.initialized()) {
-        await this.processFriends();
+      if (this.app.initialized() && this.connection.connections()) {
         await this.loadFriends();
+      }
+    });
+
+    effect(async () => {
+      if (this.app.initialized() && this.connection.requests()) {
         await this.loadRequests();
       }
     });
   }
 
   async loadRequests() {
-    var { records } = await this.identity.web5.dwn.records.query({
-      message: {
-        filter: {
-          protocol: message.uri,
-          schema: 'https://schema.ariton.app/message/schema/request',
-          dataFormat: 'application/json',
-        },
-      },
-    });
+    this.requests = this.connection.friendRequests();
 
-    console.log('Records from requests:');
-    console.log(records);
+    // var { records } = await this.identity.web5.dwn.records.query({
+    //   message: {
+    //     filter: {
+    //       protocol: message.uri,
+    //       schema: 'https://schema.ariton.app/message/schema/request',
+    //       dataFormat: 'application/json',
+    //     },
+    //   },
+    // });
 
-    let json = {};
-    let recordEntry = null;
+    // console.log('Records from requests:');
+    // console.log(records);
 
-    if (records) {
-      // Loop through returned records and print text from each
-      for (const record of records) {
-        let data = await record.data.json();
-        let json: any = { record: record, data: data };
+    // let json = {};
+    // let recordEntry = null;
 
-        if (record.author == this.identity.did) {
-          json.direction = 'out';
-        }
+    // if (records) {
+    //   // Loop through returned records and print text from each
+    //   for (const record of records) {
+    //     let data = await record.data.json();
+    //     let json: any = { record: record, data: data };
 
-        this.requests.update((requests) => [...requests, json]);
+    //     if (record.author == this.identity.did) {
+    //       json.direction = 'out';
+    //     }
 
-        console.log('All requests:', this.requests());
+    //     this.requests.update((requests) => [...requests, json]);
 
-        // recordEntry = record;
-        // let recordJson = await record.data.json();
-        // json = { ...recordJson, id: record.dataCid, did: record.author, created: record.dateCreated };
-      }
-    }
+    //     console.log('All requests:', this.requests());
+
+    //     // recordEntry = record;
+    //     // let recordJson = await record.data.json();
+    //     // json = { ...recordJson, id: record.dataCid, did: record.author, created: record.dateCreated };
+    //   }
+    // }
   }
 
   // async accept(entry: Entry) {
@@ -228,113 +240,120 @@ export class FriendsComponent {
   //   this.requests.update((requests) => requests.filter((request) => request !== entry));
   // }
 
-  async processFriends() {
-    // TODO: Processing incoming accepted friend requests should happen in a backgrond task, not here.
+  // async processFriends() {
+  //   // TODO: Processing incoming accepted friend requests should happen in a backgrond task, not here.
 
-    // Get all incoming VC records in the message protocol.
-    var { records: vcRecords } = await this.identity.web5.dwn.records.query({
-      message: {
-        filter: {
-          protocol: message.uri,
-          schema: messageDefinition.types.credential.schema,
-          dataFormat: messageDefinition.types.credential.dataFormats[0],
-        },
-      },
-    });
+  //   // Get all incoming VC records in the message protocol.
+  //   var { records: vcRecords } = await this.identity.web5.dwn.records.query({
+  //     message: {
+  //       filter: {
+  //         protocol: message.uri,
+  //         schema: messageDefinition.types.credential.schema,
+  //         dataFormat: messageDefinition.types.credential.dataFormats[0],
+  //       },
+  //     },
+  //   });
 
-    console.log('VC Records:', vcRecords);
+  //   console.log('VC Records:', vcRecords);
 
-    // Automatically accept all incoming friend requests VCs, but validate that the
-    // inner VC is correct.
+  //   // Automatically accept all incoming friend requests VCs, but validate that the
+  //   // inner VC is correct.
 
-    for (const record of vcRecords!) {
-      console.log('Record:', record);
+  //   for (const record of vcRecords!) {
+  //     console.log('Record:', record);
 
-      const json = await record.data.json();
-      console.log('JSON:', json);
+  //     const json = await record.data.json();
+  //     console.log('JSON:', json);
 
-      try {
-        await VerifiableCredential.verify({ vcJwt: json.vc });
-      } catch (error) {
-        console.error('Error verifying VC:', error);
-        console.log('THIS REQUEST SHOULD BE DELETED FROM DWN', record.id);
-      }
+  //     try {
+  //       await VerifiableCredential.verify({ vcJwt: json.vc });
+  //     } catch (error) {
+  //       console.error('Error verifying VC:', error);
+  //       console.log('THIS REQUEST SHOULD BE DELETED FROM DWN', record.id);
+  //     }
 
-      const vc = VerifiableCredential.parseJwt({ vcJwt: json.vc });
+  //     const vc = VerifiableCredential.parseJwt({ vcJwt: json.vc });
 
-      console.log('PARSED INVCOMING VC:', vc);
-      console.log('vc.issuer === this.identity.did:', vc.issuer === this.identity.did);
+  //     console.log('PARSED INVCOMING VC:', vc);
+  //     console.log('vc.issuer === this.identity.did:', vc.issuer === this.identity.did);
 
-      // Validate that the inner VC is ours, if OK, we can go ahead and persist the VC.
-      // if (vc.issuer === this.identity.did) {
-      // Persist the two-way VC, these are the only ones that we store for safe-keeping, not the one-way.
-      const { record: record2 } = await this.identity.web5.dwn.records.create({
-        data: json.vc,
-        message: {
-          schema: credential.friendship,
-          dataFormat: credential.format,
-          published: false,
-        },
-      });
-      console.log('TWO WAY VC RECORD:', record2);
+  //     // Validate that the inner VC is ours, if OK, we can go ahead and persist the VC.
+  //     // if (vc.issuer === this.identity.did) {
+  //     // Persist the two-way VC, these are the only ones that we store for safe-keeping, not the one-way.
+  //     const { record: record2 } = await this.identity.web5.dwn.records.create({
+  //       data: json.vc,
+  //       message: {
+  //         schema: credential.friendship,
+  //         dataFormat: credential.format,
+  //         published: false,
+  //       },
+  //     });
+  //     console.log('TWO WAY VC RECORD:', record2);
 
-      const { status } = await record2!.send(this.identity.did);
-      console.log('Record sent:', status, record2);
+  //     const { status } = await record2!.send(this.identity.did);
+  //     console.log('Record sent:', status, record2);
 
-      // Delete the incoming VC record, as it has been processed.
-      await record?.delete();
-      // }
-    }
-  }
+  //     // Delete the incoming VC record, as it has been processed.
+  //     await record?.delete();
+  //     // }
+  //   }
+  // }
 
   async loadFriends() {
-    var { records } = await this.identity.web5.dwn.records.query({
-      message: {
-        filter: {
-          schema: credential.friendship,
-          dataFormat: credential.format,
-        },
-      },
-    });
+    console.log('LOAD FRIENDS:');
+    console.log(this.connection.connections());
+    console.log(this.connection.friends());
 
-    console.log('Friend VCs:');
-    console.log(records);
+    // Get a local reference to friends, we probably will add features such as sorting in the future.
+    this.friends = this.connection.friends();
 
-    let json = {};
-    let recordEntry = null;
+    // var { records } = await this.identity.web5.dwn.records.query({
+    //   message: {
+    //     filter: {
+    //       schema: credential.friendship,
+    //       dataFormat: credential.format,
+    //     },
+    //   },
+    // });
 
-    this.friends.set([]);
+    // console.log('Friend VCs:');
+    // console.log(records);
 
-    if (records) {
-      // Loop through returned records and print text from each
-      for (const record of records!) {
-        let data = await record.data.text();
-        let vc = VerifiableCredential.parseJwt({ vcJwt: data });
+    // let json = {};
+    // let recordEntry = null;
 
-        let did = vc.issuer;
+    // this.friends.set([]);
 
-        // If the outher issuer is us, get the inner one.
-        if (vc.issuer == this.identity.did) {
-          const subject = vc.vcDataModel.credentialSubject as any;
-          let vcInner = VerifiableCredential.parseJwt({ vcJwt: subject.vc });
-          did = vcInner.issuer;
-        }
+    // if (records) {
+    //   // Loop through returned records and print text from each
+    //   for (const record of records!) {
+    //     let data = await record.data.text();
+    //     let vc = VerifiableCredential.parseJwt({ vcJwt: data });
 
-        let json: any = { record: record, data: { did } };
+    //     let did = vc.issuer;
 
-        // if (record.author == this.identity.did) {
-        //   json.direction = 'out';
-        // }
+    //     // If the outher issuer is us, get the inner one.
+    //     if (vc.issuer == this.identity.did) {
+    //       const subject = vc.vcDataModel.credentialSubject as any;
+    //       let vcInner = VerifiableCredential.parseJwt({ vcJwt: subject.vc });
+    //       did = vcInner.issuer;
+    //     }
 
-        this.friends.update((requests) => [...requests, json]);
+    //     let json: any = { record: record, data: { did } };
 
-        console.log('All friends:', this.friends());
+    //     // if (record.author == this.identity.did) {
+    //     //   json.direction = 'out';
+    //     // }
 
-        // recordEntry = record;
-        // let recordJson = await record.data.json();
-        // json = { ...recordJson, id: record.dataCid, did: record.author, created: record.dateCreated };
-      }
-    }
+    //     this.friends.update((requests) => [...requests, json]);
+
+    //     console.log('All friends:', this.friends());
+
+    //     // recordEntry = record;
+    //     // let recordJson = await record.data.json();
+    //     // json = { ...recordJson, id: record.dataCid, did: record.author, created: record.dateCreated };
+    //   }
+    // }
   }
 
   ngOnInit() {

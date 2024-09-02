@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { IdentityService } from './identity.service';
 import { protocolDefinition as connectionDefinition } from '../protocols/connection';
 import { Record } from '@web5/api';
@@ -47,6 +47,10 @@ export class ConnectionService {
   blocks = signal<ConnectionBlockEntry[]>([]);
 
   connections = signal<ConnectionEntry[]>([]);
+
+  friends = computed(() => this.connections().filter((c) => c.record.tags['type'] == 'friend'));
+
+  friendRequests = computed(() => this.requests().filter((c) => c.record.tags['type'] == 'friend'));
 
   requests = signal<ConnectionEntry[]>([]);
 
