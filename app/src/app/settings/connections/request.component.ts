@@ -74,10 +74,10 @@ export class RequestComponent {
     console.log('Block result: ', result);
 
     // Delete all connections from this DID.
-    await this.connection.deleteConnections(entry.record.author);
+    // await this.connection.deleteConnections(entry.record.author);
 
-    // Delete all connection requests from this DID.
-    await this.connection.deleteRequests(entry.record.author);
+    // // Delete all connection requests from this DID.
+    // await this.connection.deleteRequests(entry.record.author);
 
     // TODO: We should delete notifications related to this connection.
     // await this.deleteNotification(entry);

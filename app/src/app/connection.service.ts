@@ -484,7 +484,10 @@ export class ConnectionService {
     // Original author, must be read before updating the record (like delete).
     const author = entry.record.author;
 
+    console.log('Delete requested for this author:' + author);
+
     await entry.record.delete();
+
     this.requests.update((list) => [...list.filter((n) => n.id !== entry.id)]);
 
     // Send delete both to self and the recipient.
@@ -493,11 +496,9 @@ export class ConnectionService {
     // If we are the author of this request, the recipient is the target DID.
     if (author == this.identity.did) {
       this.utility.executeAsyncWithToast(entry.record.send(entry.record.recipient));
-      console.log('Deleting request (recipient):', entry.record.recipient);
     } else {
       // If we are the recipient of this request, the author is the target DID.
       this.utility.executeAsyncWithToast(entry.record.send(author));
-      console.log('Deleting request (author):', author);
     }
   }
 
@@ -511,12 +512,8 @@ export class ConnectionService {
     const entries = await this.loadRequests(did);
 
     for (const entry of entries) {
-      await entry.record.delete();
-
-      // Update the list of connections on external DWNs for user.
-      await entry.record.send(this.identity.did);
-
-      this.requests.update((list) => [...list.filter((n) => n.id !== entry.id)]);
+      console.log('DELETE THIS ENTRY:', entry);
+      await this.deleteRequest(entry);
     }
   }
 
@@ -551,6 +548,7 @@ export class ConnectionService {
       did: did,
     };
 
+    // Get existing block record.
     const { records } = await this.identity.web5.dwn.records.query({
       message: {
         filter: {
@@ -584,32 +582,22 @@ export class ConnectionService {
       blockRecord = records![0];
     }
 
-    // const { record, status } = await this.identity.web5.dwn.records.create({
-    //   data: {
-    //     did: did,
-    //   },
-    //   message: {
-    //     recipient: did,
-    //     protocol: connectionDefinition.protocol,
-    //     protocolPath: 'block',
-    //     schema: connectionDefinition.types.block.schema,
-    //     dataFormat: connectionDefinition.types.block.dataFormats[0],
-    //   },
-    // });
-
-    // console.log('Block created:', status, record);
-
     const entry = {
       record: blockRecord,
       data,
       id: blockRecord!.id,
     } as ConnectionBlockEntry;
 
-    this.blocks.update((list) => [...list, entry]);
+    console.log('Delete all Requests and Connections before updating block list.');
 
     // After creating the block, we clean up data from this blocked user.
     await this.deleteRequests(did);
     await this.deleteConnections(did);
+
+    // Update the block lists after delete requests, or else there is a validation that interfeers within the deleteRequests.
+    this.blocks.update((list) => [...list, entry]);
+
+    console.log('The Block record', entry);
 
     return entry;
   }
@@ -667,6 +655,13 @@ export class ConnectionService {
         // Call delete without waiting and continue. This will normally be processed by background process
         // which will remove all requests from blocked identities.
         record.delete();
+
+        // Send the delete to ourselves.
+        record.send(this.identity.did);
+
+        // Send the delete to the author.
+        record.send(record.author);
+
         continue;
       }
 
