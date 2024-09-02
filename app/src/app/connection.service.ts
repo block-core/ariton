@@ -548,58 +548,62 @@ export class ConnectionService {
       did: did,
     };
 
-    // Get existing block record.
-    const { records } = await this.identity.web5.dwn.records.query({
-      message: {
-        filter: {
-          recipient: did,
-          protocol: connectionDefinition.protocol,
-          protocolPath: 'block',
-          schema: connectionDefinition.types.block.schema,
-          dataFormat: connectionDefinition.types.block.dataFormats[0],
-        },
-        dateSort: DwnDateSort.CreatedAscending,
-      },
-    });
-
-    let blockRecord: Record;
-
-    if (records!.length == 0) {
-      const { record, status } = await this.identity.web5.dwn.records.create({
-        data: {
-          did: did,
-        },
-        message: {
-          protocol: connectionDefinition.protocol,
-          protocolPath: 'block',
-          schema: connectionDefinition.types.block.schema,
-          dataFormat: connectionDefinition.types.block.dataFormats[0],
-        },
-      });
-
-      blockRecord = record!;
-    } else {
-      blockRecord = records![0];
-    }
-
-    const entry = {
-      record: blockRecord,
-      data,
-      id: blockRecord!.id,
-    } as ConnectionBlockEntry;
-
     console.log('Delete all Requests and Connections before updating block list.');
 
     // After creating the block, we clean up data from this blocked user.
     await this.deleteRequests(did);
     await this.deleteConnections(did);
 
-    // Update the block lists after delete requests, or else there is a validation that interfeers within the deleteRequests.
-    this.blocks.update((list) => [...list, entry]);
+    let blockEntry = this.blocks().find((b) => b.data.did == did);
 
-    console.log('The Block record', entry);
+    if (!blockEntry) {
+      // Get existing block record.
+      const { records } = await this.identity.web5.dwn.records.query({
+        message: {
+          filter: {
+            recipient: did,
+            protocol: connectionDefinition.protocol,
+            protocolPath: 'block',
+            schema: connectionDefinition.types.block.schema,
+            dataFormat: connectionDefinition.types.block.dataFormats[0],
+          },
+          dateSort: DwnDateSort.CreatedAscending,
+        },
+      });
 
-    return entry;
+      let blockRecord: Record;
+
+      if (records!.length == 0) {
+        const { record, status } = await this.identity.web5.dwn.records.create({
+          data: {
+            did: did,
+          },
+          message: {
+            protocol: connectionDefinition.protocol,
+            protocolPath: 'block',
+            schema: connectionDefinition.types.block.schema,
+            dataFormat: connectionDefinition.types.block.dataFormats[0],
+          },
+        });
+
+        blockRecord = record!;
+      } else {
+        blockRecord = records![0];
+      }
+
+      blockEntry = {
+        record: blockRecord,
+        data,
+        id: blockRecord!.id,
+      } as ConnectionBlockEntry;
+
+      // Update the block lists after delete requests, or else there is a validation that interfeers within the deleteRequests.
+      this.blocks.update((list) => [...list, blockEntry!]);
+    }
+
+    console.log('The Block record', blockEntry);
+
+    return blockEntry;
   }
 
   // async loadRequests() {

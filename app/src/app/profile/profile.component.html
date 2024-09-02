@@ -55,7 +55,7 @@
         <span>Share Profile</span>
       </button>
       <mat-divider></mat-divider>
-      <button disabled="true" mat-menu-item>
+      <button [disabled]="identity.did == data().did" mat-menu-item (click)="block(data().did)">
         <mat-icon>block</mat-icon>
         <span>Block</span>
       </button>

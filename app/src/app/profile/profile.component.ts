@@ -22,6 +22,7 @@ import { VerifiableCredential } from '@web5/credentials';
 import { BearerDid } from '@web5/dids';
 import { LayoutService } from '../layout.service';
 import { FriendService } from '../friend.service';
+import { ConnectionService } from '../connection.service';
 
 @Component({
   selector: 'app-profile',
@@ -46,6 +47,8 @@ export class ProfileComponent {
   profileService = inject(ProfileService);
 
   identity = inject(IdentityService);
+
+  connection = inject(ConnectionService);
 
   app = inject(AppService);
 
@@ -92,6 +95,10 @@ export class ProfileComponent {
     } else {
       this.app.openSnackBar('Friend request sent');
     }
+  }
+
+  async block(did: string) {
+    await this.connection.block(did);
   }
 
   private async loadUserProfile(userId: string) {
