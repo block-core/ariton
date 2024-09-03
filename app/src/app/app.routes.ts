@@ -50,6 +50,11 @@ export const routes: Routes = [
     data: { hide: false, icon: 'people' },
   },
   {
+    path: 'app/chat',
+    redirectTo: 'app/chat/home',
+    pathMatch: 'full',
+  },
+  {
     path: 'app/chat/:id',
     loadComponent: () => import('./apps/app/chat/chat.component').then((c) => c.ChatComponent),
     title: 'Chat',
@@ -126,6 +131,11 @@ export const routes: Routes = [
     loadComponent: () => import('./apps/app/text/text.component').then((c) => c.TextComponent),
     title: 'Text',
     data: { icon: 'notes' },
+  },
+  {
+    path: 'app/tasks',
+    redirectTo: 'app/tasks/home',
+    pathMatch: 'full',
   },
   {
     path: 'app/tasks/:id',

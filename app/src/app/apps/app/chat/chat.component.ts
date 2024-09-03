@@ -137,7 +137,7 @@ export class ChatComponent implements OnDestroy {
           this.selectedProfile.set(null);
           this.messages.set([]);
 
-          if (this.selectedChat() === ':id') {
+          if (this.selectedChat() === ':id' || this.selectedChat() === 'home') {
             return;
           }
 

@@ -135,14 +135,49 @@ export class AppsComponent {
         'https://static.wixstatic.com/media/b8788b_e8db1fae306c4f4d95423ae5861f8fb3~mv2.png/v1/fill/w_128,h_128,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/World_Voluntaryist_Organisation-removebg-preview.png',
     });
 
-    for (let i = 0; i < this.images.length; i++) {
-      cards.push({
-        title: `App ${i + 1}`,
-        // id: `${i + 1}`,
-        description: `This is a description of app. Add this app to your community.`,
-        imageUrl: `https://picsum.photos/seed/${this.images[i]}x/200/300`,
-      });
-    }
+    cards.push({
+      title: 'Chat',
+      id: 'chat',
+      description: 'Send private messages to other users.',
+      imageUrl: '/icons/apps/chat.jpg',
+    });
+
+    cards.push({
+      title: 'Files',
+      id: 'files',
+      description: 'Upload and share files stored on your DWeb node.',
+      imageUrl: '/icons/apps/files.jpg',
+    });
+
+    cards.push({
+      title: 'Notes',
+      id: 'notes',
+      description: 'Manage your private and shared notes.',
+      imageUrl: '/icons/apps/notes.jpg',
+    });
+
+    cards.push({
+      title: 'Tasks',
+      id: 'tasks',
+      description: 'Manage your private and shared tasks.',
+      imageUrl: '/icons/apps/tasks.jpg',
+    });
+
+    cards.push({
+      title: 'Text',
+      id: 'text',
+      description: 'Keep your inspiration going with this text editor. Use it to write and share your thoughts.',
+      imageUrl: '/icons/apps/text.jpg',
+    });
+
+    // for (let i = 0; i < this.images.length; i++) {
+    //   cards.push({
+    //     title: `App ${i + 1}`,
+    //     // id: `${i + 1}`,
+    //     description: `This is a description of app. Add this app to your community.`,
+    //     imageUrl: `https://picsum.photos/seed/${this.images[i]}x/200/300`,
+    //   });
+    // }
 
     this.cards.set(cards);
   }

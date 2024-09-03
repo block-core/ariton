@@ -178,6 +178,14 @@ input {
   text-transform: capitalize;
 }
 
+.link {
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
 /** This makes the mat-input-field possible to go smaller than 180px. */
 .mat-mdc-form-field-infix {
   width: 100% !important;

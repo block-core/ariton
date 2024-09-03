@@ -93,7 +93,7 @@ export class TasksComponent {
 
       const id = params.get('id');
 
-      if (!id || id == ':id') {
+      if (!id || id == ':id' || id == 'home') {
         this.selectedList.set(null);
       } else {
         this.selectedList.set(params.get('id'));
