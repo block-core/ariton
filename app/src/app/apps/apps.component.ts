@@ -10,7 +10,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTable, MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import { TableDataSource, TableItem } from './apps-datasource';
+// import { TableDataSource, TableItem } from './apps-datasource';
 import { Router, RouterModule } from '@angular/router';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -60,12 +60,9 @@ export class AppsComponent {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatTable) table!: MatTable<TableItem>;
-  dataSource = new TableDataSource();
-
+  @ViewChild(MatTable) table!: MatTable<CardContent>;
+  // dataSource = new TableDataSource();
   cards = signal<CardContent[]>([]);
-
-  images = ['nature', 'sky', 'grass', 'mountains', 'rivers', 'glacier', 'forest', 'streams', 'rain', 'clouds'];
 
   // hideSingleSelectionIndicator = signal(false);
   // toggle() {
@@ -108,18 +105,32 @@ export class AppsComponent {
 
     // Register a new effect.
     effect(() => {
-      setTimeout(() => {
-        if (this.table) {
-          this.dataSource.sort = this.sort;
-          this.dataSource.paginator = this.paginator;
-          this.table.dataSource = this.dataSource;
-        }
-      });
+      if (this.viewStyle() === 'table') {
+        setTimeout(() => {
+          // this.dataSource.sort = this.sort;
+          // this.dataSource.paginator = this.paginator;
+          this.table.dataSource = this.cards();
+
+          console.log('DATA SOURCE SEt ON TABLE!!!');
+
+          // this.table.dataSource = this.dataSource;
+        });
+      }
     });
 
     effect(() => {
       console.log(`The checked is: ${this.checked()})`);
     });
+  }
+
+  open(community: string) {
+    this.router.navigate(['community', community]);
+  }
+
+  ngAfterViewInit(): void {
+    // this.dataSource.sort = this.sort;
+    // this.dataSource.paginator = this.paginator;
+    // this.table.dataSource = this.dataSource;
 
     const cards: CardContent[] = [];
 
@@ -180,43 +191,7 @@ export class AppsComponent {
     // }
 
     this.cards.set(cards);
-  }
 
-  open(community: string) {
-    this.router.navigate(['community', community]);
-  }
-
-  private breakpointObserver = inject(BreakpointObserver);
-
-  /** Based on the screen size, switch from standard to one column per row */
-  cardsHighlighted = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
-    map(({ matches }) => {
-      if (matches) {
-        return [
-          { title: 'Friends', cols: 1, rows: 1, description: 'Connect with your friends and connections.' },
-          { title: 'Chat', cols: 1, rows: 1, description: 'Chat with your friends or community groups' },
-          { title: 'File Sharing', cols: 1, rows: 1, description: 'Share files with friends and communities.' },
-          {
-            title: 'Tasks',
-            cols: 1,
-            rows: 1,
-            description: 'Manage tasks, either alone or with friends or communities.',
-          },
-        ];
-      }
-
-      return [
-        { title: 'Friends', cols: 2, rows: 1, description: 'Connect with your friends and connections.' },
-        { title: 'Chat', cols: 1, rows: 1, description: 'Chat with your friends or community groups' },
-        { title: 'File Sharing', cols: 1, rows: 2, description: 'Share files with friends and communities.' },
-        { title: 'Tasks', cols: 1, rows: 1, description: 'Manage tasks, either alone or with friends or communities.' },
-      ];
-    }),
-  );
-
-  ngAfterViewInit(): void {
-    // this.dataSource.sort = this.sort;
-    // this.dataSource.paginator = this.paginator;
-    // this.table.dataSource = this.dataSource;
+    // this.table.dataSource = this.cards();
   }
 }

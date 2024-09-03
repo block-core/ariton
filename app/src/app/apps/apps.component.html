@@ -84,9 +84,16 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
 
+  <p>
+    <!-- {{ displayedColumns }} -->
+  </p>
+  <p>
+    <!-- {{ table | json }} -->
+  </p>
+
   <mat-paginator
     #paginator
-    [length]="dataSource.data.length"
+    [length]="cards().length"
     [pageIndex]="0"
     [pageSize]="10"
     [pageSizeOptions]="[5, 10, 20]"
