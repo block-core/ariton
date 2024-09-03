@@ -1,38 +1,12 @@
 <span>
   @switch (type) { @case(fileMimeType.PDF) {
-  <!-- <pdf-viewer [src]="src" [show-all]="true" [zoom]="pdfZoom"></pdf-viewer> -->
-
   <div class="pdf-viewer">
     <iframe id="frame" class="file-frame" [src]="src" width="100%" height="100%"></iframe>
-    <!-- <br /><br />
-    <object [data]="src" type="application/pdf"></object>
-    <div class="controls">
-      <button (click)="goToPreviousPage()">Previous</button>
-      <span>{{ currentPage }} / {{ totalPages }}</span>
-      <button (click)="goToNextPage()">Next</button>
-    </div>
-  </div> -->
-    <!-- 
-  <div class="controls">
-    <button (click)="zoomOut()">Zoom Out</button>
-    <span>{{ zoomLevel }}%</span>
-    <button (click)="zoomIn()">Zoom In</button>
-
-    <div class="page-navigation">
-      <label for="pageInput">Go to Page:</label>
-      <input id="pageInput" type="number" min="1" max="{{ totalPages }}" [(ngModel)]="currentPage" />
-      <button (click)="goToPage()">Go</button>
-    </div> -->
   </div>
-
   } @case (fileMimeType.JPEG) {
   <iframe id="frame" class="file-frame" [src]="src" width="100%" height="100%"></iframe>
-  <!-- <iframe class="file-frame" [src]="src" width="100%" height="100%"></iframe> -->
-  <!-- <img [src]="src" class="img-responsive margin-auto" /> -->
   } @case (fileMimeType.PNG) {
-  <!-- <img [src]="src" class="img-responsive margin-auto" /> -->
   <iframe id="frame" class="file-frame" [src]="src" width="100%" height="100%"></iframe>
-  <!-- <iframe class="file-frame" [src]="src" width="100%" height="100%"></iframe> -->
   } @case(fileMimeType.MP4) {
   <video controls width="100%">
     <source [src]="src" type="video/mp4" />
@@ -40,6 +14,5 @@
   </video>
   } @default {
   <span #content><ng-content></ng-content></span>
-  <!-- <span *ngIf="!content.innerHTML.trim()">File type is not supported</span> -->
   } }
 </span>

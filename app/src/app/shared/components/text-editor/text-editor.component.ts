@@ -55,6 +55,12 @@ export class TextEditorComponent implements AfterViewInit {
       });
   }
 
+  changeFontFamily(event: Event) {
+  const selectElement = event.target as HTMLSelectElement;
+  const fontFamily = selectElement.value;
+  document.execCommand('fontName', false, fontFamily);
+}
+
   execCommand(command: string, value: string | null = null) {
     // @ts-ignore
     document.execCommand(command, false, value);
