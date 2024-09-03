@@ -35,3 +35,12 @@ img {
 .dashboard-card-content {
   text-align: center;
 }
+
+.clickable-row {
+  cursor: pointer;
+}
+
+.clickable-row:hover {
+  background-color: var(--mat-app-text-color); /* Light grey background on hover */
+  color: var(--mat-app-background-color); /* Text color on hover */
+}

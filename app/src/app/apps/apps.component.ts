@@ -98,7 +98,7 @@ export class AppsComponent {
   layout = inject(LayoutService);
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['id', 'name'];
+  displayedColumns = ['imageUrl', 'title', 'description'];
 
   constructor(private router: Router) {
     this.layout.marginOn();
