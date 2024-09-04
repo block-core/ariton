@@ -12,19 +12,24 @@ export const protocolDefinition = {
     },
   },
   structure: {
+    collaborator: {
+      $role: true,
+    },
     list: {
-      $actions: [
-        {
-          who: 'anyone',
-          can: ['create', 'update', 'read'],
-        },
-      ],
+      $actions: [{ role: 'collaborator', can: ['create', 'update', 'read', 'delete'] }],
+      // $actions: [
+      //   {
+      //     who: 'anyone',
+      //     can: ['create', 'update', 'read'],
+      //   },
+      // ],
       task: {
         $actions: [
-          {
-            who: 'anyone',
-            can: ['create', 'update', 'read'],
-          },
+          // {
+          //   who: 'anyone',
+          //   can: ['create', 'update', 'read'],
+          // },
+          { role: 'collaborator', can: ['create', 'update', 'read', 'delete'] },
         ],
         // $actions: [
         //   {

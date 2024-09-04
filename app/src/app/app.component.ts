@@ -58,8 +58,8 @@ export class AppComponent {
       this.appService.params = param;
     }
 
-    console.log(queryParam);
-    console.log(this.appService.params);
+    console.log('queryParam:', queryParam);
+    console.log('this.appService.params:', this.appService.params);
 
     effect(() => {
       if (this.appService.initialized()) {

@@ -46,6 +46,11 @@ Language: {{ settings().language }}
     Manage Blocks
   </a>
 
+  <a mat-list-item [routerLink]="['roles']">
+    <mat-icon matListItemIcon>manage_accounts</mat-icon>
+    Manage Roles
+  </a>
+
   <a mat-list-item [routerLink]="['notifications']">
     <mat-icon matListItemIcon>settings</mat-icon>
     Notifications Settings

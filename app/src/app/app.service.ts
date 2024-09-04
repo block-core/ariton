@@ -85,6 +85,8 @@ export class AppService {
 
   constructor() {
     console.log(`Ariton v${this.package.version} initialized.`);
+    console.log(`Ariton hash: ${this.hash.getHash()}.`);
+
     this.dependencies = Object.entries(this.package.dependencies).map(([key, value]) => ({
       name: key,
       version: value,

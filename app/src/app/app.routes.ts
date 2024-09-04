@@ -291,7 +291,13 @@ export const routes: Routes = [
     path: 'settings/blocks',
     loadComponent: () => import('./settings/blocks/blocks.component').then((c) => c.BlocksComponent),
     title: 'Blocks',
-    data: { hide: true, icon: 'block' },
+    data: { hide: true, icon: 'manage_accounts' },
+  },
+  {
+    path: 'settings/roles',
+    loadComponent: () => import('./settings/roles/roles.component').then((c) => c.RolesComponent),
+    title: 'Roles',
+    data: { hide: true, icon: 'group' },
   },
   {
     path: 'settings/notifications',
