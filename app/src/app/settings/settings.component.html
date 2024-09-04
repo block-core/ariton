@@ -14,9 +14,16 @@
   </mat-list>
   }
 </p>
+<mat-card>
+  <mat-card-content>
+    You can rent DWeb Nodes or host your own. Check out our <a [routerLink]="['/storage']">Storage options</a> to
+    upgrade your node.
+  </mat-card-content>
+</mat-card>
+
 }
 
-<br />
+<!-- <br />
 Debug: {{ settings().debug }}
 <br />
 Servers: {{ settings().servers }}
@@ -24,7 +31,7 @@ Servers: {{ settings().servers }}
 Language: {{ settings().language }}
 <br />
 <br />
-<button mat-flat-button (click)="toggleDebug()">Toggle debug</button>
+<button mat-flat-button (click)="toggleDebug()">Toggle debug</button> -->
 
 <mat-nav-list>
   <div mat-subheader>Actions</div>

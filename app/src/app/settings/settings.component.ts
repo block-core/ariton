@@ -8,11 +8,12 @@ import { IdentityService } from '../identity.service';
 import { DidResolutionResult } from '@web5/dids';
 import { CommonModule } from '@angular/common';
 import { LayoutService } from '../layout.service';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatListModule, MatIconModule, RouterLink],
+  imports: [MatCardModule, CommonModule, MatButtonModule, MatListModule, MatIconModule, RouterLink],
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
