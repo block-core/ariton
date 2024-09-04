@@ -46,25 +46,25 @@
 </mat-grid-list> -->
 
 <div class="container responsive-grid">
-  <mat-card *ngFor="let card of cards()">
+  <mat-card *ngFor="let card of cards()" class="app-card">
     <mat-card-header>
-      <mat-card-title
-        ><a class="link" [routerLink]="['/app', card.id]">{{ card.title }}</a></mat-card-title
-      >
+      <mat-card-title>
+        <a class="link" [routerLink]="['/app', card.id]">{{ card.title }}</a>
+      </mat-card-title>
     </mat-card-header>
     <br />
     <img class="app-card-image" mat-card-image [src]="card.imageUrl" />
-    <mat-card-content>
+    <mat-card-content class="app-card-content">
       <br />
-      <p>
-        {{ card.description }}
-      </p>
+      <p>{{ card.description }}</p>
     </mat-card-content>
-    <mat-card-actions>
-      <button mat-flat-button [routerLink]="['/app', card.id]">OPEN</button>
-      <!-- <button mat-flat-button [routerLink]="['/app', card.id]">INSTALL</button>
-      <button mat-button [routerLink]="['/app', card.id]">PREVIEW</button> -->
-    </mat-card-actions>
+    <div class="app-card-footer">
+      <mat-card-actions class="full-width-actions">
+        <button mat-button [routerLink]="['/app', card.id]" class="full-width-button">OPEN</button>
+        <!-- <button mat-flat-button [routerLink]="['/app', card.id]">INSTALL</button>
+        <button mat-button [routerLink]="['/app', card.id]">PREVIEW</button> -->
+      </mat-card-actions>
+    </div>
   </mat-card>
 </div>
 } @else {
