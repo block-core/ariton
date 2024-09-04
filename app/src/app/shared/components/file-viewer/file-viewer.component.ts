@@ -14,13 +14,10 @@ export class FileViewerComponent implements OnInit, AfterViewInit {
   fileMimeType = FileMimeType;
   @Input() type?: FileMimeType | string;
   @Input() src: any;
-  @Input() pdfZoom = 1;
+  @Input() zoom = 1;
 
   currentPage = 1;
   totalPages = 1;
-
-  zoomLevel = 1; // Default zoom level for images
-  imageZoom = 1; // Zoom level for images
 
   ngAfterViewInit() {
     const iframe = document.getElementById('frame') as HTMLIFrameElement;
@@ -50,21 +47,21 @@ export class FileViewerComponent implements OnInit, AfterViewInit {
     this.totalPages = this.getPdfTotalPages();
   }
 
-  zoomIn(): void {
-    if (this.type === this.fileMimeType.PDF) {
-      this.pdfZoom += 0.1;
-    } else if (this.type === this.fileMimeType.JPEG || this.type === this.fileMimeType.PNG) {
-      this.imageZoom += 0.1;
-    }
-  }
+  // zoomIn(): void {
+  //   if (this.type === this.fileMimeType.PDF) {
+  //     this.pdfZoom += 0.1;
+  //   } else if (this.type === this.fileMimeType.JPEG || this.type === this.fileMimeType.PNG) {
+  //     this.imageZoom += 0.1;
+  //   }
+  // }
 
-  zoomOut(): void {
-    if (this.type === this.fileMimeType.PDF) {
-      this.pdfZoom = Math.max(0.1, this.pdfZoom - 0.1);
-    } else if (this.type === this.fileMimeType.JPEG || this.type === this.fileMimeType.PNG) {
-      this.imageZoom = Math.max(0.1, this.imageZoom - 0.1);
-    }
-  }
+  // zoomOut(): void {
+  //   if (this.type === this.fileMimeType.PDF) {
+  //     this.pdfZoom = Math.max(0.1, this.pdfZoom - 0.1);
+  //   } else if (this.type === this.fileMimeType.JPEG || this.type === this.fileMimeType.PNG) {
+  //     this.imageZoom = Math.max(0.1, this.imageZoom - 0.1);
+  //   }
+  // }
 
   goToPage(): void {
     if (this.currentPage < 1) {

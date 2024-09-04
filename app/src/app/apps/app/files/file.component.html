@@ -16,10 +16,10 @@
     <span>{{ this.record.tags['name'] }}</span>
     }
     <span class="toolbar-spacer"></span>
-    <button mat-icon-button [disabled]="true">
+    <button mat-icon-button (click)="zoomIn()" [disabled]="!canZoomIn">
       <mat-icon>zoom_in</mat-icon>
     </button>
-    <button mat-icon-button [disabled]="true">
+    <button mat-icon-button (click)="zoomOut()" [disabled]="!canZoomOut">
       <mat-icon>zoom_out</mat-icon>
     </button>
     @if(fullscreen()) {
@@ -38,7 +38,7 @@
   <button (click)="pdfZoomOut()">-</button>
 </div> -->
 
-  <app-file-viewer [src]="src" [type]="type" [pdfZoom]="pdfZoom">
+  <app-file-viewer [src]="src" [type]="type" [zoom]="zoom">
     <h2>This file type is unsupported (yet :)</h2>
   </app-file-viewer>
   }

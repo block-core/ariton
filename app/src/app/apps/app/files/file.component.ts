@@ -61,6 +61,9 @@ export class FileComponent {
   sanitizer = inject(DomSanitizer);
   record?: Record;
   navigation = inject(NavigationService);
+  zoom = 1;
+  private fileUrl: any;
+  private data: any;
 
   constructor() {
     effect(async () => {
@@ -140,6 +143,24 @@ export class FileComponent {
       document.exitFullscreen();
       this.fullscreen.set(false);
     }
+  }
+
+  canZoomIn = false;
+  canZoomOut = true;
+
+  updateZoomControls(): void {
+    this.canZoomIn = this.zoom < 1;
+    this.canZoomOut = this.zoom > 0.1;
+  }
+
+  zoomIn(): void {
+    this.zoom = Math.min(1, this.zoom + 0.1);
+    this.updateZoomControls();
+  }
+
+  zoomOut(): void {
+    this.zoom = Math.max(0.1, this.zoom - 0.1);
+    this.updateZoomControls();
   }
 
   download() {
@@ -443,9 +464,6 @@ export class FileComponent {
       this.router.navigate(['/app/files/file', entry.record.id]);
     }
   }
-
-  private fileUrl: any;
-  private data: any;
 
   async deleteFile() {
     const { status: deleteStatus } = await this.record!.delete();
