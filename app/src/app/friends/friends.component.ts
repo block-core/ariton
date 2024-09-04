@@ -7,20 +7,16 @@ import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTabsModule } from '@angular/material/tabs';
 import { IdentityService } from '../identity.service';
-import { message } from '../../protocols';
 import { AppService } from '../app.service';
 import { CommonModule } from '@angular/common';
 import { ProfileCardComponent } from '../shared/components/profile-card/profile-card.component';
 import { ProfileImageDirective } from '../shared/directives/profile-image.directive';
 import { DidComponent } from '../shared/components/did/did.component';
 import { RouterModule } from '@angular/router';
-import { Record } from '@web5/api';
-
-export interface Entry {
-  record: Record;
-  data: any;
-  direction: 'in' | 'out' | any;
-}
+import { LayoutService } from '../layout.service';
+import { FriendService } from '../friend.service';
+import { ConnectionEntry, ConnectionService } from '../connection.service';
+import { RequestComponent } from '../settings/connections/request.component';
 
 @Component({
   selector: 'app-friends',
@@ -38,109 +34,56 @@ export interface Entry {
     ProfileImageDirective,
     DidComponent,
     RouterModule,
+    RequestComponent,
   ],
   templateUrl: './friends.component.html',
   styleUrl: './friends.component.scss',
 })
 export class FriendsComponent {
-  requests = signal<Entry[]>([]);
+  friends: ConnectionEntry[] = [];
 
-  friends = signal<any[]>([]);
+  requests: ConnectionEntry[] = [];
 
   identity = inject(IdentityService);
+
+  friend = inject(FriendService);
+
+  connection = inject(ConnectionService);
+
+  layout = inject(LayoutService);
 
   app = inject(AppService);
 
   constructor() {
-    effect(() => {
-      if (this.app.initialized()) {
-        this.loadRequests();
+    this.layout.resetActions();
+
+    effect(async () => {
+      if (this.app.initialized() && this.connection.connections()) {
+        await this.loadFriends();
+      }
+    });
+
+    effect(async () => {
+      if (this.app.initialized() && this.connection.requests()) {
+        await this.loadRequests();
       }
     });
   }
 
   async loadRequests() {
-    var { records } = await this.identity.web5.dwn.records.query({
-      message: {
-        filter: {
-          protocol: message.uri,
-          schema: 'https://schema.ariton.app/message/schema/request',
-          dataFormat: 'application/json',
-        },
-      },
-    });
-
-    console.log('Records from requests:');
-    console.log(records);
-
-    let json = {};
-    let recordEntry = null;
-
-    if (records) {
-      // Loop through returned records and print text from each
-      for (const record of records) {
-        let data = await record.data.json();
-        let json: any = { record: record, data: data };
-
-        if (record.author == this.identity.did) {
-          json.direction = 'out';
-        }
-
-        this.requests.update((requests) => [...requests, json]);
-
-        console.log('All requests:', this.requests());
-
-        // recordEntry = record;
-        // let recordJson = await record.data.json();
-        // json = { ...recordJson, id: record.dataCid, did: record.author, created: record.dateCreated };
-      }
-    }
+    this.requests = this.connection.friendRequests();
   }
 
-  async accept(entry: Entry) {}
+  async loadFriends() {
+    console.log('LOAD FRIENDS:');
+    console.log(this.connection.connections());
+    console.log(this.connection.friends());
 
-  async reject(entry: Entry) {
-    console.log('Rejecting request:', entry);
-
-    // If the recipinent is the current user, then use the author as the target DID.
-    // Very important to read this BEFORE running local delete, as that mutates the record.
-    const targetDid = entry.record.recipient == this.identity.did ? entry.record.author : entry.record.recipient;
-
-    console.log('Target DID:', targetDid);
-    console.log('this.identity.did:', this.identity.did);
-    console.log('entry.record.recipient:', entry.record.recipient);
-    console.log('entry.record.author:', entry.record.author);
-
-    // delete the request from the local DWN
-    const { status: deleteStatus } = await entry.record.delete();
-
-    // send the delete request to the remote DWN
-    const { status: deleteSendStatus } = await entry.record.send(targetDid);
-
-    console.log('Delete status:', deleteStatus);
-    console.log('deleteSendStatus:', deleteSendStatus);
-
-    // Remove the deleted entry from the requests list
-    this.requests.update((requests) => requests.filter((request) => request !== entry));
+    // Get a local reference to friends, we probably will add features such as sorting in the future.
+    this.friends = this.connection.friends();
   }
 
   ngOnInit() {
-    this.friends.set([
-      {
-        name: 'Lu',
-        thumbnail: 'https://ariton.app/assets/lu.jpg',
-      },
-      {
-        name: 'Sondre',
-        thumbnail: 'https://ariton.app/assets/sondre.png',
-      },
-    ]);
-
-    // this.requests.set([
-    //   {
-    //     name: 'Lu',
-    //     thumbnail: 'https://ariton.app/assets/lu.jpg',
-    //   },
-    // ]);
+    this.layout.marginOff();
   }
 }

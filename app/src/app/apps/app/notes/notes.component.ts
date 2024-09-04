@@ -118,23 +118,12 @@ export class NotesComponent implements OnDestroy {
   columnsCopy: any = [{ key: 1, title: 'test' }];
 
   constructor() {
+    this.layout.marginOn();
+
     // this.layout.disableScrolling();
     this.layout.disableNavigation();
-    this.layout.addAction({
-      name: 'New Note',
-      icon: 'note_add',
-      action: () => {
-        this.editNote({
-          data: {
-            title: '',
-            body: '',
-            background: '',
-            collaborators: [],
-            labels: [],
-          },
-        });
-      },
-    });
+
+    this.layout.resetActions();
 
     effect(async () => {
       if (this.app.initialized()) {
@@ -149,6 +138,18 @@ export class NotesComponent implements OnDestroy {
     if (status) {
       this.records.update((records) => records.filter((r) => r.record != entry.record));
     }
+  }
+
+  newNote() {
+    this.editNote({
+      data: {
+        title: '',
+        body: '',
+        background: '',
+        collaborators: [],
+        labels: [],
+      },
+    });
   }
 
   async loadNotes(tags?: any) {
@@ -232,8 +233,8 @@ export class NotesComponent implements OnDestroy {
       title: entry.data.title,
       body: entry.data.body,
       background: entry.data.background,
-      collaborators: ['12', '33333'],
-      labels: ['label2', 'label3'],
+      collaborators: [],
+      labels: [''],
     };
 
     const original = JSON.parse(JSON.stringify(data));
@@ -281,7 +282,7 @@ export class NotesComponent implements OnDestroy {
       data: entry.data,
     });
 
-    console.log('Record created:', record);
+    console.log('Record updated:', record);
     console.log('Record status:', status);
   }
 
@@ -294,11 +295,7 @@ export class NotesComponent implements OnDestroy {
         data: data,
       });
 
-      console.log('Record created:', record);
       console.log('Record status:', status);
-
-      if (record) {
-      }
     } else {
       const { record, status } = await this.identity.web5.dwn.records.create({
         data: data,

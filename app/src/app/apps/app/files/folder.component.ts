@@ -1,4 +1,4 @@
-import { Component, effect, inject, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, inject, signal, ViewChild } from '@angular/core';
 import { AppService } from '../../../app.service';
 import { LayoutService } from '../../../layout.service';
 import { IdentityService } from '../../../identity.service';
@@ -22,11 +22,57 @@ import { FileService } from '../../../file.service';
 import { SizePipe } from '../../../shared/pipes/size.pipe';
 import { DwnDateSort } from '@web5/agent';
 import { Record } from '@web5/api';
+import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+
+// export interface TableEntryInterface {
+//   icon: string;
+//   name: string;
+//   modified: number;
+//   size: number;
+//   type: string;
+//   entryType: string;
+//   record: Record;
+// }
+
+export class TableEntry {
+  icon: string;
+  name: string | any;
+  modified: number | any;
+  size: number | any;
+  type: string | any;
+  entryType: string | any;
+  record: Record;
+
+  constructor(entry: Record) {
+    this.icon = entry.tags['entryType'] == 'folder' ? 'folder' : 'note';
+    this.name = entry.tags['name'];
+    this.modified = entry.tags['entryType'] === 'folder' ? entry.dateModified : entry.tags['lastModified'];
+    this.size = entry.tags['size'];
+    this.type = entry.tags['type'];
+    this.entryType = entry.tags['entryType'];
+    this.record = entry;
+  }
+}
 
 @Component({
   selector: 'app-folder',
   standalone: true,
-  imports: [SizePipe, BreadcrumbComponent, CommonModule, MatListModule, MatIconModule, AgoPipe, BreadcrumbComponent],
+  imports: [
+    MatCardModule,
+    MatButtonModule,
+    MatTableModule,
+    MatSortModule,
+    SizePipe,
+    BreadcrumbComponent,
+    CommonModule,
+    MatListModule,
+    MatIconModule,
+    AgoPipe,
+    BreadcrumbComponent,
+  ],
   templateUrl: './folder.component.html',
   styleUrl: './folder.component.scss',
 })
@@ -54,19 +100,33 @@ export class FolderComponent {
   routingSub: any;
   folderLevel = 1;
 
+  displayedColumns: string[] = ['icon', 'name', 'modified', 'size'];
+  dataSource = new MatTableDataSource<TableEntry>([]);
+
+  @ViewChild(MatSort) sort!: MatSort;
+
+  changeDetectorRefs = inject(ChangeDetectorRef);
+
   constructor() {
-    console.log('FOLDER COMPONENT CONSTRUCTOR');
+    this.layout.resetActions();
+
+    effect(
+      async () => {
+        if (this.app.initialized()) {
+          // TODO: See if we can have a better way to handle this, to avoid double loading of data.
+          if (this.hasInitialized) {
+            return;
+          }
+
+          const url = this.getResolvedUrl(this.route.snapshot);
+          await this.processUrl(url);
+        }
+      },
+      { allowSignalWrites: true },
+    );
 
     effect(async () => {
-      if (this.app.initialized()) {
-        // TODO: See if we can have a better way to handle this, to avoid double loading of data.
-        if (this.hasInitialized) {
-          return;
-        }
-
-        const url = this.getResolvedUrl(this.route.snapshot);
-        await this.processUrl(url);
-      }
+      this.updateTable();
     });
 
     this.routingSub = this.router.events.subscribe(async (event) => {
@@ -127,30 +187,30 @@ export class FolderComponent {
 
     console.log('FOLDER COMPONENT INITIALIZED');
 
-    this.layout.setActions([
-      {
-        name: 'Upload files',
-        icon: 'upload_file',
-        action: () => {
-          this.editFile({
-            data: {
-              title: '',
-              body: '',
-              background: '',
-              collaborators: [],
-              labels: [],
-            },
-          });
-        },
-      },
-      {
-        name: 'New folder',
-        icon: 'create_new_folder',
-        action: () => {
-          this.editFolder(null);
-        },
-      },
-    ]);
+    // this.layout.setActions([
+    //   {
+    //     name: 'Upload files',
+    //     icon: 'upload_file',
+    //     action: () => {
+    //       this.editFile({
+    //         data: {
+    //           title: '',
+    //           body: '',
+    //           background: '',
+    //           collaborators: [],
+    //           labels: [],
+    //         },
+    //       });
+    //     },
+    //   },
+    //   {
+    //     name: 'New folder',
+    //     icon: 'create_new_folder',
+    //     action: () => {
+    //       this.editFolder(null);
+    //     },
+    //   },
+    // ]);
 
     // this.fileService.registerActions(this.layout);
 
@@ -161,6 +221,42 @@ export class FolderComponent {
     //   }
     // });
   }
+
+  ngAfterViewInit() {
+    this.dataSource.sort = this.sort;
+  }
+
+  updateTable() {
+    this.dataSource.data = this.entries().map((entry) => new TableEntry(entry));
+    // this.dataSource.data = this.entries();
+  }
+
+  sortData(sort: Sort) {
+    // const data = this.entries();
+    // if (!sort.active || sort.direction === '') {
+    //   this.dataSource.data = data;
+    //   return;
+    // }
+    // this.dataSource.data = data.sort((a, b) => {
+    //   const isAsc = sort.direction === 'asc';
+    //   switch (sort.active) {
+    //     case 'name':
+    //       return compare(a.name, b.name, isAsc);
+    //     case 'calories':
+    //       return compare(a.calories, b.calories, isAsc);
+    //     case 'fat':
+    //       return compare(a.fat, b.fat, isAsc);
+    //     case 'carbs':
+    //       return compare(a.carbs, b.carbs, isAsc);
+    //     case 'protein':
+    //       return compare(a.protein, b.protein, isAsc);
+    //     default:
+    //       return 0;
+    //   }
+    // });
+  }
+
+  announceSortChange(sortState: Sort) {}
 
   getValueAfterFolder(url: string): string | null {
     const match = url.match(/\/folder\/(.+)/);
@@ -205,8 +301,15 @@ export class FolderComponent {
       // Set the contextId used to query the entries.
       this.contextId = valueAfterFolder;
 
-      const slashCount = (valueAfterFolder!.match(/\//g) || []).length + 2;
-      console.log('SLASHCOUNT:', slashCount);
+      let slashCount = 0;
+
+      // If there are nothing in URL after folder, we are at level 1.
+      if (!valueAfterFolder) {
+        slashCount = 1;
+      } else {
+        slashCount = (valueAfterFolder!.match(/\//g) || []).length + 2;
+        console.log('SLASHCOUNT:', slashCount);
+      }
 
       this.folderLevel = slashCount;
 
@@ -215,50 +318,89 @@ export class FolderComponent {
       console.log('GENERATED PROTOCOL PATH:', this.protocolPath);
 
       // TODO: Need a more optimal way to disable new folder when level 5 is reached.
-      if (this.folderLevel === 4) {
-        this.layout.setActions([
-          {
-            name: 'Upload files',
-            icon: 'upload_file',
-            action: () => {
-              this.editFile({
-                data: {
-                  title: '',
-                  body: '',
-                  background: '',
-                  collaborators: [],
-                  labels: [],
-                },
-              });
-            },
-          },
-        ]);
-      } else {
-        this.layout.setActions([
-          {
-            name: 'Upload files',
-            icon: 'upload_file',
-            action: () => {
-              this.editFile({
-                data: {
-                  title: '',
-                  body: '',
-                  background: '',
-                  collaborators: [],
-                  labels: [],
-                },
-              });
-            },
-          },
-          {
-            name: 'New folder',
-            icon: 'create_new_folder',
-            action: () => {
-              this.editFolder(null);
-            },
-          },
-        ]);
-      }
+      // if (this.folderLevel === 4) {
+      //   this.layout.setActions([
+      //     {
+      //       name: 'Upload files',
+      //       icon: 'upload_file',
+      //       action: () => {
+      //         this.editFile({
+      //           data: {
+      //             title: '',
+      //             body: '',
+      //             background: '',
+      //             collaborators: [],
+      //             labels: [],
+      //           },
+      //         });
+      //       },
+      //     },
+      //     {
+      //       name: 'Delete folder',
+      //       icon: 'delete_forever',
+      //       action: () => {
+      //         this.deleteFolder();
+      //       },
+      //     },
+      //   ]);
+      // } else if (this.folderLevel > 1) {
+      //   this.layout.setActions([
+      //     {
+      //       name: 'Upload files',
+      //       icon: 'upload_file',
+      //       action: () => {
+      //         this.editFile({
+      //           data: {
+      //             title: '',
+      //             body: '',
+      //             background: '',
+      //             collaborators: [],
+      //             labels: [],
+      //           },
+      //         });
+      //       },
+      //     },
+      //     {
+      //       name: 'New folder',
+      //       icon: 'create_new_folder',
+      //       action: () => {
+      //         this.editFolder(null);
+      //       },
+      //     },
+      //     {
+      //       name: 'Delete folder',
+      //       icon: 'delete_forever',
+      //       action: () => {
+      //         this.deleteFolder();
+      //       },
+      //     },
+      //   ]);
+      // } else {
+      //   this.layout.setActions([
+      //     {
+      //       name: 'Upload files',
+      //       icon: 'upload_file',
+      //       action: () => {
+      //         this.editFile({
+      //           data: {
+      //             title: '',
+      //             body: '',
+      //             background: '',
+      //             collaborators: [],
+      //             labels: [],
+      //           },
+      //         });
+      //       },
+      //     },
+      //     {
+      //       name: 'New folder',
+      //       icon: 'create_new_folder',
+      //       action: () => {
+      //         this.editFolder(null);
+      //       },
+      //     },
+      //   ]);
+      // }
 
       // /app/files/folder/bafyreiclhcf5afetlwz4hmpjqfqrqktp7qk3uywah6zroz52ipixuhprci
     }
@@ -487,6 +629,38 @@ export class FolderComponent {
     return record;
   }
 
+  async deleteFolder() {
+    const { record } = await this.identity.web5.dwn.records.read({
+      message: {
+        filter: {
+          recordId: this.parentId,
+        },
+      },
+    });
+
+    if (record) {
+      const { status } = await record.delete({ prune: true });
+      console.log('Delete status:', status);
+
+      const parentPath = this.contextId!.split('/').slice(0, -1);
+      console.log('Parent path:', parentPath);
+      this.router.navigate(['app', 'files', 'folder', ...parentPath]);
+      // this.router.navigate(['../']);
+    }
+  }
+
+  async editFolderById(recordId: string) {
+    const { record } = await this.identity.web5.dwn.records.read({
+      message: {
+        filter: {
+          recordId: recordId,
+        },
+      },
+    });
+
+    await this.editFolder(record);
+  }
+
   async editFolder(entry: Record | undefined | null) {
     let data: DialogData = {
       name: entry ? entry.tags['name'] : 'Untitled folder',
@@ -597,12 +771,12 @@ export class FolderComponent {
     }
   }
 
-  async openEntry(entry: Record) {
+  async openEntry(entry: TableEntry) {
     console.log(entry);
-    if (entry.tags['entryType'] === 'folder') {
-      this.router.navigate(['/app/files/folder/' + entry.contextId]);
+    if (entry.entryType === 'folder') {
+      this.router.navigate(['/app/files/folder/' + entry.record.contextId]);
     } else {
-      this.router.navigate(['/app/files/file/' + entry.id]);
+      this.router.navigate(['/app/files/file/' + entry.record.id]);
     }
   }
 
@@ -661,6 +835,12 @@ export class FolderComponent {
 
     this.entries.set(records ?? []);
     console.log('All entries:', this.entries());
+
+    // this.dataSource.data = records! as any;
+
+    // this.changeDetectorRefs.detectChanges();
+
+    // console.log('Changed data source:', this.dataSource);
 
     // if (records) {
     //   // Loop through returned records and print text from each

@@ -1,44 +1,25 @@
 <span>
-  <ng-container [ngSwitch]="type">
-    <ng-container *ngSwitchCase="fileMimeType.PDF">
-      <div class="pdf-viewer">
-        <iframe id="frame" class="file-frame" [src]="src" [ngStyle]="{'transform': 'scale(' + pdfZoom + ')'}" width="100%" height="100%"></iframe>
-        <div class="controls">
-          <button (click)="zoomOut()">Zoom Out</button>
-          <span>{{ pdfZoom * 100 }}%</span>
-          <button (click)="zoomIn()">Zoom In</button>
-          <!-- Page navigation controls if needed -->
-        </div>
-      </div>
-    </ng-container>
-    <ng-container *ngSwitchCase="fileMimeType.JPEG">
-    <div class="image-container">
+
       <div class="zoom-controls">
         <button (click)="zoomOut()">Zoom Out</button>
         <span>{{ imageZoom * 100 }}%</span>
         <button (click)="zoomIn()">Zoom In</button>
       </div>
-      <img [src]="src" [ngStyle]="{'transform': 'scale(' + imageZoom + ')'}" class="img-responsive" />
-    </div>
-    </ng-container>
-    <ng-container *ngSwitchCase="fileMimeType.PNG">
-    <div class="image-container">
-      <div class="zoom-controls">
-        <button (click)="zoomOut()">Zoom Out</button>
-        <span>{{ imageZoom * 100 }}%</span>
-        <button (click)="zoomIn()">Zoom In</button>
-      </div>
-      <img [src]="src" [ngStyle]="{'transform': 'scale(' + imageZoom + ')'}" class="img-responsive" />
-    </div>
-    </ng-container>
-    <ng-container *ngSwitchCase="fileMimeType.MP4">
-      <video controls width="100%">
-        <source [src]="src" type="video/mp4" />
-        Your browser does not support HTML5 video.
-      </video>
-    </ng-container>
-    <ng-container *ngSwitchDefault>
-      <span #content><ng-content></ng-content></span>
-    </ng-container>
-  </ng-container>
+
+  @switch (type) { @case(fileMimeType.PDF) {
+  <div class="pdf-viewer">
+    <iframe id="frame" class="file-frame"  [ngStyle]="{'transform': 'scale(' + pdfZoom + ')'}" [src]="src" width="100%" height="100%"></iframe>
+  </div>
+  } @case (fileMimeType.JPEG) {
+  <iframe id="frame" class="file-frame"  [ngStyle]="{'transform': 'scale(' + imageZoom + ')'}" [src]="src" width="100%" height="100%"></iframe>
+  } @case (fileMimeType.PNG) {
+  <iframe id="frame" class="file-frame"  [ngStyle]="{'transform': 'scale(' + imageZoom + ')'}" [src]="src" width="100%" height="100%"></iframe>
+  } @case(fileMimeType.MP4) {
+  <video controls width="100%">
+    <source [src]="src" type="video/mp4" />
+    Your browser does not support HTML5 video.
+  </video>
+  } @default {
+  <span #content><ng-content></ng-content></span>
+  } }
 </span>

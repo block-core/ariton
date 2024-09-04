@@ -1,0 +1,169 @@
+<mat-tab-group>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon class="example-tab-icon">assured_workload</mat-icon>&nbsp; The Covenant
+    </ng-template>
+    <div class="padding">
+      <mat-card>
+        <mat-card-content>
+          <h1>The Voluntaryist Covenant</h1>
+
+          <strong>Introduction:</strong><br />
+          We, the Voluntaryists, voluntarily and solemnly establish this Covenant to declare our commitment to the
+          principles of Voluntaryism. We recognize that every individual is the sole owner of their life, person and
+          property, and that no one has the right to initiate force or coercion against another person. We believe that
+          freedom and voluntary cooperation are the keys to a just and prosperous society, and we pledge to live our
+          lives in accordance with these principles.
+          <br /><br />
+          <strong>Article 1: Self-Ownership</strong><br />
+          We believe that every individual is the sole and sovereign owner of their own body, mind, and labor, and has
+          the right to exercise full control over them. We reject any claim by others, including a self-proclaimed
+          governing body or state, to own or control the lives or bodies of individuals. We pledge to respect the
+          principle of Self-Ownership and to defend it against any aggression or violation.
+          <br /><br />
+          <strong>Article 2: Non-Aggression Principle</strong><br />
+          We believe in the Non-Aggression Principle, which asserts that it is immoral to initiate force, coercion,
+          theft or fraud against another person in order to achieve personal or collective goals. We also recognize the
+          right of every individual to defend their person, their property and liberty against any aggression or
+          violation. We pledge to refrain from any aggression in all our interactions and to defend ourselves
+          accordingly.
+          <br /><br />
+          <strong>Article 3: Property Rights</strong><br />
+          We recognize that every individual has the right to acquire property, use it, and dispose of it as they see
+          fit provided that they do not violate the Non-Aggression Principle. We pledge to respect the property rights
+          of others and to defend our property against any aggression or violation.
+          <br /><br />
+          <strong>Article 4: Freedom of Association</strong><br />
+          We believe that every individual has the right to associate or disassociate with others as they see fit, and
+          to engage in any peaceful and voluntary exchange of goods or services. We pledge to respect the freedom of
+          association and to refrain from any coercion or aggression against individuals or groups based on their
+          associations.
+          <br /><br />
+          <strong>Article 5: Personal Responsibility</strong><br />
+          We recognize the importance of personal responsibility and accountability for our own decisions and actions.
+          We acknowledge that any agreement we voluntary enter outline the rights and obligations of the parties
+          involved. We pledge to always honor our agreements and commitments and act in good faith to defend such rights
+          and meet such obligations.
+          <br /><br />
+          <strong>Article 6: Dispute Resolution</strong><br />
+          We believe in the peaceful resolution of disputes through voluntary means, such as negotiation, mediation, or
+          arbitration. We pledge to seek voluntary and peaceful resolution of any disputes that may arise between
+          individuals or groups, and to respect decisions reached through these means.
+          <br /><br />
+          <strong>Article 7: Education and Advocacy</strong><br />
+          We recognize the importance of Education and Advocacy in promoting the principles of Voluntaryism and
+          advancing a free and just society. We pledge to educate ourselves about these principles and to advocate for
+          their adoption in all areas of society.
+          <br /><br />
+          <strong>Conclusion:</strong><br />
+          We, the undersigned, hereby establish this covenant as a voluntary and solemn expression of our commitment to
+          the principles of voluntaryism. We pledge to uphold these principles in all our interactions with others, and
+          to work towards a society based on freedom, mutual cooperation, and respect for individual rights, including
+          the principle of self-ownership, and property.
+          <br /><br />
+          We recognize and acknowledge that this covenant is based on the natural rights of self-ownership,
+          non-aggression, and property rights. We further acknowledge that these rights are inherent to all individuals
+          and cannot be legitimately taken away by any human institution.
+          <br /><br />
+          We therefore hold this covenant to be the supreme law of our voluntaryist community, and we pledge to uphold
+          it above all other man-made laws. We recognize that this covenant supercedes all other legal codes, whether
+          they be national, international, or otherwise.
+          <br /><br />
+          In the event of any conflict between this covenant and any other man-made law, we shall abide by the
+          principles set forth in this covenant, and shall take all necessary steps to ensure that our actions are in
+          accordance with these principles.
+          <br /><br />
+          We believe that the principles of voluntaryism provide a solid foundation for a just and prosperous society,
+          and we are committed to promoting these principles in all areas of our lives. By signing this covenant, we
+          affirm our commitment to these principles, and to the creation of a New Free World based on freedom, mutual
+          cooperation, and respect for individual rights.
+        </mat-card-content>
+      </mat-card>
+
+      <p>
+        <a
+          mat-button
+          href="https://www.worldvoluntaryist.org/_files/ugd/bb77e9_0f5fee4328e745dc81189eb7088925c9.txt?dn=The%20Voluntaryist%20Covenant.txt"
+        >
+          <mat-icon>download</mat-icon> Download The Voluntaryist Covenant as text file.
+        </a>
+      </p>
+
+      <p>Hash (SHA-256) for verification:</p>
+
+      <p>856da8db8fec583255fa09cc19c64a93d44cba7a4d6c408282643fc581ae6c4b</p>
+
+      <p>
+        Also visit official website for verification:
+        <a href="https://www.worldvoluntaryist.org/voluntaryist-covenant" target="_blank"
+          >worldvoluntaryist.org/voluntaryist-covenant</a
+        >
+      </p>
+    </div>
+  </mat-tab>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon class="example-tab-icon">verified</mat-icon>&nbsp; Sign Covenant
+    </ng-template>
+
+    <div class="padding">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>
+            @if (signed) { You have signed the Voluntaryist Covenant } @else { Sign the Voluntaryist Covenant }
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>
+            You hereby declare that you have read and understood The Voluntaryist Covenant and agree to abide by it. By
+            signing this covenant, you affirm your commitment to the principles of Voluntaryism.
+          </p>
+          <p>When you sign, you will issue a public Verifiable Credential that anyone that validate.</p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-flat-button (click)="sign()" [disabled]="loading || signed">
+            @if (signed) { Signed Covenant } @else { Sign the Covenant }</button
+          >&nbsp;
+          <button mat-button (click)="withdraw()" [disabled]="!signed">Withdraw the signature</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </mat-tab>
+  <mat-tab>
+    <ng-template mat-tab-label> <mat-icon class="example-tab-icon">person_search</mat-icon>&nbsp; Search </ng-template>
+
+    <div class="padding">
+      <h2>Check signing status</h2>
+
+      <mat-form-field subscriptSizing="dynamic" class="did-input">
+        <input matInput placeholder="DID..." [(ngModel)]="did" (keydown.enter)="lookup()" />
+      </mat-form-field>
+      <button class="chat-action" mat-icon-button (click)="lookup()">
+        <mat-icon>search</mat-icon>
+      </button>
+
+      @if (lookupSigned !== undefined) {
+      <p>
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>Signature Status</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p>
+              @if (lookupSigned) {
+              <mat-icon class="signature-icon" inline="true">verified_user</mat-icon>
+              } @else {
+              <mat-icon class="signature-icon" inline="true">gpp_bad</mat-icon>
+              }
+            </p>
+            <p>The identity with the following DID has @if (!lookupSigned) { not } signed the convenant:</p>
+            <p class="ellipsis">
+              {{ did }}
+            </p>
+          </mat-card-content>
+        </mat-card>
+      </p>
+      }
+    </div>
+  </mat-tab>
+</mat-tab-group>

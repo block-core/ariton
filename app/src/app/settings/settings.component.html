@@ -14,9 +14,16 @@
   </mat-list>
   }
 </p>
+<mat-card>
+  <mat-card-content>
+    You can rent DWeb Nodes or host your own. Check out our <a [routerLink]="['/storage']">Storage options</a> to
+    upgrade your node.
+  </mat-card-content>
+</mat-card>
+
 }
 
-<br />
+<!-- <br />
 Debug: {{ settings().debug }}
 <br />
 Servers: {{ settings().servers }}
@@ -24,15 +31,30 @@ Servers: {{ settings().servers }}
 Language: {{ settings().language }}
 <br />
 <br />
-<button mat-flat-button (click)="toggleDebug()">Toggle debug</button>
+<button mat-flat-button (click)="toggleDebug()">Toggle debug</button> -->
 
 <mat-nav-list>
-  <div mat-subheader>Other Actions</div>
+  <div mat-subheader>Actions</div>
 
-  <a mat-list-item [routerLink]="['handler']">
+  <a mat-list-item [routerLink]="['connections']">
+    <mat-icon matListItemIcon>connect_without_contact</mat-icon>
+    Manage Connections
+  </a>
+
+  <a mat-list-item [routerLink]="['blocks']">
+    <mat-icon matListItemIcon>block</mat-icon>
+    Manage Blocks
+  </a>
+
+  <a mat-list-item [routerLink]="['notifications']">
+    <mat-icon matListItemIcon>settings</mat-icon>
+    Notifications Settings
+  </a>
+
+  <!-- <a mat-list-item [routerLink]="['handler']">
     <mat-icon matListItemIcon>search</mat-icon>
     Register Protocol Handler (Web Only)
-  </a>
+  </a> -->
 </mat-nav-list>
 
 <mat-nav-list>
@@ -41,6 +63,11 @@ Language: {{ settings().language }}
   <a mat-list-item [routerLink]="['about']">
     <mat-icon matListItemIcon>new_releases</mat-icon>
     About
+  </a>
+
+  <a mat-list-item [routerLink]="['help']">
+    <mat-icon matListItemIcon>help</mat-icon>
+    Help
   </a>
 
   <a mat-list-item [routerLink]="['licenses']">

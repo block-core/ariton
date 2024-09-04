@@ -1,4 +1,6 @@
-import { Injectable, effect, signal } from '@angular/core';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { ContentChildren, ElementRef, Injectable, QueryList, effect, inject, signal } from '@angular/core';
+import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 
 export interface LayoutAction {
   name: string;
@@ -10,7 +12,69 @@ export interface LayoutAction {
   providedIn: 'root',
 })
 export class LayoutService {
+  search = signal<boolean>(false);
+
+  searchInput: string = '';
+
+  scrolling = signal<boolean>(true);
+
+  navigation = signal<boolean>(false);
+
+  margin = signal<boolean>(true);
+
+  actions = signal<any[]>([]);
+
+  private breakpointObserver = inject(BreakpointObserver);
+
+  router = inject(Router);
+
+  small = signal<boolean>(false);
+
   constructor() {
+    this.router.events.subscribe((event: any) => {
+      if (event instanceof NavigationStart) {
+        // Navigation started
+
+        // console.log('previousUrl', this.previousUrl);
+        // console.log('event.url', event.url);
+
+        // if (event.url.startsWith(this.previousUrl)) {
+        //   console.log('Keep actions as we are still under same app');
+        // } else {
+        this.enableScrolling();
+        // this.layout.resetActions();
+        // }
+      } else if (event instanceof NavigationEnd) {
+        // Navigation ended
+        //this.layout.enableScrolling();
+        if (this.countChar('/', event.url) > 1) {
+          this.enableNavigation();
+        } else {
+          this.disableNavigation();
+        }
+
+        // this.marginOn();
+        // this.getChildren();
+
+        // this.previousUrl = event.url;
+        // console.log('This is the previous url', this.previousUrl);
+      }
+    });
+
+    const customBreakpoint = '(max-width: 959.98px)';
+
+    // Observe the custom breakpoint
+    this.breakpointObserver.observe([customBreakpoint]).subscribe((result) => {
+      console.log('MATCHES:', result.matches);
+      if (result.matches) {
+        // Code to execute when the viewport is 959.98px or less
+        this.small.set(true);
+      } else {
+        // Code to execute when the viewport is greater than 959.98px
+        this.small.set(false);
+      }
+    });
+
     effect(() => {
       const element = document.querySelector('.sidenav-scroll-wrapper') as any;
       if (element) {
@@ -21,7 +85,7 @@ export class LayoutService {
         }
       }
 
-      const element2 = document.querySelector('.sidenav-content') as any;
+      const element2 = document.getElementById('sidenav-content') as any;
       if (element2) {
         if (this.scrolling()) {
           element2.style.overflow = 'auto';
@@ -32,11 +96,37 @@ export class LayoutService {
     });
   }
 
-  scrolling = signal<boolean>(true);
+  countChar(char: string, string: string): number {
+    return string.split(char).length - 1;
+  }
 
-  navigation = signal<boolean>(false);
+  // @ContentChildren(ElementRef, { descendants: true }) children!: QueryList<ElementRef>;
 
-  actions = signal<any[]>([]);
+  // isMarginless: boolean = false;
+
+  // getChildren() {
+  //   console.log('CHILDREN:', this.children);
+
+  //   this.isMarginless = this.children.toArray().some((child) => {
+  //     // Perform operations on the native element
+  //     const nativeElement = child.nativeElement;
+
+  //     console.log(nativeElement);
+  //     console.log(nativeElement.attribute('data-fullsize'));
+
+  //     // Example: Check for a specific attribute or class
+  //     return nativeElement.hasAttribute('data-fullsize');
+  //   });
+  // }
+
+  ngAfterContentInit() {
+    // this.isMarginless = this.children.toArray().some((child) => child.fullsize);
+  }
+
+  toggleSearch() {
+    this.search.set(!this.search());
+    this.searchInput = '';
+  }
 
   setActions(actions: LayoutAction[]) {
     this.actions.set(actions);
@@ -44,6 +134,14 @@ export class LayoutService {
 
   addAction(action: LayoutAction) {
     this.actions.update((actions) => [...actions, action]);
+  }
+
+  marginOff() {
+    this.margin.set(false);
+  }
+
+  marginOn() {
+    this.margin.set(true);
   }
 
   resetActions() {

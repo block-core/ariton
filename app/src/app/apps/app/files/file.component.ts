@@ -20,6 +20,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { Record } from '@web5/api';
+import { NavigationService } from '../../../navigation.service';
 
 @Component({
   selector: 'app-file',
@@ -59,6 +60,7 @@ export class FileComponent {
   fileId: string | null = null;
   sanitizer = inject(DomSanitizer);
   record?: Record;
+  navigation = inject(NavigationService);
 
   constructor() {
     effect(async () => {
@@ -444,6 +446,24 @@ export class FileComponent {
 
   private fileUrl: any;
   private data: any;
+
+  async deleteFile() {
+    const { status: deleteStatus } = await this.record!.delete();
+
+    // send the delete request to the remote DWN
+    const { status: deleteSendStatus } = await this.record!.send(this.identity.did);
+
+    console.log('Delete status:', deleteStatus);
+    console.log('Delete send status:', deleteSendStatus);
+
+    // this.record?.parentId
+    // this.router.navigate(['app', 'files', 'folder', '']);
+
+    this.record = undefined;
+    this.src = undefined;
+
+    this.navigation.back();
+  }
 
   async loadEntries(tags?: any) {
     console.log('VALUE OF TAGS:', tags);

@@ -1,0 +1,18 @@
+<div class="dialog-container">
+  <mat-dialog-content class="dialog-content">
+    <mat-form-field appearance="outline" class="full-width">
+      <input matInput placeholder="Title" maxlength="200" [(ngModel)]="data.title" />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="full-width">
+      <input matInput placeholder="Image" maxlength="200" [(ngModel)]="data.image" />
+    </mat-form-field>
+    <div class="editor">
+      <app-text-editor [(content)]="data.body"></app-text-editor>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions class="dialog-actions" align="end">
+    <mat-checkbox class="published-checkbox" [(ngModel)]="data.published">Publish</mat-checkbox>
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-flat-button type="submit" [mat-dialog-close]="true" cdkFocusInitial>Save</button>
+  </mat-dialog-actions>
+</div>

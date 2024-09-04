@@ -1,0 +1,160 @@
+<!-- <mat-tab-group>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <span class="hide-small">Personal</span>
+    </ng-template> -->
+
+<div>
+  @if (!selectedList()) {
+  <button mat-flat-button (click)="newList()">
+    <mat-icon>add</mat-icon>
+    New list</button
+  ><br />
+  }
+
+  <div cdkDropListGroup>
+    @for(list of list; track list) { @if(!selectedList() || selectedList() === list.id) {
+
+    <div class="container">
+      <h2 class="list-header">
+        @if(list.editing) {
+        <mat-form-field subscriptSizing="dynamic">
+          <input matInput [(ngModel)]="list.data.title" (keydown.enter)="saveList(list)" />
+        </mat-form-field>
+        <button mat-icon-button (click)="saveList(list)">
+          <mat-icon>save</mat-icon>
+        </button>
+        } @else {
+        <a class="list-selection" [routerLink]="['/app', 'tasks', list.id]">{{ list.data.title }}</a>
+        <button mat-icon-button (click)="editList(list)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        }
+
+        <button mat-icon-button matTooltip="Add new task" (click)="addTask(list)">
+          <mat-icon>add_box</mat-icon>
+        </button>
+        <button mat-icon-button [matMenuTriggerFor]="menuListActions">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        @if(list.loading) {
+        <mat-spinner diameter="20"></mat-spinner>
+        }
+        <mat-menu #menuListActions="matMenu">
+          <button mat-menu-item (click)="collaboratorDialog(list)">
+            <mat-icon>person_add_alt</mat-icon>
+            <span>Collaborators</span>
+          </button>
+          <mat-divider></mat-divider>
+          <button mat-menu-item (click)="deleteList(list)">
+            <mat-icon>delete</mat-icon>
+            <span>Delete</span>
+          </button>
+        </mat-menu>
+      </h2>
+
+      <div cdkDropList [cdkDropListData]="list" class="list" (cdkDropListDropped)="drop($event)">
+        @for (item of list.todos; track item) {
+        <div class="list-item" cdkDrag [cdkDragData]="item">
+          @if(item.editing) {
+          <mat-form-field subscriptSizing="dynamic">
+            <input matInput [(ngModel)]="item.data.description" (keydown.enter)="saveTask(item, list)" />
+          </mat-form-field>
+          <button mat-icon-button (click)="saveTask(item, list)">
+            <mat-icon>save</mat-icon>
+          </button>
+          } @else {
+          <span [ngClass]="{ strikeout: item.data.completed }">{{ item.data.description }}</span>
+          }
+          <div class="spacer"></div>
+          @if(item.loading) {
+          <mat-spinner diameter="20"></mat-spinner>
+          } @else {
+          <mat-checkbox
+            color="primary"
+            [(ngModel)]="item.data.completed"
+            (change)="saveTask(item, list)"
+          ></mat-checkbox>
+          }
+          <button mat-icon-button [matMenuTriggerFor]="menuActions">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+        </div>
+        <mat-menu #menuActions="matMenu">
+          <button mat-menu-item (click)="editTask(item)">
+            <mat-icon>edit</mat-icon>
+            <span>Edit</span>
+          </button>
+          <mat-divider></mat-divider>
+          <button mat-menu-item (click)="deleteTask(item.record, list)">
+            <mat-icon>delete</mat-icon>
+            <span>Delete</span>
+          </button>
+        </mat-menu>
+        }
+      </div>
+    </div>
+    } }
+  </div>
+
+  <br /><br />
+
+  <!-- @for(todo of todos(); track todo) {
+<div class="todo-list" [routerLink]="['/app', 'todo', todo.id]">
+  author: {{ todo.data.author }}<br />
+  Description: {{ todo.data.description }}<br />
+  completed: {{ todo.data.completed }}<br />
+</div>
+} -->
+
+  <!-- <div class="container">
+    <h2>To do</h2>
+
+    <div
+      cdkDropList
+      #todoList="cdkDropList"
+      [cdkDropListData]="todo"
+      [cdkDropListConnectedTo]="doneList"
+      class="list"
+      (cdkDropListDropped)="drop($event)"
+    >
+      @for (item of todo; track item) {
+      <div class="list-item" cdkDrag>{{ item }}</div>
+      }
+    </div>
+  </div>
+
+  <div class="container">
+    <h2>Done</h2>
+
+    <div
+      cdkDropList
+      #doneList="cdkDropList"
+      [cdkDropListData]="done"
+      [cdkDropListConnectedTo]="todoList"
+      class="list"
+      (cdkDropListDropped)="drop($event)"
+    >
+      @for (item of done; track item) {
+      <div class="list-item" cdkDrag>{{ item }}</div>
+      }
+    </div>
+  </div> -->
+</div>
+
+<!-- </mat-tab>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <span class="hide-small">Business</span>
+    </ng-template>
+
+    <div class="container responsive-grid"></div>
+  </mat-tab>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <span class="hide-small">Groceries</span>
+    </ng-template>
+
+    <div class="container responsive-grid"></div>
+  </mat-tab>
+</mat-tab-group> -->

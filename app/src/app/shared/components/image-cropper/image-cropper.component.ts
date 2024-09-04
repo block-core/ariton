@@ -16,7 +16,11 @@ export class ImageCropperComponent {
   sanitizedUrl!: SafeUrl;
   cropper!: Cropper;
 
-  constructor(public dialogRef: MatDialogRef<ImageCropperComponent>, @Inject(MAT_DIALOG_DATA) public image: string, private sanitizer: DomSanitizer) {}
+  constructor(
+    public dialogRef: MatDialogRef<ImageCropperComponent>,
+    @Inject(MAT_DIALOG_DATA) public image: string,
+    private sanitizer: DomSanitizer,
+  ) {}
 
   ngOnInit(): void {
     this.sanitizedUrl = this.sanitizer.bypassSecurityTrustUrl(this.image);
@@ -44,6 +48,12 @@ export class ImageCropperComponent {
     canvas.width = width;
     canvas.height = height;
     context.imageSmoothingEnabled = true;
+
+    // context.minWidth = 64;
+    // context.minHeight = 64;
+    // context.maxWidth = 512;
+    // context.maxHeight = 512;
+
     context.drawImage(sourceCanvas, 0, 0, width, height);
     context.globalCompositeOperation = 'destination-in';
     context.beginPath();
@@ -53,8 +63,11 @@ export class ImageCropperComponent {
   }
 
   crop() {
-    const croppedCanvas = this.cropper.getCroppedCanvas();
+    // Let's do 256x256 as max size for optimal loading performance.
+    const croppedCanvas = this.cropper.getCroppedCanvas({ maxHeight: 256, maxWidth: 256 });
     const roundedCanvas = this.getRoundedCanvas(croppedCanvas);
+
+    // cropper.getCroppedCanvas({ width: DESIRED_WIDTH, height: DESIRED_HEIGHT }).toDataURL(ORIGINAL_MIME_TYPE);
 
     let roundedImage = document.createElement('img');
 

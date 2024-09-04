@@ -1,0 +1,32 @@
+<h1>Connections Management</h1>
+
+<mat-card class="notifications-card">
+  <mat-card-header>
+    <mat-card-title>Requests</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <p>
+      @for(entry of connection.requests(); track entry) {
+      <app-request [entry]="entry"></app-request>
+      } @empty { No requests found. }
+    </p>
+  </mat-card-content>
+</mat-card>
+
+<br />
+
+<mat-card class="notifications-card">
+  <mat-card-header>
+    <mat-card-title>Connections</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <p>
+      @for(entry of connection.connections(); track entry) {
+      <app-connection [entry]="entry"></app-connection>
+
+      } @empty { No connections found. }
+    </p>
+  </mat-card-content>
+</mat-card>
+
+<p>Missing requests? Make sure you have not <a [routerLink]="['..', 'blocks']">blocked</a> the request.</p>

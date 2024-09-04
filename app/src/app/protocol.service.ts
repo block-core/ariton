@@ -10,6 +10,10 @@ import { protocolDefinition as message } from '../protocols/message';
 import { protocolDefinition as registry } from '../protocols/registry';
 import { protocolDefinition as note } from '../protocols/note';
 import { protocolDefinition as file } from '../protocols/file';
+import { protocolDefinition as text } from '../protocols/text';
+import { protocolDefinition as todo } from '../protocols/task';
+import { protocolDefinition as connection } from '../protocols/connection';
+import { protocolDefinition as notification } from '../protocols/notification';
 import { IdentityService } from './identity.service';
 
 @Injectable({
@@ -33,6 +37,10 @@ export class ProtocolService {
       message,
       registry,
       file,
+      text,
+      todo,
+      connection,
+      notification,
     ];
 
     for (const definition of protocols) {

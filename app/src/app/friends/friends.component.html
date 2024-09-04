@@ -6,21 +6,11 @@
     </ng-template>
 
     <div class="container responsive-grid">
-      @for(request of friends(); track request) {
-      <mat-card>
-        <mat-card-header>
-          <mat-card-title
-            ><a [routerLink]="['/profile', '']">{{ request.name }}</a></mat-card-title
-          >
-          <mat-card-title-group
-            ><button mat-icon-button [matMenuTriggerFor]="menu">
-              <mat-icon>more_vert</mat-icon>
-            </button></mat-card-title-group
-          >
-        </mat-card-header>
-        <br />
-        <img mat-card-image [src]="request.thumbnail" />
-      </mat-card>
+      @for(request of friends; track request) {
+      <app-profile-card [did]="request.data.did!">
+        <button mat-flat-button [routerLink]="['/profile', request.data.did]">VIEW</button>
+        <button mat-button [routerLink]="['/app', 'chat', request.data.did]">MESSAGE</button>
+      </app-profile-card>
       }
     </div>
 
@@ -39,82 +29,13 @@
   <mat-tab>
     <ng-template mat-tab-label>
       <mat-icon class="tab-icon">person_add</mat-icon>
-      <span class="hide-small" [matBadge]="requests().length" matBadgeOverlap="false">Requests&nbsp;</span>
+      <span class="hide-small" [matBadge]="requests.length" matBadgeOverlap="false">Requests&nbsp;</span>
     </ng-template>
 
     <div class="container responsive-grid">
-      @for(request of requests(); track request) { @if (request.direction == 'out') {
-
-      <app-profile-card [did]="request.record.recipient">
-        <button mat-flat-button [disabled]="true">PENDING</button>
-        <button mat-button (click)="reject(request)">DELETE</button>
-
-        <!-- <ng-container *ngIf="request.direction == 'out'">
-          <button mat-flat-button [disabled]="true">PENDING</button>
-          <button mat-button (click)="reject('did:dht:my6nm5s1n9xmuuh5yixe668k7xbkmmuddzatn1fojzgdg5f5to8y')">
-            DELETE
-          </button>
-        </ng-container>
-        <ng-container *ngIf="request.direction != 'out'">
-          <button mat-flat-button (click)="accept('did:dht:my6nm5s1n9xmuuh5yixe668k7xbkmmuddzatn1fojzgdg5f5to8y')">
-            CONFIRM
-          </button>
-          <button mat-button (click)="reject('did:dht:my6nm5s1n9xmuuh5yixe668k7xbkmmuddzatn1fojzgdg5f5to8y')">
-            DELETE
-          </button>
-        </ng-container> -->
-      </app-profile-card>
-      } @else {
-      <app-profile-card [did]="request.record.author">
-        <button mat-flat-button (click)="accept(request)">CONFIRM</button>
-        <button mat-button (click)="reject(request)">DELETE</button>
-        <!-- <ng-container *ngIf="request.direction == 'out'">
-          <button mat-flat-button [disabled]="true">PENDING</button>
-          <button mat-button (click)="reject('did:dht:my6nm5s1n9xmuuh5yixe668k7xbkmmuddzatn1fojzgdg5f5to8y')">
-            DELETE
-          </button>
-        </ng-container>
-        <ng-container *ngIf="request.direction != 'out'">
-          <button mat-flat-button (click)="accept('did:dht:my6nm5s1n9xmuuh5yixe668k7xbkmmuddzatn1fojzgdg5f5to8y')">
-            CONFIRM
-          </button>
-          <button mat-button (click)="reject('did:dht:my6nm5s1n9xmuuh5yixe668k7xbkmmuddzatn1fojzgdg5f5to8y')">
-            DELETE
-          </button>
-        </ng-container> -->
-      </app-profile-card>
-      }
-
-      <!-- <mat-card>
-        <mat-card-header>
-          <mat-card-title>{{ request.name }} </mat-card-title>
-        </mat-card-header>
-        <br />
-        <img mat-card-image [appProfileImage]="request.record?.author" [src]="request.thumbnail" />
-        <mat-card-content>
-          @if (request.data?.message) {
-          <p>
-            {{ request.data.message }}
-          </p>
-          }
-        </mat-card-content>
-        <mat-card-actions>
-          @if (request.direction == 'out') {
-          <button mat-flat-button [disabled]="true">PENDING</button>
-          <button mat-button (click)="reject('did:dht:my6nm5s1n9xmuuh5yixe668k7xbkmmuddzatn1fojzgdg5f5to8y')">
-            DELETE
-          </button>
-          } @else {
-          <button mat-flat-button (click)="accept('did:dht:my6nm5s1n9xmuuh5yixe668k7xbkmmuddzatn1fojzgdg5f5to8y')">
-            CONFIRM
-          </button>
-          <button mat-button (click)="reject('did:dht:my6nm5s1n9xmuuh5yixe668k7xbkmmuddzatn1fojzgdg5f5to8y')">
-            DELETE
-          </button>
-          }
-        </mat-card-actions>
-      </mat-card> -->
-      }
+      @for(entry of requests; track entry) {
+      <app-request [entry]="entry"></app-request>
+      } @empty { No requests found. }
     </div>
   </mat-tab>
 </mat-tab-group>

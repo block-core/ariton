@@ -54,6 +54,8 @@ export class ProfileService {
   constructor() {}
 
   async loadProfile(did: string) {
+    // TODO: Implement caching of profiles, since this method is
+    // called by various directives and code, avoiding too many database queries.
     //Query records with plain text data format
     const response = await this.identity.web5.dwn.records.query({
       from: did,
@@ -66,7 +68,7 @@ export class ProfileService {
       },
     });
 
-    let json = {};
+    let json: any = {};
     let recordEntry = null;
 
     console.log('RESPONSE FOUND FOR PROFILE:', response);

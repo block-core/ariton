@@ -1,0 +1,34 @@
+.rich-text-editor {
+  border: 1px solid var(--mat-divider-color);
+  padding: 10px;
+  min-height: 200px;
+  margin-top: 10px;
+  box-sizing: border-box;
+
+  width: 100%;
+  height: 100%;
+  white-space: pre-wrap; /* Ensure text wraps */
+  word-wrap: break-word; /* Break long words */
+  overflow-wrap: break-word; /* Break long words */
+}
+
+/** TODO: This does not work. The border becomes white. */
+.rich-text-editor:focus,
+.rich-text-editor:active {
+  border-color: var(--mdc-outlined-text-field-caret-color, var(--mat-app-primary));
+}
+
+.toolbar-actions > * {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+input[type='color'] {
+  border: none;
+  background: none;
+  height: 32px;
+  width: 32px;
+  padding: 0;
+  margin: 0 4px;
+  cursor: pointer;
+}

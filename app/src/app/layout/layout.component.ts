@@ -9,7 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { routes } from '../app.routes';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle.component';
 import { LayoutService } from '../layout.service';
 import { MatMenuModule } from '@angular/material/menu';
@@ -22,6 +22,15 @@ import { NavigationService } from '../navigation.service';
 import { DidPipe } from '../shared/pipes/did.pipe';
 import { ProfileService } from '../profile.service';
 import { SafeUrlPipe } from '../shared/pipes/safe-url.pipe';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
+import { ZXingScannerModule } from '@zxing/ngx-scanner';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { QRCodeScanDialogComponent } from '../shared/dialog/qrcode-scan-dialog/qrcode-scan-dialog.component';
+import { AppService } from '../app.service';
+import { NotificationEvent, NotificationService } from '../notification.service';
+import { AgoPipe } from '../shared/pipes/ago.pipe';
 
 @Component({
   selector: 'app-layout',
@@ -29,6 +38,11 @@ import { SafeUrlPipe } from '../shared/pipes/safe-url.pipe';
   styleUrl: './layout.component.scss',
   standalone: true,
   imports: [
+    MatDialogModule,
+    ZXingScannerModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
     CommonModule,
     SafeUrlPipe,
     MatToolbarModule,
@@ -43,6 +57,7 @@ import { SafeUrlPipe } from '../shared/pipes/safe-url.pipe';
     ThemeToggleComponent,
     MatTooltipModule,
     DidPipe,
+    AgoPipe,
   ],
 })
 export class LayoutComponent {
@@ -56,9 +71,17 @@ export class LayoutComponent {
 
   public profileService = inject(ProfileService);
 
+  private app = inject(AppService);
+
   public layout = inject(LayoutService);
 
   private navigation = inject(NavigationService);
+
+  private notification = inject(NotificationService);
+
+  dialog = inject(MatDialog);
+
+  private router = inject(Router);
 
   rootRoutes = routes.filter((r) => r.path).filter((r) => r.data && r.data['hide'] != true);
 
@@ -66,6 +89,67 @@ export class LayoutComponent {
     map((result) => result.matches),
     shareReplay(),
   );
+
+  private debounceTimer: any;
+
+  public notifications = signal<NotificationEvent[]>([]);
+
+  constructor() {
+    effect(async () => {
+      if (this.app.initialized()) {
+        await this.loadNotifications();
+      }
+    });
+  }
+
+  async loadNotifications() {
+    const notifications = await this.notification.load();
+    this.notifications.set(notifications);
+  }
+
+  async copyDID(did: string) {
+    try {
+      await navigator.clipboard.writeText(did);
+      this.app.openSnackBar('Your DID copied to clipboard');
+    } catch (err) {
+      console.error('Failed to copy: ', err);
+    }
+  }
+
+  qrScan() {
+    const dialogRef = this.dialog.open(QRCodeScanDialogComponent, {
+      data: { did: '' },
+      width: '100vw',
+      height: '100vh',
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('The dialog was closed', result);
+      this.router.navigate(['/profile', result]);
+    });
+  }
+
+  onSearchInput(event: any) {
+    if (event.target.value === null) {
+      clearTimeout(this.debounceTimer);
+      return;
+    }
+
+    // Debounce logic to wait until user finishes typing
+    clearTimeout(this.debounceTimer);
+    this.debounceTimer = setTimeout(() => {
+      console.log('Handle search called!');
+      this.handleSearch(event.target.value);
+    }, 750);
+  }
+
+  private handleSearch(value: string): void {
+    if (value.includes(':')) {
+      this.router.navigate(['/profile', value]);
+    } else {
+      this.router.navigate(['/search'], { queryParams: { query: value } });
+    }
+  }
 
   async wipe() {
     // Clear all data from localStorage

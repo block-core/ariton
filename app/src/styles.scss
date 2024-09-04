@@ -91,6 +91,17 @@ h1 {
   word-wrap: break-word;
 }
 
+/** TODO: Validate if we want to do this on all, or only on textarea. */
+textarea,
+select,
+input {
+  field-sizing: content;
+}
+
+.padding {
+  padding: 1em;
+}
+
 .info-card {
   padding: 2em;
 }
@@ -114,7 +125,21 @@ h1 {
   color: var(--mat-form-field-error-text-color);
 }
 
+.flex {
+  display: flex !important;
+  gap: 1em;
+}
+
 .full-width {
+  width: 100%;
+}
+
+.search-input {
+  background-color: var(--mat-app-background-color);
+  color: var(--mat-app-text-color);
+  border: 1px solid var(--mat-app-text-color);
+  border-radius: 20px;
+  padding: 0.8em 1.2em;
   width: 100%;
 }
 
@@ -128,6 +153,7 @@ h1 {
 
 .sidenav-scroll-wrapper,
 .sidenav-content,
+.sidenav-content-marginless,
 .column-content {
   overscroll-behavior: contain;
 }
@@ -148,22 +174,22 @@ h1 {
   margin-bottom: 1em;
 }
 
-// .cropper-view-box,
-// .cropper-face {
-//   border-radius: 50%;
-// }
+.capitalize {
+  text-transform: capitalize;
+}
 
-// .cropper-view-box {
-//   outline: 0;
-//   box-shadow: 0 0 0 1px #39f;
-// }
+.link {
+  text-decoration: none;
+}
 
-// .crop-actions {
-//   display: flex;
-//   width: 100%;
-//   justify-content: flex-end;
-//   margin-top: 1rem;
-// }
+.link:hover {
+  text-decoration: underline;
+}
+
+/** This makes the mat-input-field possible to go smaller than 180px. */
+.mat-mdc-form-field-infix {
+  width: 100% !important;
+}
 
 .ellipsis {
   white-space: nowrap;
@@ -173,7 +199,19 @@ h1 {
   width: 100%; /* Ensure the element has a defined width */
 }
 
+.wrap {
+  word-wrap: break-word;
+}
+
+.full-size {
+  width: 100%;
+}
+
 .toolbar-spacer {
+  flex: 1 1 auto;
+}
+
+.spacer {
   flex: 1 1 auto;
 }
 
@@ -186,6 +224,14 @@ h1 {
   width: 100%;
   height: 100%;
   border: none; /* Optional: Remove iframe border */
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.centered {
+  text-align: center;
 }
 
 // .file-frame body {
@@ -202,8 +248,25 @@ h1 {
 //   object-fit: contain; /* Adjust as needed: contain, cover, fill */
 // }
 
+.margin-bottom {
+  margin-bottom: 1em;
+}
+
+/** Makes the mat-icon-button within app toolbar look green. */
+.toolbar-icon-button .mat-icon {
+  color: var(--mdc-text-button-label-text-color);
+}
+
+[mat-icon-button] {
+  vertical-align: middle !important;
+}
+
 @media (max-width: 959.98px) {
   .hide-small {
-    display: none;
+    display: none !important;
+  }
+
+  .margin-bottom {
+    margin-bottom: 8px;
   }
 }

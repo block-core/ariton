@@ -1,7 +1,56 @@
-<h1>Notifications</h1>
+<mat-card class="toolbar-actions margin-bottom notifications-card">
+  <mat-card-content>
+    <h1>Notifications</h1>
+    <button type="button" mat-button [disabled]="true">
+      <mat-icon>check</mat-icon>
+      <span>Mark all as read</span>
+    </button>
+    <button type="button" mat-button (click)="deleteNotifications()">
+      <mat-icon>delete</mat-icon>
+      <span>Delete all</span>
+    </button>
+    <button type="button" mat-button [routerLink]="['/settings', 'notifications']">
+      <mat-icon>settings</mat-icon>
+      <span>Notification Settings</span>
+    </button>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="notifications-card">
+  <mat-card-content>
+    @for(entry of notifications(); track entry) {
+    <mat-card class="card-notification" appearance="outlined">
+      <mat-card-header>
+        <mat-icon class="card-icon" inline="true" mat-card-avatar>{{ entry.data.icon }}</mat-icon>
+        <mat-card-title>{{ entry.data.title }}</mat-card-title>
+        <mat-card-subtitle>App: {{ entry.data.app }} ({{ '2024-08-22 12:00' | ago }})</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        @if (entry.data.app === 'Friends') {
+        <div class="notification-description">{{ entry.data.description }}</div>
+        <!--
+        TODO: Use the record.author, not from data. From data is for temporary prototyping.
+        <app-profile-header [did]="notification.record.author"> -->
+        <app-profile-header [did]="entry.data.author"></app-profile-header>
+        } @else if(entry.data.app === 'Connect') {
+        <div class="notification-description">{{ entry.data.description }}</div>
+        <app-profile-header [did]="entry.record.author"></app-profile-header>
+        }
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-flat-button (click)="accept(entry)" [disabled]="entry.loading">ACCEPT</button>
+        <button mat-button (click)="deleteNotification(entry)" [disabled]="entry.loading">DELETE</button>
+        <button mat-button (click)="block(entry)" [disabled]="entry.loading">BLOCK</button>
+      </mat-card-actions>
+    </mat-card>
+    }
+  </mat-card-content>
+</mat-card>
 
 <p>TODO: This notification should use the modern support for browser vendor based infrastructure for notifications.</p>
 
+<button mat-flat-button (click)="generateNotification()">Create a sample notification</button>
+&nbsp;
 <button mat-flat-button (click)="enableNotifications()">Enable Device Notifications</button>
 &nbsp;
 <button mat-flat-button (click)="disableNotifications()">Disable Device Notifications</button>

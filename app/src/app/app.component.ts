@@ -1,4 +1,4 @@
-import { Component, effect, inject, signal } from '@angular/core';
+import { APP_INITIALIZER, Component, effect, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { LayoutComponent } from './layout/layout.component';
 import { Router, NavigationStart, NavigationEnd } from '@angular/router';
@@ -11,6 +11,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { RestoreComponent } from './account/create/restore/restore.component';
 import { OnboardingState } from './app.service';
+import { HashService } from './hash.service';
+
+export function initializeApp(hashService: HashService) {
+  return (): Promise<void> => hashService.loadHash();
+}
+
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -26,6 +32,12 @@ import { OnboardingState } from './app.service';
   styleUrl: './app.component.css',
   providers: [
     {
+      provide: APP_INITIALIZER,
+      useFactory: initializeApp,
+      deps: [HashService],
+      multi: true,
+    },
+    {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
       useValue: { appearance: 'outline' },
     },
@@ -35,10 +47,6 @@ export class AppComponent {
   title = 'app';
   appService = inject(AppService);
   previousUrl = '';
-
-  countChar(char: string, string: string): number {
-    return string.split(char).length - 1;
-  }
 
   constructor(private router: Router, private layout: LayoutService, public identityService: IdentityService) {
     // This must happen in the constructor on app component, or when loading in PWA, it won't
@@ -52,33 +60,6 @@ export class AppComponent {
 
     console.log(queryParam);
     console.log(this.appService.params);
-
-    this.router.events.subscribe((event: any) => {
-      if (event instanceof NavigationStart) {
-        // Navigation started
-
-        // console.log('previousUrl', this.previousUrl);
-        // console.log('event.url', event.url);
-
-        // if (event.url.startsWith(this.previousUrl)) {
-        //   console.log('Keep actions as we are still under same app');
-        // } else {
-        this.layout.enableScrolling();
-        // this.layout.resetActions();
-        // }
-      } else if (event instanceof NavigationEnd) {
-        // Navigation ended
-        //this.layout.enableScrolling();
-        if (this.countChar('/', event.url) > 1) {
-          this.layout.enableNavigation();
-        } else {
-          this.layout.disableNavigation();
-        }
-
-        // this.previousUrl = event.url;
-        // console.log('This is the previous url', this.previousUrl);
-      }
-    });
 
     effect(() => {
       if (this.appService.initialized()) {
@@ -133,3 +114,15 @@ export class AppComponent {
     // }
   }
 }
+
+// if (typeof Worker !== 'undefined') {
+//   // Create a new
+//   const worker = new Worker(new URL('./app.worker', import.meta.url));
+//   worker.onmessage = ({ data }) => {
+//     console.log(`page got message: ${data}`);
+//   };
+//   worker.postMessage('hello');
+// } else {
+//   // Web Workers are not supported in this environment.
+//   // You should add a fallback so that your program still executes correctly.
+// }

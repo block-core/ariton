@@ -1,5 +1,5 @@
 export const protocolDefinition = {
-  protocol: 'https://schema.ariton.app/community/entry',
+  protocol: 'https://schema.ariton.app/community',
   published: true,
   types: {
     community: {

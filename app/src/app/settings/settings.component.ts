@@ -7,11 +7,13 @@ import { RouterLink } from '@angular/router';
 import { IdentityService } from '../identity.service';
 import { DidResolutionResult } from '@web5/dids';
 import { CommonModule } from '@angular/common';
+import { LayoutService } from '../layout.service';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatListModule, MatIconModule, RouterLink],
+  imports: [MatCardModule, CommonModule, MatButtonModule, MatListModule, MatIconModule, RouterLink],
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -22,6 +24,8 @@ export class SettingsComponent {
 
   identity = inject(IdentityService);
 
+  layout = inject(LayoutService);
+
   document = signal<DidResolutionResult | undefined>(undefined);
 
   nodes = signal<any>([]);
@@ -29,6 +33,10 @@ export class SettingsComponent {
   readonly settings = this.settingsState.state.asReadonly();
 
   constructor(private settingsState: SettingsStateService) {
+    this.layout.marginOn();
+
+    this.layout.resetActions();
+
     effect(() => {
       if (this.identity.initialized()) {
         this.loadDIDDocument();

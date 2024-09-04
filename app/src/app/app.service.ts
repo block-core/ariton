@@ -6,12 +6,17 @@ import { activatePolyfills, Web5ConnectResult } from '@web5/api';
 import * as packageInfo from '../../package.json';
 import { ProtocolService } from './protocol.service';
 import { ProfileService } from './profile.service';
+import { HashService } from './hash.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ConnectionService } from './connection.service';
+import { WorkerService } from './worker.service';
 
 export interface AppState {
   selectedAccount: string;
   backupConfirmed?: boolean;
   hidden: any;
   loginAction: string;
+  bundleHash: string | null;
 }
 
 export interface Account {
@@ -47,15 +52,23 @@ export class AppService {
 
   storage = inject(StorageService);
 
+  hash = inject(HashService);
+
+  worker = inject(WorkerService);
+
   crypto = inject(CryptoService);
 
   identity = inject(IdentityService);
 
   profile = inject(ProfileService);
 
+  connection = inject(ConnectionService);
+
   protocol = inject(ProtocolService);
 
-  state = signal<AppState>({ loginAction: '/dashboard', selectedAccount: '', hidden: {} });
+  snackBar = inject(MatSnackBar);
+
+  state = signal<AppState>({ loginAction: '/dashboard', selectedAccount: '', hidden: {}, bundleHash: '' });
 
   account = signal<Account>({ did: '', recoveryPhrase: '', password: '', passwordHash: '' });
 
@@ -67,6 +80,8 @@ export class AppService {
   package = packageInfo;
 
   dependencies: any;
+
+  aritonDid = 'did:dht:mo7am9cz6qrjwoc4kapffeue9kjw6igdh9dmqd3ywdif6qa7ju4o';
 
   constructor() {
     console.log(`Ariton v${this.package.version} initialized.`);
@@ -133,11 +148,16 @@ export class AppService {
       selectedAccount: '',
       hidden: {},
       loginAction: '/introduction',
+      bundleHash: '',
     };
 
     this.storage.save('state', state);
 
     await this.initialize();
+  }
+
+  openSnackBar(message: string) {
+    this.snackBar.open(message, undefined, { duration: 2000 });
   }
 
   async initialize() {
@@ -250,11 +270,40 @@ export class AppService {
     // Load the user profile.
     await this.profile.openCurrentUserProfile(this.account().did);
 
+    // Load user and app data.
+    await this.loadAppData();
+
     this.initialized.set(true);
 
     this.loading.set(false);
 
+    // Start the background worker that will process data in the background.
+    this.worker.start();
+
+    this.firstTimeInitialization();
+  }
+
+  private async loadAppData() {
+    console.log('Loading app data...');
+    // Loads the connections and blocks, used by various app and services on Ariton.
+    await this.connection.initialize();
+
+    console.log('App data loaded.');
+  }
+
+  /** Only run when the hash bundle has changed (updated app) */
+  async firstTimeInitialization() {
+    // If the previous bundle hash is the same as the current, we don't need to re-register.
+    // For local development, the getHash should be null, so we always re-register.
+    if (this.hash.getHash() != null && this.state().bundleHash === this.hash.getHash()) {
+      return;
+    }
+
     // When intialization is finished, make sure we always re-register the protocols.
     this.protocol.register();
+
+    // Save the current bundle hash to the state.
+    this.state().bundleHash = this.hash.getHash();
+    this.saveState();
   }
 }

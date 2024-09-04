@@ -5,13 +5,16 @@
 <div id="file-viewer">
   @if(record) {
   <mat-toolbar>
-    <button mat-icon-button [disabled]="true">
+    <button [title]="'Delete'" mat-icon-button (click)="deleteFile()">
       <mat-icon>delete</mat-icon>
     </button>
     <button [title]="'Download'" mat-icon-button (click)="download()">
       <mat-icon>file_download</mat-icon>
     </button>
+    <!-- This tags read throws errors upon delete and redirect. Needed this extra guard. -->
+    @if (record.tags) {
     <span>{{ this.record.tags['name'] }}</span>
+    }
     <span class="toolbar-spacer"></span>
     <button mat-icon-button [disabled]="true">
       <mat-icon>zoom_in</mat-icon>

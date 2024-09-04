@@ -11,7 +11,7 @@ export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'dashboard',
+    redirectTo: 'introduction',
   },
   {
     path: 'introduction',
@@ -23,7 +23,7 @@ export const routes: Routes = [
     path: 'dashboard',
     loadComponent: () => import('./dashboard/dashboard.component').then((c) => c.DashboardComponent),
     title: 'Dashboard',
-    data: { icon: 'dashboard' },
+    data: { hide: true, icon: 'dashboard' },
   },
   {
     path: 'communities',
@@ -48,6 +48,26 @@ export const routes: Routes = [
     loadComponent: () => import('./friends/friends.component').then((c) => c.FriendsComponent),
     title: 'Friends',
     data: { hide: false, icon: 'people' },
+  },
+  {
+    path: 'app/chat',
+    redirectTo: 'app/chat/home',
+    pathMatch: 'full',
+  },
+  {
+    path: 'app/chat/:id',
+    loadComponent: () => import('./apps/app/chat/chat.component').then((c) => c.ChatComponent),
+    title: 'Chat',
+    data: { icon: 'chat' },
+  },
+  {
+    path: 'app/voluntaryist-covenant',
+    loadComponent: () =>
+      import('./apps/app/voluntaryist-covenant/voluntaryist-covenant.component').then(
+        (c) => c.VoluntaryistCovenantComponent,
+      ),
+    title: 'Voluntaryist Covenant',
+    data: { hide: true, icon: 'assured_workload' },
   },
   {
     path: 'marketplace',
@@ -105,16 +125,22 @@ export const routes: Routes = [
     title: 'Notes',
     data: { icon: 'note' },
   },
+
   {
-    path: 'app/chat',
-    loadComponent: () => import('./apps/app/chat/chat.component').then((c) => c.ChatComponent),
-    title: 'Chat',
-    data: { icon: 'chat' },
+    path: 'app/text',
+    loadComponent: () => import('./apps/app/text/text.component').then((c) => c.TextComponent),
+    title: 'Text',
+    data: { icon: 'notes' },
   },
   {
-    path: 'app/todo',
-    loadComponent: () => import('./apps/app/todo/todo.component').then((c) => c.TodoComponent),
-    title: 'Todo',
+    path: 'app/tasks',
+    redirectTo: 'app/tasks/home',
+    pathMatch: 'full',
+  },
+  {
+    path: 'app/tasks/:id',
+    loadComponent: () => import('./apps/app/tasks/tasks.component').then((c) => c.TasksComponent),
+    title: 'Tasks',
     data: { icon: 'task' },
   },
   {
@@ -124,8 +150,14 @@ export const routes: Routes = [
     data: { icon: 'folder_shared' },
   },
   {
-    path: 'registries/:id',
+    path: 'registry/bsn',
     loadComponent: () => import('./registries/registry/registry.component').then((c) => c.RegistryComponent),
+    title: 'Registry',
+    data: { hide: true, icon: 'folder_shared' },
+  },
+  {
+    path: 'registry/freeid',
+    loadComponent: () => import('./registries/registry//freeid/freeid.component').then((c) => c.FreeIDComponent),
     title: 'Registry',
     data: { hide: true, icon: 'folder_shared' },
   },
@@ -139,7 +171,7 @@ export const routes: Routes = [
     path: 'data',
     loadComponent: () => import('./data/data.component').then((c) => c.DataComponent),
     title: 'Data',
-    data: { icon: 'source' },
+    data: { hide: true, icon: 'source' },
   },
   {
     path: 'data/:source/:id',
@@ -163,7 +195,7 @@ export const routes: Routes = [
     path: 'notifications',
     loadComponent: () => import('./notifications/notifications.component').then((c) => c.NotificationsComponent),
     title: 'Notifications',
-    data: { hide: false, icon: 'notifications' },
+    data: { hide: true, icon: 'notifications' },
   },
   {
     path: 'accounts',
@@ -226,6 +258,12 @@ export const routes: Routes = [
     data: { hide: true, icon: 'settings' },
   },
   {
+    path: 'settings/help',
+    loadComponent: () => import('./settings/help/help.component').then((c) => c.HelpComponent),
+    title: 'Help',
+    data: { hide: true, icon: 'help' },
+  },
+  {
     path: 'settings/licenses',
     loadComponent: () => import('./settings/licenses/licenses.component').then((c) => c.LicensesComponent),
     title: 'Licenses',
@@ -244,6 +282,25 @@ export const routes: Routes = [
     data: { hide: true, icon: 'search' },
   },
   {
+    path: 'settings/connections',
+    loadComponent: () => import('./settings/connections/connections.component').then((c) => c.ConnectionsComponent),
+    title: 'Connections',
+    data: { hide: true, icon: 'people' },
+  },
+  {
+    path: 'settings/blocks',
+    loadComponent: () => import('./settings/blocks/blocks.component').then((c) => c.BlocksComponent),
+    title: 'Blocks',
+    data: { hide: true, icon: 'block' },
+  },
+  {
+    path: 'settings/notifications',
+    loadComponent: () =>
+      import('./settings/notifications/notifications.component').then((c) => c.NotificationsComponent),
+    title: 'Notifications',
+    data: { hide: true, icon: 'settings' },
+  },
+  {
     path: 'tree',
     loadComponent: () => import('./tree/tree.component').then((c) => c.TreeComponent),
     title: 'Tree',
@@ -256,12 +313,6 @@ export const routes: Routes = [
     data: { hide: true, icon: 'folder' },
   },
   {
-    path: 'help',
-    loadComponent: () => import('./help/help.component').then((c) => c.HelpComponent),
-    title: 'Help',
-    data: { hide: true, icon: 'help' },
-  },
-  {
     path: 'storage',
     loadComponent: () => import('./storage/storage.component').then((c) => c.StorageComponent),
     title: 'Storage',
@@ -271,6 +322,6 @@ export const routes: Routes = [
     path: 'management',
     loadComponent: () => import('./management/management.component').then((c) => c.ManagementComponent),
     title: 'Management',
-    data: { icon: 'manage_accounts' },
+    data: { hide: true, icon: 'manage_accounts' },
   },
 ];

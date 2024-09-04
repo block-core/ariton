@@ -1,3 +1,12 @@
+<mat-card class="toolbar-actions margin-bottom">
+  <mat-card-content>
+    <button type="button" mat-button (click)="newNote()">
+      <mat-icon>note_add</mat-icon>
+      New note
+    </button>
+  </mat-card-content>
+</mat-card>
+
 <div class="notes">
   <div class="notes-top">
     <mat-chip-listbox [multiple]="false" [(ngModel)]="selectedTag">

@@ -10,7 +10,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTable, MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import { TableDataSource, TableItem } from './apps-datasource';
+// import { TableDataSource, TableItem } from './apps-datasource';
 import { Router, RouterModule } from '@angular/router';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -18,11 +18,13 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatMenuModule } from '@angular/material/menu';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { map } from 'rxjs';
+import { LayoutService } from '../layout.service';
 
 type CardContent = {
   title: string;
   description: string;
   imageUrl: string;
+  id?: string;
 };
 
 @Component({
@@ -58,12 +60,9 @@ export class AppsComponent {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatTable) table!: MatTable<TableItem>;
-  dataSource = new TableDataSource();
-
+  @ViewChild(MatTable) table!: MatTable<CardContent>;
+  // dataSource = new TableDataSource();
   cards = signal<CardContent[]>([]);
-
-  images = ['nature', 'sky', 'grass', 'mountains', 'rivers', 'glacier', 'forest', 'streams', 'rain', 'clouds'];
 
   // hideSingleSelectionIndicator = signal(false);
   // toggle() {
@@ -96,67 +95,103 @@ export class AppsComponent {
 
   checked = model<boolean>(false);
 
+  layout = inject(LayoutService);
+
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['id', 'name'];
+  displayedColumns = ['imageUrl', 'title', 'description'];
 
   constructor(private router: Router) {
+    this.layout.marginOn();
+
     // Register a new effect.
     effect(() => {
-      setTimeout(() => {
-        if (this.table) {
-          this.dataSource.sort = this.sort;
-          this.dataSource.paginator = this.paginator;
-          this.table.dataSource = this.dataSource;
-        }
-      });
+      if (this.viewStyle() === 'table') {
+        setTimeout(() => {
+          // this.dataSource.sort = this.sort;
+          // this.dataSource.paginator = this.paginator;
+          this.table.dataSource = this.cards();
+
+          console.log('DATA SOURCE SEt ON TABLE!!!');
+
+          // this.table.dataSource = this.dataSource;
+        });
+      }
     });
 
     effect(() => {
       console.log(`The checked is: ${this.checked()})`);
     });
-
-    const cards: CardContent[] = [];
-    for (let i = 0; i < this.images.length; i++) {
-      cards.push({
-        title: `App ${i + 1}`,
-        description: `This is a description of app. Add this app to your community.`,
-        imageUrl: `https://picsum.photos/seed/${this.images[i]}x/200/300`,
-      });
-    }
-
-    this.cards.set(cards);
   }
 
   open(community: string) {
     this.router.navigate(['community', community]);
   }
 
-  private breakpointObserver = inject(BreakpointObserver);
-
-  /** Based on the screen size, switch from standard to one column per row */
-  cardsHighlighted = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
-    map(({ matches }) => {
-      if (matches) {
-        return [
-          { title: 'Friends', cols: 1, rows: 1, description: 'Connect with your friends and connections.' },
-          { title: 'Chat', cols: 1, rows: 1, description: 'Chat with your friends or community groups' },
-          { title: 'File Sharing', cols: 1, rows: 1, description: 'Share files with friends and communities.' },
-          { title: 'Tasks', cols: 1, rows: 1, description: 'Manage tasks, either alone or with friends or communities.' },
-        ];
-      }
-
-      return [
-        { title: 'Friends', cols: 2, rows: 1, description: 'Connect with your friends and connections.' },
-        { title: 'Chat', cols: 1, rows: 1, description: 'Chat with your friends or community groups' },
-        { title: 'File Sharing', cols: 1, rows: 2, description: 'Share files with friends and communities.' },
-        { title: 'Tasks', cols: 1, rows: 1, description: 'Manage tasks, either alone or with friends or communities.' },
-      ];
-    }),
-  );
-
   ngAfterViewInit(): void {
     // this.dataSource.sort = this.sort;
     // this.dataSource.paginator = this.paginator;
     // this.table.dataSource = this.dataSource;
+
+    const cards: CardContent[] = [];
+
+    // The "id" of apps should be unique and should not be a number, maybe a hash or potentially
+    // mapped to a DID?
+
+    cards.push({
+      title: 'Voluntaryist Covenant',
+      id: 'voluntaryist-covenant',
+      description:
+        'The covenant is based on the natural rights of self-ownership, non-aggression, and property rights. Use this app to sign the covenant and store the credential.',
+      imageUrl:
+        'https://static.wixstatic.com/media/b8788b_e8db1fae306c4f4d95423ae5861f8fb3~mv2.png/v1/fill/w_128,h_128,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/World_Voluntaryist_Organisation-removebg-preview.png',
+    });
+
+    cards.push({
+      title: 'Chat',
+      id: 'chat',
+      description: 'Send private messages to other users.',
+      imageUrl: '/icons/apps/chat.jpg',
+    });
+
+    cards.push({
+      title: 'Files',
+      id: 'files',
+      description: 'Upload and share files stored on your DWeb node.',
+      imageUrl: '/icons/apps/files.jpg',
+    });
+
+    cards.push({
+      title: 'Notes',
+      id: 'notes',
+      description: 'Manage your private and shared notes.',
+      imageUrl: '/icons/apps/notes.jpg',
+    });
+
+    cards.push({
+      title: 'Tasks',
+      id: 'tasks',
+      description: 'Manage your private and shared tasks.',
+      imageUrl: '/icons/apps/tasks.jpg',
+    });
+
+    cards.push({
+      title: 'Text',
+      id: 'text',
+      description: 'Keep your inspiration going with this text editor. Use it to write and share your thoughts.',
+      imageUrl: '/icons/apps/text.jpg',
+    });
+
+    // for (let i = 0; i < this.images.length; i++) {
+    //   cards.push({
+    //     title: `App ${i + 1}`,
+    //     // id: `${i + 1}`,
+    //     description: `This is a description of app. Add this app to your community.`,
+    //     imageUrl: `https://picsum.photos/seed/${this.images[i]}x/200/300`,
+    //   });
+    // }
+
+    this.cards.set(cards);
+
+    // this.table.dataSource = this.cards();
   }
 }

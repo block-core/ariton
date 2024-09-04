@@ -11,7 +11,7 @@ import { MatTable, MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { Community, TableDataSource } from './communities-datasource';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { AppService } from '../app.service';
@@ -27,6 +27,7 @@ type CardContent = {
   selector: 'app-communities',
   standalone: true,
   imports: [
+    RouterModule,
     MatButtonToggleModule,
     MatIconModule,
     MatInputModule,
@@ -61,7 +62,7 @@ export class CommunitiesComponent {
 
   layout = inject(LayoutService);
 
-  images = ['nature', 'sky', 'grass', 'mountains', 'rivers', 'glacier', 'forest', 'streams', 'rain', 'clouds'];
+  images = ['nature', 'sky', 'grass', 'mountains', 'rivers', 'glacier', 'forest'];
 
   // hideSingleSelectionIndicator = signal(false);
   // toggle() {
@@ -98,6 +99,8 @@ export class CommunitiesComponent {
   displayedColumns = ['name', 'description'];
 
   constructor(private router: Router) {
+    this.layout.marginOn();
+
     // Register a new effect.
     effect(() => {
       setTimeout(() => {
@@ -114,6 +117,7 @@ export class CommunitiesComponent {
     });
 
     const cards: Community[] = [];
+
     for (let i = 0; i < this.images.length; i++) {
       cards.push({
         id: 'id' + 1,
@@ -134,6 +138,78 @@ export class CommunitiesComponent {
       });
     }
 
+    cards.push({
+      id: 'id' + 1,
+      name: `Craft Knitting`,
+      description: `Join the craft knitting community to share amazing patterns and socialize with other knitters.`,
+      thumbnail: `https://www.studioknitsf.com/wp-content/uploads/2021/02/thumbnails-pattern-book-2021.jpg.webp`,
+      private: false,
+      visibility: 'public',
+      type: 'generic',
+      features: {
+        discussion: true,
+        members: true,
+        events: true,
+        media: true,
+        files: true,
+      },
+      apps: ['events', 'media', 'files'],
+    });
+
+    cards.push({
+      id: 'id' + 1,
+      name: `Montenegro Liberterian Festival 2024`,
+      description: `Join the MTLFest 2024 community group.`,
+      thumbnail: `https://optim.tildacdn.one/tild3333-6237-4666-b532-336530656464/-/resize/600x/-/format/webp/FMF_Yellow_Circle.png`,
+      private: false,
+      visibility: 'public',
+      type: 'generic',
+      features: {
+        discussion: true,
+        members: true,
+        events: true,
+        media: true,
+        files: true,
+      },
+      apps: ['events', 'media', 'files'],
+    });
+
+    cards.push({
+      id: 'id' + 1,
+      name: `Montelibero`,
+      description: `Free Society Project Europe.`,
+      thumbnail: `https://montelibero.org/wp-content/uploads/2023/04/fspe_logo_3-05-200.png`,
+      private: false,
+      visibility: 'public',
+      type: 'generic',
+      features: {
+        discussion: true,
+        members: true,
+        events: true,
+        media: true,
+        files: true,
+      },
+      apps: ['events', 'media', 'files'],
+    });
+
+    cards.push({
+      id: 'id' + 1,
+      name: `Liberstad`,
+      description: `The Free City of Liberstad`,
+      thumbnail: `https://free-communities.org/wp-content/uploads/2023/10/liberstad-flag-10.23.webp`,
+      private: false,
+      visibility: 'public',
+      type: 'generic',
+      features: {
+        discussion: true,
+        members: true,
+        events: true,
+        media: true,
+        files: true,
+      },
+      apps: ['events', 'media', 'files'],
+    });
+
     this.cards.set(cards);
 
     this.dataSource.data = cards;
@@ -144,13 +220,7 @@ export class CommunitiesComponent {
   }
 
   ngOnInit() {
-    this.layout.addAction({
-      name: 'Create',
-      icon: 'add',
-      action: () => {
-        this.router.navigate(['communities', 'create']);
-      },
-    });
+    this.layout.resetActions();
   }
 
   ngAfterViewInit(): void {

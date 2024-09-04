@@ -49,41 +49,70 @@
       </button>
       }
 
-      <span class="toolbar-spacer"></span>
+      <span class="toolbar-spacer">
+        @if (layout.search()) {
+        <input type="search" class="search-input" [(ngModel)]="layout.searchInput" (input)="onSearchInput($event)" />
+        }
+
+        <!-- <mat-form-field class="small-search-input" subscriptSizing="dynamic">
+          <input type="search" matInput placeholder="Search" />
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field> -->
+      </span>
       <span class="toolbar-items">
+        @if (layout.search()) {
+
+        <!-- <zxing-scanner [start]="true" (scanSuccess)="qrScan($event)"> </zxing-scanner> -->
+
+        <button mat-icon-button (click)="qrScan()">
+          <mat-icon>qr_code_scanner</mat-icon>
+        </button>
+        }
+
+        <button mat-icon-button (click)="layout.toggleSearch()">
+          @if (layout.search()) {
+          <mat-icon>close</mat-icon>
+          } @else {
+          <mat-icon>search</mat-icon>
+          }
+        </button>
+
         @if (updateService.isNewVersionAvailable) {
         <button matTooltip="Update available. Click to update now." mat-icon-button (click)="applyUpdate()">
           <mat-icon>get_app</mat-icon>
         </button>
         }
 
-        <button mat-icon-button [matMenuTriggerFor]="menuDebug">
-          <mat-icon>warning</mat-icon>
-        </button>
-
-        <mat-menu #menuDebug="matMenu">
-          <button mat-menu-item (click)="wipe()">
-            <mat-icon>settings</mat-icon>
-            <span>Reset All Data (Wipe)</span>
-          </button>
-        </mat-menu>
-
-        <button mat-icon-button [matMenuTriggerFor]="menuNotifications">
+        <button class="notification-toolbar" mat-icon-button [matMenuTriggerFor]="menuNotifications">
           <mat-icon>notifications</mat-icon>
         </button>
         <mat-menu #menuNotifications="matMenu">
-          <button mat-menu-item [routerLink]="['/settings']">
+          <button mat-menu-item (click)="wipe()">
+            <mat-icon>delete</mat-icon>
+            <span>Reset All Data (Wipe)</span>
+          </button>
+          <mat-divider></mat-divider>
+          <button mat-menu-item [routerLink]="['/settings', 'notifications']">
             <mat-icon>settings</mat-icon>
             <span>Notification Settings</span>
           </button>
           <mat-divider></mat-divider>
-          <button mat-menu-item>
+          @for (notification of notifications(); track notification) {
+          <button mat-menu-item [routerLink]="['/notifications']">
+            <mat-icon>{{ notification.data.icon }}</mat-icon>
+            <span>{{ notification.data.title }}</span>
+            <div class="notification-details dimmed">{{ notification.data.app }} ({{ '2024-08-22 12:00' | ago }})</div>
+          </button>
+          }
+          <!-- <button mat-menu-item [routerLink]="['/notifications']">
             <mat-icon>forum</mat-icon>
             <span>Knitting Community posted new pattern</span>
+            <div class="notification-details dimmed">Community ({{ '2024-08-22 12:00' | ago }})</div>
           </button>
-          <button mat-menu-item>
+          <button mat-menu-item [routerLink]="['/notifications']">
             <mat-icon>face</mat-icon>
             <span>Joe sent you a message</span>
+            <div class="notification-details dimmed">Chat ({{ '2024-08-22 12:00' | ago }})</div>
           </button>
           <button mat-menu-item>
             <mat-icon>key</mat-icon>
@@ -92,7 +121,7 @@
           <button mat-menu-item>
             <mat-icon>verified_user</mat-icon>
             <span>Social account recovery request</span>
-          </button>
+          </button> -->
         </mat-menu>
 
         <button mat-icon-button [matMenuTriggerFor]="menu">
@@ -117,12 +146,17 @@
             <span>View Profile</span>
           </button>
 
+          <button (click)="copyDID(identity.did)" mat-menu-item class="account-menu-item">
+            <mat-icon>content_copy</mat-icon>
+            <span>Copy My DID</span>
+          </button>
+
           <mat-divider></mat-divider>
 
-          <button mat-menu-item [matMenuTriggerFor]="menuAccounts">
+          <!-- <button mat-menu-item [matMenuTriggerFor]="menuAccounts">
             <mat-icon>switch_account</mat-icon>
             <span>Accounts</span>
-          </button>
+          </button> -->
 
           <button mat-menu-item (click)="lock()">
             <mat-icon>lock</mat-icon>
@@ -135,12 +169,18 @@
             <span>Language: English</span>
           </button>
           <mat-divider></mat-divider>
+
+          <button class="notification-menu" [routerLink]="['/notifications']" mat-menu-item>
+            <mat-icon>notifications</mat-icon>
+            <span>Notifications</span>
+          </button>
+
           <button [routerLink]="['/settings']" mat-menu-item>
             <mat-icon>settings</mat-icon>
             <span>Settings</span>
           </button>
           <mat-divider></mat-divider>
-          <button [routerLink]="['/help']" mat-menu-item>
+          <button [routerLink]="['/settings', 'help']" mat-menu-item>
             <mat-icon>help</mat-icon>
             <span>Help</span>
           </button>
@@ -184,8 +224,11 @@
           <button mat-menu-item>
             <span>English</span>
           </button>
-          <button mat-menu-item>
+          <button mat-menu-item [disabled]="true">
             <span>Norwegian</span>
+          </button>
+          <button mat-menu-item [disabled]="true">
+            <span>Serbian</span>
           </button>
         </mat-menu>
 
@@ -194,7 +237,10 @@
     </mat-toolbar>
 
     <div class="sidenav-scroll-wrapper">
-      <div class="sidenav-content">
+      <div
+        id="sidenav-content"
+        [ngClass]="{ 'sidenav-content': layout.margin(), 'sidenav-content-marginless': !layout.margin() }"
+      >
         <ng-content></ng-content>
       </div>
     </div>

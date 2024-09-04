@@ -8,7 +8,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ProfileService } from '../profile.service';
 import { MatTabsModule } from '@angular/material/tabs';
 import { IdentityService } from '../identity.service';
-import { message, profile } from '../../protocols';
+import { credential, message, profile } from '../../protocols';
 import { SafeUrlPipe } from '../shared/pipes/safe-url.pipe';
 import { DomSanitizer } from '@angular/platform-browser';
 import * as QRCode from 'qrcode';
@@ -20,6 +20,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { protocolDefinition as messageDefinition } from '../../protocols/message';
 import { VerifiableCredential } from '@web5/credentials';
 import { BearerDid } from '@web5/dids';
+import { LayoutService } from '../layout.service';
+import { FriendService } from '../friend.service';
+import { ConnectionService } from '../connection.service';
 
 @Component({
   selector: 'app-profile',
@@ -45,7 +48,13 @@ export class ProfileComponent {
 
   identity = inject(IdentityService);
 
+  connection = inject(ConnectionService);
+
   app = inject(AppService);
+
+  layout = inject(LayoutService);
+
+  friend = inject(FriendService);
 
   data = signal<any>(undefined);
 
@@ -55,12 +64,9 @@ export class ProfileComponent {
     URL.revokeObjectURL(this.avatarSrc);
   }
 
-  constructor(
-    private dialog: MatDialog,
-    private sanitizer: DomSanitizer,
-    private _snackBar: MatSnackBar,
-    private route: ActivatedRoute,
-  ) {
+  constructor(private dialog: MatDialog, private sanitizer: DomSanitizer, private route: ActivatedRoute) {
+    this.layout.marginOff();
+
     effect(() => {
       if (this.app.initialized()) {
         this.route.paramMap.subscribe((params) => {
@@ -79,86 +85,20 @@ export class ProfileComponent {
   async loadData() {}
 
   async addFriend(did: string) {
-    console.log('TARGET DID 1:', this.profileService.selected().did);
-    console.log('TARGET DID 2:', this.profileService.current().did);
-    console.log('AUTHOR DID:', this.identity.did);
-    console.log('INPUT DID:', did);
+    const { record } = await this.friend.createRequest(did);
 
-    const { status: requestCreateStatus, record: messageRecord } = await this.identity.web5.dwn.records.create({
-      data: { message: 'I want to be your friend.' },
-      message: {
-        recipient: did,
-        protocol: messageDefinition.protocol,
-        protocolPath: 'request',
-        schema: messageDefinition.types.request.schema,
-        dataFormat: messageDefinition.types.request.dataFormats[0],
-      },
-    });
-
-    console.log('Request create status:', requestCreateStatus);
-
-    const { status: requestStatus } = await messageRecord!.send(did);
+    // TODO: Perform this without waiting, or perhaps wait?
+    const { status: requestStatus } = await record!.send(did);
 
     if (requestStatus.code !== 202) {
-      this.openSnackBar(`Friend request failed.Code: ${requestStatus.code}, Details: ${requestStatus.detail}.`);
+      this.app.openSnackBar(`Friend request failed.Code: ${requestStatus.code}, Details: ${requestStatus.detail}.`);
     } else {
-      this.openSnackBar('Friend request sent');
+      this.app.openSnackBar('Friend request sent');
     }
   }
 
-  async issueFriendVC() {
-    const vc = await VerifiableCredential.create({
-      type: 'FriendshipCredential',
-      issuer: this.identity.did,
-      subject: this.identity.did,
-      data: null,
-    });
-
-    console.log('VC:', vc);
-
-    const bearerDid = await this.identity.activeAgent().identity.get({ didUri: this.identity.did });
-
-    if (bearerDid) {
-      const vc_jwt = await vc.sign({ did: bearerDid.did });
-      console.log('VC JWT:', vc_jwt);
-
-      const { record } = await this.identity.web5.dwn.records.create({
-        data: vc_jwt,
-        message: {
-          schema: 'FriendsCredential',
-          dataFormat: 'application/vc+jwt',
-          published: true,
-        },
-      });
-
-      console.log('VC RECORD:', record);
-
-      const readSignedVc = await record!.data.text();
-
-      console.log('READ SIGNED VC:', readSignedVc);
-
-      const parsedVc = VerifiableCredential.parseJwt({ vcJwt: readSignedVc });
-
-      console.log('PARSED VC:', parsedVc);
-
-      const finalVC = await VerifiableCredential.create({
-        type: 'FriendshipCredential',
-        issuer: this.identity.did,
-        subject: this.identity.did,
-        data: {
-          vc: vc_jwt,
-        },
-      });
-
-      console.log('FINAL VC:', finalVC);
-
-      const vc_final_jwt = await vc.sign({ did: bearerDid.did });
-      console.log('VC FINAL JWT:', vc_final_jwt);
-
-      const parsedFinalVc = VerifiableCredential.parseJwt({ vcJwt: vc_final_jwt });
-
-      console.log('PARSED FINAL VC:', parsedFinalVc);
-    }
+  async block(did: string) {
+    await this.connection.block(did);
   }
 
   private async loadUserProfile(userId: string) {
@@ -193,14 +133,10 @@ export class ProfileComponent {
     // };
   }
 
-  openSnackBar(message: string) {
-    this._snackBar.open(message, undefined, { duration: 2000 });
-  }
-
   async copyDID(did: string) {
     try {
       await navigator.clipboard.writeText(did);
-      this.openSnackBar('DID copied to clipboard');
+      this.app.openSnackBar('DID copied to clipboard');
     } catch (err) {
       console.error('Failed to copy: ', err);
     }
@@ -212,8 +148,8 @@ export class ProfileComponent {
     });
   }
 
-  async shareProfile(did: string) {
-    const title = 'SondreB (Voluntaryist)';
+  async shareProfile(profile: any) {
+    const title = profile.profile.name;
     const url = document.location.href;
     const text = 'Check out this profile on Ariton';
 
@@ -224,9 +160,9 @@ export class ProfileComponent {
         text,
       });
 
-      this.openSnackBar('Thanks for sharing!');
+      this.app.openSnackBar('Thanks for sharing!');
     } catch (err) {
-      this.openSnackBar(`Couldn't share ${err}`);
+      this.app.openSnackBar(`Couldn't share ${err}`);
     }
   }
 }

@@ -1,31 +1,23 @@
-<div class="toolbox">
-  <div class="toolbox-left">
-    <mat-form-field class="search-input">
+<mat-card class="toolbar-actions margin-bottom">
+  <mat-card-content class="flex">
+    <button type="button" mat-button [routerLink]="['/communities', 'create']">
+      <mat-icon>add</mat-icon>
+      Create
+    </button>
+    <span class="toolbar-spacer">
+      <input type="search" class="search-input" placeholder="Filter communities" />
+    </span>
+    <!-- <mat-form-field>
       <mat-label>Search</mat-label>
       <input matInput placeholder="Filter communities..." />
       <mat-icon matSuffix>search</mat-icon>
-    </mat-form-field>
-  </div>
-  <div class="toolbox-right">
-    <!-- <mat-slide-toggle class="example-margin" [(ngModel)]="checked">
-      Mine
-    </mat-slide-toggle> -->
-
+    </mat-form-field> -->
     <mat-button-toggle-group hideSingleSelectionIndicator="true" [(ngModel)]="viewStyle">
       <mat-button-toggle value="card">Cards</mat-button-toggle>
       <mat-button-toggle value="table">Table</mat-button-toggle>
     </mat-button-toggle-group>
-
-    <!-- <mat-button-toggle-group
-      [hideSingleSelectionIndicator]="hideSingleSelectionIndicator()"
-      [formControl]="view"
-      name="viewStyle"
-    >
-      <mat-button-toggle value="card">Cards</mat-button-toggle>
-      <mat-button-toggle value="table">Table</mat-button-toggle>
-    </mat-button-toggle-group> -->
-  </div>
-</div>
+  </mat-card-content>
+</mat-card>
 
 @if (viewStyle() == 'card') {
 <!-- <mat-card appearance="outlined">

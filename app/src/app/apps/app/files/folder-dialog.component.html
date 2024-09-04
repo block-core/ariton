@@ -1,5 +1,5 @@
 <h2 mat-dialog-title>New folder</h2>
-<mat-dialog-content class="mat-typography">
+<mat-dialog-content>
   <mat-form-field appearance="outline" class="full-width">
     <input matInput required="true" placeholder="Name" maxlength="200" [(ngModel)]="data.name" />
   </mat-form-field>
@@ -34,5 +34,5 @@
   </mat-menu> -->
 
   <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-flat-button type="submit" [mat-dialog-close]="true" cdkFocusInitial>Create</button>
+  <button mat-flat-button type="submit" [mat-dialog-close]="true" cdkFocusInitial>Save</button>
 </mat-dialog-actions>

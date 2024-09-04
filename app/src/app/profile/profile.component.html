@@ -20,13 +20,13 @@
     <span class="ellipsis">{{ data().did }}</span>
   </div>
   <div class="spacer"></div>
-  <div>
+  <div class="profile-header-menu">
     <button mat-icon-button [matMenuTriggerFor]="menuProfile">
       <mat-icon>more_vert</mat-icon>
     </button>
 
     <mat-menu #menuProfile="matMenu">
-      <button disabled="true" mat-menu-item [routerLink]="['/app/chat']">
+      <button mat-menu-item [routerLink]="['/app', 'chat', data().did]">
         <mat-icon>chat_bubble</mat-icon>
         <span>Message</span>
       </button>
@@ -50,12 +50,12 @@
         <mat-icon>qr_code</mat-icon>
         <span>Show QR</span>
       </button>
-      <button (click)="shareProfile(data().did)" mat-menu-item>
+      <button (click)="shareProfile(data())" mat-menu-item>
         <mat-icon>send</mat-icon>
         <span>Share Profile</span>
       </button>
       <mat-divider></mat-divider>
-      <button disabled="true" mat-menu-item>
+      <button [disabled]="identity.did == data().did" mat-menu-item (click)="block(data().did)">
         <mat-icon>block</mat-icon>
         <span>Block</span>
       </button>
@@ -67,30 +67,42 @@
     <mat-tab>
       <ng-template mat-tab-label>
         <mat-icon class="example-tab-icon">badge</mat-icon>
-        About
+        <span class="hide-small">About</span>
       </ng-template>
 
       <div class="about-tab-container">
         <div class="profile-items">
-          <mat-icon>event</mat-icon><span>{{ data().profile.birthDate }}</span> <mat-icon>place</mat-icon
-          ><span>{{ data().profilelocation }}</span> <mat-icon>event</mat-icon><span>{{ data().profile.status }}</span>
+          @if (data().profile.birthDate) {
+          <mat-icon>event</mat-icon><span>{{ data().profile.birthDate }}</span>
+          } @if (data().profile.location) {
+          <mat-icon>place</mat-icon><span>{{ data().profile.location }}</span>
+          } @if (data().profile.status) {
+          <mat-icon>event</mat-icon><span>{{ data().profile.status }}</span>
+          } @if (data().profile.links && data().profile.links.length > 0) {
           <mat-icon>link</mat-icon><span>{{ data().profile.links }}</span>
+          }
         </div>
 
+        @if (data().profile.bio) {
         <div class="profile-bio">
-          {{ profileService.selected().bio }}
+          {{ data().profile.bio }}
         </div>
+        }
 
-        <p>
-          <button mat-button (click)="issueFriendVC()">Issue Friend VC</button>
-        </p>
+        <!-- 
+        Example of how to use a popover, new HTML feature:
+        
+        <button popovertarget="my-popover">Open popover</button>
+        <div id="my-popover" popover>
+          <p>I'm full of information</p>
+        </div> -->
       </div>
     </mat-tab>
 
     <mat-tab>
       <ng-template mat-tab-label>
         <mat-icon class="example-tab-icon">diversity_2</mat-icon>
-        Communities
+        <span class="hide-small">Communities</span>
       </ng-template>
       Not implemented yet.
     </mat-tab>
@@ -98,7 +110,7 @@
     <mat-tab>
       <ng-template mat-tab-label>
         <mat-icon class="example-tab-icon">folder_shared</mat-icon>
-        Data
+        <span class="hide-small">Data</span>
       </ng-template>
 
       Not implemented yet.
