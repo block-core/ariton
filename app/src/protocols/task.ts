@@ -10,6 +10,10 @@ export const protocolDefinition = {
       schema: 'https://schema.ariton.app/task/task',
       dataFormats: ['application/json'],
     },
+    collaborator: {
+      schema: 'https://schema.ariton.app/task/collaborator',
+      dataFormats: ['application/json'],
+    },
   },
   structure: {
     collaborator: {
