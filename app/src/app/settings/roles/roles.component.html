@@ -6,30 +6,37 @@
 
 <br />
 
-<mat-card class="notifications-card">
+<!-- <mat-card class="notifications-card">
   <mat-card-header>
     <mat-card-title>Roles</mat-card-title>
   </mat-card-header>
   <mat-card-content>
+    <p> -->
+@for(entry of roles(); track entry){
+<mat-card appearance="outlined">
+  <mat-card-content class="role-card">
     <p>
-      @for(entry of roles(); track entry){ 
-        <p>
-        App: {{ entry.record.protocol }}<br />
+      App: {{ entry.record.protocol }}<br />
       Role: {{ entry.record.protocolPath }}<br />
       Assigned: {{ entry.record.dateCreated | ago }}
-</p>
-      <app-profile-header [did]="entry.record.recipient"></app-profile-header>
-
-      <!-- <app-request [entry]="entry"></app-request> -->
-      } @empty { No roles found. }
     </p>
+    <app-profile-header [did]="entry.record.recipient"></app-profile-header>
   </mat-card-content>
+  <mat-card-actions class="full-width-actions">
+    <button mat-button (click)="deleteRole(entry)" class="full-width-button" [disabled]="entry.loading">DELETE</button>
+  </mat-card-actions>
 </mat-card>
 
-<br />
+<!-- <app-request [entry]="entry"></app-request> -->
+} @empty { No roles found. }
+<!-- </p>
+  </mat-card-content>
+</mat-card> -->
+
+<!-- <br />
 
 <mat-card>
   <mat-card-content>
     <button mat-button (click)="assignRole()">Assign Role</button>
   </mat-card-content>
-</mat-card>
+</mat-card> -->

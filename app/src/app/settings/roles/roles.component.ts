@@ -12,6 +12,7 @@ import { AppService } from '../../app.service';
 import { IdentityService } from '../../identity.service';
 import { RecordEntry } from '../../data';
 import { protocolDefinition as taskDefinition } from '../../../protocols/task';
+import { protocolDefinition as noteDefinition } from '../../../protocols/note';
 
 export interface RoleData {
   // did?: string;
@@ -55,6 +56,8 @@ export class RolesComponent {
     });
   }
 
+  async deleteRole(entry: RoleEntry) {}
+
   async loadRoles() {
     const list: RoleEntry[] = [];
 
@@ -82,7 +85,7 @@ export class RolesComponent {
   }
 
   async assignRole() {
-    const did = 'did:dht:9omof8aypjcx33rkuk9akug8j7sr4n7u4s69c1hxj8ocmwj8pf1y';
+    const did = 'did:dht:xmwcc957onoxapf4yr61trknii4jga3is4fgtfoin8zdbg9iewro';
 
     const tags = {
       role: true,
@@ -90,15 +93,29 @@ export class RolesComponent {
 
     const data = {};
 
+    // const { record, status } = await this.identity.web5.dwn.records.create({
+    //   data: data,
+    //   message: {
+    //     tags: tags,
+    //     recipient: did,
+    //     protocol: taskDefinition.protocol,
+    //     protocolPath: 'collaborator',
+    //     schema: taskDefinition.types.collaborator.schema,
+    //     dataFormat: taskDefinition.types.collaborator.dataFormats[0],
+    //   },
+    // });
+
+    // record?.send(did);
+
     const { record, status } = await this.identity.web5.dwn.records.create({
       data: data,
       message: {
         tags: tags,
         recipient: did,
-        protocol: taskDefinition.protocol,
+        protocol: noteDefinition.protocol,
         protocolPath: 'collaborator',
-        schema: taskDefinition.types.collaborator.schema,
-        dataFormat: taskDefinition.types.collaborator.dataFormats[0],
+        schema: noteDefinition.types.collaborator.schema,
+        dataFormat: noteDefinition.types.collaborator.dataFormats[0],
       },
     });
 

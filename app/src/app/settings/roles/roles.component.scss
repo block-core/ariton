@@ -28,3 +28,16 @@
 .notification-description {
   margin-bottom: 1em;
 }
+
+.full-width-actions {
+  width: 100%;
+  display: flex;
+}
+
+.full-width-button {
+  flex-grow: 1;
+}
+
+.role-card {
+  margin-bottom: 0.5em;
+}
