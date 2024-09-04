@@ -64,6 +64,7 @@ export class FileComponent {
   zoom = 1;
   private fileUrl: any;
   private data: any;
+  loading = false;
 
   constructor() {
     effect(async () => {
@@ -466,6 +467,8 @@ export class FileComponent {
   }
 
   async deleteFile() {
+    this.loading = true;
+
     const { status: deleteStatus } = await this.record!.delete();
 
     // send the delete request to the remote DWN
