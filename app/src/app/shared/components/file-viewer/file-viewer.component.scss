@@ -3,33 +3,54 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
-}
 
-object {
-  width: 100%;
-  height: 100%;
-}
+  .file-frame {
+    width: 100%;
+    height: 100%;
+    border: none; // Remove iframe border if needed
+  }
 
-.controls {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-}
-
-.page-navigation {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-@media screen and (max-width: 768px) {
   .controls {
-    flex-direction: column;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10; // Ensure controls are above other content
   }
 }
 
-/* Enable text selection */
-// object ::selection {
-//   background-color: rgba(0, 123, 255, 0.3);
-// }
+.image-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  .zoom-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10; // Ensure controls are above other content
+    width: 100%;
+  }
+
+  img {
+    width: 100%;
+    height: auto; // Adjust image height as needed
+    display: block;
+    object-fit: contain; // Adjust as needed
+  }
+}
+
+.controls, .zoom-controls {
+  background: rgba(255, 255, 255, 0.7); // Optional: background to make controls more visible
+  border-radius: 5px;
+  padding: 5px;
+}
