@@ -13,8 +13,8 @@
   <mat-card-content>
     <p> -->
 @for(entry of roles(); track entry){
-<mat-card appearance="outlined">
-  <mat-card-content class="role-card">
+<mat-card appearance="outlined" class="role-card">
+  <mat-card-content>
     <p>
       App: {{ entry.record.protocol }}<br />
       Role: {{ entry.record.protocolPath }}<br />
