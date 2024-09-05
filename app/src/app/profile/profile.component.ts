@@ -71,7 +71,8 @@ export class ProfileComponent {
       if (this.app.initialized()) {
         this.route.paramMap.subscribe((params) => {
           const userId = params.get('id'); // Assuming 'id' is the name of the route parameter
-          if (userId) {
+
+          if (userId && userId !== 'undefined') {
             console.log('USER ID SET!!', userId);
             this.loadUserProfile(userId);
           }
