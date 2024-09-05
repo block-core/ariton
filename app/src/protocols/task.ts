@@ -20,33 +20,12 @@ export const protocolDefinition = {
       $role: true,
     },
     list: {
-      $actions: [{ role: 'collaborator', can: ['create', 'update', 'read', 'delete'] }],
-      // $actions: [
-      //   {
-      //     who: 'anyone',
-      //     can: ['create', 'update', 'read'],
-      //   },
-      // ],
+      $actions: [{ role: 'collaborator', can: ['read'] }],
       task: {
         $actions: [
-          // {
-          //   who: 'anyone',
-          //   can: ['create', 'update', 'read'],
-          // },
-          { role: 'collaborator', can: ['create', 'update', 'read', 'delete'] },
+          // Allow the collaborator to do anything with the items within the list, but not delete/edit entire list.
+          { role: 'collaborator', can: ['create', 'update', 'read', 'delete', 'co-update', 'co-delete'] },
         ],
-        // $actions: [
-        //   {
-        //     who: 'author',
-        //     of: 'list',
-        //     can: ['create', 'update'],
-        //   },
-        //   {
-        //     who: 'recipient',
-        //     of: 'list',
-        //     can: ['create', 'update'],
-        //   },
-        // ],
       },
     },
   },
