@@ -56,7 +56,15 @@ export class RolesComponent {
     });
   }
 
-  async deleteRole(entry: RoleEntry) {}
+  async deleteRole(entry: RoleEntry) {
+    const recipient = entry.record.recipient;
+
+    await entry.record.delete();
+
+    entry.record.send(recipient);
+
+    this.roles.set(this.roles().filter((r) => r.id !== entry.id));
+  }
 
   async loadRoles() {
     const list: RoleEntry[] = [];
