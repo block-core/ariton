@@ -61,10 +61,12 @@ export class RequestComponent {
     }
 
     // Persist the connection locally. This is the foundation for permissions checks, friends lists and more.
-    await this.connection.create(entry, type);
+    const connectionEntry = await this.connection.create(entry, type);
+    console.log('Connection Entry that was made: ', connectionEntry);
 
+    console.log('CONNECTION TAGS BEFORE DELETE:', JSON.stringify(entry.record.tags));
     await this.connection.deleteRequest(entry);
-
+    console.log('CONNECTION TAGS AFTER DELETE:', JSON.stringify(entry.record.tags));
     console.log('CONNECTION TYPE:', type);
 
     // TODO: Implement a data service behind all mini apps, implement a generic interface that allows
@@ -75,7 +77,11 @@ export class RequestComponent {
       if (entry.data.app == 'tasks') {
         console.log('ACEPTING TASKS CONNECTION:', entry);
 
-        const { record } = await this.identity.web5.dwn.records.read({
+        // Read data from external DWN, we should be allowed.
+        console.log('DID DWN to read from:', entry.data.did);
+        console.log('RID DWN to read from:', entry.data.recordId);
+
+        const { record, status } = await this.identity.web5.dwn.records.read({
           from: entry.data.did, // Get the data from the sender DWN.
           message: {
             filter: {
@@ -84,9 +90,10 @@ export class RequestComponent {
           },
         });
 
-        let json: any = {};
-
+        console.log('STATUS FROM READING RECORD EXTERNALLY:', status);
         console.log('RECORD FROM CONNECTION ACCEPT:', record);
+
+        let json: any = {};
 
         if (record) {
           let recordJson = await record.data.json();

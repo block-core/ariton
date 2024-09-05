@@ -99,7 +99,7 @@ export class ConnectionService {
 
     // this.utility.executeAsyncWithToast(entry.record.send(entryData.did));
 
-    return entry;
+    return connectionEntry;
   }
 
   /** Called when a user has replied to a friend request and there is an incoming two-way VC to be persisted. */

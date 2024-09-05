@@ -381,6 +381,7 @@ export class TasksComponent {
       message: {
         protocol: taskDefinition.protocol,
         protocolPath: 'list/task',
+        protocolRole: 'collaborator',
         schema: taskDefinition.types.task.schema,
         dataFormat: taskDefinition.types.task.dataFormats[0],
         parentContextId: taskData.parentId,
@@ -415,6 +416,7 @@ export class TasksComponent {
       message: {
         protocol: taskDefinition.protocol,
         protocolPath: 'list',
+        protocolRole: 'collaborator',
         schema: taskDefinition.types.list.schema,
         dataFormat: taskDefinition.types.list.dataFormats[0],
         // recipient: recipientDID,
