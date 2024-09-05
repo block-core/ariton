@@ -63,6 +63,8 @@ export class RolesComponent {
 
     entry.record.send(recipient);
 
+    entry.record.send(this.identity.did);
+
     this.roles.set(this.roles().filter((r) => r.id !== entry.id));
   }
 
