@@ -29,6 +29,7 @@ import { CollaboratorDialogComponent } from './collaborator-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConnectionService, ConnectionType } from '../../../connection.service';
+import { protocolDefinition as noteDefinition } from '../../../../protocols/note';
 
 @Component({
   selector: 'app-todo',
@@ -221,6 +222,30 @@ export class TasksComponent {
 
   async sendConnectRequests(record: Record, recordData: any, collaborators: string[]) {
     for (let collaborator of collaborators) {
+      // Assign collaborator role to the DID.
+      const tags = {
+        role: true,
+      };
+
+      // This will fail if the DID already have a role assigned.
+      // TODO: Implement a query to see if the user already has role assigned and skip this step.
+      const { record: roleRecord, status: roleStatus } = await this.identity.web5.dwn.records.create({
+        data: {},
+        message: {
+          tags: tags,
+          recipient: collaborator,
+          protocol: noteDefinition.protocol,
+          protocolPath: 'collaborator',
+          schema: noteDefinition.types.collaborator.schema,
+          dataFormat: noteDefinition.types.collaborator.dataFormats[0],
+        },
+      });
+
+      console.log('Role status:', roleStatus);
+      console.log('Role record:', roleRecord);
+
+      record?.send(collaborator);
+
       const data = {
         recordId: record.id,
         app: 'tasks',
