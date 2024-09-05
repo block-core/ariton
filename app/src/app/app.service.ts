@@ -158,8 +158,8 @@ export class AppService {
     await this.initialize();
   }
 
-  openSnackBar(message: string) {
-    this.snackBar.open(message, undefined, { duration: 2000 });
+  openSnackBar(message: string, duration: number = 2000) {
+    this.snackBar.open(message, undefined, { duration });
   }
 
   async initialize() {

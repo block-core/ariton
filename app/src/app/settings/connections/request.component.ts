@@ -47,6 +47,9 @@ export class RequestComponent {
     // Get the DID from author of the request. We store this as recipient in the connection.
     entry.data.did = entry.record.author;
 
+    console.log('CONNECTION TAGS:', JSON.stringify(entry.record.tags));
+    console.log('CONNECTION DATA:', JSON.stringify(entry.data));
+
     // Grab type from the request and copy to connection.
     const type = entry.record.tags['type'] as ConnectionType;
 
@@ -61,6 +64,37 @@ export class RequestComponent {
     await this.connection.create(entry, type);
 
     await this.connection.deleteRequest(entry);
+
+    console.log('CONNECTION TYPE:', type);
+
+    // TODO: Implement a data service behind all mini apps, implement a generic interface that allows
+    // individual mini-apps to receive data from the connection service.
+    if (type == ConnectionType.Data) {
+      console.log('ACCEPTING DATA CONNECTION:', entry);
+
+      if (entry.data.app == 'tasks') {
+        console.log('ACEPTING TASKS CONNECTION:', entry);
+
+        const { record } = await this.identity.web5.dwn.records.read({
+          from: entry.data.did, // Get the data from the sender DWN.
+          message: {
+            filter: {
+              recordId: entry.data.recordId,
+            },
+          },
+        });
+
+        let json: any = {};
+
+        console.log('RECORD FROM CONNECTION ACCEPT:', record);
+
+        if (record) {
+          let recordJson = await record.data.json();
+          json = { ...recordJson, id: record.dataCid, did: record.author, created: record.dateCreated };
+          console.log('RECORD JSON:', json);
+        }
+      }
+    }
 
     // TODO: We should delete notifications related to this connection.
     // this.deleteNotification(entry);

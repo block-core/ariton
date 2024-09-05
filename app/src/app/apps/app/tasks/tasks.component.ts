@@ -214,6 +214,8 @@ export class TasksComponent {
         await this.sendConnectRequests(list.record, list.data, newCollaborators);
         await this.sendToCollaborators(list.record, originalCollaboratorsList);
         // await this.sendToCollaborators(list.record, newCollaborators, true);
+
+        this.app.openSnackBar('Sent sharing request to collaborators');
       }
     });
 
