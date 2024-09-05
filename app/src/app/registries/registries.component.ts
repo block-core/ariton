@@ -60,10 +60,41 @@ export class RegistriesComponent implements AfterViewInit {
     });
   }
 
+  async loadRemote() {
+    //Query records with plain text data format
+    const { records } = await this.identity.web5.dwn.records.query({
+      from: this.app.aritonDid,
+      message: {
+        filter: {
+          protocol: registry.uri,
+          protocolPath: 'profile',
+          dataFormat: 'application/json',
+        },
+      },
+    });
+
+    // Reset local records
+    this.records.set([]);
+
+    if (records) {
+      for (let record of records!) {
+        let data = await record.data.json();
+        let json: any = { record: record, data: data };
+
+        this.records.update((records) => [...records, json]);
+
+        // Import the record locally for caching.
+        // TODO: Add TTL to these records so they can be refreshed.
+        await record.import();
+      }
+    }
+
+    this.loading.set(false);
+  }
+
   async load() {
     //Query records with plain text data format
-    const response = await this.identity.web5.dwn.records.query({
-      from: this.app.aritonDid,
+    const { records } = await this.identity.web5.dwn.records.query({
       message: {
         filter: {
           protocol: registry.uri,
@@ -75,16 +106,19 @@ export class RegistriesComponent implements AfterViewInit {
 
     this.records.set([]);
 
-    if (response.records) {
-      response.records.forEach(async (record) => {
+    // If there are records, then we stop loading and display local cached (imported) records.
+    if (records && records.length > 0) {
+      for (let record of records!) {
         let data = await record.data.json();
-        let json: any = { record: record, data: data };
-
+        let json: any = { record: record, data: data, id: record.id };
         this.records.update((records) => [...records, json]);
-      });
-    }
+      }
 
-    this.loading.set(false);
+      this.loading.set(false);
+    } else {
+      await this.loadRemote();
+      this.loading.set(false);
+    }
   }
 
   ngAfterViewInit() {
