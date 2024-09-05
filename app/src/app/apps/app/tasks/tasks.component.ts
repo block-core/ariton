@@ -246,7 +246,8 @@ export class TasksComponent {
       console.log('Role status:', roleStatus);
       console.log('Role record:', roleRecord);
 
-      record?.send(collaborator);
+      // Only send the role record to SELF, this should not be shared with the collaborator.
+      record?.send(this.identity.did);
 
       const data = {
         recordId: record.id,
@@ -421,7 +422,6 @@ export class TasksComponent {
         protocolRole: 'collaborator',
         schema: taskDefinition.types.list.schema,
         dataFormat: taskDefinition.types.list.dataFormats[0],
-        // recipient: recipientDID,
       },
     });
 
