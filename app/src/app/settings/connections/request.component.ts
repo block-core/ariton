@@ -84,11 +84,23 @@ export class RequestComponent {
         const { record, status } = await this.identity.web5.dwn.records.read({
           from: entry.data.did, // Get the data from the sender DWN.
           message: {
+            protocolRole: 'collaborator',
             filter: {
               recordId: entry.data.recordId,
             },
           },
         });
+
+        // const { records, status } = await web5.dwn.records.query({
+        //   from: aliceDid,
+        //   message: {
+        //     protocolRole: 'friend',
+        //     filter: {
+        //       protocol: curatorPlaylistProtocolDefinition.protocol,
+        //       protocolPath: 'playlist',
+        //     },
+        //   },
+        // });
 
         console.log('STATUS FROM READING RECORD EXTERNALLY:', status);
         console.log('RECORD FROM CONNECTION ACCEPT:', record);
