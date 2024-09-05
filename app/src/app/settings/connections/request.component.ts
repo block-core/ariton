@@ -11,6 +11,7 @@ import { ProfileHeaderComponent } from '../../shared/components/profile-header/p
 import { RecordEntry } from '../../data';
 import { IdentityService } from '../../identity.service';
 import { FriendService } from '../../friend.service';
+import { protocolDefinition as taskDefinition } from '../../../protocols/task';
 
 @Component({
   selector: 'app-request',
@@ -82,7 +83,7 @@ export class RequestComponent {
         console.log('RID DWN to read from:', entry.data.recordId);
 
         const { record, status } = await this.identity.web5.dwn.records.read({
-          from: entry.data.did, // Get the data from the sender DWN.
+          from: entry.data.did,
           message: {
             protocolRole: 'collaborator',
             filter: {
@@ -91,19 +92,22 @@ export class RequestComponent {
           },
         });
 
-        // const { records, status } = await web5.dwn.records.query({
-        //   from: aliceDid,
-        //   message: {
-        //     protocolRole: 'friend',
-        //     filter: {
-        //       protocol: curatorPlaylistProtocolDefinition.protocol,
-        //       protocolPath: 'playlist',
-        //     },
-        //   },
-        // });
-
         console.log('STATUS FROM READING RECORD EXTERNALLY:', status);
         console.log('RECORD FROM CONNECTION ACCEPT:', record);
+
+        const { records, status: status2 } = await this.identity.web5.dwn.records.query({
+          from: entry.data.did,
+          message: {
+            protocolRole: 'collaborator',
+            filter: {
+              protocol: taskDefinition.protocol,
+              protocolPath: 'list',
+            },
+          },
+        });
+
+        console.log('STATUS FROM READING RECORDS EXTERNALLY:', records);
+        console.log('RECORD FROM STATUS RECORDS:', status2);
 
         let json: any = {};
 
