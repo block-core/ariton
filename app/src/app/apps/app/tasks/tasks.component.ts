@@ -388,6 +388,8 @@ export class TasksComponent {
       },
     });
 
+    console.log('VALIDATE collaborator:', todoRecord);
+
     // const data = await todoRecord!.data.json();
     const todoEntry = await this.getTaskEntryFromRecord(todoRecord!);
 
@@ -422,6 +424,8 @@ export class TasksComponent {
         // recipient: recipientDID,
       },
     });
+
+    console.log('VALIDATE collaborator:', record);
 
     const data = await record!.data.json();
     const list = { record, data, id: record!.id };
