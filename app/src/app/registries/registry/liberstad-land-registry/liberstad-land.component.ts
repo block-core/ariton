@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-liberstad-land',
   standalone: true,
-  imports: [],
+  imports: [MatButtonModule],
   templateUrl: './liberstad-land.component.html',
-  styleUrl: './liberstad-land.component.scss'
+  styleUrl: './liberstad-land.component.scss',
 })
-export class LiberstadLandComponent {
-
-}
+export class LiberstadLandComponent {}
