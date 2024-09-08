@@ -49,7 +49,7 @@
   <mat-card *ngFor="let card of cards()" class="app-card">
     <mat-card-header>
       <mat-card-title>
-        <a class="link" [routerLink]="['/app', card.id]">{{ card.title }}</a>
+        <a class="link" [routerLink]="[card.id]">{{ card.title }}</a>
       </mat-card-title>
     </mat-card-header>
     <br />
