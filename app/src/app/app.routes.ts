@@ -180,6 +180,15 @@ export const routes: Routes = [
     data: { hide: true, icon: 'folder_shared' },
   },
   {
+    path: 'registry/local-company-registry/:id',
+    loadComponent: () =>
+      import('./registries/registry/local-company-registry/local-company-view.component').then(
+        (c) => c.LocalCompanyViewComponent,
+      ),
+    title: 'Registry',
+    data: { hide: true, icon: 'folder_shared' },
+  },
+  {
     path: 'data/view/:id',
     loadComponent: () => import('./data/view/data-view.component').then((c) => c.DataViewComponent),
     title: 'Data View',
