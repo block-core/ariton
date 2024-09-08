@@ -157,7 +157,25 @@ export const routes: Routes = [
   },
   {
     path: 'registry/freeid',
-    loadComponent: () => import('./registries/registry//freeid/freeid.component').then((c) => c.FreeIDComponent),
+    loadComponent: () => import('./registries/registry/freeid/freeid.component').then((c) => c.FreeIDComponent),
+    title: 'Registry',
+    data: { hide: true, icon: 'folder_shared' },
+  },
+  {
+    path: 'registry/liberstad-land-registry',
+    loadComponent: () =>
+      import('./registries/registry/liberstad-land-registry/liberstad-land.component').then(
+        (c) => c.LiberstadLandComponent,
+      ),
+    title: 'Registry',
+    data: { hide: true, icon: 'folder_shared' },
+  },
+  {
+    path: 'registry/local-company-registry',
+    loadComponent: () =>
+      import('./registries/registry/local-company-registry/local-company.component').then(
+        (c) => c.LocalCompanyComponent,
+      ),
     title: 'Registry',
     data: { hide: true, icon: 'folder_shared' },
   },

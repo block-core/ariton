@@ -115,6 +115,9 @@ export class RegistriesComponent implements AfterViewInit {
       }
 
       this.loading.set(false);
+
+      // Load remote records in the background.
+      await this.loadRemote();
     } else {
       await this.loadRemote();
       this.loading.set(false);
