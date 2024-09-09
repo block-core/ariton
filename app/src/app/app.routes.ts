@@ -334,6 +334,12 @@ export const routes: Routes = [
     data: { hide: true, icon: 'settings' },
   },
   {
+    path: 'settings/debug',
+    loadComponent: () => import('./settings/debug/debug.component').then((c) => c.DebugComponent),
+    title: 'Debug',
+    data: { hide: true, icon: 'bug' },
+  },
+  {
     path: 'tree',
     loadComponent: () => import('./tree/tree.component').then((c) => c.TreeComponent),
     title: 'Tree',
