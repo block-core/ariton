@@ -49,13 +49,13 @@ export class DebugComponent {
     const request = JSON.parse(this.query);
     console.log('Request:', request);
 
-    const { records, status } = await this.identity.web5.dwn.records.query(request);
+    const { record, status } = await this.identity.web5.dwn.records.read(request);
 
     console.log('Status:', status);
-    console.log('Records:', records);
+    console.log('Records:', record);
 
     this.status = `${status.code}: ${status.detail}`;
-    this.result = JSON.stringify(records, null, 2);
+    this.result = JSON.stringify(record, null, 2);
   }
 
   async dwnQuery() {
