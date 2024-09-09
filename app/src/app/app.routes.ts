@@ -337,7 +337,7 @@ export const routes: Routes = [
     path: 'settings/debug',
     loadComponent: () => import('./settings/debug/debug.component').then((c) => c.DebugComponent),
     title: 'Debug',
-    data: { hide: true, icon: 'bug' },
+    data: { hide: true, icon: 'bug_report' },
   },
   {
     path: 'tree',
