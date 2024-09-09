@@ -236,10 +236,10 @@ export class TasksComponent {
         message: {
           tags: tags,
           recipient: collaborator,
-          protocol: noteDefinition.protocol,
+          protocol: taskDefinition.protocol,
           protocolPath: 'collaborator',
-          schema: noteDefinition.types.collaborator.schema,
-          dataFormat: noteDefinition.types.collaborator.dataFormats[0],
+          schema: taskDefinition.types.collaborator.schema,
+          dataFormat: taskDefinition.types.collaborator.dataFormats[0],
         },
       });
 
