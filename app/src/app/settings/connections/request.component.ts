@@ -98,6 +98,9 @@ export class RequestComponent {
         console.log('STATUS FROM READING RECORD EXTERNALLY:', status);
         console.log('RECORD FROM CONNECTION ACCEPT:', record);
 
+        // Import the Tasks list to local.
+        record.import();
+
         const { records, status: status2 } = await this.identity.web5.dwn.records.query({
           from: entry.data.did,
           message: {
@@ -112,13 +115,13 @@ export class RequestComponent {
         console.log('STATUS FROM READING RECORDS EXTERNALLY:', records);
         console.log('RECORD FROM STATUS RECORDS:', status2);
 
-        let json: any = {};
+        // let json: any = {};
 
-        if (record) {
-          let recordJson = await record.data.json();
-          json = { ...recordJson, id: record.dataCid, did: record.author, created: record.dateCreated };
-          console.log('RECORD JSON:', json);
-        }
+        // if (record) {
+        //   let recordJson = await record.data.json();
+        //   json = { ...recordJson, id: record.dataCid, did: record.author, created: record.dateCreated };
+        //   console.log('RECORD JSON:', json);
+        // }
       }
     }
 
