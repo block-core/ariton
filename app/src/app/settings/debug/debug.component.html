@@ -1,1 +1,35 @@
-<p>debug works!</p>
+<h1>Debug Tool</h1>
+
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>DWN Tool</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-form-field appearance="outline" subscriptSizing="dynamic" class="full-width">
+      <textarea rows="6" matInput #body placeholder="Query (JSON)" [(ngModel)]="query"></textarea>
+    </mat-form-field>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-button (click)="dwnWrite()">Write</button>
+    <button mat-button (click)="dwnQuery()">Query</button>
+    <button mat-button (click)="dwnRead()">Read</button>
+  </mat-card-actions>
+</mat-card>
+
+<br />
+
+@if (result || status) {
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>DWN Result</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    Status: {{ status }} <br /><br />
+    Result:<br />
+    <div class="formatted">{{ result }}</div>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-button (click)="result = ''; status = ''">Close</button>
+  </mat-card-actions>
+</mat-card>
+}
