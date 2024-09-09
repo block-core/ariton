@@ -48,11 +48,13 @@ export class RequestComponent {
     // Get the DID from author of the request. We store this as recipient in the connection.
     entry.data.did = entry.record.author;
 
-    console.log('CONNECTION TAGS:', JSON.stringify(entry.record.tags));
-    console.log('CONNECTION DATA:', JSON.stringify(entry.data));
+    const tags = entry.record.tags;
+
+    // console.log('CONNECTION TAGS:', JSON.stringify(entry.record.tags));
+    // console.log('CONNECTION DATA:', JSON.stringify(entry.data));
 
     // Grab type from the request and copy to connection.
-    const type = entry.record.tags['type'] as ConnectionType;
+    const type = tags['type'] as ConnectionType;
 
     if (type == ConnectionType.Friend) {
       // This will issue a two-way VC, persist it locally and send to remote party.
@@ -65,10 +67,10 @@ export class RequestComponent {
     const connectionEntry = await this.connection.create(entry, type);
     console.log('Connection Entry that was made: ', connectionEntry);
 
-    console.log('CONNECTION TAGS BEFORE DELETE:', JSON.stringify(entry.record.tags));
+    // console.log('CONNECTION TAGS BEFORE DELETE:', JSON.stringify(entry.record.tags));
     await this.connection.deleteRequest(entry);
-    console.log('CONNECTION TAGS AFTER DELETE:', JSON.stringify(entry.record.tags));
-    console.log('CONNECTION TYPE:', type);
+    // console.log('CONNECTION TAGS AFTER DELETE:', JSON.stringify(entry.record.tags));
+    // console.log('CONNECTION TYPE:', type);
 
     // TODO: Implement a data service behind all mini apps, implement a generic interface that allows
     // individual mini-apps to receive data from the connection service.
@@ -87,6 +89,7 @@ export class RequestComponent {
           message: {
             protocolRole: 'collaborator',
             filter: {
+              protocolPath: 'list',
               recordId: entry.data.recordId,
             },
           },
