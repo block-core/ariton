@@ -171,6 +171,12 @@ export const routes: Routes = [
     data: { hide: true, icon: 'folder_shared' },
   },
   {
+    path: 'registry/gaianet',
+    loadComponent: () => import('./registries/registry/gaianet/gaianet.component').then((c) => c.GaianetComponent),
+    title: 'Gaianet',
+    data: { hide: true, icon: 'folder_shared' },
+  },
+  {
     path: 'registry/local-company-registry',
     loadComponent: () =>
       import('./registries/registry/local-company-registry/local-company.component').then(

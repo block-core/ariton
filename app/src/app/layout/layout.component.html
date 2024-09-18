@@ -239,7 +239,11 @@
     <div class="sidenav-scroll-wrapper">
       <div
         id="sidenav-content"
-        [ngClass]="{ 'sidenav-content': layout.margin(), 'sidenav-content-marginless': !layout.margin() }"
+        [ngClass]="{
+          'sidenav-content': layout.margin(),
+          'sidenav-content-marginless': !layout.margin(),
+          'sidenav-content-custom': layout.custom()
+        }"
       >
         <ng-content></ng-content>
       </div>

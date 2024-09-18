@@ -22,6 +22,8 @@ export class LayoutService {
 
   margin = signal<boolean>(true);
 
+  custom = signal<boolean>(false);
+
   actions = signal<any[]>([]);
 
   private breakpointObserver = inject(BreakpointObserver);
@@ -134,6 +136,14 @@ export class LayoutService {
 
   addAction(action: LayoutAction) {
     this.actions.update((actions) => [...actions, action]);
+  }
+
+  customOff() {
+    this.custom.set(false);
+  }
+
+  customOn() {
+    this.custom.set(true);
   }
 
   marginOff() {
