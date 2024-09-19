@@ -103,12 +103,12 @@ export class ProfileComponent {
   }
 
   private async loadUserProfile(userId: string) {
-    const profile = await this.profileService.loadProfile(userId);
-
-    this.data.set(profile);
-
-    console.log(profile);
-    console.log('PROFILE SET!!!');
+    try {
+      const profile = await this.profileService.loadProfile(userId);
+      this.data.set(profile);
+    } catch (err) {
+      console.error(err);
+    }
 
     //let blob = new Blob([this.profileService.avatar()]);
     // console.log(this.profileService.avatar());

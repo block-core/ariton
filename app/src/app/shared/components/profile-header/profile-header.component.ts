@@ -34,10 +34,21 @@ export class ProfileHeaderComponent {
 
   async ngAfterViewInit() {
     if (this.did()) {
-      const profile = await this.profile.loadProfile(this.did());
+      let profile = await this.profile.loadProfile(this.did());
+
+      // console.log('ngAfterViewInit', profile);
+
+      // if (!profile) {
+      //   console.log('NO PROFILE, SETTING A DEFAULT!!');
+
+      //   profile = {
+      //     did: this.did(),
+      //   } as any;
+      // }
+
       // const url = this.sanitizer.bypassSecurityTrustResourceUrl(profile.avatar);
       // const url = profile.avatar;
-      console.log(profile);
+      // console.log(profile);
 
       this.data.set(profile);
 
