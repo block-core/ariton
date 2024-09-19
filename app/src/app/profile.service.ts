@@ -58,9 +58,9 @@ export class ProfileService {
     // called by various directives and code, avoiding too many database queries.
     //Query records with plain text data format
     const response = await this.identity.web5.dwn.records.query({
-      from: did,
       message: {
         filter: {
+          author: did,
           protocol: profile.uri,
           protocolPath: 'profile',
           dataFormat: 'application/json',
@@ -68,30 +68,54 @@ export class ProfileService {
       },
     });
 
-    let json: any = {};
+    let entry: any = {};
     let recordEntry = null;
 
     console.log('RESPONSE FOUND FOR PROFILE:', response);
     console.log('RECORDS FOUND FOR PROFILE:', response.records);
 
-    if (response.records) {
+    if (response.records && response.records.length > 0) {
       // Loop through returned records and print text from each
       for (const record of response.records) {
+        // Import the profile record to our local DWN. This way we can quickly access it later.
+        record.import();
+
+        console.log('IMPORTING PROFILE RECORD:', record);
+
         recordEntry = record;
         let recordJson = await record.data.json();
-        json = { ...recordJson, id: record.dataCid, did: record.author, created: record.dateCreated };
+        entry = { ...recordJson, id: record.dataCid, did: record.author, created: record.dateCreated };
+
+        // Load without waiting, so next request will have locally updated record.
+        this.loadProfileRemote(did);
       }
+    } else {
+      entry = await this.loadProfileRemote(did);
     }
 
     var avatarRecord: any = null;
     var avatar: any = null;
 
-    // If lookup is for current user, just query local DWN.
-    // if (did == this.identity.did) {
+    var avatar = await this.loadAvatar(did);
+
+    // Returns a structure of both the record and the profile.
+    return {
+      record: recordEntry,
+      avatarRecord: avatarRecord,
+      avatar: avatar,
+      profile: entry,
+      did: did,
+    };
+  }
+
+  async loadAvatar(did: string) {
+    var avatarRecord: any = null;
+    var avatar: any = null;
+
     const imageResponse = await this.identity.web5.dwn.records.query({
-      from: did,
       message: {
         filter: {
+          author: did,
           protocol: profile.uri,
           protocolPath: 'avatar',
           dataFormat: 'image/png',
@@ -101,24 +125,123 @@ export class ProfileService {
 
     if (imageResponse.records && imageResponse.records.length > 0) {
       const record = imageResponse.records[0];
+
       avatarRecord = record;
       let image = await record.data.text(); //.blob();
       // this.avatar.set(image);
-
       avatar = image;
-      // let image = await record.data.blob();
-      // this.current.update((profile) => ({ ...profile, profileImage: URL.createObjectURL
-    }
-    // }
 
-    // Returns a structure of both the record and the profile.
-    return {
-      record: recordEntry,
-      avatarRecord: avatarRecord,
-      avatar: avatar,
-      profile: json,
-      did: did,
-    };
+      // Load remotely and import, so next time it's accessed it will render latest.
+      this.loadAvatarRemote(did);
+    } else {
+      avatar = await this.loadAvatarRemote(did);
+    }
+
+    return avatar;
+  }
+
+  async loadAvatarRemote(did: string) {
+    var avatarRecord: any = null;
+    var avatar: any = null;
+
+    const imageResponse = await this.identity.web5.dwn.records.query({
+      from: did,
+      message: {
+        filter: {
+          author: did,
+          protocol: profile.uri,
+          protocolPath: 'avatar',
+          dataFormat: 'image/png',
+        },
+      },
+    });
+
+    if (imageResponse.records && imageResponse.records.length > 0) {
+      const record = imageResponse.records[0];
+
+      // Import without waiting.
+      record.import();
+
+      avatarRecord = record;
+      let image = await record.data.text();
+      avatar = image;
+    }
+
+    return avatar;
+  }
+
+  async loadProfileRemote(did: string) {
+    // TODO: Implement caching of profiles, since this method is
+    // called by various directives and code, avoiding too many database queries.
+    //Query records with plain text data format
+    const response = await this.identity.web5.dwn.records.query({
+      from: did,
+      message: {
+        filter: {
+          author: did,
+          protocol: profile.uri,
+          protocolPath: 'profile',
+          dataFormat: 'application/json',
+        },
+      },
+    });
+
+    let entry: any = {};
+    let recordEntry = null;
+
+    console.log('RESPONSE FOUND FOR PROFILE:', response);
+    console.log('RECORDS FOUND FOR PROFILE:', response.records);
+
+    if (response.records) {
+      // Loop through returned records and print text from each
+      for (const record of response.records) {
+        // Import the profile record to our local DWN. This way we can quickly access it later.
+        record.import();
+
+        recordEntry = record;
+        let recordJson = await record.data.json();
+        entry = { ...recordJson, id: record.dataCid, did: record.author, created: record.dateCreated };
+      }
+    }
+
+    return entry;
+
+    // var avatarRecord: any = null;
+    // var avatar: any = null;
+
+    // // If lookup is for current user, just query local DWN.
+    // // if (did == this.identity.did) {
+    // const imageResponse = await this.identity.web5.dwn.records.query({
+    //   from: did,
+    //   message: {
+    //     filter: {
+    //       protocol: profile.uri,
+    //       protocolPath: 'avatar',
+    //       dataFormat: 'image/png',
+    //     },
+    //   },
+    // });
+
+    // if (imageResponse.records && imageResponse.records.length > 0) {
+    //   const record = imageResponse.records[0];
+    //   avatarRecord = record;
+    //   let image = await record.data.text(); //.blob();
+    //   // this.avatar.set(image);
+
+    //   avatar = image;
+    //   // let image = await record.data.blob();
+    //   // this.current.update((profile) => ({ ...profile, profileImage: URL.createObjectURL
+    // }
+    // // }
+
+    // // Returns a structure of both the record and the profile.
+    // return {
+    //   record: recordEntry,
+    //   avatarRecord: avatarRecord,
+    //   avatar: avatar,
+    //   profile: entry,
+    //   did: did,
+    // };
   }
 
   /** Load and sets the profile to selected and current (if same as logged on user) */
