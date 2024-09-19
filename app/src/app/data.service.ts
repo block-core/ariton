@@ -18,5 +18,7 @@ export class DataService {
     });
   }
 
-  async initialize() {}
+  async initialize() {
+    // this.identity.activeAgent().identity.
+  }
 }

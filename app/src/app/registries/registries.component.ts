@@ -5,7 +5,7 @@ import { MatSortModule, MatSort } from '@angular/material/sort';
 import { TableDataSource, TableItem } from './registries-datasource';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { IdentityService } from '../identity.service';
 import { registry } from '../../protocols';
 import { CommonModule } from '@angular/common';
@@ -30,6 +30,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatPaginatorModule,
     MatSortModule,
     MatTooltipModule,
+    RouterModule,
   ],
 })
 export class RegistriesComponent implements AfterViewInit {
@@ -85,7 +86,10 @@ export class RegistriesComponent implements AfterViewInit {
 
         // Import the record locally for caching.
         // TODO: Add TTL to these records so they can be refreshed.
-        await record.import();
+        // const { status } = await record.import();
+
+        // Try to import if the record is not already imported. It will give conflict if already imported.
+        const { status } = await record.import();
       }
     }
 
