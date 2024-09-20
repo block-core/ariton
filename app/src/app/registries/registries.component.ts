@@ -74,6 +74,12 @@ export class RegistriesComponent implements AfterViewInit {
       },
     });
 
+    // for (let entry of this.records()) {
+    //   console.log('DELETING:', entry);
+    //   const { status } = await entry.record.delete();
+    //   console.log('DELETE STATUS:', status);
+    // }
+
     // Reset local records
     this.records.set([]);
 
@@ -90,6 +96,7 @@ export class RegistriesComponent implements AfterViewInit {
 
         // Try to import if the record is not already imported. It will give conflict if already imported.
         const { status } = await record.import();
+        console.log('IMPORT STATUS:', status);
       }
     }
 
@@ -121,8 +128,9 @@ export class RegistriesComponent implements AfterViewInit {
       this.loading.set(false);
 
       // Load remote records in the background.
-      await this.loadRemote();
+      this.loadRemote();
     } else {
+      console.log('There are no records... load remotely');
       await this.loadRemote();
       this.loading.set(false);
     }

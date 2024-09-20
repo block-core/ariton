@@ -67,10 +67,8 @@ export class RequestComponent {
     const connectionEntry = await this.connection.create(entry, type);
     console.log('Connection Entry that was made: ', connectionEntry);
 
-    // console.log('CONNECTION TAGS BEFORE DELETE:', JSON.stringify(entry.record.tags));
+    // Delete the request after accepting it, we don't need it anymore.
     await this.connection.deleteRequest(entry);
-    // console.log('CONNECTION TAGS AFTER DELETE:', JSON.stringify(entry.record.tags));
-    // console.log('CONNECTION TYPE:', type);
 
     // TODO: Implement a data service behind all mini apps, implement a generic interface that allows
     // individual mini-apps to receive data from the connection service.

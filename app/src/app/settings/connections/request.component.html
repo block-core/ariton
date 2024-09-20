@@ -14,6 +14,11 @@
     >
   </mat-card-header>
   <mat-card-content>
+    @if (entry.direction == 'out') {
+    <div class="notification-description">You have sent friend request to this user. Waiting for their response.</div>
+
+    } @else {
+
     <div class="notification-description">
       @if (entry.record.tags['type'] == 'friend') { This user wants to be your friend, do you accept? This will give
       them access to send you sharing requets, such as shared Tasks, collabrative apps and more. } @else if
@@ -28,7 +33,7 @@
       }
     </div>
 
-    @if (entry.direction == 'out') {
+    } @if (entry.direction == 'out') {
     <app-profile-header [did]="entry.record.recipient"></app-profile-header>
     } @else {
     <app-profile-header [did]="entry.record.author"></app-profile-header>
