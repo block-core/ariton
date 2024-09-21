@@ -45,6 +45,8 @@ $theme: m3-theme.$light-theme;
 $dark-theme: m3-theme.$dark-theme;
 
 :root {
+  interpolate-size: allow-keywords;
+
   @include mat.all-component-themes($theme);
 
   // Components themes
