@@ -288,6 +288,17 @@ export class ProfileComponent {
     }
   }
 
+  async copyUrl(entry: any) {
+    const url = `${document.location.origin}/profile/${entry.record.author}/posts/${entry.record.id}`;
+
+    try {
+      await navigator.clipboard.writeText(url);
+      this.app.openSnackBar('Url copied to clipboard');
+    } catch (err) {
+      console.error('Failed to copy: ', err);
+    }
+  }
+
   showQR(did: string) {
     this.dialog.open(QRCodeDialogComponent, {
       data: { did: did },
