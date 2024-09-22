@@ -14,6 +14,7 @@ import { protocolDefinition as text } from '../protocols/text';
 import { protocolDefinition as todo } from '../protocols/task';
 import { protocolDefinition as connection } from '../protocols/connection';
 import { protocolDefinition as notification } from '../protocols/notification';
+import { protocolDefinition as post } from '../protocols/post';
 import { IdentityService } from './identity.service';
 
 @Injectable({
@@ -41,6 +42,7 @@ export class ProtocolService {
       todo,
       connection,
       notification,
+      post,
     ];
 
     for (const definition of protocols) {

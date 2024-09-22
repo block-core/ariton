@@ -254,6 +254,10 @@ input {
   margin-bottom: 1em;
 }
 
+.margin {
+  margin: 1em;
+}
+
 /** Makes the mat-icon-button within app toolbar look green. */
 .toolbar-icon-button .mat-icon {
   color: var(--mdc-text-button-label-text-color);
@@ -269,6 +273,10 @@ input {
   }
 
   .margin-bottom {
+    margin-bottom: 8px;
+  }
+
+  .margin {
     margin-bottom: 8px;
   }
 }

@@ -61,3 +61,46 @@ h1 {
     flex-direction: column;
   }
 }
+
+.post-body {
+  white-space: pre-wrap;
+}
+
+.post-info {
+  margin-bottom: 8px;
+  font-size: 0.9em;
+}
+
+.posts-items {
+}
+
+.posts-header {
+  display: flex;
+  align-items: center;
+  width: 100%;
+
+  & > :first-child {
+    flex-grow: 1;
+  }
+
+  & > :last-child {
+    flex-shrink: 0;
+  }
+}
+
+// .posts-items mat-card-content {
+//   cursor: pointer;
+//   padding: 0 !important;
+//   margin-bottom: 0.4em;
+// }
+
+// .posts-items mat-card-title {
+//   cursor: pointer;
+// }
+
+// .posts-items mat-card-footer {
+//   font-size: 1.2em;
+//   width: 100%;
+//   text-align: center;
+//   display: block;
+// }

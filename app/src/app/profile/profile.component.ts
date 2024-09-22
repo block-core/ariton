@@ -18,11 +18,16 @@ import { AppService } from '../app.service';
 import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { protocolDefinition as messageDefinition } from '../../protocols/message';
+import { protocolDefinition as postDefinition } from '../../protocols/post';
 import { VerifiableCredential } from '@web5/credentials';
 import { BearerDid } from '@web5/dids';
 import { LayoutService } from '../layout.service';
 import { FriendService } from '../friend.service';
 import { ConnectionService } from '../connection.service';
+import { MatCardModule } from '@angular/material/card';
+import { DialogData, PostDialogComponent } from './post-dialog.component';
+import { ProfileHeaderComponent } from '../shared/components/profile-header/profile-header.component';
+import { AgoPipe } from '../shared/pipes/ago.pipe';
 
 @Component({
   selector: 'app-profile',
@@ -39,11 +44,16 @@ import { ConnectionService } from '../connection.service';
     MatDividerModule,
     CommonModule,
     MatProgressSpinnerModule,
+    MatCardModule,
+    ProfileHeaderComponent,
+    AgoPipe,
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
 })
 export class ProfileComponent {
+  posts = signal<any[]>([]);
+
   profileService = inject(ProfileService);
 
   identity = inject(IdentityService);
@@ -56,6 +66,8 @@ export class ProfileComponent {
 
   friend = inject(FriendService);
 
+  dialog = inject(MatDialog);
+
   data = signal<any>(undefined);
 
   avatarSrc: any = null;
@@ -64,11 +76,13 @@ export class ProfileComponent {
     URL.revokeObjectURL(this.avatarSrc);
   }
 
-  constructor(private dialog: MatDialog, private sanitizer: DomSanitizer, private route: ActivatedRoute) {
+  constructor(private sanitizer: DomSanitizer, private route: ActivatedRoute) {
     this.layout.marginOff();
 
-    effect(() => {
+    effect(async () => {
       if (this.app.initialized()) {
+        await this.loadPosts();
+
         this.route.paramMap.subscribe((params) => {
           const userId = params.get('id'); // Assuming 'id' is the name of the route parameter
 
@@ -79,6 +93,134 @@ export class ProfileComponent {
         });
       }
     });
+  }
+
+  async loadPosts(tags?: any) {
+    console.log('VALUE OF TAGS:', tags);
+
+    var { records } = await this.identity.web5.dwn.records.query({
+      message: {
+        filter: {
+          tags: tags,
+          protocol: postDefinition.protocol,
+          schema: postDefinition.types.post.schema,
+          dataFormat: postDefinition.types.post.dataFormats[0],
+        },
+      },
+    });
+
+    //     let json = {};
+    // let recordEntry = null;
+
+    this.posts.set([]);
+
+    if (records) {
+      // Loop through returned records and print text from each
+      for (const record of records) {
+        let data = await record.data.json();
+        let json: any = { record: record, data: data };
+
+        // if (record.author == this.identity.did) {
+        //   json.direction = 'out';
+        // }
+
+        this.posts.update((records) => [...records, json]);
+      }
+    }
+
+    console.log('All posts:', this.posts());
+  }
+
+  newPost() {
+    this.editPost({
+      data: {
+        title: '',
+        body: '',
+        background: '',
+        collaborators: [],
+        labels: [],
+      },
+    });
+  }
+
+  editPost(entry: any) {
+    let data: DialogData = {
+      title: entry.data.title,
+      body: entry.data.body,
+      background: entry.data.background,
+      collaborators: [],
+      labels: [''],
+    };
+
+    const original = JSON.parse(JSON.stringify(data));
+
+    const dialogRef = this.dialog.open(PostDialogComponent, {
+      maxWidth: '80vw',
+      maxHeight: '80vh',
+      data: data,
+    });
+
+    dialogRef.afterClosed().subscribe(async (result) => {
+      if (!result) {
+        // Reset the original data if user cancels.
+        data = original;
+      } else {
+        console.log('data result for saving:', data);
+
+        // Update the data from old to new.
+        entry.data = data;
+
+        await this.saveNote(entry, data);
+
+        // Update the data so it's displayed in the UI without re-query DWN.
+        // TODO: Validate if this is actually needed since we copy above now.
+        // this.records().find((r) => r.record == entry.record).data = data;
+      }
+    });
+
+    return dialogRef.afterClosed();
+  }
+
+  async deletePost(entry: any) {
+    const { status } = await entry.record.delete();
+
+    if (status) {
+      this.posts.update((records) => records.filter((r) => r.record != entry.record));
+    }
+  }
+
+  async saveNote(entry: any, data: DialogData) {
+    if (entry.record) {
+      // Will this work?
+      entry.record.tags.labels = data.labels;
+
+      const { status, record } = await entry.record.update({
+        data: data,
+      });
+
+      console.log('Record status:', status);
+    } else {
+      const { record, status } = await this.identity.web5.dwn.records.create({
+        data: data,
+        message: {
+          tags: {
+            labels: data.labels,
+          },
+          protocol: postDefinition.protocol,
+          protocolPath: 'post',
+          schema: postDefinition.types.post.schema,
+          dataFormat: postDefinition.types.post.dataFormats[0],
+        },
+      });
+
+      console.log('Record created:', record);
+      console.log('Record status:', status);
+
+      if (record) {
+        entry.record = record;
+        this.posts.update((records) => [...records, entry]);
+      }
+    }
   }
 
   async ngOnInit() {}
