@@ -170,7 +170,7 @@ export class ProfileComponent {
         // Update the data from old to new.
         entry.data = data;
 
-        await this.saveNote(entry, data);
+        await this.savePost(entry, data);
 
         // Update the data so it's displayed in the UI without re-query DWN.
         // TODO: Validate if this is actually needed since we copy above now.
@@ -189,7 +189,7 @@ export class ProfileComponent {
     }
   }
 
-  async saveNote(entry: any, data: DialogData) {
+  async savePost(entry: any, data: DialogData) {
     if (entry.record) {
       // Will this work?
       entry.record.tags.labels = data.labels;
@@ -219,6 +219,9 @@ export class ProfileComponent {
       if (record) {
         entry.record = record;
         this.posts.update((records) => [...records, entry]);
+
+        // Send the record to self DWN.
+        await entry.record.send(this.identity.did);
       }
     }
   }

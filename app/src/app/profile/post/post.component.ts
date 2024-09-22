@@ -78,20 +78,6 @@ export class PostComponent {
       this.entry = undefined;
     }
 
-    // let todos: any[] = [];
-
-    // for (let record of todoRecords!) {
-    //   const todo = await this.getTaskEntryFromRecord(record);
-    //   todos.push(todo);
-    // }
-
-    // Ensure the array is sorted by the new indices
-    // todos = todos.sort((a, b) => a.data.index - b.data.index);
-
-    // console.log('ALL TODOS:', todos);
-
-    // return todos;
-
     try {
       // const profile = await this.profileService.loadProfile(userId);
       // this.data.set(profile);
