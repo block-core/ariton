@@ -1,0 +1,38 @@
+@if (entry) {
+
+<div class="posts-items margin">
+  <mat-card>
+    <mat-card-header>
+      <div class="posts-header">
+        <app-profile-header [did]="entry.record.author"></app-profile-header>
+        <!-- <button mat-icon-button matTooltip="Options" [matMenuTriggerFor]="menuActions">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menuActions="matMenu">
+                <button mat-menu-item (click)="editPost(entry)">
+                  <mat-icon>edit</mat-icon>
+                  <span>Edit post</span>
+                </button>
+                <button mat-menu-item [routerLink]="['/profile', entry.record.author, 'posts', entry.record.id]">
+                  <mat-icon>note</mat-icon>
+                  <span>View post</span>
+                </button>
+                <mat-divider></mat-divider>
+                <button mat-menu-item (click)="deletePost(entry)">
+                  <mat-icon>delete</mat-icon>
+                  <span>Delete post</span>
+                </button>
+              </mat-menu> -->
+      </div>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="post-info">
+        {{ entry.record.dateCreated | ago }}
+      </div>
+      <div class="post-body">{{ entry.data.body }}</div></mat-card-content
+    >
+  </mat-card>
+</div>
+} @else {
+<mat-spinner></mat-spinner>
+}

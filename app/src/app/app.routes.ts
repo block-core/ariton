@@ -225,6 +225,12 @@ export const routes: Routes = [
     data: { hide: true, icon: 'account_circle' },
   },
   {
+    path: 'profile/:id/posts/:postId',
+    loadComponent: () => import('./profile/post/post.component').then((c) => c.PostComponent),
+    title: 'Posts',
+    data: { hide: true, icon: 'note' },
+  },
+  {
     path: 'notifications',
     loadComponent: () => import('./notifications/notifications.component').then((c) => c.NotificationsComponent),
     title: 'Notifications',
