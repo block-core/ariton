@@ -128,7 +128,7 @@
           </mat-card-header>
           <mat-card-content>
             <div class="post-info">
-              <a [routerLink]="['/profile', entry.record.author, 'posts', entry.record.id]">{{
+              <a class="link" [routerLink]="['/profile', entry.record.author, 'posts', entry.record.id]">{{
                 entry.record.dateCreated | ago
               }}</a>
             </div>

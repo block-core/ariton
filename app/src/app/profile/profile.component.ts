@@ -28,6 +28,7 @@ import { MatCardModule } from '@angular/material/card';
 import { DialogData, PostDialogComponent } from './post-dialog.component';
 import { ProfileHeaderComponent } from '../shared/components/profile-header/profile-header.component';
 import { AgoPipe } from '../shared/pipes/ago.pipe';
+import { DwnDateSort } from '@web5/agent';
 
 @Component({
   selector: 'app-profile',
@@ -106,6 +107,7 @@ export class ProfileComponent {
           schema: postDefinition.types.post.schema,
           dataFormat: postDefinition.types.post.dataFormats[0],
         },
+        dateSort: DwnDateSort.CreatedDescending,
       },
     });
 
@@ -218,7 +220,7 @@ export class ProfileComponent {
 
       if (record) {
         entry.record = record;
-        this.posts.update((records) => [...records, entry]);
+        this.posts.update((records) => [entry, ...records]);
 
         // Send the record to self DWN.
         await entry.record.send(this.identity.did);
