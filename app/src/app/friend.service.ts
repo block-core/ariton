@@ -131,6 +131,8 @@ export class FriendService {
       type: ConnectionType.Credential,
     };
 
+    console.log('SENDING FRIEND REQUEST TO TARGET:', targetDid);
+
     // Next step is to send the VC to the sender of the request, so they can also have a two-way VC.
     // VCs can be sent to anyone, even if they are not in the user's DWN. This is a way to establish
     // various connections. VCs are automatically or manually accepted by users.
@@ -155,6 +157,8 @@ export class FriendService {
     console.log('Request create status:', requestCreateStatus);
 
     const { status: requestStatus } = await messageRecord!.send(targetDid);
+
+    console.log('SENT TO TARGET!!!', requestStatus);
 
     if (requestStatus.code !== 202) {
       this.app.openSnackBar(`Friend request failed.Code: ${requestStatus.code}, Details: ${requestStatus.detail}.`);

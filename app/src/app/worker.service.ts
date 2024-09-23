@@ -19,6 +19,8 @@ export class WorkerService {
 
         console.log('connections count:', this.connection.requests().length);
 
+        console.log('CONNECTIONS:', this.connection.requests());
+
         // Process incoming VCs in the connection service.
         // Filter connections where data.tag['type'] is 'credential'
         const credentialRequests = this.connection
