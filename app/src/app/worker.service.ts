@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { ConnectionService } from './connection.service';
+import { ConnectionService, ConnectionType } from './connection.service';
 
 @Injectable({
   providedIn: 'root',
@@ -35,6 +35,10 @@ export class WorkerService {
           // For example, you can accept the connection request
           // await this.connection.accept(connection);
           this.connection.acceptFriendRequest(request);
+
+          // Persist the connection locally. This is the foundation for permissions checks, friends lists and more.
+          const connectionEntry = await this.connection.create(request, ConnectionType.Friend);
+          console.log('Connection Entry that was made: ', connectionEntry);
         }
 
         // Example: Use friend and connection services
