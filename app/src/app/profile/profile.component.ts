@@ -84,15 +84,13 @@ export class ProfileComponent {
 
     effect(async () => {
       if (this.app.initialized()) {
-        await this.loadPosts();
-
-        this.route.paramMap.subscribe((params) => {
+        this.route.paramMap.subscribe(async (params) => {
           const userId = params.get('id'); // Assuming 'id' is the name of the route parameter
 
-          this.did = userId!;
-
           if (userId && userId !== 'undefined') {
+            this.did = userId!;
             console.log('USER ID SET!!', userId);
+            await this.loadPosts(userId);
             this.loadUserProfile(userId);
           }
         });
@@ -100,25 +98,24 @@ export class ProfileComponent {
     });
   }
 
-  async loadPosts(tags?: any) {
-    console.log('VALUE OF TAGS:', tags);
-
-    var { records } = await this.identity.web5.dwn.records.query({
-      from: this.did,
+  async loadPosts(did: string) {
+    const query = {
+      from: did,
       message: {
         filter: {
-          author: this.did,
-          tags: tags,
+          author: did,
           protocol: postDefinition.protocol,
+          protocolPath: 'post',
           schema: postDefinition.types.post.schema,
           dataFormat: postDefinition.types.post.dataFormats[0],
         },
         dateSort: DwnDateSort.CreatedDescending,
       },
-    });
+    };
 
-    //     let json = {};
-    // let recordEntry = null;
+    console.log('QUERY: ', query);
+
+    var { records, status } = await this.identity.web5.dwn.records.query(query);
 
     this.posts.set([]);
 
@@ -198,19 +195,23 @@ export class ProfileComponent {
   }
 
   async savePost(entry: any, data: DialogData) {
+    // console.log('SAVE POST: ', entry, data);
+
     if (entry.record) {
       // Will this work?
       entry.record.tags.labels = data.labels;
 
       const { status, record } = await entry.record.update({
         data: data,
+        published: true,
       });
 
-      console.log('Record status:', status);
+      // console.log('Record status:', status);
     } else {
       const { record, status } = await this.identity.web5.dwn.records.create({
         data: data,
         message: {
+          published: true, // Make the record public, so they can be queried and view by everyone.
           tags: {
             labels: data.labels,
           },
@@ -221,8 +222,8 @@ export class ProfileComponent {
         },
       });
 
-      console.log('Record created:', record);
-      console.log('Record status:', status);
+      // console.log('Record created:', record);
+      // console.log('Record status:', status);
 
       if (record) {
         entry.record = record;
