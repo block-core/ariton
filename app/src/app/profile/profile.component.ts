@@ -73,6 +73,8 @@ export class ProfileComponent {
 
   avatarSrc: any = null;
 
+  did!: string;
+
   ngOnDestroy() {
     URL.revokeObjectURL(this.avatarSrc);
   }
@@ -87,6 +89,8 @@ export class ProfileComponent {
         this.route.paramMap.subscribe((params) => {
           const userId = params.get('id'); // Assuming 'id' is the name of the route parameter
 
+          this.did = userId!;
+
           if (userId && userId !== 'undefined') {
             console.log('USER ID SET!!', userId);
             this.loadUserProfile(userId);
@@ -100,8 +104,10 @@ export class ProfileComponent {
     console.log('VALUE OF TAGS:', tags);
 
     var { records } = await this.identity.web5.dwn.records.query({
+      from: this.did,
       message: {
         filter: {
+          author: this.did,
           tags: tags,
           protocol: postDefinition.protocol,
           schema: postDefinition.types.post.schema,
