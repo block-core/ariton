@@ -62,8 +62,7 @@ export class RegistriesComponent implements AfterViewInit {
   }
 
   async loadRemote() {
-    //Query records with plain text data format
-    const { records } = await this.identity.web5.dwn.records.query({
+    const query = {
       from: this.app.aritonDid,
       message: {
         filter: {
@@ -72,7 +71,14 @@ export class RegistriesComponent implements AfterViewInit {
           dataFormat: 'application/json',
         },
       },
-    });
+    };
+
+    console.log('QUERY:', query);
+
+    //Query records with plain text data format
+    const { records } = await this.identity.web5.dwn.records.query(query);
+
+    console.log('FOUND REGISTRY RECORDS:', records);
 
     // for (let entry of this.records()) {
     //   console.log('DELETING:', entry);

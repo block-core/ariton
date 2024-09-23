@@ -36,10 +36,7 @@ export class PostDialogComponent {
   private fb = inject(FormBuilder);
 
   form = this.fb.group({
-    title: [null],
     body: [null, Validators.required],
-    collaborators: ['did:dht:6sf3y5rj4f8sq8rctpkp6w3npotmqrypnsdkc74j1n7uiu1raaco'],
-    background: [null],
   });
 
   constructor(public dialogRef: MatDialogRef<PostDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
