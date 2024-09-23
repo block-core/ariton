@@ -41,6 +41,8 @@ export class ProfileEditComponent {
 
   data = signal<any>({});
 
+  loading = false;
+
   form = this.fb.group({
     name: [null],
     title: [null],
@@ -144,6 +146,8 @@ export class ProfileEditComponent {
   }
 
   async onSubmit() {
+    this.loading = true;
+
     const formData = {
       name: this.form.value.name,
       title: this.form.value.title,
