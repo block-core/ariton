@@ -123,6 +123,7 @@ export class FriendService {
     record!.send(this.identity.did);
 
     const recordData: ConnectionData = {
+      title: entry.data.title, // Copy title from origial request.
       vc: vc_jwt,
       app: 'friends',
     };
@@ -146,11 +147,6 @@ export class FriendService {
         protocolPath: 'request',
         schema: connectionDefinition.types.request.schema,
         dataFormat: connectionDefinition.types.request.dataFormats[0],
-
-        // protocol: messageDefinition.protocol,
-        // protocolPath: 'credential',
-        // schema: messageDefinition.types.credential.schema,
-        // dataFormat: messageDefinition.types.credential.dataFormats[0],
       },
     });
 

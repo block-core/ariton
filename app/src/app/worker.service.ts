@@ -34,11 +34,20 @@ export class WorkerService {
           // Process the connection here
           // For example, you can accept the connection request
           // await this.connection.accept(connection);
-          this.connection.acceptFriendRequest(request);
+          const friendRequestRecord = await this.connection.acceptFriendRequest(request);
+
+          // Copy over the record id so we have a reference between the raw VC and the connection record.
+          request.data.recordId = friendRequestRecord?.id;
+          request.data.did = request.record.author;
+
+          console.log('REQUEST DATA:', request.data);
 
           // Persist the connection locally. This is the foundation for permissions checks, friends lists and more.
           const connectionEntry = await this.connection.create(request, ConnectionType.Friend);
           console.log('Connection Entry that was made: ', connectionEntry);
+
+          // Delete the request after accepting it, we don't need it anymore.
+          await this.connection.deleteRequest(request);
         }
 
         // Example: Use friend and connection services

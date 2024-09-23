@@ -72,8 +72,10 @@ export class ConnectionService {
 
     let entryData = entry.data;
 
+    console.log('CONNECTION SERVICE ENTRY DATA:', entryData);
+
     const { record, status } = await this.identity.web5.dwn.records.create({
-      data: entry.data, // Copy the data over
+      data: entryData, // Copy the data over
       message: {
         tags: tags,
         recipient: entry.record.author, // The recipient is the author of previous request.
@@ -265,8 +267,11 @@ export class ConnectionService {
     // Send to self, don't wait.
     record!.send(this.identity.did);
 
+    return record;
+
     // Delete the incoming VC record, as it has been processed.
-    await this.deleteRequest(entry);
+    // Don't delete, we delete outside.
+    // await this.deleteRequest(entry);
 
     // const recordData: ConnectionData = {
     //   vc: signedVcJwt,
