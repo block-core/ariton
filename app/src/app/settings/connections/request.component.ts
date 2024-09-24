@@ -46,7 +46,7 @@ export class RequestComponent {
     console.log('Accepting connection request', entry);
 
     // Get the DID from author of the request. We store this as recipient in the connection.
-    entry.data.did = entry.record.author;
+    entry.data.did = entry.record.creator;
 
     const tags = entry.record.tags;
 
@@ -117,7 +117,7 @@ export class RequestComponent {
 
         // if (record) {
         //   let recordJson = await record.data.json();
-        //   json = { ...recordJson, id: record.dataCid, did: record.author, created: record.dateCreated };
+        //   json = { ...recordJson, id: record.dataCid, did: record.creator, created: record.dateCreated };
         //   console.log('RECORD JSON:', json);
         // }
       }
@@ -131,14 +131,14 @@ export class RequestComponent {
     entry.loading = true;
     console.log('Blocking user', entry);
 
-    const result = await this.connection.block(entry.record.author);
+    const result = await this.connection.block(entry.record.creator);
     console.log('Block result: ', result);
 
     // Delete all connections from this DID.
-    // await this.connection.deleteConnections(entry.record.author);
+    // await this.connection.deleteConnections(entry.record.creator);
 
     // // Delete all connection requests from this DID.
-    // await this.connection.deleteRequests(entry.record.author);
+    // await this.connection.deleteRequests(entry.record.creator);
 
     // TODO: We should delete notifications related to this connection.
     // await this.deleteNotification(entry);

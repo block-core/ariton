@@ -84,7 +84,7 @@ export class ProfileService {
 
         recordEntry = record;
         let recordJson = await record.data.json();
-        entry = { ...recordJson, id: record.dataCid, did: record.author, created: record.dateCreated };
+        entry = { ...recordJson, id: record.dataCid, did: record.creator, created: record.dateCreated };
 
         // Load without waiting, so next request will have locally updated record.
         this.loadProfileRemote(did);
@@ -200,7 +200,7 @@ export class ProfileService {
 
         recordEntry = record;
         let recordJson = await record.data.json();
-        entry = { ...recordJson, id: record.dataCid, did: record.author, created: record.dateCreated };
+        entry = { ...recordJson, id: record.dataCid, did: record.creator, created: record.dateCreated };
       }
     }
 
@@ -301,7 +301,7 @@ export class ProfileService {
     //     response.records.forEach(async (record) => {
     //       let json = await record.data.json();
     //       console.log(json);
-    //       json = { ...json, id: record.dataCid, did: record.author, created: record.dateCreated };
+    //       json = { ...json, id: record.dataCid, did: record.creator, created: record.dateCreated };
     //       this.current.set(json);
     //       console.log(json);
     //       //   this.records.update((records) => [...records, json]);
@@ -329,7 +329,7 @@ export class ProfileService {
     //       let json = await record.data.json();
     //       console.log(json);
 
-    //       json = { ...json, id: record.dataCid, did: record.author, created: record.dateCreated };
+    //       json = { ...json, id: record.dataCid, did: record.creator, created: record.dateCreated };
 
     //       this.current.set(json);
 

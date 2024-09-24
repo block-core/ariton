@@ -4,7 +4,7 @@
   <mat-card>
     <mat-card-header>
       <div class="posts-header">
-        <app-profile-header [did]="entry.record.author"></app-profile-header>
+        <app-profile-header [did]="entry.record.creator"></app-profile-header>
         <!-- <button mat-icon-button matTooltip="Options" [matMenuTriggerFor]="menuActions">
                 <mat-icon>more_vert</mat-icon>
               </button>
@@ -13,7 +13,7 @@
                   <mat-icon>edit</mat-icon>
                   <span>Edit post</span>
                 </button>
-                <button mat-menu-item [routerLink]="['/profile', entry.record.author, 'posts', entry.record.id]">
+                <button mat-menu-item [routerLink]="['/profile', entry.record.creator, 'posts', entry.record.id]">
                   <mat-icon>note</mat-icon>
                   <span>View post</span>
                 </button>

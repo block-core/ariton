@@ -66,7 +66,7 @@ export class DataLiveComponent {
             response.records.forEach(async (record: any) => {
               let json = await record.data.json();
 
-              json = { ...json, id: record.dataCid, author: record.author, created: record.dateCreated };
+              json = { ...json, id: record.dataCid, author: record.creator, created: record.dateCreated };
 
               this.records.update((records) => [...records, json]);
             });

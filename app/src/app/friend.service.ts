@@ -86,7 +86,7 @@ export class FriendService {
     const targetDid = vc.issuer;
 
     // If the VC issuer is different than data record author, then reject the request.
-    if (vc.issuer != entry.record.author) {
+    if (vc.issuer != entry.record.creator) {
       console.error('VC issuer is different than data record author');
       return;
     }
@@ -177,12 +177,13 @@ export class FriendService {
 
     // If the recipinent is the current user, then use the author as the target DID.
     // Very important to read this BEFORE running local delete, as that mutates the record.
-    const targetDid = entry.record.recipient == this.identity.did ? entry.record.author : entry.record.recipient;
+    const targetDid = entry.record.recipient == this.identity.did ? entry.record.creator : entry.record.recipient;
 
     console.log('Target DID:', targetDid);
     console.log('this.identity.did:', this.identity.did);
     console.log('entry.record.recipient:', entry.record.recipient);
     console.log('entry.record.author:', entry.record.author);
+    console.log('entry.record.creator:', entry.record.creator);
 
     // delete the request from the local DWN
     const { status: deleteStatus } = await entry.record.delete();
@@ -291,7 +292,7 @@ export class FriendService {
 
         let json: any = { record: record, data: { did } };
 
-        // if (record.author == this.identity.did) {
+        // if (record.creator == this.identity.did) {
         //   json.direction = 'out';
         // }
 

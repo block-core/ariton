@@ -78,7 +78,7 @@ export class ConnectionService {
       data: entryData, // Copy the data over
       message: {
         tags: tags,
-        recipient: entry.record.author, // The recipient is the author of previous request.
+        recipient: entry.record.creator, // The recipient is the author of previous request.
         protocol: connectionDefinition.protocol,
         protocolPath: 'connection',
         schema: connectionDefinition.types.connection.schema,
@@ -193,7 +193,7 @@ export class ConnectionService {
     }
 
     // Validae that the record and VC is same.
-    if (vc.issuer != entry.record.author) {
+    if (vc.issuer != entry.record.creator) {
       console.error('VC is not valid.');
       return;
     }
@@ -201,7 +201,7 @@ export class ConnectionService {
     // const targetDid = vc.issuer;
 
     // // If the VC issuer is different than data author, then reject the request.
-    // if (vc.issuer != entry.record.author) {
+    // if (vc.issuer != entry.record.creator) {
     //   console.error('VC issuer is different than the recipient of the request.');
     //   return;
     // }
@@ -349,7 +349,7 @@ export class ConnectionService {
     }
 
     // Validae that the record and VC is same.
-    if (vc.issuer != entry.record.author) {
+    if (vc.issuer != entry.record.creator) {
       console.error('VC is not valid.');
       return;
     }
@@ -491,7 +491,7 @@ export class ConnectionService {
 
   async deleteRequest(entry: ConnectionEntry) {
     // Original author, must be read before updating the record (like delete).
-    const author = entry.record.author;
+    const author = entry.record.creator;
 
     console.log('Delete requested for this author:' + author);
 
@@ -664,7 +664,7 @@ export class ConnectionService {
     });
 
     for (let record of records!) {
-      if (this.blocked(record.author)) {
+      if (this.blocked(record.creator)) {
         // Call delete without waiting and continue. This will normally be processed by background process
         // which will remove all requests from blocked identities.
         record.delete();
@@ -673,7 +673,7 @@ export class ConnectionService {
         record.send(this.identity.did);
 
         // Send the delete to the author.
-        record.send(record.author);
+        record.send(record.creator);
 
         continue;
       }
@@ -681,7 +681,7 @@ export class ConnectionService {
       const data = await record.data.json();
       let notifiationEvent: ConnectionEntry = { record, data, id: record.id };
 
-      if (record.author == this.identity.did) {
+      if (record.creator == this.identity.did) {
         notifiationEvent.direction = 'out';
       }
 

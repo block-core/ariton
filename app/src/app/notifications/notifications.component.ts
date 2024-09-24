@@ -85,7 +85,7 @@ export class NotificationsComponent {
   async deleteNotification(entry: NotificationEvent) {
     entry.loading = true;
 
-    const did = entry.record.author;
+    const did = entry.record.creator;
 
     // Find all connection requests from this user and delete them.
     const connectionsFromUser = await this.connection.loadConnections(did);
@@ -109,7 +109,7 @@ export class NotificationsComponent {
 
     console.log('Blocking user', entry);
 
-    const did = entry.record.author;
+    const did = entry.record.creator;
 
     const result = await this.connection.block(did);
     console.log('Block result: ', result);

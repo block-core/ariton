@@ -125,7 +125,7 @@ export class ProfileComponent {
         let data = await record.data.json();
         let json: any = { record: record, data: data };
 
-        // if (record.author == this.identity.did) {
+        // if (record.creator == this.identity.did) {
         //   json.direction = 'out';
         // }
 
@@ -298,7 +298,7 @@ export class ProfileComponent {
   }
 
   async copyUrl(entry: any) {
-    const url = `${document.location.origin}/profile/${entry.record.author}/posts/${entry.record.id}`;
+    const url = `${document.location.origin}/profile/${entry.record.creator}/posts/${entry.record.id}`;
 
     try {
       await navigator.clipboard.writeText(url);

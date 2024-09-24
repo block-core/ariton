@@ -202,7 +202,7 @@ export class ChatComponent implements OnDestroy {
 
         let json: any = { record: record, data: data };
 
-        if (record.author == this.identity.did) {
+        if (record.creator == this.identity.did) {
           json.direction = 'out';
         }
 
@@ -231,7 +231,7 @@ export class ChatComponent implements OnDestroy {
         let data = await record.data.json();
         let json: any = { record: record, data: data };
 
-        if (record.author == this.identity.did) {
+        if (record.creator == this.identity.did) {
           json.direction = 'out';
         }
 

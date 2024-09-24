@@ -38,7 +38,7 @@ export class WorkerService {
 
           // Copy over the record id so we have a reference between the raw VC and the connection record.
           request.data.recordId = friendRequestRecord?.id;
-          request.data.did = request.record.author;
+          request.data.did = request.record.creator;
 
           console.log('REQUEST DATA:', request.data);
 
