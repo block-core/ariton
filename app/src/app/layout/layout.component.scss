@@ -154,6 +154,16 @@
   display: none;
 }
 
+@media (max-height: 100px) {
+  /** Hide the sidenavn when window is minimized. */
+  .sidenav {
+    display: none !important;
+  }
+}
+
+// @media (min-height: 601px) {
+// }
+
 @media (display-mode: window-controls-overlay) {
   .title-bar {
     -webkit-app-region: drag;
