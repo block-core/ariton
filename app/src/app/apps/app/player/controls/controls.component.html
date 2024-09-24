@@ -1,38 +1,41 @@
-<!-- <div class="player-controls"> -->
-<div class="player-media">Media...</div>
-<div class="player-controls">
-  <div>
-    <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
-      <mat-icon>skip_previous</mat-icon>
-    </button>
+<div class="player" [ngClass]="{ miniplayer: miniplayer }">
+  @if (!miniplayer) {
+  <div class="player-media">Media... {{ miniplayer }}</div>
+  }
+  <div class="player-controls">
+    <div>
+      <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+        <mat-icon>skip_previous</mat-icon>
+      </button>
+    </div>
+    <div>
+      <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+        <mat-icon>play_arrow</mat-icon>
+      </button>
+    </div>
+    <div>
+      <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+        <mat-icon>pause</mat-icon>
+      </button>
+    </div>
+    <div>
+      <button mat-icon-button>
+        <mat-icon>skip_next</mat-icon>
+      </button>
+    </div>
   </div>
-  <div>
-    <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
-      <mat-icon>play_arrow</mat-icon>
-    </button>
+  @if (!miniplayer) {
+  <div class="player-actions">
+    <div>
+      <button mat-icon-button>
+        <mat-icon>queue</mat-icon>
+      </button>
+    </div>
+    <div>
+      <button mat-icon-button (click)="closeTray()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
   </div>
-  <div>
-    <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
-      <mat-icon>pause</mat-icon>
-    </button>
-  </div>
-  <div>
-    <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
-      <mat-icon>skip_next</mat-icon>
-    </button>
-  </div>
+  }
 </div>
-<div class="player-actions">
-  <div>
-    <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
-      <mat-icon>queue</mat-icon>
-    </button>
-  </div>
-  <div>
-    <button mat-icon-button (click)="closeTray()">
-      <mat-icon>close</mat-icon>
-    </button>
-  </div>
-</div>
-
-<!-- </div> -->
