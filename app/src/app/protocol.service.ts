@@ -16,12 +16,15 @@ import { protocolDefinition as connection } from '../protocols/connection';
 import { protocolDefinition as notification } from '../protocols/notification';
 import { protocolDefinition as post } from '../protocols/post';
 import { IdentityService } from './identity.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProtocolService {
   identityService = inject(IdentityService);
+
+  snackBar = inject(MatSnackBar);
 
   constructor() {}
 
@@ -52,12 +55,23 @@ export class ProtocolService {
         },
       });
 
-      console.log('Install status:', status);
-      console.log('Protocol:', protocol);
+      if (status.code !== 202) {
+        console.error('Failed to install protocol:', status, protocol);
+
+        this.snackBar.open(
+          `Failed to install protocol. Code: ${status.code}, Protocol: ${definition.protocol}`,
+          'Close',
+          {
+            duration: 1000,
+          },
+        );
+      }
 
       // Make sure we send the protocol to our public DWNs. If this is not done, then friend requests, etc.
       // for very new accouts won't work.
       protocol?.send(this.identityService.did);
     }
+
+    console.log('Protocols installed.');
   }
 }
