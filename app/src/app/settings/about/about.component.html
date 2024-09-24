@@ -5,7 +5,8 @@
 
   <p>
     Version: {{ appService.package.version }}<br />
-    @if(bundleHash) { Bundle: {{ bundleHash }}<br />
+    @if(timestamp) { Release: <span [matTooltip]="timestamp">{{ timestamp | date }}</span
+    ><br />
     } by Ariton Team
   </p>
 

@@ -16,7 +16,8 @@ export interface AppState {
   backupConfirmed?: boolean;
   hidden: any;
   loginAction: string;
-  bundleHash: string | null;
+  // bundleHash: string | null;
+  bundleTimestamp: string | null;
 }
 
 export interface Account {
@@ -68,7 +69,7 @@ export class AppService {
 
   snackBar = inject(MatSnackBar);
 
-  state = signal<AppState>({ loginAction: '/dashboard', selectedAccount: '', hidden: {}, bundleHash: '' });
+  state = signal<AppState>({ loginAction: '/dashboard', selectedAccount: '', hidden: {}, bundleTimestamp: '' });
 
   account = signal<Account>({ did: '', recoveryPhrase: '', password: '', passwordHash: '' });
 
@@ -85,7 +86,7 @@ export class AppService {
 
   constructor() {
     console.log(`Ariton v${this.package.version} initialized.`);
-    console.log(`Ariton hash: ${this.hash.getHash()}.`);
+    console.log(`Ariton build: ${this.hash.getTimestamp()}.`);
 
     this.dependencies = Object.entries(this.package.dependencies).map(([key, value]) => ({
       name: key,
@@ -150,7 +151,7 @@ export class AppService {
       selectedAccount: '',
       hidden: {},
       loginAction: '/introduction',
-      bundleHash: '',
+      bundleTimestamp: '',
     };
 
     this.storage.save('state', state);
@@ -297,15 +298,18 @@ export class AppService {
   async firstTimeInitialization() {
     // If the previous bundle hash is the same as the current, we don't need to re-register.
     // For local development, the getHash should be null, so we always re-register.
-    if (this.hash.getHash() != null && this.state().bundleHash === this.hash.getHash()) {
+    if (this.hash.getTimestamp() != null && this.state().bundleTimestamp === this.hash.getTimestamp()) {
+      console.log('TIMESTAMP IS SAME; DO NOT RE-RUN PROTOCOLS!!');
       return;
+    } else {
+      console.log('TIMESTAMP IS DIFFERENT; RE-RUN PROTOCOLS!!');
     }
 
     // When intialization is finished, make sure we always re-register the protocols.
     this.protocol.register();
 
     // Save the current bundle hash to the state.
-    this.state().bundleHash = this.hash.getHash();
+    this.state().bundleTimestamp = this.hash.getTimestamp();
     this.saveState();
   }
 }

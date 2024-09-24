@@ -3,11 +3,13 @@ import { MatCardModule } from '@angular/material/card';
 import { AppService } from '../../app.service';
 import { MatListModule } from '@angular/material/list';
 import { HashService } from '../../hash.service';
+import { CommonModule } from '@angular/common';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-about',
   standalone: true,
-  imports: [MatCardModule, MatListModule],
+  imports: [MatCardModule, MatListModule, CommonModule, MatTooltipModule],
   templateUrl: './about.component.html',
   styleUrl: './about.component.scss',
 })
@@ -16,9 +18,9 @@ export class AboutComponent {
 
   hash = inject(HashService);
 
-  bundleHash: string | null = '';
+  timestamp: string | null = '';
 
   ngOnInit() {
-    this.bundleHash = this.hash.getHash();
+    this.timestamp = this.hash.getTimestamp();
   }
 }

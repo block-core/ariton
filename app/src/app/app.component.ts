@@ -11,11 +11,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { RestoreComponent } from './account/create/restore/restore.component';
 import { OnboardingState } from './app.service';
-import { HashService } from './hash.service';
-
-export function initializeApp(hashService: HashService) {
-  return (): Promise<void> => hashService.loadHash();
-}
 
 @Component({
   selector: 'app-root',
@@ -31,12 +26,6 @@ export function initializeApp(hashService: HashService) {
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   providers: [
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initializeApp,
-      deps: [HashService],
-      multi: true,
-    },
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
       useValue: { appearance: 'outline' },
