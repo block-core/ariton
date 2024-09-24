@@ -10,6 +10,7 @@ import { HashService } from './hash.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConnectionService } from './connection.service';
 import { WorkerService } from './worker.service';
+import { EventService } from './event.service';
 
 export interface AppState {
   selectedAccount: string;
@@ -68,6 +69,8 @@ export class AppService {
   protocol = inject(ProtocolService);
 
   snackBar = inject(MatSnackBar);
+
+  event = inject(EventService);
 
   state = signal<AppState>({ loginAction: '/dashboard', selectedAccount: '', hidden: {}, bundleTimestamp: '' });
 
@@ -282,6 +285,9 @@ export class AppService {
 
     // Start the background worker that will process data in the background.
     this.worker.start();
+
+    // Hook up to handle events from remote and local DWN.
+    this.event.initialize();
 
     this.firstTimeInitialization();
   }
