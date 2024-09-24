@@ -151,7 +151,7 @@
 }
 
 .title-bar {
-  display: none;
+  // display: none;
 }
 
 // @media (min-height: 601px) {
@@ -174,20 +174,20 @@
   }
 }
 
-// .title-bar {
-//   -webkit-app-region: drag;
-//   flex: 0 0 33px;
-//   display: flex;
-//   flex-direction: row;
-//   position: fixed;
-//   // left: env(titlebar-area-x, 0);
-//   left: 210px;
-//   top: env(titlebar-area-y, 0);
-//   height: env(titlebar-area-height, 33px);
-//   width: env(titlebar-area-width, 100%);
-//   width: calc(env(titlebar-area-width, 100%) - 210px);
-//   z-index: 10000;
-// }
+.title-bar {
+  -webkit-app-region: drag;
+  flex: 0 0 33px;
+  display: flex;
+  flex-direction: row;
+  position: fixed;
+  // left: env(titlebar-area-x, 0);
+  left: 210px;
+  top: env(titlebar-area-y, 0);
+  height: env(titlebar-area-height, 33px);
+  width: env(titlebar-area-width, 100%);
+  width: calc(env(titlebar-area-width, 100%) - 210px);
+  z-index: 10000;
+}
 
 .title-bar-collapsed {
   left: 80px !important;
@@ -231,14 +231,16 @@
     display: none;
   }
 
-  /** Hide the sidenavn when window is minimized. */
-  .sidenav {
-    display: none !important;
+  /** Show the toolbar on left when minimized. */
+  .title-bar {
+    left: 0px !important;
   }
 
-  /** Show the toolbar on left when minimized. */
-  .title-bar-collapsed {
-    left: 0px;
+  /** Hide the sidenavn when window is minimized. */
+  .sidenav,
+  .main-toolbar,
+  mat-sidenav-content {
+    display: none !important;
   }
 }
 
