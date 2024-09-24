@@ -194,18 +194,6 @@
   width: calc(env(titlebar-area-width, 100%) - 80px);
 }
 
-@media (max-height: 100px) {
-  /** Hide the sidenavn when window is minimized. */
-  .sidenav {
-    display: none !important;
-  }
-
-  /** Show the toolbar on left when minimized. */
-  .title-bar-collapsed {
-    left: 0px;
-  }
-}
-
 .toolbar-logo-container {
   -webkit-app-region: drag;
 }
@@ -234,13 +222,23 @@
   flex: 0 0 24px;
 }
 
-@media screen and (max-height: 200px) {
+@media screen and (max-height: 100px) {
   .logo-icon-title-bar {
     display: inline;
   }
 
   .logo-icon {
     display: none;
+  }
+
+  /** Hide the sidenavn when window is minimized. */
+  .sidenav {
+    display: none !important;
+  }
+
+  /** Show the toolbar on left when minimized. */
+  .title-bar-collapsed {
+    left: 0px;
   }
 }
 
