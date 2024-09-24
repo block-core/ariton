@@ -154,13 +154,6 @@
   display: none;
 }
 
-@media (max-height: 100px) {
-  /** Hide the sidenavn when window is minimized. */
-  .sidenav {
-    display: none !important;
-  }
-}
-
 // @media (min-height: 601px) {
 // }
 
@@ -199,6 +192,18 @@
 .title-bar-collapsed {
   left: 80px !important;
   width: calc(env(titlebar-area-width, 100%) - 80px);
+}
+
+@media (max-height: 100px) {
+  /** Hide the sidenavn when window is minimized. */
+  .sidenav {
+    display: none !important;
+  }
+
+  /** Show the toolbar on left when minimized. */
+  .title-bar-collapsed {
+    left: 0px;
+  }
 }
 
 .toolbar-logo-container {
