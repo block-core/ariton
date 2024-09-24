@@ -1,0 +1,28 @@
+:host {
+  display: flex;
+  flex-direction: row;
+  padding: 1em;
+
+  // justify-content: space-between;
+  // align-items: center;
+}
+
+.player-media {
+  display: flex;
+  flex-direction: row;
+  flex: 1 1 25%;
+}
+
+.player-controls {
+  display: flex;
+  flex-direction: row;
+  flex: 1 1 50%;
+  justify-content: center;
+}
+
+.player-actions {
+  display: flex;
+  flex-direction: row;
+  flex: 1 1 25%;
+  justify-content: flex-end;
+}

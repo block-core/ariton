@@ -31,6 +31,7 @@ import { QRCodeScanDialogComponent } from '../shared/dialog/qrcode-scan-dialog/q
 import { AppService } from '../app.service';
 import { NotificationEvent, NotificationService } from '../notification.service';
 import { AgoPipe } from '../shared/pipes/ago.pipe';
+import { PlayerControlsComponent } from '../apps/app/player/controls/controls.component';
 
 @Component({
   selector: 'app-layout',
@@ -58,6 +59,7 @@ import { AgoPipe } from '../shared/pipes/ago.pipe';
     MatTooltipModule,
     DidPipe,
     AgoPipe,
+    PlayerControlsComponent,
   ],
 })
 export class LayoutComponent {
