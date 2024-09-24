@@ -18,6 +18,8 @@ export class LayoutService {
 
   scrolling = signal<boolean>(true);
 
+  tray = signal<boolean>(false);
+
   navigation = signal<boolean>(false);
 
   margin = signal<boolean>(true);

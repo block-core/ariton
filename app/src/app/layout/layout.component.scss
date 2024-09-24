@@ -10,6 +10,10 @@
 .account-menu-item {
 }
 
+.player {
+  height: 96px;
+}
+
 .account-menu-profile {
   color: var(--mat-menu-item-label-text-color);
   display: flex;
@@ -60,6 +64,10 @@
   box-sizing: border-box;
 }
 
+.sidenav-scroll-wrapper-tray {
+  height: calc(100dvh - 64px - 16px - 96px);
+}
+
 .sidenav-content,
 .sidenav-content-marginless {
   max-height: 100%;
@@ -107,6 +115,10 @@
 
   .sidenav-scroll-wrapper {
     height: calc(100dvh - 64px);
+  }
+
+  .sidenav-scroll-wrapper-tray {
+    height: calc(100dvh - 64px - 96px);
   }
 
   .sidenav-content {

@@ -236,7 +236,7 @@
       </span>
     </mat-toolbar>
 
-    <div class="sidenav-scroll-wrapper">
+    <div class="sidenav-scroll-wrapper" [ngClass]="{ 'sidenav-scroll-wrapper-tray': layout.tray() }">
       <div
         id="sidenav-content"
         [ngClass]="{
@@ -248,5 +248,8 @@
         <ng-content></ng-content>
       </div>
     </div>
+    @if (layout.tray()) {
+    <div class="player">THIS IS THE MEDIA PLAYER!!</div>
+    }
   </mat-sidenav-content>
 </mat-sidenav-container>
