@@ -58,14 +58,14 @@
 // }
 
 .sidenav-scroll-wrapper {
-  height: calc(100dvh - 64px - 16px);
+  height: calc(100dvh - 64px - 16px - env(titlebar-area-height, 0px));
   overflow: auto;
   border-radius: 16px;
   box-sizing: border-box;
 }
 
 .sidenav-scroll-wrapper-tray {
-  height: calc(100dvh - 64px - 16px - 96px);
+  height: calc(100dvh - 64px - 16px - 96px - env(titlebar-area-height, 0px));
 }
 
 .sidenav-content,
@@ -114,11 +114,11 @@
   // }
 
   .sidenav-scroll-wrapper {
-    height: calc(100dvh - 64px);
+    height: calc(100dvh - 64px - env(titlebar-area-height, 0px));
   }
 
   .sidenav-scroll-wrapper-tray {
-    height: calc(100dvh - 64px - 96px);
+    height: calc(100dvh - 64px - 96px - env(titlebar-area-height, 0px));
   }
 
   .sidenav-content {
