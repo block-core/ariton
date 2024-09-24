@@ -2,7 +2,7 @@ import { Injectable, effect, inject, signal } from '@angular/core';
 import { StorageService } from './storage.service';
 import { CryptoService } from './crypto.service';
 import { IdentityService } from './identity.service';
-import { activatePolyfills, Web5ConnectResult } from '@web5/api';
+import { Web5ConnectResult } from '@web5/api';
 import * as packageInfo from '../../package.json';
 import { ProtocolService } from './protocol.service';
 import { ProfileService } from './profile.service';
