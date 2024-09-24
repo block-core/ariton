@@ -188,6 +188,10 @@ input {
   text-decoration: underline;
 }
 
+.nodrag {
+  -webkit-app-region: no-drag;
+}
+
 /** This makes the mat-input-field possible to go smaller than 180px. */
 .mat-mdc-form-field-infix {
   width: 100% !important;
