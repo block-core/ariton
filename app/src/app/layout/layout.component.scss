@@ -169,6 +169,10 @@
   }
 }
 
+.toolbar-logo-container {
+  -webkit-app-region: drag;
+}
+
 .media-controls-container {
   align-self: center;
   flex: 2 2 auto;
