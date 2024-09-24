@@ -181,6 +181,13 @@ export class AppsComponent {
         'https://static.wixstatic.com/media/b8788b_e8db1fae306c4f4d95423ae5861f8fb3~mv2.png/v1/fill/w_128,h_128,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/World_Voluntaryist_Organisation-removebg-preview.png',
     });
 
+    cards.push({
+      title: 'Player',
+      id: 'player',
+      description: 'Player for listening to music, watching videos and podcasts.',
+      imageUrl: '/icons/apps/player.jpg',
+    });
+
     // for (let i = 0; i < this.images.length; i++) {
     //   cards.push({
     //     title: `App ${i + 1}`,

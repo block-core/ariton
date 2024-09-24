@@ -125,7 +125,12 @@ export const routes: Routes = [
     title: 'Notes',
     data: { icon: 'note' },
   },
-
+  {
+    path: 'app/player',
+    loadComponent: () => import('./apps/app/player/player.component').then((c) => c.PlayerComponent),
+    title: 'Player',
+    data: { icon: 'play_circle' },
+  },
   {
     path: 'app/text',
     loadComponent: () => import('./apps/app/text/text.component').then((c) => c.TextComponent),
