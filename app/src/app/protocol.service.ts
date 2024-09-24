@@ -54,6 +54,10 @@ export class ProtocolService {
 
       console.log('Install status:', status);
       console.log('Protocol:', protocol);
+
+      // Make sure we send the protocol to our public DWNs. If this is not done, then friend requests, etc.
+      // for very new accouts won't work.
+      protocol?.send(this.identityService.did);
     }
   }
 }
