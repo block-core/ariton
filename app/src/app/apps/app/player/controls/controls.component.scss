@@ -2,14 +2,12 @@
   display: flex;
   flex-direction: row;
   padding: 1em;
-  -webkit-app-region: drag;
-  // justify-content: space-between;
-  // align-items: center;
 }
 
 .miniplayer {
   padding: 0;
   margin: -4px;
+  -webkit-app-region: drag;
 }
 
 .player-media {
