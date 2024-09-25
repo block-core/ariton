@@ -174,7 +174,7 @@
   }
 
   mat-sidenav-content {
-    padding-top: env(titlebar-area-height);
+    padding-top: env(titlebar-area-height, 0px);
   }
 }
 

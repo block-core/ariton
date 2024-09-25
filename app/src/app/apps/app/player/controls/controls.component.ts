@@ -3,6 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { LayoutService } from '../../../../layout.service';
 import { CommonModule } from '@angular/common';
+import { PlayerService } from '../../../../player.service';
 
 @Component({
   selector: 'app-player-controls',
@@ -14,6 +15,8 @@ import { CommonModule } from '@angular/common';
 export class PlayerControlsComponent {
   @Input() miniplayer: boolean = false;
   layout = inject(LayoutService);
+
+  player = inject(PlayerService);
 
   constructor(private renderer: Renderer2, private el: ElementRef) {}
 

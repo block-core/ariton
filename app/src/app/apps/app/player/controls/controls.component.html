@@ -1,25 +1,28 @@
 <div class="player" [ngClass]="{ miniplayer: miniplayer }">
   @if (!miniplayer) {
-  <div class="player-media">Media... {{ miniplayer }}</div>
+  <div class="player-media">{{ player.title() }}</div>
   }
   <div class="player-controls">
     <div>
-      <button class="nodrag" mat-icon-button>
+      <button class="nodrag" mat-icon-button (click)="player.previous()">
         <mat-icon>skip_previous</mat-icon>
       </button>
     </div>
+    @if (player.paused) {
     <div>
-      <button mat-icon-button>
+      <button mat-icon-button (click)="player.play()">
         <mat-icon>play_arrow</mat-icon>
       </button>
     </div>
-    <!-- <div>
-      <button mat-icon-button>
+    } @else {
+    <div>
+      <button mat-icon-button (click)="player.pause()">
         <mat-icon>pause</mat-icon>
       </button>
-    </div> -->
+    </div>
+    }
     <div>
-      <button mat-icon-button>
+      <button mat-icon-button (click)="player.next()">
         <mat-icon>skip_next</mat-icon>
       </button>
     </div>
