@@ -65,7 +65,7 @@
 }
 
 .sidenav-scroll-wrapper-tray {
-  height: calc(100dvh - 64px - 16px - 96px - env(titlebar-area-height, 0px));
+  height: calc(100dvh - 64px - 16px - 16px - 96px - env(titlebar-area-height, 0px));
 }
 
 .sidenav-content,
@@ -151,7 +151,7 @@
 }
 
 .title-bar {
-  // display: none;
+  display: none;
 }
 
 // @media (min-height: 601px) {
@@ -178,20 +178,20 @@
   }
 }
 
-.title-bar {
-  -webkit-app-region: drag;
-  flex: 0 0 33px;
-  display: flex;
-  flex-direction: row;
-  position: fixed;
-  // left: env(titlebar-area-x, 0);
-  left: 210px;
-  top: env(titlebar-area-y, 0);
-  height: env(titlebar-area-height, 33px);
-  width: env(titlebar-area-width, 100%);
-  width: calc(env(titlebar-area-width, 100%) - 210px);
-  z-index: 10000;
-}
+// .title-bar {
+//   -webkit-app-region: drag;
+//   flex: 0 0 33px;
+//   display: flex;
+//   flex-direction: row;
+//   position: fixed;
+//   // left: env(titlebar-area-x, 0);
+//   left: 210px;
+//   top: env(titlebar-area-y, 0);
+//   height: env(titlebar-area-height, 33px);
+//   width: env(titlebar-area-width, 100%);
+//   width: calc(env(titlebar-area-width, 100%) - 210px);
+//   z-index: 10000;
+// }
 
 .title-bar-collapsed {
   left: 80px !important;

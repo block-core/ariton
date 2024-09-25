@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { LayoutService } from '../../../layout.service';
 import { MatButtonModule } from '@angular/material/button';
 import { PlayerService } from '../../../player.service';
@@ -15,7 +15,13 @@ export class PlayerComponent {
 
   player = inject(PlayerService);
 
-  constructor() {}
+  cd = inject(ChangeDetectorRef);
+
+  constructor() {
+    this.player.onTimeUpdate((currentTime: number) => {
+      this.cd.detectChanges();
+    });
+  }
 
   toggleTray() {
     this.layout.tray.set(!this.layout.tray());

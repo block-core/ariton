@@ -3,29 +3,50 @@
   <div class="player-media">{{ player.title() }}</div>
   }
   <div class="player-controls">
-    <div>
-      <button class="nodrag" mat-icon-button (click)="player.previous()">
-        <mat-icon>skip_previous</mat-icon>
-      </button>
+    <div class="player-controls-top">
+      <div>
+        <button class="nodrag" mat-icon-button (click)="player.previous()">
+          <mat-icon>skip_previous</mat-icon>
+        </button>
+      </div>
+      @if (player.paused) {
+      <div>
+        <button mat-icon-button (click)="player.play()">
+          <mat-icon>play_arrow</mat-icon>
+        </button>
+      </div>
+      } @else {
+      <div>
+        <button mat-icon-button (click)="player.pause()">
+          <mat-icon>pause</mat-icon>
+        </button>
+      </div>
+      }
+      <div>
+        <button mat-icon-button (click)="player.next()">
+          <mat-icon>skip_next</mat-icon>
+        </button>
+      </div>
     </div>
-    @if (player.paused) {
-    <div>
-      <button mat-icon-button (click)="player.play()">
-        <mat-icon>play_arrow</mat-icon>
-      </button>
-    </div>
-    } @else {
-    <div>
-      <button mat-icon-button (click)="player.pause()">
-        <mat-icon>pause</mat-icon>
-      </button>
+
+    @if (!miniplayer) {
+    <div class="player-controls-bottom">
+      <div class="media-timeline-1 hide-small2">{{ player.time | time }}</div>
+      <div class="media-timeline-2">
+        <mat-slider
+          class="media-slider"
+          discrete
+          [displayWith]="formatLabel"
+          [max]="player.duration"
+          [min]="0"
+          [step]="1"
+        >
+          <input matSliderThumb [(ngModel)]="player.time" />
+        </mat-slider>
+      </div>
+      <div class="media-timeline-3 hide-small2">{{ player.duration | time }}</div>
     </div>
     }
-    <div>
-      <button mat-icon-button (click)="player.next()">
-        <mat-icon>skip_next</mat-icon>
-      </button>
-    </div>
   </div>
   @if (!miniplayer) {
   <div class="player-actions">
