@@ -33,6 +33,7 @@ export const protocolDefinition = {
             role: 'collaborator',
             can: ['create', 'update', 'read', 'delete', 'query', 'subscribe', 'co-update', 'co-delete'],
           },
+          { role: 'list/collaborator', can: ['create', 'read', 'update', 'query', 'subscribe', 'co-update'] },
         ],
       },
     },

@@ -286,9 +286,10 @@ export class TasksComponent {
           recipient: collaborator,
           protocol: taskDefinition.protocol,
           parentContextId: record.id, // Make the role a child of the list.
-          protocolPath: 'list',
+          // protocolPath: 'list/collaborator',
+          protocolPath: 'list/collaborator',
           schema: taskDefinition.types.collaborator.schema,
-          dataFormat: taskDefinition.types.collaborator.dataFormats[0],
+          // dataFormat: taskDefinition.types.collaborator.dataFormats[0],
         },
       };
 
@@ -516,17 +517,36 @@ export class TasksComponent {
   async loadRemote() {
     this.list = [];
 
-    const { records } = await this.identity.web5.dwn.records.query({
+    const query = {
       from: 'did:dht:swboka9qm4ywhsoz19ja7gz9et9ccqhy8y88aikae1bwmfiuem3o',
       message: {
-        // protocolRole: 'list',
+        protocolRole: 'list/collaborator',
         filter: {
           protocol: taskDefinition.protocol,
+          // protocolPath: 'list',
+          // protocolPath: 'list/bafyreiduwnbofvuoqomjvwyphix6geuzhybsb7fhvn426pw5hp75zm4pki',
           // schema: taskDefinition.types.list.schema,
         },
         dateSort: DwnDateSort.CreatedAscending,
       },
+    };
+
+    console.log(query);
+
+    const { records } = await this.identity.web5.dwn.records.query(query);
+
+    const { record } = await this.identity.web5.dwn.records.read({
+      from: 'did:dht:swboka9qm4ywhsoz19ja7gz9et9ccqhy8y88aikae1bwmfiuem3o',
+      message: {
+        protocolRole: 'list/collaborator',
+        filter: {
+          recordId: 'bafyreihqtq7ic4b7thqf6wz6gent7ttvps74q5h6ycpzguwsjar3t5ayeq',
+          protocol: taskDefinition.protocol,
+        },
+      },
     });
+
+    console.log('SINGLE RECORD:', record);
 
     // const { record, status } = await this.identity.web5.dwn.records.read({
     //   from: entry.data.did,
