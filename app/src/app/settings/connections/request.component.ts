@@ -85,7 +85,7 @@ export class RequestComponent {
         const { record, status } = await this.identity.web5.dwn.records.read({
           from: entry.data.did,
           message: {
-            protocolRole: 'collaborator',
+            protocolRole: 'list/collaborator',
             filter: {
               protocolPath: 'list',
               recordId: entry.data.recordId,

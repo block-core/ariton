@@ -27,7 +27,8 @@
 
     <div class="container">
       <h2 class="list-header">
-        @if(list.editing) {
+        @if (list.record.author == identity.did) {
+        <mat-icon matTooltip="Shared with you">folder_shared</mat-icon>&nbsp; } @if(list.editing) {
         <mat-form-field subscriptSizing="dynamic">
           <input matInput [(ngModel)]="list.data.title" (keydown.enter)="saveList(list)" />
         </mat-form-field>

@@ -30,6 +30,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConnectionService, ConnectionType } from '../../../connection.service';
 import { protocolDefinition as noteDefinition } from '../../../../protocols/note';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-todo',
@@ -51,6 +52,7 @@ import { protocolDefinition as noteDefinition } from '../../../../protocols/note
     MatMenuModule,
     MatDividerModule,
     MatProgressSpinnerModule,
+    MatTooltipModule,
   ],
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.scss',
@@ -213,7 +215,7 @@ export class TasksComponent {
         // unless they approve us.
         // await this.assignRoleToList(list.record, list.data, newCollaborators);
         await this.sendConnectRequests(list.record, list.data, newCollaborators);
-        await this.sendToCollaborators(list.record, originalCollaboratorsList);
+        // await this.sendToCollaborators(list.record, originalCollaboratorsList);
         // await this.sendToCollaborators(list.record, newCollaborators, true);
 
         this.app.openSnackBar('Sent sharing request to collaborators');
@@ -344,37 +346,37 @@ export class TasksComponent {
     }
   }
 
-  async sendToCollaborators(record: Record, collaborators: string[], everything: boolean = false) {
-    for (let collaborator of collaborators) {
-      const { status } = await record.send(collaborator);
-      console.log('Send record to collaborator:', status, record);
+  // async sendToCollaborators(record: Record, collaborators: string[], everything: boolean = false) {
+  //   for (let collaborator of collaborators) {
+  //     const { status } = await record.send(collaborator);
+  //     console.log('Send record to collaborator:', status, record);
 
-      if (status.code !== 202) {
-        this.snackBar.open(`Code: ${status.code}, Error: ${status.detail}`, 'Close', {
-          duration: 3000,
-        });
-      }
-    }
+  //     if (status.code !== 202) {
+  //       this.snackBar.open(`Code: ${status.code}, Error: ${status.detail}`, 'Close', {
+  //         duration: 3000,
+  //       });
+  //     }
+  //   }
 
-    if (everything) {
-      const tasks = await this.getList(record.id);
+  //   if (everything) {
+  //     const tasks = await this.getList(record.id);
 
-      for (let collaborator of collaborators) {
-        for (let task of tasks) {
-          const { status } = await task.record.send(collaborator);
-          console.log('Send task to collaborator:', status);
+  //     for (let collaborator of collaborators) {
+  //       for (let task of tasks) {
+  //         const { status } = await task.record.send(collaborator);
+  //         console.log('Send task to collaborator:', status);
 
-          if (status.code !== 202) {
-            this.snackBar.open(`Code: ${status.code}, Error: ${status.detail}`, 'Close', {
-              duration: 3000,
-            });
-          }
-        }
-        // const { status } = await record.send(collaborator);
-        // console.log('Send status to collaborator:', status);
-      }
-    }
-  }
+  //         if (status.code !== 202) {
+  //           this.snackBar.open(`Code: ${status.code}, Error: ${status.detail}`, 'Close', {
+  //             duration: 3000,
+  //           });
+  //         }
+  //       }
+  //       // const { status } = await record.send(collaborator);
+  //       // console.log('Send status to collaborator:', status);
+  //     }
+  //   }
+  // }
 
   editList(list: any) {
     list.editing = true;
@@ -390,7 +392,7 @@ export class TasksComponent {
     console.log('Update status:', status);
 
     // Send to all collaborators.
-    await this.sendToCollaborators(list.record, list.data.collaborators);
+    // await this.sendToCollaborators(list.record, list.data.collaborators);
   }
 
   editTask(todo: any) {
@@ -407,7 +409,7 @@ export class TasksComponent {
     console.log('Update status:', status);
 
     // Send to all collaborators.
-    await this.sendToCollaborators(todo.record, list.data.collaborators);
+    // await this.sendToCollaborators(todo.record, list.data.collaborators);
   }
 
   async deleteList(list: any) {
@@ -419,7 +421,7 @@ export class TasksComponent {
     await record.delete();
     list.todos = list.todos.filter((t: any) => t.id !== record.id);
 
-    await this.sendToCollaborators(record, list.data.collaborators);
+    // await this.sendToCollaborators(record, list.data.collaborators);
   }
 
   initializeIndices(entries: any[]): void {
@@ -472,7 +474,7 @@ export class TasksComponent {
 
     this.changeRef.markForCheck();
 
-    await this.sendToCollaborators(todoRecord!, list.data.collaborators);
+    // await this.sendToCollaborators(todoRecord!, list.data.collaborators);
   }
 
   async loadRoles() {
@@ -729,11 +731,11 @@ export class TasksComponent {
       console.log('Create status:', createStatus);
 
       // Send the record to the recipients.
-      await this.sendToCollaborators(todoRecord!, entry.data.collaborators);
+      // await this.sendToCollaborators(todoRecord!, entry.data.collaborators);
 
       // Delete the old record.
       await entry.record.delete();
-      await this.sendToCollaborators(entry.record, entry.data.collaborators);
+      // await this.sendToCollaborators(entry.record, entry.data.collaborators);
 
       // Replace reference to the record with the new one.
       entry.record = todoRecord;

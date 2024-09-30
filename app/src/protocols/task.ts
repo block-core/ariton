@@ -16,23 +16,23 @@ export const protocolDefinition = {
     },
   },
   structure: {
-    collaborator: {
-      $role: true,
-    },
+    // collaborator: {
+    //   $role: true,
+    // },
     list: {
       collaborator: {
         $role: true,
       },
       $actions: [
-        { role: 'collaborator', can: ['create', 'read', 'update', 'query', 'subscribe', 'co-update'] },
-        { role: 'list/collaborator', can: ['create', 'read', 'update', 'query', 'subscribe', 'co-update'] },
+        // { role: 'collaborator', can: ['create', 'read', 'update', 'query', 'subscribe', 'co-update'] },
+        { role: 'list/collaborator', can: ['read', 'query', 'subscribe'] },
       ],
       task: {
         $actions: [
-          {
-            role: 'collaborator',
-            can: ['create', 'update', 'read', 'delete', 'query', 'subscribe', 'co-update', 'co-delete'],
-          },
+          // {
+          //   role: 'collaborator',
+          //   can: ['create', 'update', 'read', 'delete', 'query', 'subscribe', 'co-update', 'co-delete'],
+          // },
           { role: 'list/collaborator', can: ['create', 'read', 'update', 'query', 'subscribe', 'co-update'] },
         ],
       },
