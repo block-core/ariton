@@ -285,7 +285,7 @@ export class TasksComponent {
           tags: tags,
           recipient: collaborator,
           protocol: taskDefinition.protocol,
-          parentContextId: record.id, // Make the role a child of the list.
+          parentContextId: record.contextId, // Make the role a child of the list.
           // protocolPath: 'list/collaborator',
           protocolPath: 'list/collaborator',
           schema: taskDefinition.types.collaborator.schema,
@@ -517,12 +517,19 @@ export class TasksComponent {
   async loadRemote() {
     this.list = [];
 
+    // PAGING:
+    // this.identity.web5.dwn.records.query({ message: { pagination } })
+
     const query = {
       from: 'did:dht:swboka9qm4ywhsoz19ja7gz9et9ccqhy8y88aikae1bwmfiuem3o',
       message: {
-        protocolRole: 'list/collaborator',
+        // protocolRole: 'list/collaborator',
         filter: {
+          // contextId: 'bafyreib3ivgo5vmt77w7cdg2kjyjbjfzdjw3so2yz7bd6redz7kfbsmvmi',
           protocol: taskDefinition.protocol,
+          protocolPath: 'list',
+          schema: taskDefinition.types.list.schema,
+          dataFormat: taskDefinition.types.list.dataFormats[0],
           // protocolPath: 'list',
           // protocolPath: 'list/bafyreiduwnbofvuoqomjvwyphix6geuzhybsb7fhvn426pw5hp75zm4pki',
           // schema: taskDefinition.types.list.schema,
@@ -540,13 +547,16 @@ export class TasksComponent {
       message: {
         protocolRole: 'list/collaborator',
         filter: {
-          recordId: 'bafyreihqtq7ic4b7thqf6wz6gent7ttvps74q5h6ycpzguwsjar3t5ayeq',
+          recordId: 'bafyreib3ivgo5vmt77w7cdg2kjyjbjfzdjw3so2yz7bd6redz7kfbsmvmi',
           protocol: taskDefinition.protocol,
         },
       },
     });
 
     console.log('SINGLE RECORD:', record);
+
+    const json = await record.data.json();
+    console.log('SINGLE JSON:', json);
 
     // const { record, status } = await this.identity.web5.dwn.records.read({
     //   from: entry.data.did,
@@ -572,6 +582,54 @@ export class TasksComponent {
 
       // this.list.push(list);
     }
+  }
+
+  async createTests() {
+    const sharedListData = {
+      type: 'list',
+      title: 'New list',
+      description: 'What to do?',
+      author: this.identity.did,
+      collaborators: [],
+    };
+
+    const { record: record1, status: status1 } = await this.identity.web5.dwn.records.create({
+      data: sharedListData,
+      message: {
+        // recipient: 'did:dht:4jt77q3d3sjndj9drdxtdppjqegmu8zaxo8ktw8xwr5ecrsn5mby',
+        protocol: taskDefinition.protocol,
+        protocolPath: 'list',
+        // protocolRole: 'list/collaborator',
+        schema: taskDefinition.types.list.schema,
+        dataFormat: taskDefinition.types.list.dataFormats[0],
+      },
+    });
+
+    console.log('STATUS: ', status1);
+    record1?.send(this.identity.did);
+
+    // Create two role records, one with parentContext and one without.
+    const tags = {
+      role: true,
+    };
+
+    const query: any = {
+      data: {},
+      message: {
+        tags: tags,
+        recipient: 'did:dht:4jt77q3d3sjndj9drdxtdppjqegmu8zaxo8ktw8xwr5ecrsn5mby',
+        protocol: taskDefinition.protocol,
+        parentContextId: record1!.contextId,
+        protocolPath: 'list/collaborator',
+        schema: taskDefinition.types.collaborator.schema,
+      },
+    };
+
+    console.log('QUERY:', query);
+
+    const { record: roleRecord, status: roleStatus } = await this.identity.web5.dwn.records.create(query);
+    console.log('ROLE STATUS:', roleStatus);
+    roleRecord?.send(this.identity.did);
   }
 
   async newList() {
