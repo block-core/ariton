@@ -176,6 +176,10 @@ export class ChatComponent implements OnDestroy {
     this.layout.enableScrolling();
   }
 
+  async reloadMessages() {
+    await this.loadMessages(this.selectedChat()!);
+  }
+
   async loadMessages(did: string) {
     this.messages.set([]);
 

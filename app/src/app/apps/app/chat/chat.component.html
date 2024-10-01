@@ -41,6 +41,15 @@
       <button mat-icon-button [matMenuTriggerFor]="chatMenu">
         <mat-icon>more_vert</mat-icon>
       </button>
+
+      <button mat-icon-button [disabled]="loading()" (click)="reloadMessages()">
+        @if (loading()) {
+        <mat-spinner diameter="24"></mat-spinner>
+        } @else {
+        <mat-icon>refresh</mat-icon>
+        }
+      </button>
+
       <button mat-icon-button (click)="toggleDetails()">
         <mat-icon>view_sidebar</mat-icon>
       </button>
@@ -48,7 +57,7 @@
 
     <mat-menu #chatMenu="matMenu">
       @if (selectedProfile()) {
-      <button mat-menu-item [routerLink]="['/profile', selectedProfile().profile.did]">
+      <button mat-menu-item [routerLink]="['/profile', this.selectedChat()]">
         <mat-icon>account_circle</mat-icon>
         <span>View profile</span>
       </button>
