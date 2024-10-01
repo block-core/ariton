@@ -96,12 +96,8 @@ export class RequestComponent {
         console.log('STATUS FROM READING RECORD EXTERNALLY:', status);
         console.log('RECORD FROM CONNECTION ACCEPT:', record);
 
-        console.log('AUTHOR1: ', record.author);
-
         // Import the Tasks list to local.
         await record.import();
-
-        console.log('AUTHOR2: ', record.author);
 
         // SENDING HERE RETURNS THIS ERROR:
         // Error encountered while attempting to read data: 401: ProtocolAuthorizationActionNotAllowed:

@@ -6,7 +6,10 @@
     </mat-icon>
     <mat-card-title>
       <!-- @if(entry.record.tags['type'] == 'friend') { Friend Request } @else { Connect Request } -->
-      App: <span class="capitalize">{{ entry.data.app }}</span>
+      App:
+      <span class="capitalize"
+        ><a class="link" [routerLink]="['/app', entry.data.app]">{{ entry.data.app }}</a></span
+      >
     </mat-card-title>
     <mat-card-subtitle
       >Type: <span class="capitalize">{{ entry.record.tags['type'] }}</span> ({{
@@ -15,9 +18,9 @@
     >
   </mat-card-header>
   <mat-card-content>
-    <!-- {{ entry | json }} -->
-
-    <div class="notification-description">Title: {{ entry.data.title }}</div>
+    <div class="notification-description">
+      <a class="link" [routerLink]="['/app', entry.data.app, entry.data.recordId]">Name: {{ entry.data.title }}</a>
+    </div>
     <app-profile-header [did]="entry.record.recipient"> </app-profile-header>
   </mat-card-content>
   <mat-card-actions>
