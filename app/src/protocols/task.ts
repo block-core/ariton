@@ -24,6 +24,13 @@ export const protocolDefinition = {
         $role: true,
       },
       $actions: [
+        // Allows the owner of the list to delete it on remote DWNs.
+        // What about Tasks? Must be investigated.
+        // {
+        //   who: 'author',
+        //   of: 'list',
+        //   can: ['delete'],
+        // },
         // { role: 'collaborator', can: ['create', 'read', 'update', 'query', 'subscribe', 'co-update'] },
         { role: 'list/collaborator', can: ['read', 'query', 'subscribe'] },
       ],
@@ -33,7 +40,10 @@ export const protocolDefinition = {
           //   role: 'collaborator',
           //   can: ['create', 'update', 'read', 'delete', 'query', 'subscribe', 'co-update', 'co-delete'],
           // },
-          { role: 'list/collaborator', can: ['create', 'read', 'update', 'query', 'subscribe', 'co-update'] },
+          {
+            role: 'list/collaborator',
+            can: ['create', 'read', 'update', 'query', 'subscribe', 'co-update', 'co-delete'],
+          },
         ],
       },
     },

@@ -10,6 +10,8 @@ import { AgoPipe } from '../../shared/pipes/ago.pipe';
 import { ProfileHeaderComponent } from '../../shared/components/profile-header/profile-header.component';
 import { ConnectionComponent } from './connection.component';
 import { RequestComponent } from './request.component';
+import { IdentityService } from '../../identity.service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-connections',
@@ -24,12 +26,15 @@ import { RequestComponent } from './request.component';
     MatButtonModule,
     MatIconModule,
     RouterModule,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './connections.component.html',
   styleUrl: './connections.component.scss',
 })
 export class ConnectionsComponent {
   connection = inject(ConnectionService);
+
+  identity = inject(IdentityService);
 
   app = inject(AppService);
 

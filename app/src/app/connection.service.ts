@@ -54,6 +54,8 @@ export class ConnectionService {
 
   requests = signal<ConnectionEntry[]>([]);
 
+  loading = signal<boolean>(false);
+
   constructor() {}
 
   /** Creates a connection entry that opens up a trust line between identities. */
@@ -426,8 +428,14 @@ export class ConnectionService {
     const connections = await this.loadConnections();
     this.connections.set(connections);
 
+    await this.reloadRequests();
+  }
+
+  async reloadRequests() {
+    this.loading.set(true);
     const requests = await this.loadRequests();
     this.requests.set(requests);
+    this.loading.set(false);
   }
 
   async request(did: string, data: ConnectionData, type: ConnectionType) {
@@ -656,12 +664,17 @@ export class ConnectionService {
       schema: connectionDefinition.types.request.schema,
     };
 
-    const { records } = await this.identity.web5.dwn.records.query({
+    const query = {
+      from: this.identity.did,
       message: {
         filter,
         dateSort: DwnDateSort.CreatedAscending,
       },
-    });
+    };
+
+    console.log('LOAD REQUESTS:', query);
+
+    const { records } = await this.identity.web5.dwn.records.query(query);
 
     for (let record of records!) {
       if (this.blocked(record.creator)) {

@@ -27,8 +27,7 @@
 
     <div class="container">
       <h2 class="list-header">
-        @if (list.record.author == identity.did) {
-        <mat-icon matTooltip="Shared with you">folder_shared</mat-icon>&nbsp; } @if(list.editing) {
+        @if(list.editing) {
         <mat-form-field subscriptSizing="dynamic">
           <input matInput [(ngModel)]="list.data.title" (keydown.enter)="saveList(list)" />
         </mat-form-field>
@@ -37,10 +36,15 @@
         </button>
         } @else {
         <a class="list-selection" [routerLink]="['/app', 'tasks', list.id]">{{ list.data.title }}</a>
+        @if (list.record.author !== identity.did) {
+        <button mat-icon-button style="pointer-events: all" [disabled]="true" matTooltip="Shared with you">
+          <mat-icon>folder_shared</mat-icon>
+        </button>
+        } @else {
         <button mat-icon-button (click)="editList(list)">
           <mat-icon>edit</mat-icon>
         </button>
-        }
+        } }
 
         <button mat-icon-button matTooltip="Add new task" (click)="addTask(list)">
           <mat-icon>add_box</mat-icon>

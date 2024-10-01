@@ -96,21 +96,38 @@ export class RequestComponent {
         console.log('STATUS FROM READING RECORD EXTERNALLY:', status);
         console.log('RECORD FROM CONNECTION ACCEPT:', record);
 
+        console.log('AUTHOR1: ', record.author);
+
         // Import the Tasks list to local.
-        record.import();
+        await record.import();
+
+        console.log('AUTHOR2: ', record.author);
+
+        // SENDING HERE RETURNS THIS ERROR:
+        // Error encountered while attempting to read data: 401: ProtocolAuthorizationActionNotAllowed:
+        // Inbound message action RecordsRead by author did: dht: 4jt77q3d3sjndj9drdxtdppjqegmu8zaxo8ktw8xwr5ecrsn5mby not allowed.
+        // await record.send(this.identity.did);
 
         const { records, status: status2 } = await this.identity.web5.dwn.records.query({
           from: entry.data.did,
           message: {
-            protocolRole: 'collaborator',
+            protocolRole: 'list/collaborator',
             filter: {
+              contextId: record.contextId,
               protocol: taskDefinition.protocol,
-              protocolPath: 'list',
+              protocolPath: 'list/task',
             },
           },
         });
 
-        console.log('STATUS FROM READING RECORDS EXTERNALLY:', records);
+        if (records) {
+          for (let record of records!) {
+            await record.import();
+            // await record.send(this.identity.did);
+          }
+        }
+
+        console.log('STATUS FROM READING TASKS RECORDS EXTERNALLY:', records);
         console.log('RECORD FROM STATUS RECORDS:', status2);
 
         // let json: any = {};
