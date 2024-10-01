@@ -723,7 +723,7 @@ export class ConnectionService {
     const { records } = await this.identity.web5.dwn.records.query({
       message: {
         filter,
-        dateSort: DwnDateSort.CreatedAscending,
+        dateSort: DwnDateSort.CreatedDescending,
       },
     });
 

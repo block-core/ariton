@@ -703,6 +703,9 @@ export class TasksComponent {
 
       entry.loading = false;
     } else {
+      console.log('VALIDATE THIS DATA');
+      console.log(previousArray, array, event.previousIndex, event.currentIndex);
+
       transferArrayItem(previousArray, array, event.previousIndex, event.currentIndex);
 
       // Set the new parentId, keep other values the same.
