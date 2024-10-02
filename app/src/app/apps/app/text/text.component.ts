@@ -333,8 +333,8 @@ export class TextComponent implements OnDestroy {
         message: {
           published: published,
           tags: {
-            image: data.image ?? '',
-            title: data.title,
+            // image: data.image ?? '',
+            // title: data.title,
             labels: data.labels,
           },
           protocol: textDefinition.protocol,
