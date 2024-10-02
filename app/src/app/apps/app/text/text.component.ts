@@ -96,7 +96,7 @@ export class TextComponent implements OnDestroy {
   async closeLabelsMenu(entry: any) {
     entry.open = false;
     console.log('Menu closed:', entry);
-    await this.saveNote(entry, entry.data);
+    await this.saveText(entry, entry.data);
   }
 
   viewStyle = model<string>('card');
@@ -118,13 +118,14 @@ export class TextComponent implements OnDestroy {
 
   toppings = new FormControl('');
 
-  labels = signal<string[]>(['Reminders', 'Inspiration', 'Personal', 'Work']);
+  labels = signal<string[]>(['Travel', 'Inspiration', 'Lifestyle', 'Food', 'Photography']);
 
   labelMap: { [key: string]: string } = {
-    Reminders: 'label1',
+    Travel: 'label1',
     Inspiration: 'label2',
-    Personal: 'label3',
-    Work: 'label4',
+    Lifestyle: 'label3',
+    Food: 'label4',
+    Photography: 'label5',
   };
 
   records = signal<any[]>([]);
@@ -148,7 +149,7 @@ export class TextComponent implements OnDestroy {
     });
   }
 
-  async deleteNote(entry: any) {
+  async deleteText(entry: any) {
     const { status } = await entry.record.delete();
 
     if (status) {
@@ -157,7 +158,7 @@ export class TextComponent implements OnDestroy {
   }
 
   newNote() {
-    this.editNote({
+    this.editText({
       data: {
         title: '',
         body: '',
@@ -235,10 +236,10 @@ export class TextComponent implements OnDestroy {
     this.layout.enableScrolling();
   }
 
-  copyNote(entry: any) {
+  copyText(entry: any) {
     const clonedData = JSON.parse(JSON.stringify(entry.data));
 
-    this.saveNote(
+    this.saveText(
       {
         data: clonedData,
       },
@@ -246,7 +247,7 @@ export class TextComponent implements OnDestroy {
     );
   }
 
-  editNote(entry: any) {
+  editText(entry: any) {
     let data: DialogData = {
       title: entry.data.title,
       body: entry.data.body,
@@ -278,7 +279,7 @@ export class TextComponent implements OnDestroy {
         // Update the data from old to new.
         entry.data = data;
 
-        await this.saveNote(entry, data);
+        await this.saveText(entry, data);
 
         // Update the data so it's displayed in the UI without re-query DWN.
         // TODO: Validate if this is actually needed since we copy above now.
@@ -309,9 +310,10 @@ export class TextComponent implements OnDestroy {
   //   console.log('Record status:', status);
   // }
 
-  async saveNote(entry: any, data: DialogData) {
+  async saveText(entry: any, data: DialogData) {
     const published = data.published;
-    delete data.published;
+
+    // delete data.published;
 
     if (entry.record) {
       // Will this work?
@@ -324,9 +326,8 @@ export class TextComponent implements OnDestroy {
         published: published,
       });
 
-      await entry.record.send();
-
       console.log('Record status:', status);
+      await entry.record.send();
     } else {
       const { record, status } = await this.identity.web5.dwn.records.create({
         data: data,

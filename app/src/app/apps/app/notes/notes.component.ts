@@ -295,6 +295,8 @@ export class NotesComponent implements OnDestroy {
         data: data,
       });
 
+      await record.send();
+
       console.log('Record status:', status);
     } else {
       const { record, status } = await this.identity.web5.dwn.records.create({
@@ -315,7 +317,8 @@ export class NotesComponent implements OnDestroy {
 
       if (record) {
         entry.record = record;
-        this.records.update((records) => [...records, entry]);
+        this.records.update((records) => [entry, ...records]);
+        await entry.record.send();
       }
     }
   }
