@@ -45,6 +45,7 @@ import {
 } from '@angular/cdk/menu';
 import { TextEditorComponent } from '../../../shared/components/text-editor/text-editor.component';
 import { StripHtmlPipe } from '../../../shared/pipes/stripHtml';
+import { DwnDateSort } from '@web5/agent';
 
 export interface Section {
   id: string;
@@ -179,6 +180,7 @@ export class TextComponent implements OnDestroy {
           schema: textDefinition.types.entry.schema,
           dataFormat: textDefinition.types.entry.dataFormats[0],
         },
+        dateSort: DwnDateSort.CreatedDescending,
       },
     });
 
@@ -322,6 +324,8 @@ export class TextComponent implements OnDestroy {
         published: published,
       });
 
+      await entry.record.send();
+
       console.log('Record status:', status);
     } else {
       const { record, status } = await this.identity.web5.dwn.records.create({
@@ -345,7 +349,8 @@ export class TextComponent implements OnDestroy {
 
       if (record) {
         entry.record = record;
-        this.records.update((records) => [...records, entry]);
+        this.records.update((records) => [entry, ...records]);
+        await entry.record.send();
       }
     }
   }
