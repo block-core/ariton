@@ -231,6 +231,16 @@ export class FolderComponent {
     // this.dataSource.data = this.entries();
   }
 
+  up() {
+    const currentUrl = this.router.url;
+    const segments = currentUrl.split('/');
+    if (segments.length > 1) {
+      segments.pop();
+      const newUrl = segments.join('/');
+      this.router.navigate([newUrl]);
+    }
+  }
+
   sortData(sort: Sort) {
     // const data = this.entries();
     // if (!sort.active || sort.direction === '') {
@@ -274,7 +284,7 @@ export class FolderComponent {
   async processUrl(url: string) {
     console.log('PROCESS URL:', url);
 
-    if (url.endsWith('root')) {
+    if (url.endsWith('root') || url.endsWith('folder')) {
       console.log('ROOT!!!');
 
       this.parentId = 'root';

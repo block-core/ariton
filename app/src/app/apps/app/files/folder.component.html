@@ -28,6 +28,12 @@ Level: {{ folderLevel }} -->
 
 <mat-card class="toolbar-actions margin-bottom">
   <mat-card-content>
+    @if (folderLevel > 1) {
+    <button mat-icon-button class="toolbar-icon-button" (click)="up()">
+      <mat-icon>arrow_upward</mat-icon>
+    </button>
+    }
+
     <button type="button" mat-button (click)="editFile({})">
       <mat-icon>upload_file</mat-icon>
       <span>Upload files</span>
