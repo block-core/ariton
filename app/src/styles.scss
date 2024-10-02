@@ -192,6 +192,14 @@ input {
   -webkit-app-region: no-drag;
 }
 
+.loading-container {
+  width: 100%;
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 /** This makes the mat-input-field possible to go smaller than 180px. */
 .mat-mdc-form-field-infix {
   width: 100% !important;
