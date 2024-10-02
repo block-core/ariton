@@ -817,6 +817,11 @@ export class TasksComponent {
     entry.loading = true;
 
     const data = event.container.data as any;
+
+    if (data.todos === undefined) {
+      data.todos = [];
+    }
+
     const array = data.todos;
 
     const previousData = event.previousContainer.data as any;
@@ -841,9 +846,6 @@ export class TasksComponent {
 
       entry.loading = false;
     } else {
-      console.log('VALIDATE THIS DATA');
-      console.log(previousArray, array, event.previousIndex, event.currentIndex);
-
       transferArrayItem(previousArray, array, event.previousIndex, event.currentIndex);
 
       // Set the new parentId, keep other values the same.
