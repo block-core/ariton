@@ -13,6 +13,7 @@ import { IdentityService } from '../../identity.service';
 import { RecordEntry } from '../../data';
 import { protocolDefinition as taskDefinition } from '../../../protocols/task';
 import { protocolDefinition as noteDefinition } from '../../../protocols/note';
+import { DwnDateSort } from '@web5/agent';
 
 export interface RoleData {
   // did?: string;
@@ -78,6 +79,7 @@ export class RolesComponent {
             role: true,
           },
         },
+        dateSort: DwnDateSort.CreatedDescending,
       },
     });
 
