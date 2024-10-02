@@ -96,7 +96,7 @@ export class ConnectionService {
       id: record!.id,
     } as ConnectionEntry;
 
-    this.connections.update((list) => [...list, connectionEntry]);
+    this.connections.update((list) => [connectionEntry, ...list]);
 
     // Send to self, not to recipient.
     this.utility.executeAsyncWithToast(entry.record.send(this.identity.did));
