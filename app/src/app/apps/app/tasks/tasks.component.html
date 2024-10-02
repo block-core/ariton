@@ -8,8 +8,9 @@
   @if (!selectedList()) {
   <button mat-flat-button (click)="newList()">
     <mat-icon>add</mat-icon>
-    New list</button
-  ><button mat-flat-button (click)="loadRoles()">
+    New list
+  </button>
+  <!-- <button mat-flat-button (click)="loadRoles()">
     <mat-icon>add</mat-icon>
     Query roles</button
   ><button mat-flat-button (click)="loadRemote()">
@@ -19,7 +20,8 @@
   <button mat-flat-button (click)="createTests()">
     <mat-icon>add</mat-icon>
     Create records</button
-  ><br />
+  > -->
+  <br />
   }
 
   <div cdkDropListGroup>
@@ -49,6 +51,15 @@
         <button mat-icon-button matTooltip="Add new task" (click)="addTask(list)">
           <mat-icon>add_box</mat-icon>
         </button>
+
+        <button mat-icon-button [disabled]="list.loading" (click)="reloadList(list)">
+          @if (list.loading) {
+          <mat-spinner diameter="24"></mat-spinner>
+          } @else {
+          <mat-icon>refresh</mat-icon>
+          }
+        </button>
+
         <button mat-icon-button [matMenuTriggerFor]="menuListActions">
           <mat-icon>more_vert</mat-icon>
         </button>

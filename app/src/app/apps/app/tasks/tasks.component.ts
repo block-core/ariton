@@ -105,15 +105,43 @@ export class TasksComponent {
   }
 
   /** Gets a list of tasks with the supplied parent id. */
-  async getList(id: string) {
+  async getList(list: any) {
     // Fetch tasks under list
-    const { records: todoRecords } = await this.identity.web5.dwn.records.query({
+
+    console.log('GET LIST: ', list.record.creator);
+
+    // const { records, status: status2 } = await this.identity.web5.dwn.records.query({
+    //   from: entry.data.did,
+    //   message: {
+    //     protocolRole: 'list/collaborator',
+    //     filter: {
+    //       contextId: record.contextId,
+    //       protocol: taskDefinition.protocol,
+    //       protocolPath: 'list/task',
+    //     },
+    //   },
+    // });
+
+    const query: any = {
+      // from: list.record.creator,
       message: {
+        // protocolRole: 'list/collaborator',
         filter: {
-          parentId: id,
+          contextId: list.id,
+          protocol: taskDefinition.protocol,
+          protocolPath: 'list/task',
         },
       },
-    });
+    };
+
+    if (list.record.creator != this.identity.did) {
+      query.from = list.record.creator;
+      query.message.protocolRole = 'list/collaborator';
+    } else {
+      query.from = this.identity.did;
+    }
+
+    const { records: todoRecords } = await this.identity.web5.dwn.records.query(query);
 
     let todos: any[] = [];
 
@@ -136,6 +164,34 @@ export class TasksComponent {
     return todo;
   }
 
+  async reloadList(list: any) {
+    const query = {
+      from: list.record.creator,
+      message: {
+        protocolRole: 'list/collaborator',
+        filter: {
+          protocolPath: 'list',
+          recordId: list.record.id,
+        },
+      },
+    };
+
+    const { record, status } = await this.identity.web5.dwn.records.read(query);
+
+    const data = await record.data.json();
+
+    list = { record, data, id: record.id };
+    list.todos = await this.getList(list);
+
+    const index = this.list.findIndex((item) => item.id === list.id);
+
+    if (index !== -1) {
+      this.list[index] = list;
+    } else {
+      this.list.push(list);
+    }
+  }
+
   async load() {
     this.list = [];
 
@@ -153,9 +209,58 @@ export class TasksComponent {
       const data = await record.data.json();
       let list: any = { record, data, id: record.id };
 
-      list.todos = await this.getList(list.id);
+      list.todos = await this.getList(list);
 
       this.list.push(list);
+    }
+
+    const shared = this.list.filter((l) => l.record.author != this.identity.did);
+
+    console.log('SHARED LISTS:', shared);
+
+    // If this is a shared list, we need to query remotely for updates.
+    for (let list of shared) {
+      console.log('LIST:', list);
+      console.log('FROM:', list.record.creator);
+      console.log('RECORD:', list.record.id);
+      console.log('RECORD:', list.data.recordId);
+
+      const query = {
+        from: list.record.creator,
+        message: {
+          protocolRole: 'list/collaborator',
+          filter: {
+            protocolPath: 'list',
+            recordId: list.record.id,
+          },
+        },
+      };
+
+      const { record, status } = await this.identity.web5.dwn.records.read(query);
+
+      if (record.dateModified != list.record.dateModified) {
+        const data = await record.data.json();
+
+        let list: any = { record, data, id: record.id };
+        list.todos = await this.getList(list);
+
+        const index = this.list.findIndex((item) => item.id === list.id);
+
+        if (index !== -1) {
+          this.list[index] = list;
+        } else {
+          this.list.push(list);
+        }
+
+        // Import the updated record.
+        try {
+          await record.import();
+        } catch (err) {
+          console.error('Import error, this is expected 😂🤣🥲 until SDK is updated:', err);
+        }
+      } else {
+        console.log('NO UPDATE, RECORD IS NOT MODIFIED!!');
+      }
     }
   }
 
@@ -391,6 +496,10 @@ export class TasksComponent {
 
     console.log('Update status:', status);
 
+    const { status: status2 } = await list.record.send();
+
+    console.log('SEND STATUS TO SELF:', status2);
+
     // Send to all collaborators.
     // await this.sendToCollaborators(list.record, list.data.collaborators);
   }
@@ -402,11 +511,29 @@ export class TasksComponent {
   async saveTask(todo: any, list: any) {
     todo.editing = false;
 
-    const { status } = await todo.record.update({
+    const query: any = {
       data: todo.data,
-    });
+    };
+
+    // Make sure we specify the protocolRole for the update, so that .send works.
+    if (todo.record.creator != this.identity.did) {
+      // query.protocolRole = 'list/collaborator';
+    }
+
+    const { status } = await todo.record.update(query);
 
     console.log('Update status:', status);
+
+    const { status: status2 } = await todo.record.send();
+
+    console.log('Send status 2: ', status2);
+
+    // If the task is shared, send it back to creator.
+    // if (todo.record.creator != this.identity.did) {
+    //   console.log('SENDING TASK TO CREATOR:', todo.record.creator);
+    //   const { status } = await todo.record.send(todo.record.creator);
+    //   console.log('UPDATE STATUS:', status);
+    // }
 
     // Send to all collaborators.
     // await this.sendToCollaborators(todo.record, list.data.collaborators);
@@ -420,6 +547,15 @@ export class TasksComponent {
   async deleteTask(record: Record, list: any) {
     await record.delete();
     list.todos = list.todos.filter((t: any) => t.id !== record.id);
+
+    const { status } = await record.send();
+
+    console.log('SEND STATUS OF DELETE:', status);
+
+    // Send the delete to the creator.
+    // if (record.creator != this.identity.did) {
+    //   await record.send(record.creator);
+    // }
 
     // await this.sendToCollaborators(record, list.data.collaborators);
   }
@@ -463,6 +599,8 @@ export class TasksComponent {
         parentContextId: taskData.parentId,
       },
     });
+
+    // todoRecord?.update({ protocolRole: 'list/collaborator' });
 
     console.log('VALIDATE collaborator:', todoRecord);
 
