@@ -19,7 +19,9 @@
   </mat-card-header>
   <mat-card-content>
     <div class="notification-description">
+      @if(entry.record.tags['type'] == 'friend') { Reason: "{{ entry.data.title }}" } @else {
       <a class="link" [routerLink]="['/app', entry.data.app, entry.data.recordId]">Name: {{ entry.data.title }}</a>
+      }
     </div>
     <app-profile-header [did]="entry.record.recipient"> </app-profile-header>
   </mat-card-content>

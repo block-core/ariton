@@ -50,6 +50,12 @@ export const routes: Routes = [
     data: { hide: false, icon: 'people' },
   },
   {
+    path: 'app/friends',
+    loadComponent: () => import('./friends/friends.component').then((c) => c.FriendsComponent),
+    title: 'Friends',
+    data: { hide: false, icon: 'people' },
+  },
+  {
     path: 'app/chat',
     redirectTo: 'app/chat/home',
     pathMatch: 'full',
