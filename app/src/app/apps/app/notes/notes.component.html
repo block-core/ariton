@@ -52,14 +52,14 @@
           [cdkConnectedOverlayOpen]="entry.open"
           (backdropClick)="closeLabelsMenu(entry)"
         >
-          <mat-card>
+          <mat-card class="label-option">
             <mat-form-field subscriptSizing="dynamic">
               <mat-label>Labels</mat-label>
               <mat-select [(ngModel)]="entry.data.labels" multiple>
                 <mat-select-trigger>
                   {{entry.data.labels?.[0] || ''}}
                   @if ((entry.data.labels?.length || 0) > 1) {
-                  <span class="example-additional-selection">
+                  <span>
                     (+{{ (entry.data.labels?.length || 0) - 1 }}
                     {{ entry.data.labels?.length === 2 ? 'other' : 'others' }})
                   </span>
