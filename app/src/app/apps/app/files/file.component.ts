@@ -63,7 +63,6 @@ export class FileComponent {
   navigation = inject(NavigationService);
   zoom = 1;
   private fileUrl: any;
-  private data: any;
   loading = false;
 
   constructor() {
@@ -179,8 +178,11 @@ export class FileComponent {
     console.log(url);
     a.href = url;
 
+    const filename = this.record?.tags['name'] as string;
+    a.download = filename;
+
     // Step 4: Set the download attribute with a filename
-    a.download = this.data.name;
+    // a.download = this.data.name;
 
     // Step 5: Programmatically click the anchor element to trigger the download
     a.click();
