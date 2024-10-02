@@ -316,8 +316,8 @@ export class TextComponent implements OnDestroy {
     if (entry.record) {
       // Will this work?
       entry.record.tags.labels = data.labels;
-      entry.record.tags.title = data.title;
-      entry.record.tags.image = data.image ?? '';
+      // entry.record.tags.title = data.title;
+      // entry.record.tags.image = data.image ?? '';
 
       const { status } = await entry.record.update({
         data: data,
