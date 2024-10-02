@@ -47,7 +47,7 @@ export const routes: Routes = [
     path: 'friends',
     loadComponent: () => import('./friends/friends.component').then((c) => c.FriendsComponent),
     title: 'Friends',
-    data: { hide: false, icon: 'people' },
+    data: { hide: true, icon: 'people' },
   },
   {
     path: 'app/friends',
