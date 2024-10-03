@@ -1,7 +1,10 @@
-<div class="cropper-container">
-  <img id="image" height="600" [src]="sanitizedUrl" />
-  <div class="crop-actions">
-    <button style="margin-right: 1rem" mat-flat-button (click)="reset()">Reset</button>
-    <button color="primary" mat-flat-button (click)="crop()">Ok</button>
+<h2 mat-dialog-title>Crop profile image</h2>
+<mat-dialog-content>
+  <div class="cropper-container">
+    <img id="image" [src]="sanitizedUrl" />
   </div>
-</div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button style="margin-right: 1rem" mat-flat-button (click)="reset()">Reset</button>
+  <button color="primary" mat-flat-button (click)="crop()">Ok</button>
+</mat-dialog-actions>
