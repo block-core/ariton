@@ -21,6 +21,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { Record } from '@web5/api';
 import { NavigationService } from '../../../navigation.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-file',
@@ -36,6 +37,7 @@ import { NavigationService } from '../../../navigation.service';
     BreadcrumbComponent,
     MatToolbarModule,
     MatButtonModule,
+    MatTooltipModule,
   ],
   templateUrl: './file.component.html',
   styleUrl: './file.component.scss',

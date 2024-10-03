@@ -13,7 +13,7 @@
     </button>
     <!-- This tags read throws errors upon delete and redirect. Needed this extra guard. -->
     @if (record.tags) {
-    <span>{{ this.record.tags['name'] }}</span>
+    <span class="ellipsis" [matTooltip]="this.record.tags['name'].toString()">{{ this.record.tags['name'] }}</span>
     }
     <span class="toolbar-spacer"></span>
     <button mat-icon-button (click)="zoomIn()" [disabled]="!canZoomIn">
