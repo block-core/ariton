@@ -30,6 +30,10 @@ export class ImageCropperComponent {
     this.initCropper();
   }
 
+  onCancel(): void {
+    this.dialogRef.close();
+  }
+
   initCropper() {
     const image = document.getElementById('image') as HTMLImageElement;
     this.cropper = new Cropper(image, {
