@@ -62,6 +62,7 @@ export class ProfileEditComponent {
       if (this.identity.initialized()) {
         // Load the current identity profile.
         const result = await this.profileService.loadProfile(this.identity.did);
+
         this.data.set(result);
 
         // Only send the profile data to the form.
@@ -127,7 +128,7 @@ export class ProfileEditComponent {
           published: true,
           protocol: profileDefinition.protocol,
           protocolPath: 'avatar',
-          dataFormat: 'image/png',
+          dataFormat: 'image/jpeg',
           tags: {
             module: 'profile',
           },
@@ -190,22 +191,12 @@ export class ProfileEditComponent {
       console.log('Send profile status:', recordSendStatus);
     }
 
-    // If avatar record exists, update it.
-    // if () {
-    //   const { status, record } = await this.data().record.update({
-    //     published: true,
-    //     data: formData,
-    //   });
-
-    //   console.log('Update profile status:', status, record);
-    // } else {
-
     // TODO: Check if the avatar has changed before uploading. Don't upload if it hasn't.
     const avatarRecord = await this.upload(this.form.controls.avatar.value, this.data().avatarRecord);
 
     if (avatarRecord) {
       // Send the record immediately to user public DWN.
-      const { status: recordSendStatus } = await avatarRecord!.send(this.identity.did);
+      const { status: recordSendStatus } = await avatarRecord!.send();
       console.log('Send avatar status:', recordSendStatus);
     }
     // }

@@ -93,10 +93,7 @@ export class ProfileService {
       entry = await this.loadProfileRemote(did);
     }
 
-    var avatarRecord: any = null;
-    var avatar: any = null;
-
-    var avatar = await this.loadAvatar(did);
+    var { avatar, avatarRecord } = await this.loadAvatar(did);
 
     // Returns a structure of both the record and the profile.
     return {
@@ -118,7 +115,7 @@ export class ProfileService {
           author: did,
           protocol: profile.uri,
           protocolPath: 'avatar',
-          dataFormat: 'image/png',
+          dataFormat: 'image/jpeg',
         },
       },
     });
@@ -134,10 +131,15 @@ export class ProfileService {
       // Load remotely and import, so next time it's accessed it will render latest.
       this.loadAvatarRemote(did);
     } else {
-      avatar = await this.loadAvatarRemote(did);
+      let { avatar, avatarRecord } = await this.loadAvatarRemote(did);
+      avatar = avatar;
+      avatarRecord = avatarRecord;
     }
 
-    return avatar;
+    return {
+      avatar,
+      avatarRecord,
+    };
   }
 
   async loadAvatarRemote(did: string) {
@@ -151,7 +153,7 @@ export class ProfileService {
           author: did,
           protocol: profile.uri,
           protocolPath: 'avatar',
-          dataFormat: 'image/png',
+          dataFormat: 'image/jpeg',
         },
       },
     });
@@ -167,7 +169,7 @@ export class ProfileService {
       avatar = image;
     }
 
-    return avatar;
+    return { avatar, avatarRecord };
   }
 
   async loadProfileRemote(did: string) {
