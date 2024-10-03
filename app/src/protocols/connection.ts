@@ -24,7 +24,8 @@ export const protocolDefinition = {
     request: {
       $size: {
         // Normal request is about 107 bytes, keep limit so requests won't fail, but protect against large spam.
-        max: 1000,
+        // Friend requests with VCs are about 1115 bytes.
+        max: 3000,
       },
       $actions: [
         {

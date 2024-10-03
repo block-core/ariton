@@ -188,6 +188,7 @@ export class ChatComponent implements OnDestroy {
     };
 
     var { records } = await this.identity.web5.dwn.records.query({
+      from: this.identity.did,
       message: {
         filter: {
           tags: tags,
@@ -217,6 +218,7 @@ export class ChatComponent implements OnDestroy {
 
   async load() {
     var { records } = await this.identity.web5.dwn.records.query({
+      from: this.identity.did,
       message: {
         filter: {
           protocol: chatDefinition.protocol,
@@ -338,7 +340,9 @@ export class ChatComponent implements OnDestroy {
         },
       });
 
-      record?.send(recipientDid);
+      await record?.send(recipientDid);
+      await record?.send();
+
       let json: any = { record: record, data: data, direction: 'out' };
 
       this.messages.update((requests) => [...requests, json]);

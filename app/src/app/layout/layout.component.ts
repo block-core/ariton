@@ -146,6 +146,10 @@ export class LayoutComponent {
   }
 
   private handleSearch(value: string): void {
+    if (!value) {
+      return;
+    }
+
     if (value.includes(':')) {
       this.router.navigate(['/profile', value]);
     } else {
