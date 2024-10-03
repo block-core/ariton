@@ -3,7 +3,7 @@
   <img class="loading-logo" src="ariton-icon-dark.svg" />
 
   @switch (appService.onboardingState()) { @case (0) {
-  <p>Initializing Ariton...</p>
+  <p>Starting Ariton...</p>
   } @case (1) {
 
   <div class="new-user-actions">
@@ -22,10 +22,14 @@
     <p>Issues? <button mat-button (click)="forceClose()">Close loading sceen</button></p>
   </div>
   } @case(3) {
-  <div class="loading-container">
+
+  <p>Starting Ariton...</p>
+  <!-- <div class="loading-container">
+    <p>Initializing Ariton... STATE 0</p>
     <img class="loading-logo" src="ariton-icon-dark.svg" />
     <div>Initializing... please wait...</div>
-  </div>
+  </div> -->
+
   } @case(4) {
   <div class="loading-error">
     <h1>Error during initialization. Offline?</h1>
@@ -37,6 +41,7 @@
   } } @if(appService.loading()) {
   <mat-spinner></mat-spinner>
   }
+
   <p>Issues? <button mat-button (click)="forceClose()">Close loading sceen</button></p>
 </div>
 
