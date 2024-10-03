@@ -22,6 +22,10 @@ export const protocolDefinition = {
     block: {},
     connection: {},
     request: {
+      $size: {
+        // Normal request is about 107 bytes, keep limit so requests won't fail, but protect against large spam.
+        max: 1000,
+      },
       $actions: [
         {
           who: 'anyone',
