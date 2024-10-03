@@ -33,6 +33,12 @@
     <source [src]="src" type="video/mp4" />
     Your browser does not support HTML5 video.
   </video>
+
+  } @case(fileMimeType.MP3) {
+  <audio class="audio-player" controls width="100%" [ngStyle]="{ transform: 'scale(' + zoom + ')' }">
+    <source [src]="src" type="audio/mpeg" />
+    Your browser does not support the audio element.
+  </audio>
   } @default {
   <span #content><ng-content></ng-content></span>
   } }

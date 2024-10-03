@@ -75,7 +75,8 @@ export class PlayerService {
   }
 
   async play() {
-    const url = 'https://file-examples.com/storage/fefcab211666f32e693a865/2017/11/file_example_MP3_700KB.mp3';
+    const url = 'https://magazine.ariton.app/assets/creative-technology-showreel-241274.mp3';
+
     this.setTitle(url);
 
     if (!this.audio) {

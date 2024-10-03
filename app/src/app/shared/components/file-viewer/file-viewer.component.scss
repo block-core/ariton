@@ -49,8 +49,17 @@
   }
 }
 
-.controls, .zoom-controls {
+.controls,
+.zoom-controls {
   background: rgba(255, 255, 255, 0.7); // Optional: background to make controls more visible
   border-radius: 5px;
   padding: 5px;
+}
+
+.audio-player {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 1em;
 }
