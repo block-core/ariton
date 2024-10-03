@@ -241,15 +241,7 @@ export class ProfileComponent {
 
   async addFriend(did: string) {
     const { record } = await this.friend.createRequest(did);
-
-    // TODO: Perform this without waiting, or perhaps wait?
-    const { status: requestStatus } = await record!.send(did);
-
-    if (requestStatus.code !== 202) {
-      this.app.openSnackBar(`Friend request failed.Code: ${requestStatus.code}, Details: ${requestStatus.detail}.`);
-    } else {
-      this.app.openSnackBar('Friend request sent');
-    }
+    this.app.openSnackBar('Friend request sent');
   }
 
   async block(did: string) {

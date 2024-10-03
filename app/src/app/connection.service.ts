@@ -468,7 +468,7 @@ export class ConnectionService {
       direction: 'out',
     } as ConnectionEntry;
 
-    this.requests.update((list) => [...list, entry]);
+    this.requests.update((list) => [entry, ...list]);
 
     // Send to self and recipient.
     this.utility.executeAsyncWithToast(entry.record.send(this.identity.did));
