@@ -26,6 +26,7 @@
     </button>
 
     <mat-menu #menuProfile="matMenu">
+      @if (data().did !== this.identity.did) {
       <button mat-menu-item [routerLink]="['/app', 'chat', data().did]">
         <mat-icon>chat_bubble</mat-icon>
         <span>Message</span>
@@ -34,7 +35,7 @@
         <mat-icon>person_add</mat-icon>
         <span>Add Friend</span>
       </button>
-      @if (data().did === this.identity.did) {
+      } @if (data().did === this.identity.did) {
       <mat-divider></mat-divider>
       <button mat-menu-item [routerLink]="['edit']">
         <mat-icon>edit</mat-icon>
