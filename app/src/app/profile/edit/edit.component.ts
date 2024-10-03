@@ -191,15 +191,23 @@ export class ProfileEditComponent {
       console.log('Send profile status:', recordSendStatus);
     }
 
-    // TODO: Check if the avatar has changed before uploading. Don't upload if it hasn't.
-    const avatarRecord = await this.upload(this.form.controls.avatar.value, this.data().avatarRecord);
+    if (!this.form.controls.avatar.value) {
+      // Delete the avatar record if the avatar is empty
+      if (this.data().avatarRecord) {
+        await this.data().avatarRecord.delete();
+        await this.data().avatarRecord.send();
+      }
+    } else {
+      // TODO: Check if the avatar has changed before uploading. Don't upload if it hasn't.
+      const avatarRecord = await this.upload(this.form.controls.avatar.value, this.data().avatarRecord);
 
-    if (avatarRecord) {
-      // Send the record immediately to user public DWN.
-      const { status: recordSendStatus } = await avatarRecord!.send();
-      console.log('Send avatar status:', recordSendStatus);
+      if (avatarRecord) {
+        // Send the record immediately to user public DWN.
+        const { status: recordSendStatus } = await avatarRecord!.send();
+        console.log('Send avatar status:', recordSendStatus);
+      }
+      // }
     }
-    // }
 
     this.router.navigate(['/profile', this.identity.did]);
   }

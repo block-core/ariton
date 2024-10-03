@@ -58,3 +58,29 @@
     display: none;
   }
 }
+
+.icon-wrapper-reset {
+  position: absolute;
+  height: 40px;
+  width: 40px;
+  padding: 0.35rem;
+  background-color: var(--mat-fab-foreground-color);
+
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  left: 0;
+  top: 75%;
+  z-index: 2;
+  cursor: pointer;
+
+  &:hover {
+    transition: all 0.25s;
+    background-color: var(--mdc-circular-progress-active-indicator-color);
+  }
+
+  .icon {
+    color: var(--mdc-filled-button-label-text-color);
+  }
+}

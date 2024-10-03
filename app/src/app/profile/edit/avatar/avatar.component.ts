@@ -96,4 +96,17 @@ export class AvatarComponent {
       input.value = '';
     }
   }
+
+  removeAvatar() {
+    this.writeValue('');
+
+    const input = document.getElementById('avatar-input-file') as HTMLInputElement;
+
+    if (input) {
+      input.value = '';
+    }
+
+    this.onChange(this.file);
+    this.onTouched();
+  }
 }
