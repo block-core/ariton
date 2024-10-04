@@ -13,6 +13,7 @@ import { ProfileService } from '../../profile.service';
 import { NavigationService } from '../../navigation.service';
 import { AvatarComponent } from './avatar/avatar.component';
 import { protocolDefinition as profileDefinition } from '../../../protocols/profile';
+import { LayoutService } from '../../layout.service';
 
 @Component({
   selector: 'app-edit',
@@ -41,6 +42,8 @@ export class ProfileEditComponent {
 
   data = signal<any>({});
 
+  layout = inject(LayoutService);
+
   loading = false;
 
   form = this.fb.group({
@@ -58,6 +61,8 @@ export class ProfileEditComponent {
   }
 
   constructor() {
+    this.layout.marginOn();
+
     effect(async () => {
       if (this.identity.initialized()) {
         // Load the current identity profile.
