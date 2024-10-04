@@ -55,11 +55,13 @@
         <mat-icon>send</mat-icon>
         <span>Share Profile</span>
       </button>
+      @if (identity.did !== data().did) {
       <mat-divider></mat-divider>
-      <button [disabled]="identity.did == data().did" mat-menu-item (click)="block(data().did)">
+      <button mat-menu-item (click)="block(data().did)">
         <mat-icon>block</mat-icon>
         <span>Block</span>
       </button>
+      }
     </mat-menu>
   </div>
 </div>
