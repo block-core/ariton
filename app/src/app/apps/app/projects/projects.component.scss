@@ -1,0 +1,33 @@
+// .toolbox {
+//     display: flex;
+//     gap: 1em;
+//     align-items: baseline;
+// }
+
+// .toolbox-left {
+//     flex-grow: 2;
+// }
+
+// .toolbox-right {
+//     flex-grow: 1;
+// }
+
+.search-input {
+  width: 100%;
+}
+
+// .container {
+//   padding: 24px;
+// }
+
+img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.responsive-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 24px;
+}
