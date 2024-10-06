@@ -8,7 +8,6 @@ import { provideHttpClient } from '@angular/common/http';
 import { HashService } from './hash.service';
 
 export function initializeApp(hashService: HashService) {
-  console.log('initializeApp. Getting hashService.load.');
   return (): Promise<void> => hashService.load();
 }
 

@@ -156,7 +156,6 @@ export class ChatComponent implements OnDestroy {
     const customBreakpoint = '(max-width: 1024px)';
 
     this.breakpointObserver.observe([customBreakpoint]).subscribe((result) => {
-      console.log('MATCHES:', result.matches);
       if (result.matches) {
         this.details.set(false);
         this.detailsBig.set(true);

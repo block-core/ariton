@@ -69,7 +69,6 @@ export class LayoutService {
 
     // Observe the custom breakpoint
     this.breakpointObserver.observe([customBreakpoint]).subscribe((result) => {
-      console.log('MATCHES:', result.matches);
       if (result.matches) {
         // Code to execute when the viewport is 959.98px or less
         this.small.set(true);

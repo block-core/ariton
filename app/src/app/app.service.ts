@@ -88,8 +88,7 @@ export class AppService {
   aritonDid = 'did:dht:mo7am9cz6qrjwoc4kapffeue9kjw6igdh9dmqd3ywdif6qa7ju4o';
 
   constructor() {
-    console.log(`Ariton v${this.package.version} initialized.`);
-    console.log(`Ariton build: ${this.hash.getTimestamp()}.`);
+    console.log(`Ariton v${this.package.version} (${this.hash.getTimestamp()})`);
 
     this.dependencies = Object.entries(this.package.dependencies).map(([key, value]) => ({
       name: key,
@@ -305,10 +304,10 @@ export class AppService {
     // If the previous bundle hash is the same as the current, we don't need to re-register.
     // For local development, the getHash should be null, so we always re-register.
     if (this.hash.getTimestamp() != null && this.state().bundleTimestamp === this.hash.getTimestamp()) {
-      console.log('TIMESTAMP IS SAME; DO NOT RE-RUN PROTOCOLS!!');
+      console.log('Bundle hash is the same as the previous one. No need to re-register protocols.');
       return;
     } else {
-      console.log('TIMESTAMP IS DIFFERENT; RE-RUN PROTOCOLS!!');
+      console.log('Bundle hash is different from the previous one. Re-registering protocols...');
     }
 
     // When intialization is finished, make sure we always re-register the protocols.
