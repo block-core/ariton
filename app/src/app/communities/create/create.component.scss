@@ -28,3 +28,43 @@ form {
 
 @media (max-width: 959.98px) {
 }
+
+.storage-container {
+  text-align: center;
+}
+
+.storage-icon {
+  font-size: 3em;
+}
+
+.offer-card {
+  display: inline-block;
+  padding: 12px 16px;
+  margin-right: 1em;
+  margin-bottom: 1em;
+  max-width: 320px;
+  font-size: 0.9em;
+  border: 2px solid transparent;
+}
+
+.offer-card:hover {
+  border: 2px solid var(--mat-app-text-color);
+}
+
+mat-card-content {
+  height: 180px;
+  max-height: 180px;
+}
+
+.offers {
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 1200px) {
+  .offers {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}

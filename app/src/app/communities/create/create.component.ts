@@ -13,6 +13,9 @@ import { Router } from '@angular/router';
 import { NavigationService } from '../../navigation.service';
 import { profile } from '../../../protocols';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatStepperModule } from '@angular/material/stepper';
+import { LayoutService } from '../../layout.service';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 @Component({
   selector: 'app-create',
@@ -32,6 +35,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     FormsModule,
     ReactiveFormsModule,
     MatInputModule,
+    MatStepperModule,
+    MatButtonToggleModule,
   ],
   templateUrl: './create.component.html',
   styleUrl: './create.component.scss',
@@ -48,6 +53,19 @@ export class CreateComponent {
   router = inject(Router);
 
   data = signal<any>({});
+
+  private _formBuilder = inject(FormBuilder);
+
+  firstFormGroup = this._formBuilder.group({
+    firstCtrl: ['', Validators.required],
+  });
+  secondFormGroup = this._formBuilder.group({
+    secondCtrl: ['', Validators.required],
+  });
+
+  premiumPeriod = 'monthly';
+
+  layout = inject(LayoutService);
 
   form = this.fb.group({
     name: [null, Validators.required],
