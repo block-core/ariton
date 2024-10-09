@@ -133,7 +133,7 @@
           <mat-icon>account_circle</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
-          <div class="account-menu-profile">
+          <div class="account-menu-profile" [routerLink]="['/profile', identity.did]">
             <img
               class="account-menu-profile-icon"
               [src]="profileService.avatar() | safeResourceUrl"
@@ -141,19 +141,24 @@
             />
             <div>
               <h2>{{ profileService.current().name }}</h2>
-              &#64;{{ profileService.current().title }}<br />
+              {{ profileService.current().title }}<br />
               {{ identity.did | did }}<br />
             </div>
           </div>
 
-          <button [routerLink]="['/profile', identity.did]" mat-menu-item class="account-menu-item">
+          <button [routerLink]="['/profile', identity.did, 'edit']" mat-menu-item class="account-menu-item">
             <mat-icon>account_circle</mat-icon>
-            <span>View Profile</span>
+            <span>Edit Profile</span>
           </button>
 
           <button (click)="copyDID(identity.did)" mat-menu-item class="account-menu-item">
             <mat-icon>content_copy</mat-icon>
-            <span>Copy My DID</span>
+            <span>Copy DID</span>
+          </button>
+
+          <button (click)="showQR(identity.did)" mat-menu-item>
+            <mat-icon>qr_code</mat-icon>
+            <span>Show QR</span>
           </button>
 
           <mat-divider></mat-divider>

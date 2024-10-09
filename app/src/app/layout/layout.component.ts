@@ -32,6 +32,7 @@ import { AppService } from '../app.service';
 import { NotificationEvent, NotificationService } from '../notification.service';
 import { AgoPipe } from '../shared/pipes/ago.pipe';
 import { PlayerControlsComponent } from '../apps/app/player/controls/controls.component';
+import { QRCodeDialogComponent } from '../shared/dialog/qrcode-dialog/qrcode-dialog.component';
 
 @Component({
   selector: 'app-layout',
@@ -155,6 +156,12 @@ export class LayoutComponent {
     } else {
       this.router.navigate(['/search'], { queryParams: { query: value } });
     }
+  }
+
+  showQR(did: string) {
+    this.dialog.open(QRCodeDialogComponent, {
+      data: { did: did },
+    });
   }
 
   async wipe() {

@@ -160,10 +160,15 @@ export class ProfileEditComponent {
       bio: this.form.value.bio,
       status: this.form.value.status,
       location: this.form.value.location,
+
+      links: this.form.value.links,
+
       // birthDate: this.form.value.birthDate,
       // avatar: this.form.value.avatar,
       // hero: this.form.value.hero,
     };
+
+    console.log('FORM DATA:', formData);
 
     // If record exists, update it.
     if (this.data().record) {
