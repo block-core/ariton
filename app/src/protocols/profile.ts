@@ -1,6 +1,6 @@
 export const protocolDefinition = {
   published: true,
-  protocol: 'https://schema.ariton.app/profile/entry',
+  protocol: 'https://schema.ariton.app/profile',
   types: {
     profile: {
       schema: 'https://schema.ariton.app/profile/schema/profile',
