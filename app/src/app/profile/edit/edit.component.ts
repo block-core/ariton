@@ -7,7 +7,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { IdentityService } from '../../identity.service';
-import { profile } from '../../../protocols';
 import { Router } from '@angular/router';
 import { ProfileService } from '../../profile.service';
 import { NavigationService } from '../../navigation.service';
@@ -53,7 +52,7 @@ export class ProfileEditComponent {
     bio: [null],
     location: [null],
     avatar: [''],
-    links: this.fb.array([this.fb.control('')]),
+    links: this.fb.array([]),
   });
 
   get links() {
@@ -100,8 +99,13 @@ export class ProfileEditComponent {
       // hero: profile.hero,
     });
 
-    // this.links.clear();
-    // profile.links.forEach((link) => this.links.push(this.fb.control(link)));
+    if (profile.links && profile.links.length > 0) {
+      profile.links.forEach((link: any) => {
+        this.links.push(this.fb.control(link));
+      });
+    } else {
+      this.links.push(this.fb.control(''));
+    }
   }
 
   addLink() {
@@ -154,14 +158,19 @@ export class ProfileEditComponent {
   async onSubmit() {
     this.loading = true;
 
+    // Access the links array from the form value
+    let links = this.form.value.links;
+
+    // Filter out empty values
+    links = links!.filter((link) => link !== null && link !== undefined && link !== '');
+
     const formData = {
       name: this.form.value.name,
       title: this.form.value.title,
       bio: this.form.value.bio,
       status: this.form.value.status,
       location: this.form.value.location,
-
-      links: this.form.value.links,
+      links: links,
 
       // birthDate: this.form.value.birthDate,
       // avatar: this.form.value.avatar,
