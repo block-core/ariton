@@ -156,9 +156,10 @@
           <mat-icon>place</mat-icon><span>{{ data().profile.location }}</span>
           } @if (data().profile.status) {
           <mat-icon>event</mat-icon><span>{{ data().profile.status }}</span>
-          } @if (data().profile.links && data().profile.links.length > 0) {
-          <mat-icon>link</mat-icon><span>{{ data().profile.links }}</span>
-          }
+          } @if (data().profile.links && data().profile.links.length > 0) { @for (link of data().profile.links; track
+          link) {
+          <mat-icon>link</mat-icon>&nbsp;<a [href]="link" target="_blank">{{ link }}</a
+          >&nbsp; } }
         </div>
 
         @if (data().profile.bio) {
