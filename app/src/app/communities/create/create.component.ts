@@ -58,7 +58,8 @@ export class CreateComponent {
 
   firstFormGroup = this._formBuilder.group({
     firstCtrl: ['', Validators.required],
-    premiumPeriod: ['', Validators.required],
+    premiumPeriod: ['monthly', Validators.required],
+    option: [''],
   });
   secondFormGroup = this._formBuilder.group({
     secondCtrl: ['', Validators.required],
@@ -100,6 +101,16 @@ export class CreateComponent {
 
   back() {
     this.navigation.back();
+  }
+
+  chooseOption(option: any) {
+    console.log('Option:', option);
+
+    this.firstFormGroup.patchValue({
+      option: option,
+    });
+
+    console.log(this.firstFormGroup);
   }
 
   updateForm(profile: any) {
