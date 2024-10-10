@@ -9,13 +9,14 @@ import { MatCardModule } from '@angular/material/card';
 import { FormArray, FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IdentityService } from '../../identity.service';
 import { ProfileService } from '../../profile.service';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { NavigationService } from '../../navigation.service';
 import { profile } from '../../../protocols';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatStepperModule } from '@angular/material/stepper';
 import { LayoutService } from '../../layout.service';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-create',
@@ -37,6 +38,8 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     MatInputModule,
     MatStepperModule,
     MatButtonToggleModule,
+    RouterModule,
+    MatCheckboxModule,
   ],
   templateUrl: './create.component.html',
   styleUrl: './create.component.scss',
@@ -61,8 +64,14 @@ export class CreateComponent {
     premiumPeriod: ['monthly', Validators.required],
     option: [''],
   });
+
   secondFormGroup = this._formBuilder.group({
     secondCtrl: ['', Validators.required],
+  });
+
+  thirdFormGroup = this._formBuilder.group({
+    secondCtrl: ['', Validators.required],
+    approveAgreement: ['', Validators.required],
   });
 
   premiumPeriod = 'monthly';
@@ -102,6 +111,8 @@ export class CreateComponent {
   back() {
     this.navigation.back();
   }
+
+  openAgreement() {}
 
   chooseOption(option: any) {
     console.log('Option:', option);
