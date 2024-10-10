@@ -17,6 +17,8 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { LayoutService } from '../../layout.service';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { AgreementDialogComponent } from './agreement-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-create',
@@ -112,7 +114,21 @@ export class CreateComponent {
     this.navigation.back();
   }
 
-  openAgreement() {}
+  dialog = inject(MatDialog);
+
+  openAgreement() {
+    const dialogRef = this.dialog.open(AgreementDialogComponent);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(`Dialog result: ${result}`);
+    });
+
+    // const dialogRef = this.dialog.open(AgreementDialogComponent, {
+    //   maxWidth: '80vw',
+    //   maxHeight: '80vh',
+    //   data: {},
+    // });
+  }
 
   chooseOption(option: any) {
     console.log('Option:', option);

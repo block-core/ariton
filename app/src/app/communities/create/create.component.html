@@ -279,20 +279,22 @@
     <mat-step>
       <ng-template matStepLabel>Payment</ng-template>
 
-      <h1>You're almost done!</h1>
+      <form [formGroup]="thirdFormGroup">
+        <h1>You're almost done!</h1>
 
-      <div>
-        <mat-checkbox formControlName="approveAgreement">I agree with community agreement</mat-checkbox>.
-        <button mat-button (click)="openAgreement()">View Community Agreement</button>
-      </div>
+        <div>
+          <mat-checkbox formControlName="approveAgreement">I agree with community agreement</mat-checkbox>.
+          <button type="button" mat-button (click)="openAgreement()">View Community Agreement</button>
+        </div>
 
-      <p>Please validate your options before making a payment.</p>
+        <p>Please validate your options before making a payment.</p>
 
-      <p>
-        Community type: <strong>{{ firstFormGroup.controls.option.value }}</strong>
-      </p>
+        <p>
+          Community type: <strong>{{ firstFormGroup.controls.option.value }}</strong>
+        </p>
 
-      <p>You are now done.</p>
+        <p>You are now done.</p>
+      </form>
       <div>
         <button mat-button matStepperPrevious>Back</button>
         <button mat-button (click)="stepper.reset()">Reset</button>

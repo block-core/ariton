@@ -61,6 +61,10 @@ mat-card-content {
   justify-content: center;
 }
 
+mat-stepper {
+  border-radius: 12px;
+}
+
 @media (max-width: 1200px) {
   .offers {
     display: flex;
