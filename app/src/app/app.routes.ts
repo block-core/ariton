@@ -179,6 +179,12 @@ export const routes: Routes = [
     data: { hide: true, icon: 'folder_shared' },
   },
   {
+    path: 'registry/podcast',
+    loadComponent: () => import('./registries/registry/podcast/podcast.component').then((c) => c.PodcastComponent),
+    title: 'Registry',
+    data: { hide: true, icon: 'folder_shared' },
+  },
+  {
     path: 'registry/liberstad-land-registry',
     loadComponent: () =>
       import('./registries/registry/liberstad-land-registry/liberstad-land.component').then(
