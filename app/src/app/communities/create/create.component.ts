@@ -58,6 +58,7 @@ export class CreateComponent {
 
   firstFormGroup = this._formBuilder.group({
     firstCtrl: ['', Validators.required],
+    premiumPeriod: ['', Validators.required],
   });
   secondFormGroup = this._formBuilder.group({
     secondCtrl: ['', Validators.required],

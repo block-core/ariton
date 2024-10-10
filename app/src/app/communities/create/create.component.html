@@ -19,7 +19,7 @@
             <h1>Choose the feature options</h1>
             <p>Choose the features you want to include in your community. You can always change these later on.</p>
             <p>
-              <mat-button-toggle-group [(ngModel)]="premiumPeriod">
+              <mat-button-toggle-group formControlName="premiumPeriod">
                 <mat-button-toggle value="monthly">Monthly</mat-button-toggle>
                 <mat-button-toggle value="annual">Annual</mat-button-toggle>
               </mat-button-toggle-group>
