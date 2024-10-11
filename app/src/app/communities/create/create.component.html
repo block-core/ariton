@@ -272,7 +272,12 @@
               <span class="price">${{ secondFormGroup.controls.fee.value }} per member</span>
             </p>
             <p class="fee-control">
-              <mat-slider [max]="costLevel.maxMembers" [min]="1" [step]="1" [showTickMarks]="true">
+              <mat-slider
+                [max]="costLevel.maxMembers"
+                [min]="costLevel.steps"
+                [step]="costLevel.steps"
+                [showTickMarks]="true"
+              >
                 <input matSliderThumb formControlName="members" #slider />
               </mat-slider>
               <span class="price">{{ secondFormGroup.controls.members.value }}/members</span>
@@ -290,7 +295,12 @@
               <span class="price">$1 per member per month</span>
             </p>
             <p class="fee-control">
-              <mat-slider [max]="costLevel.maxMembers" [min]="1" [step]="1" [showTickMarks]="true">
+              <mat-slider
+                [max]="costLevel.maxMembers"
+                [min]="costLevel.steps"
+                [step]="costLevel.steps"
+                [showTickMarks]="true"
+              >
                 <input matSliderThumb formControlName="members" #slider />
               </mat-slider>
               <span class="price">{{ secondFormGroup.controls.members.value }}/members</span>

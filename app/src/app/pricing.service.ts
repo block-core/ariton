@@ -18,7 +18,9 @@ export class PricingService {
     return this.levels[id];
   }
 
-  levels: { [key: string]: { id: string; annual: boolean; maxFee: number; maxMembers: number; cost: number } } = {
+  levels: {
+    [key: string]: { id: string; annual: boolean; maxFee: number; maxMembers: number; cost: number; steps: number };
+  } = {
     'annual-premium': {
       id: 'premium',
       // name: 'Premium',
@@ -26,6 +28,7 @@ export class PricingService {
       maxFee: 1000,
       maxMembers: 10000,
       cost: 450,
+      steps: 10,
     },
     'annual-standard': {
       id: 'standard',
@@ -34,6 +37,7 @@ export class PricingService {
       maxFee: 100,
       maxMembers: 1000,
       cost: 280,
+      steps: 10,
     },
     'annual-basic': {
       id: 'basic',
@@ -42,6 +46,7 @@ export class PricingService {
       maxFee: 10,
       maxMembers: 50,
       cost: 190,
+      steps: 1,
     },
     'monthly-premium': {
       id: 'premium',
@@ -50,6 +55,7 @@ export class PricingService {
       maxFee: 1000,
       maxMembers: 10000,
       cost: 500,
+      steps: 10,
     },
     'monthly-standard': {
       id: 'standard',
@@ -58,6 +64,7 @@ export class PricingService {
       maxFee: 100,
       maxMembers: 1000,
       cost: 300,
+      steps: 10,
     },
     'monthly-basic': {
       id: 'basic',
@@ -66,6 +73,7 @@ export class PricingService {
       maxFee: 10,
       maxMembers: 50,
       cost: 200,
+      steps: 1,
     },
   };
 }

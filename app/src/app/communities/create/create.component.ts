@@ -85,7 +85,7 @@ export class CreateComponent {
     avatar: [''],
     owners: this.fb.array([this.fb.control('')]),
     fee: [1, Validators.required],
-    members: [35, Validators.required],
+    members: [20, Validators.required],
     membershipType: ['paid'],
   });
 
