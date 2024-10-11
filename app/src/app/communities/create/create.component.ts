@@ -178,6 +178,8 @@ export class CreateComponent {
 
   save() {
     this.saved = true;
+
+    this.generateInvoice();
   }
 
   premiumPeriod = 'monthly';
