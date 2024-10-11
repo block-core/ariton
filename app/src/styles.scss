@@ -97,6 +97,10 @@ h1 {
 textarea,
 select,
 input {
+  // field-sizing: content;
+}
+
+.auto-size {
   field-sizing: content;
 }
 
