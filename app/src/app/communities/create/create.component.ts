@@ -106,7 +106,7 @@ export class CreateComponent {
   paymentStatus = 'Pending...';
 
   async checkPayment() {
-    const result = await fetch(`http://65.109.131.126:8080/paid?hash=${this.hash}`);
+    const result = await fetch(`https://pay.ariton.app/paid?hash=${this.hash}`);
 
     if (result.ok) {
       const json = await result.json();
@@ -143,7 +143,7 @@ export class CreateComponent {
   async generateInvoice() {
     this.invoice = '';
 
-    const result = await fetch('http://65.109.131.126:8080/invoice?description=Community%20Payment&amount=1000&id=123');
+    const result = await fetch('https://pay.ariton.app/invoice?description=Community%20Payment&amount=1000&id=123');
 
     if (result.ok) {
       const json = await result.json();
