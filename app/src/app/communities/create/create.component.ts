@@ -90,17 +90,36 @@ export class CreateComponent {
   });
 
   thirdFormGroup = this._formBuilder.group({
-    secondCtrl: ['', Validators.required],
     acceptTerms: ['', Validators.requiredTrue],
+  });
+
+  fourthFormGroup = this._formBuilder.group({
+    paymentMethod: ['ln'],
   });
 
   goToNextStep() {
     this.stepper.next();
   }
 
+  generateInvoice() {}
+
+  resetFee() {
+    if (this.secondFormGroup.controls.membershipType.value !== 'paid') {
+      this.secondFormGroup.controls.fee.setValue(1);
+    }
+  }
+
+  save() {
+    this.saved = true;
+  }
+
   premiumPeriod = 'monthly';
 
+  saved = false;
+
   layout = inject(LayoutService);
+
+  deleteRequest() {}
 
   // form = this.fb.group({
   //   name: [null, Validators.required],

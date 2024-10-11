@@ -77,6 +77,23 @@ mat-slider {
   // width: 300px;
 }
 
+h3 {
+  margin: 0.5em 0;
+  padding: 0;
+}
+
+.agreement-selection {
+  margin: 1em 0;
+  padding: 0.5em;
+  text-align: center;
+  border-top: 1px solid silver;
+  border-bottom: 1px solid silver;
+}
+
+.payment-total {
+  font-size: 2em;
+}
+
 @media (max-width: 1200px) {
   .offers {
     display: flex;

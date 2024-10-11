@@ -257,7 +257,7 @@
             </p>
 
             <p>
-              <mat-radio-group formControlName="membershipType" aria-label="Select an option">
+              <mat-radio-group formControlName="membershipType" (change)="resetFee()" aria-label="Select an option">
                 <mat-radio-button value="paid">Paid by Member</mat-radio-button>
                 <mat-radio-button value="free">Paid by Host</mat-radio-button>
               </mat-radio-group>
@@ -345,26 +345,60 @@
   <mat-step [stepControl]="thirdFormGroup">
     <ng-template matStepLabel>Payment</ng-template>
 
+    @if (saved) {
+    <form [formGroup]="fourthFormGroup">
+      <h1>Finalize Payment</h1>
+
+      <p>
+        <mat-button-toggle-group formControlName="paymentMethod">
+          <mat-button-toggle value="ln">Bitcoin Lightning</mat-button-toggle>
+        </mat-button-toggle-group>
+      </p>
+
+      <p>
+        <button mat-flat-button (click)="generateInvoice()">Get Invoice</button>
+      </p>
+
+      <p>
+        <button mat-button (click)="deleteRequest()">Delete the community request</button>
+      </p>
+    </form>
+
+    } @else {
     <form [formGroup]="thirdFormGroup">
       <h1>You're almost done!</h1>
 
-      <div>
+      <p>Please validate your options before making a payment:</p>
+
+      <h3 class="capitalize">{{ costLevel.id }}</h3>
+      <p>
+        Name: {{ secondFormGroup.controls.name.value }}<br />
+        Type: <span class="capitalize">{{ secondFormGroup.controls.type.value }}</span
+        ><br /><br />
+        Payment intervals: @if(costLevel.annual) { Annual } @else { Monthly }<br />
+        Cost: <strong>${{ costLevel.cost }}/month</strong><br /><br />
+        Membership cost: <strong>${{ secondFormGroup.controls.fee.value }}/month</strong><br />
+        Paid by:
+        <strong> @if(secondFormGroup.controls.membershipType.value === 'paid') { Member } @else { Host } </strong>
+      </p>
+
+      <div class="agreement-selection">
         <mat-checkbox formControlName="acceptTerms">I agree with Community Host Agreement</mat-checkbox><br />
         <button type="button" mat-button (click)="openAgreement()">Read Community Host Agreement</button>
       </div>
-
-      <p>Please validate your options before making a payment.</p>
-
+      <h3>Payment due</h3>
+      <div class="payment-total">
+        $@if(costLevel.annual) { {{ costLevel.cost * 12 }} } @else { {{ costLevel.cost }} }
+      </div>
       <p>
-        Community type: <strong>{{ firstFormGroup.controls.option.value }}</strong>
+        <button mat-flat-button [disabled]="!thirdFormGroup.valid" (click)="save()">Approve</button>
       </p>
-
-      <p>You are now done.</p>
     </form>
     <div>
       <button mat-button matStepperPrevious>Back</button>
-      <button mat-button (click)="stepper.reset()">Reset</button>
+      <!-- <button mat-button (click)="stepper.reset()">Reset</button> -->
     </div>
+    }
   </mat-step>
 </mat-stepper>
 <!-- </form> -->
