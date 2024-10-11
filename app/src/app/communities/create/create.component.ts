@@ -1,4 +1,4 @@
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, effect, inject, signal, ViewChild } from '@angular/core';
 import { AvatarComponent } from '../../profile/edit/avatar/avatar.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -6,19 +6,21 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCardModule } from '@angular/material/card';
-import { FormArray, FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IdentityService } from '../../identity.service';
 import { ProfileService } from '../../profile.service';
 import { Router, RouterModule } from '@angular/router';
 import { NavigationService } from '../../navigation.service';
 import { profile } from '../../../protocols';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatStepperModule } from '@angular/material/stepper';
+import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 import { LayoutService } from '../../layout.service';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { AgreementDialogComponent } from './agreement-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSliderModule } from '@angular/material/slider';
+import { PricingService } from '../../pricing.service';
 
 @Component({
   selector: 'app-create',
@@ -42,6 +44,7 @@ import { MatDialog } from '@angular/material/dialog';
     MatButtonToggleModule,
     RouterModule,
     MatCheckboxModule,
+    MatSliderModule,
   ],
   templateUrl: './create.component.html',
   styleUrl: './create.component.scss',
@@ -55,41 +58,60 @@ export class CreateComponent {
 
   navigation = inject(NavigationService);
 
+  pricing = inject(PricingService);
+
   router = inject(Router);
 
   data = signal<any>({});
 
+  @ViewChild('stepper') stepper!: MatStepper;
+
   private _formBuilder = inject(FormBuilder);
 
   firstFormGroup = this._formBuilder.group({
-    firstCtrl: ['', Validators.required],
-    premiumPeriod: ['monthly', Validators.required],
-    option: [''],
+    // firstCtrl: ['', Validators.required],
+    premiumPeriod: ['monthly'],
+    option: ['', Validators.required],
   });
 
   secondFormGroup = this._formBuilder.group({
-    secondCtrl: ['', Validators.required],
+    // secondCtrl: ['', Validators.required],
+    name: [null, Validators.required],
+    type: [null, Validators.required],
+    // title: [null],
+    // status: [null],
+    bio: [null],
+    // location: [null],
+    avatar: [''],
+    owners: this.fb.array([this.fb.control('')]),
+    fee: [1, Validators.required],
+    members: [35, Validators.required],
+    membershipType: ['paid'],
   });
 
   thirdFormGroup = this._formBuilder.group({
     secondCtrl: ['', Validators.required],
-    approveAgreement: ['', Validators.required],
+    acceptTerms: ['', Validators.requiredTrue],
   });
+
+  goToNextStep() {
+    this.stepper.next();
+  }
 
   premiumPeriod = 'monthly';
 
   layout = inject(LayoutService);
 
-  form = this.fb.group({
-    name: [null, Validators.required],
-    type: [null, Validators.required],
-    title: [null],
-    status: [null],
-    bio: [null],
-    location: [null],
-    avatar: [''],
-    owners: this.fb.array([this.fb.control('')]),
-  });
+  // form = this.fb.group({
+  //   name: [null, Validators.required],
+  //   type: [null, Validators.required],
+  //   title: [null],
+  //   status: [null],
+  //   bio: [null],
+  //   location: [null],
+  //   avatar: [''],
+  //   owners: this.fb.array([this.fb.control('')]),
+  // });
 
   communityTypes = [
     {
@@ -107,8 +129,27 @@ export class CreateComponent {
   ];
 
   get owners() {
-    return this.form.get('owners') as FormArray;
+    return this.secondFormGroup.get('owners') as FormArray;
   }
+
+  get fee() {
+    const ctrl = this.secondFormGroup.get('fee') as FormControl;
+    return Math.round(ctrl.value * 0.7) as number;
+  }
+
+  get earnings() {
+    const ctrl = this.secondFormGroup.get('fee') as FormControl;
+    const ctrlMembers = this.secondFormGroup.get('members') as FormControl;
+    return Math.round(ctrl.value * 0.7 * ctrlMembers.value) as number;
+  }
+
+  get costs() {
+    const ctrl = this.secondFormGroup.get('fee') as FormControl;
+    const ctrlMembers = this.secondFormGroup.get('members') as FormControl;
+    return Math.round(ctrl.value * ctrlMembers.value) as number;
+  }
+
+  maxFee = 10;
 
   back() {
     this.navigation.back();
@@ -130,25 +171,60 @@ export class CreateComponent {
     // });
   }
 
-  chooseOption(option: any) {
+  optionLevel = 'basic';
+  optionAnnual = false;
+  costLevel: any;
+
+  chooseOption(option: string) {
     console.log('Option:', option);
 
     this.firstFormGroup.patchValue({
       option: option,
     });
 
-    console.log(this.firstFormGroup);
+    const optionLevel = option?.split('-');
+    this.optionLevel = optionLevel[1];
+    this.optionAnnual = optionLevel[0] === 'annual';
+
+    const costLevel = this.pricing.levels[option];
+    this.costLevel = costLevel;
+
+    // if (optionLevel === 'premium') {
+    //   if (this.optionAnnual) {
+    //     this.hostLevelCost = 450;
+    //   } else {
+    //     this.hostLevelCost = 500;
+    //   }
+
+    //   this.maxFee = 1000;
+    // } else if (optionLevel === 'standard') {
+    //   if (this.optionAnnual) {
+    //     this.hostLevelCost = 280;
+    //   } else {
+    //     this.hostLevelCost = 300;
+    //   }
+    //   this.maxFee = 100;
+    // } else {
+    //   if (this.optionAnnual) {
+    //     this.hostLevelCost = 190;
+    //   } else {
+    //     this.hostLevelCost = 200;
+    //   }
+    //   this.maxFee = 1000;
+    // }
+
+    this.goToNextStep();
   }
 
   updateForm(profile: any) {
     console.log('Patching form with:', profile);
 
-    this.form.patchValue({
+    this.secondFormGroup.patchValue({
       name: profile.name,
-      title: profile.title,
+      // title: profile.title,
       bio: profile.bio,
-      status: profile.status,
-      location: profile.location,
+      // status: profile.status,
+      // location: profile.location,
       // birthDate: profile.birthDate,
       // avatar: profile.avatar,
       // hero: profile.hero,
@@ -167,6 +243,8 @@ export class CreateComponent {
   }
 
   constructor() {
+    this.costLevel = this.pricing.levels['monthly-basic'];
+
     effect(async () => {
       if (this.identity.initialized()) {
         // Set the initial owner to current user.

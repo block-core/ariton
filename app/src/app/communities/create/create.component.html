@@ -1,10 +1,10 @@
-<form [formGroup]="form" novalidate (ngSubmit)="onSubmit()">
-  <mat-stepper #stepper>
-    <mat-step [stepControl]="firstFormGroup">
-      <form [formGroup]="firstFormGroup">
-        <ng-template matStepLabel>Options</ng-template>
+<!-- <form [formGroup]="form" novalidate (ngSubmit)="onSubmit()"> -->
+<mat-stepper #stepper [linear]="true">
+  <mat-step [stepControl]="firstFormGroup">
+    <form [formGroup]="firstFormGroup">
+      <ng-template matStepLabel>Options</ng-template>
 
-        <!-- <div>
+      <!-- <div>
           <p>You want to create your own community? Great!</p>
           <p>
             On Ariton, communities are important and we want both the owners, and the members to have a great
@@ -13,146 +13,147 @@
           <p>We work very hard to make sure Ariton is a great place for communities, so we.</p>
         </div> -->
 
-        <div>
-          <div class="storage-container">
-            <mat-icon class="storage-icon" inline="true">diversity_2</mat-icon>
-            <h1>Choose the feature options</h1>
-            <p>Choose the features you want to include in your community. You can always change these later on.</p>
-            <p>
-              <mat-button-toggle-group formControlName="premiumPeriod">
-                <mat-button-toggle value="monthly">Monthly</mat-button-toggle>
-                <mat-button-toggle value="annual">Annual</mat-button-toggle>
-              </mat-button-toggle-group>
-            </p>
-          </div>
-
-          <div class="offers">
-            @if (firstFormGroup.controls.premiumPeriod.value === 'monthly') {
-            <mat-card class="offer-card">
-              <mat-card-header>
-                <mat-icon mat-card-avatar>cloud</mat-icon>
-                <mat-card-title>Basic (10 GB)</mat-card-title>
-                <mat-card-subtitle>$200/month</mat-card-subtitle>
-              </mat-card-header>
-              <mat-card-content>
-                <p>Ideal for small communities, members pay a monthly fee.</p>
-                <p>The host can configure membership fee between $1 and $10 per month.</p>
-                <p>Maximum 50 members.</p>
-                <p>Basic support.</p>
-              </mat-card-content>
-              <mat-card-actions>
-                <button mat-button (click)="chooseOption('monthly-basic')" matStepperNext>CHOOSE</button>
-              </mat-card-actions>
-            </mat-card>
-
-            <mat-card class="offer-card">
-              <mat-card-header>
-                <mat-icon mat-card-avatar>cloud_done</mat-icon>
-                <mat-card-title>Standard (50 GB)</mat-card-title>
-                <mat-card-subtitle>$300/month</mat-card-subtitle>
-              </mat-card-header>
-              <mat-card-content>
-                <p>Ideal for medium communities, members pay a monthly fee.</p>
-                <p>The host can configure membership fee between $1 and $100 per month.</p>
-                <p>Maximum 1,000 members.</p>
-                <p>Extended support.</p>
-                <!-- <p>
-                  If you want to cover all the expenses for your community members, like in a corporate environment,
-                  then this is your best option. Members joining needs to be approved by the host, and the members pay
-                  nothing to be members.
-                </p> -->
-              </mat-card-content>
-              <mat-card-actions>
-                <button mat-button (click)="chooseOption('monthly-standard')" matStepperNext>CHOOSE</button>
-              </mat-card-actions>
-            </mat-card>
-
-            <mat-card class="offer-card">
-              <mat-card-header>
-                <mat-icon mat-card-avatar>cloud_done</mat-icon>
-                <mat-card-title>Premium (100 GB)</mat-card-title>
-                <mat-card-subtitle>$500/month</mat-card-subtitle>
-              </mat-card-header>
-              <mat-card-content>
-                <p>Ideal for larger and exclusive communities, members pay a monthly fee.</p>
-                <p>The host can configure membership fee between $1 and $1000 per month.</p>
-                <p>Maximum 10,000 members.</p>
-                <p>Premium support.</p>
-              </mat-card-content>
-              <mat-card-actions>
-                <button mat-button (click)="chooseOption('monthly-premium')" matStepperNext>CHOOSE</button>
-              </mat-card-actions>
-            </mat-card>
-            } @else {
-            <mat-card class="offer-card">
-              <mat-card-header>
-                <mat-icon mat-card-avatar>cloud</mat-icon>
-                <mat-card-title>Basic (10 GB)</mat-card-title>
-                <mat-card-subtitle>$190/month</mat-card-subtitle>
-              </mat-card-header>
-              <mat-card-content>
-                <p>Ideal for small communities, members pay a monthly fee.</p>
-                <p>The host can configure membership fee between $1 and $10 per month.</p>
-                <p>Maximum 50 members.</p>
-                <p>Basic support.</p>
-              </mat-card-content>
-              <mat-card-actions>
-                <button mat-button (click)="chooseOption('annual-basic')" matStepperNext>CHOOSE</button>
-              </mat-card-actions>
-            </mat-card>
-
-            <mat-card class="offer-card">
-              <mat-card-header>
-                <mat-icon mat-card-avatar>cloud_done</mat-icon>
-                <mat-card-title>Standard (50 GB)</mat-card-title>
-                <mat-card-subtitle>$280/month</mat-card-subtitle>
-              </mat-card-header>
-              <mat-card-content>
-                <p>Ideal for medium communities, members pay a monthly fee.</p>
-                <p>The host can configure membership fee between $1 and $100 per month.</p>
-                <p>Maximum 1,000 members.</p>
-                <p>Extended support.</p>
-                <!-- <p>
-                  If you want to cover all the expenses for your community members, like in a corporate environment,
-                  then this is your best option. Members joining needs to be approved by the host, and the members pay
-                  nothing to be members.
-                </p> -->
-              </mat-card-content>
-              <mat-card-actions>
-                <button mat-button (click)="chooseOption('annual-standard')" matStepperNext>CHOOSE</button>
-              </mat-card-actions>
-            </mat-card>
-
-            <mat-card class="offer-card">
-              <mat-card-header>
-                <mat-icon mat-card-avatar>cloud_done</mat-icon>
-                <mat-card-title>Premium (100 GB)</mat-card-title>
-                <mat-card-subtitle>$450/month</mat-card-subtitle>
-              </mat-card-header>
-              <mat-card-content>
-                <p>Ideal for larger and exclusive communities, members pay a monthly fee.</p>
-                <p>The host can configure membership fee between $1 and $1000 per month.</p>
-                <p>Maximum 10,000 members.</p>
-                <p>Premium support.</p>
-              </mat-card-content>
-              <mat-card-actions>
-                <button mat-button (click)="chooseOption('annual-premium')" matStepperNext>CHOOSE</button>
-              </mat-card-actions>
-            </mat-card>
-            }
-          </div>
+      <div>
+        <div class="storage-container">
+          <mat-icon class="storage-icon" inline="true">diversity_2</mat-icon>
+          <h1>Choose the feature options</h1>
+          <p>Choose the features you want to include in your community. You can always change these later on.</p>
+          <p>
+            <mat-button-toggle-group formControlName="premiumPeriod">
+              <mat-button-toggle value="monthly">Monthly</mat-button-toggle>
+              <mat-button-toggle value="annual">Annual</mat-button-toggle>
+            </mat-button-toggle-group>
+          </p>
         </div>
 
-        <!-- <mat-form-field>
+        <div class="offers">
+          @if (firstFormGroup.controls.premiumPeriod.value === 'monthly') {
+          <mat-card class="offer-card">
+            <mat-card-header>
+              <mat-icon mat-card-avatar>cloud</mat-icon>
+              <mat-card-title>Basic (10 GB)</mat-card-title>
+              <mat-card-subtitle>$200/month</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              <p>Ideal for small communities, members pay a monthly fee.</p>
+              <p>The host can configure membership fee between $1 and $10 per month.</p>
+              <p>Maximum 50 members.</p>
+              <p>Basic support.</p>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-button (click)="chooseOption('monthly-basic')" matStepperNext>Choose</button>
+            </mat-card-actions>
+          </mat-card>
+
+          <mat-card class="offer-card">
+            <mat-card-header>
+              <mat-icon mat-card-avatar>cloud_done</mat-icon>
+              <mat-card-title>Standard (50 GB)</mat-card-title>
+              <mat-card-subtitle>$300/month</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              <p>Ideal for medium communities, members pay a monthly fee.</p>
+              <p>The host can configure membership fee between $1 and $100 per month.</p>
+              <p>Maximum 1,000 members.</p>
+              <p>Extended support.</p>
+              <!-- <p>
+                  If you want to cover all the expenses for your community members, like in a corporate environment,
+                  then this is your best option. Members joining needs to be approved by the host, and the members pay
+                  nothing to be members.
+                </p> -->
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-button (click)="chooseOption('monthly-standard')" matStepperNext>Choose</button>
+            </mat-card-actions>
+          </mat-card>
+
+          <mat-card class="offer-card">
+            <mat-card-header>
+              <mat-icon mat-card-avatar>cloud_done</mat-icon>
+              <mat-card-title>Premium (100 GB)</mat-card-title>
+              <mat-card-subtitle>$500/month</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              <p>Ideal for larger and exclusive communities, members pay a monthly fee.</p>
+              <p>The host can configure membership fee between $1 and $1000 per month.</p>
+              <p>Maximum 10,000 members.</p>
+              <p>Premium support.</p>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-button (click)="chooseOption('monthly-premium')" matStepperNext>Choose</button>
+            </mat-card-actions>
+          </mat-card>
+          } @else {
+          <mat-card class="offer-card">
+            <mat-card-header>
+              <mat-icon mat-card-avatar>cloud</mat-icon>
+              <mat-card-title>Basic (10 GB)</mat-card-title>
+              <mat-card-subtitle>$190/month</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              <p>Ideal for small communities, members pay a monthly fee.</p>
+              <p>The host can configure membership fee between $1 and $10 per month.</p>
+              <p>Maximum 50 members.</p>
+              <p>Basic support.</p>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-button (click)="chooseOption('annual-basic')" matStepperNext>Choose</button>
+            </mat-card-actions>
+          </mat-card>
+
+          <mat-card class="offer-card">
+            <mat-card-header>
+              <mat-icon mat-card-avatar>cloud_done</mat-icon>
+              <mat-card-title>Standard (50 GB)</mat-card-title>
+              <mat-card-subtitle>$280/month</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              <p>Ideal for medium communities, members pay a monthly fee.</p>
+              <p>The host can configure membership fee between $1 and $100 per month.</p>
+              <p>Maximum 1,000 members.</p>
+              <p>Extended support.</p>
+              <!-- <p>
+                  If you want to cover all the expenses for your community members, like in a corporate environment,
+                  then this is your best option. Members joining needs to be approved by the host, and the members pay
+                  nothing to be members.
+                </p> -->
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-button (click)="chooseOption('annual-standard')" matStepperNext>Choose</button>
+            </mat-card-actions>
+          </mat-card>
+
+          <mat-card class="offer-card">
+            <mat-card-header>
+              <mat-icon mat-card-avatar>cloud_done</mat-icon>
+              <mat-card-title>Premium (100 GB)</mat-card-title>
+              <mat-card-subtitle>$450/month</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              <p>Ideal for larger and exclusive communities, members pay a monthly fee.</p>
+              <p>The host can configure membership fee between $1 and $1000 per month.</p>
+              <p>Maximum 10,000 members.</p>
+              <p>Premium support.</p>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-button (click)="chooseOption('annual-premium')" matStepperNext>Choose</button>
+            </mat-card-actions>
+          </mat-card>
+          }
+        </div>
+      </div>
+
+      <!-- <mat-form-field>
           <mat-label>Name</mat-label>
           <input matInput placeholder="Last name, First name" formControlName="firstCtrl" required />
         </mat-form-field> -->
-        <!-- <div>
+      <!-- <div>
           <button mat-button matStepperNext>Next</button>
         </div> -->
-      </form>
-    </mat-step>
-    <mat-step [stepControl]="secondFormGroup" label="Configure">
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="secondFormGroup" label="Configure">
+    <form [formGroup]="secondFormGroup">
       <div>
         <app-avatar formControlName="avatar"></app-avatar>
 
@@ -191,7 +192,7 @@
             <mat-form-field class="full-width">
               <mat-label>About</mat-label>
               <textarea maxlength="300" matInput #bio placeholder="About" formControlName="bio"></textarea>
-              @if (form.controls['bio'].hasError('required')) {
+              @if (secondFormGroup.controls['bio'].hasError('required')) {
               <mat-error>About is <strong>required</strong></mat-error>
               }
               <mat-hint align="end">{{ bio.value.length }} / 300</mat-hint>
@@ -236,16 +237,71 @@
               @for (owner of owners.controls; track owner; let i = $index) {
               <div class="link-input">
                 <mat-form-field class="full-width">
-                  <input matInput type="text" [formControlName]="i" placeholder="Owner (DID)" />
+                  <input matInput type="text" [formControlName]="i" placeholder="Host (DID)" />
                 </mat-form-field>
-                <!-- <button mat-stroked-button type="button" (click)="removeLink(i)">Remove</button> -->
                 <button mat-icon-button type="button" (click)="removeOwner(i)"><mat-icon>clear</mat-icon></button>
               </div>
               }
             </div>
             <button mat-stroked-button type="button" (click)="addOwner()">
-              <mat-icon>add_link</mat-icon> Add Owner
+              <mat-icon>add_link</mat-icon> Add Host
             </button>
+
+            <h3>
+              Membership Fee: <span class="capitalize">{{ optionLevel }}</span>
+            </h3>
+
+            <p>
+              Set the membership fee for your community. If you want to use Ariton in a corporate setting without user's
+              having to pay fee, you can choose to cover all the expenses for your community members.
+            </p>
+
+            <p>
+              <mat-radio-group formControlName="membershipType" aria-label="Select an option">
+                <mat-radio-button value="paid">Paid by Member</mat-radio-button>
+                <mat-radio-button value="free">Paid by Host</mat-radio-button>
+              </mat-radio-group>
+            </p>
+
+            @if (secondFormGroup.controls.membershipType.value === 'paid') {
+            <span>As the host, you will receive 70% of membership fee.</span>
+            <p class="fee-control">
+              <mat-slider [max]="costLevel.maxFee" [min]="1" [step]="1" [showTickMarks]="true">
+                <input matSliderThumb formControlName="fee" #slider />
+              </mat-slider>
+              <span class="price">${{ secondFormGroup.controls.fee.value }} per member</span>
+            </p>
+            <p class="fee-control">
+              <mat-slider [max]="costLevel.maxMembers" [min]="1" [step]="1" [showTickMarks]="true">
+                <input matSliderThumb formControlName="members" #slider />
+              </mat-slider>
+              <span class="price">{{ secondFormGroup.controls.members.value }}/members</span>
+            </p>
+            <span>Pricing example with {{ secondFormGroup.controls.members.value }} members: </span>
+            <p>
+              Community Type: <span class="capitalize">{{ costLevel.id }}</span
+              ><br />
+              Host costs: -${{ costLevel.cost }}<br />
+              Host income: +${{ earnings }}
+            </p>
+            } @else {
+            <span> As the host, you must approve all membership requests. Members do not pay a fee to join.</span>
+            <p class="fee-control">
+              <span class="price">$1 per member per month</span>
+            </p>
+            <p class="fee-control">
+              <mat-slider [max]="costLevel.maxMembers" [min]="1" [step]="1" [showTickMarks]="true">
+                <input matSliderThumb formControlName="members" #slider />
+              </mat-slider>
+              <span class="price">{{ secondFormGroup.controls.members.value }}/members</span>
+            </p>
+            <span>Pricing example with {{ secondFormGroup.controls.members.value }} members:</span>
+            <p>
+              Community Type: <span class="capitalize">{{ costLevel.id }}</span
+              ><br />
+              Host costs: -${{ costLevel.cost + costs }}
+            </p>
+            }
 
             <!--
         <div class="row">
@@ -258,47 +314,47 @@
           </div>
         </div>-->
           </mat-card-content>
-          <mat-card-actions align="end">
+          <!-- <mat-card-actions align="end">
             <button mat-button type="button" (click)="back()">Cancel</button>
             <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid">Save</button>
-          </mat-card-actions>
+          </mat-card-actions> -->
         </mat-card>
       </div>
-
-      <form [formGroup]="secondFormGroup">
+    </form>
+    <!-- <form [formGroup]="secondFormGroup">
         <mat-form-field>
           <mat-label>Address</mat-label>
           <input matInput formControlName="secondCtrl" placeholder="Ex. 1 Main St, New York, NY" required />
-        </mat-form-field>
-        <div>
-          <button mat-button matStepperPrevious>Back</button>
-          <button mat-button matStepperNext>Next</button>
-        </div>
-      </form>
-    </mat-step>
-    <mat-step>
-      <ng-template matStepLabel>Payment</ng-template>
+        </mat-form-field> -->
+    <p>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button matStepperNext>Next</button>
+    </p>
+    <!-- </form> -->
+  </mat-step>
+  <mat-step [stepControl]="thirdFormGroup">
+    <ng-template matStepLabel>Payment</ng-template>
 
-      <form [formGroup]="thirdFormGroup">
-        <h1>You're almost done!</h1>
+    <form [formGroup]="thirdFormGroup">
+      <h1>You're almost done!</h1>
 
-        <div>
-          <mat-checkbox formControlName="approveAgreement">I agree with Community Host Agreement</mat-checkbox>.
-          <button type="button" mat-button (click)="openAgreement()">View Community Host Agreement</button>
-        </div>
-
-        <p>Please validate your options before making a payment.</p>
-
-        <p>
-          Community type: <strong>{{ firstFormGroup.controls.option.value }}</strong>
-        </p>
-
-        <p>You are now done.</p>
-      </form>
       <div>
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button (click)="stepper.reset()">Reset</button>
+        <mat-checkbox formControlName="acceptTerms">I agree with Community Host Agreement</mat-checkbox><br />
+        <button type="button" mat-button (click)="openAgreement()">Read Community Host Agreement</button>
       </div>
-    </mat-step>
-  </mat-stepper>
-</form>
+
+      <p>Please validate your options before making a payment.</p>
+
+      <p>
+        Community type: <strong>{{ firstFormGroup.controls.option.value }}</strong>
+      </p>
+
+      <p>You are now done.</p>
+    </form>
+    <div>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button (click)="stepper.reset()">Reset</button>
+    </div>
+  </mat-step>
+</mat-stepper>
+<!-- </form> -->

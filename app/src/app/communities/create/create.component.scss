@@ -65,6 +65,18 @@ mat-stepper {
   border-radius: 12px;
 }
 
+.fee-control {
+  display: flex;
+}
+
+.fee-control .price {
+  font-size: 2em;
+}
+
+mat-slider {
+  width: 300px;
+}
+
 @media (max-width: 1200px) {
   .offers {
     display: flex;
