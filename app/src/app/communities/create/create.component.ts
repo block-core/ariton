@@ -102,6 +102,24 @@ export class CreateComponent {
     this.stepper.next();
   }
 
+  bitcoinPriceUsd = 0;
+
+  async updateBitcoinPrice() {
+    const result = await fetch('https://pay.ariton.app/price');
+
+    if (result.ok) {
+      const json = await result.json();
+      this.bitcoinPriceUsd = json.usd;
+      console.log('bitcoinPriceUsd', this.bitcoinPriceUsd);
+    }
+  }
+
+  getPriceInSatoshis(usd: number): number {
+    const satoshisPerBitcoin = 100_000_000;
+    const satoshis = (usd / this.bitcoinPriceUsd) * satoshisPerBitcoin;
+    return Math.round(satoshis);
+  }
+
   paid = false;
   paymentStatus = 'Pending...';
 
@@ -141,9 +159,24 @@ export class CreateComponent {
   };
 
   async generateInvoice() {
+    await this.updateBitcoinPrice();
+
+    let satoshis = 0;
+
+    if (this.costLevel.annual) {
+      satoshis = this.getPriceInSatoshis(this.costLevel.cost * 12);
+    } else {
+      satoshis = this.getPriceInSatoshis(this.costLevel.cost);
+    }
+
+    // TODO: Change before production, this is for tipping/demo mode.
+    satoshis = Math.round(satoshis / 30);
+
     this.invoice = '';
 
-    const result = await fetch('https://pay.ariton.app/invoice?description=Community%20Payment&amount=1000&id=123');
+    const result = await fetch(
+      `https://pay.ariton.app/invoice?description=Ariton%20Community%20Payment&amount=${satoshis}&id=123`,
+    );
 
     if (result.ok) {
       const json = await result.json();
@@ -263,7 +296,7 @@ export class CreateComponent {
   optionAnnual = false;
   costLevel: any;
 
-  chooseOption(option: string) {
+  async chooseOption(option: string) {
     console.log('Option:', option);
 
     this.firstFormGroup.patchValue({
@@ -276,6 +309,10 @@ export class CreateComponent {
 
     const costLevel = this.pricing.levels[option];
     this.costLevel = costLevel;
+
+    await this.updateBitcoinPrice();
+
+    this.costLevel.sats = this.getPriceInSatoshis(costLevel.cost);
 
     // if (optionLevel === 'premium') {
     //   if (this.optionAnnual) {

@@ -19,7 +19,15 @@ export class PricingService {
   }
 
   levels: {
-    [key: string]: { id: string; annual: boolean; maxFee: number; maxMembers: number; cost: number; steps: number };
+    [key: string]: {
+      id: string;
+      annual: boolean;
+      maxFee: number;
+      maxMembers: number;
+      cost: number;
+      steps: number;
+      sats?: number;
+    };
   } = {
     'annual-premium': {
       id: 'premium',

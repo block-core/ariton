@@ -417,7 +417,11 @@
       </div>
       <h3>Payment due</h3>
       <div class="payment-total">
-        $@if(costLevel.annual) { {{ costLevel.cost * 12 }} } @else { {{ costLevel.cost }} }
+        $@if(costLevel.annual) {
+        {{ costLevel.cost * 12 }} / ~{{ costLevel.sats * 12 }} sats } @else { {{ costLevel.cost }} / ~{{
+          costLevel.sats
+        }}
+        sats }
       </div>
       <p>
         <button mat-flat-button [disabled]="!thirdFormGroup.valid" (click)="save()">Approve</button>
