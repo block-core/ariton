@@ -21,6 +21,7 @@ import { AgreementDialogComponent } from './agreement-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSliderModule } from '@angular/material/slider';
 import { PricingService } from '../../pricing.service';
+import * as QRCode from 'qrcode';
 
 @Component({
   selector: 'app-create',
@@ -101,7 +102,73 @@ export class CreateComponent {
     this.stepper.next();
   }
 
-  generateInvoice() {}
+  paid = false;
+  paymentStatus = 'Pending...';
+
+  async checkPayment() {
+    const result = await fetch(`http://65.109.131.126:8080/paid?hash=${this.hash}`);
+
+    if (result.ok) {
+      const json = await result.json();
+
+      console.log('RESULT FROM PAID:', json);
+
+      if (json.paid) {
+        console.log('Payment is paid');
+        this.paymentStatus = 'Paid';
+        this.paid = true;
+      } else {
+        console.log('Payment is not paid');
+        this.paymentStatus = 'Not Paid';
+      }
+    } else {
+      console.error('Failed to validate invoice');
+      this.paymentStatus = result.statusText;
+    }
+  }
+
+  checkPaymentStatus = async () => {
+    if (this.paid) {
+      console.log('Payment status is paid.');
+    } else {
+      await this.checkPayment();
+      this.scheduleNextCheck();
+    }
+  };
+
+  scheduleNextCheck = () => {
+    setTimeout(this.checkPaymentStatus, 2000);
+  };
+
+  async generateInvoice() {
+    this.invoice = '';
+
+    const result = await fetch('http://65.109.131.126:8080/invoice?description=Community%20Payment&amount=1000&id=123');
+
+    if (result.ok) {
+      const json = await result.json();
+      this.invoice = json.serialized;
+      this.hash = json.paymentHash;
+      this.amount = json.amountSat;
+
+      const canvas = document.querySelector('canvas');
+      QRCode.toCanvas(canvas, this.invoice, (error: any) => {
+        if (error) {
+          console.error('Error generating QR code: ', error);
+        }
+      });
+
+      // Schedule interval to check payment status
+      this.scheduleNextCheck();
+    } else {
+      console.error('Failed to generate invoice');
+      this.invoice = result.statusText;
+    }
+  }
+
+  amount = 0;
+  hash = '';
+  invoice = '';
 
   resetFee() {
     if (this.secondFormGroup.controls.membershipType.value !== 'paid') {

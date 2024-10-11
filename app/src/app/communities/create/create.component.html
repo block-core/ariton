@@ -345,7 +345,7 @@
   <mat-step [stepControl]="thirdFormGroup">
     <ng-template matStepLabel>Payment</ng-template>
 
-    @if (saved) {
+    @if (saved) { @if(!paid) {
     <form [formGroup]="fourthFormGroup">
       <h1>Finalize Payment</h1>
 
@@ -355,16 +355,45 @@
         </mat-button-toggle-group>
       </p>
 
+      <p class="warning">
+        THIS IS JUST A DEMO, NO COMMUNITY IS CREATED. PAYMENT IS REAL. CONSIDER IT A DONATION TO ARITON.
+      </p>
+
       <p>
         <button mat-flat-button (click)="generateInvoice()">Get Invoice</button>
+        <!-- <button mat-flat-button (click)="checkPayment()">Check Payment</button> -->
+      </p>
+
+      <p class="qr-code"><canvas #qrCanvas></canvas></p>
+      <div>Amount: {{ amount }} sats</div>
+      <div class="invoice wrap">{{ invoice }}</div>
+
+      <p>
+        {{ paymentStatus }}
       </p>
 
       <p>
         <button mat-button (click)="deleteRequest()">Delete the community request</button>
       </p>
     </form>
-
     } @else {
+
+    <h1>Payment completed!</h1>
+
+    <p class="large-icon">
+      <mat-icon inline="true">verified</mat-icon>
+    </p>
+
+    <p>
+      Your payment has been received and your community is now active. You can now invite members to join your
+      community.
+    </p>
+
+    <p>
+      <strong class="warning">WARNING: THIS IS A DEMO. NO COMMUNITY WAS CREATED.</strong>
+    </p>
+
+    } } @else {
     <form [formGroup]="thirdFormGroup">
       <h1>You're almost done!</h1>
 

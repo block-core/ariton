@@ -131,6 +131,10 @@ input {
   color: var(--mat-form-field-error-text-color);
 }
 
+.large-icon {
+  font-size: 4em;
+}
+
 .flex {
   display: flex !important;
   gap: 1em;
@@ -219,6 +223,8 @@ input {
 
 .wrap {
   word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
 }
 
 .full-size {
