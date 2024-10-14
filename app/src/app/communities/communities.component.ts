@@ -232,13 +232,15 @@ export class CommunitiesComponent {
     // this.table.dataSource = this.dataSource;
   }
 
-  drafts: any = [];
+  drafts = signal<any[]>([]);
 
   async loadDrafts() {
+    console.log('LOAD DRAFTS');
     const entries = await this.data.load({ type: 'community', status: 'draft' });
 
+    console.log('LOAD DRAFTS DONE');
     console.log('Draft Entries:', entries);
-    this.drafts = entries;
+    this.drafts.set(entries);
   }
 
   async createTest() {

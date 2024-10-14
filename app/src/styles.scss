@@ -140,6 +140,15 @@ input {
   width: 100%;
 }
 
+.warning-button {
+  background-color: #f44336; /* Red color */
+  color: white;
+}
+
+.warning-button:hover {
+  background-color: #d32f2f; /* Darker red color */
+}
+
 .search-input {
   background-color: var(--mat-app-background-color);
   color: var(--mat-app-text-color);

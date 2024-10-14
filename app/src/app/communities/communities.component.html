@@ -5,10 +5,10 @@
       Create
     </button>
 
-    <button type="button" mat-button (click)="createTest()">
+    <!-- <button type="button" mat-button (click)="createTest()">
       <mat-icon>add</mat-icon>
       TEST
-    </button>
+    </button> -->
 
     <span class="toolbar-spacer">
       <input type="search" class="search-input" placeholder="Filter communities" />
@@ -25,16 +25,15 @@
   </mat-card-content>
 </mat-card>
 
-@if (drafts) {
-
+@if (drafts().length > 0) {
 <mat-card class="toolbar-actions margin-bottom">
   <mat-card-content class="flex">
     <strong>NOTICE</strong>
     <div>
       You have communities in draft mode. Please review any status update on their verification status.
       <br /><br />
-      @for(draft of drafts; track draft) {
-      <a [routerLink]="['/communities', 'create', draft.id]">{{ draft.data.name }}</a> - Awaiting approval<br />
+      @for(draft of drafts(); track draft) {
+      <a [routerLink]="['/communities', 'create', draft.id]">{{ draft.data.name }}&nbsp;</a> - Awaiting approval<br />
       <!-- <a [routerLink]="['/communities', 'create']">Knitting Party 101</a> - Draft<br /> -->
       }
     </div>

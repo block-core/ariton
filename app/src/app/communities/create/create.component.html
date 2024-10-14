@@ -339,6 +339,9 @@
     <p>
       <button mat-button matStepperPrevious>Back</button>
       <button mat-button matStepperNext>Next</button>
+      <br />
+      <br />
+      <button mat-button class="warning-button" [disabled]="!draftEntry" (click)="deleteDraft()">Delete Draft</button>
     </p>
     <!-- </form> -->
   </mat-step>
@@ -430,8 +433,12 @@
     <div>
       <button mat-button matStepperPrevious>Back</button>
       <!-- <button mat-button (click)="stepper.reset()">Reset</button> -->
+      <br />
+      <br />
+      <button mat-button class="warning-button" [disabled]="!draftEntry" (click)="deleteDraft()">Delete Draft</button>
     </div>
     }
   </mat-step>
 </mat-stepper>
+
 <!-- </form> -->

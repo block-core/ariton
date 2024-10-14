@@ -123,6 +123,16 @@ export class CreateComponent implements OnDestroy {
     }
   }
 
+  draftDeleted = false;
+
+  async deleteDraft() {
+    console.log('DELETE DRAFT:', this.draftEntry);
+    await this.data.delete(this.draftEntry.record);
+    this.draftEntry = undefined;
+    this.draftDeleted = true;
+    this.router.navigate(['/communities']);
+  }
+
   getPriceInSatoshis(usd: number): number {
     const satoshisPerBitcoin = 100_000_000;
     const satoshis = (usd / this.bitcoinPriceUsd) * satoshisPerBitcoin;
@@ -188,6 +198,10 @@ export class CreateComponent implements OnDestroy {
   }
 
   async saveDraft() {
+    if (this.draftDeleted) {
+      return;
+    }
+
     if (this.draftEntry) {
       const mergedData = {
         ...this.draftEntry.data,
@@ -207,8 +221,16 @@ export class CreateComponent implements OnDestroy {
 
       // this.draftEntry.data = [...this.secondFormGroup.value, ...this.firstFormGroup.value];
     } else {
-      this.draftEntry = await this.data.save(this.secondFormGroup.value, { type: 'community', status: 'draft' });
+      const mergedData = {
+        ...this.firstFormGroup.value,
+        ...this.secondFormGroup.value,
+        ...this.thirdFormGroup.value,
+      };
+
+      this.draftEntry = await this.data.save(mergedData, { type: 'community', status: 'draft' });
     }
+
+    console.log('SAVE DRAFT DONE!');
   }
 
   async generateInvoice() {

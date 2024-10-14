@@ -47,7 +47,7 @@ export class DataService {
     return this.app.storage.update(record, data, tags);
   }
 
-  async delete(id: string) {
-    return this.app.storage.delete(id);
+  async delete(record: Record) {
+    return this.app.storage.delete(record);
   }
 }

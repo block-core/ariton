@@ -106,11 +106,12 @@ export class StorageService {
     return entry;
   }
 
-  async delete(recordId: string) {
-    const { status } = await this.identity.web5.dwn.records.delete({ message: { recordId } });
+  async delete(record: Record) {
+    const { status } = await record.delete();
+    // const { status } = await this.identity.web5.dwn.records.delete({ message: { recordId } });
 
     if (status.code !== 202) {
-      throw new Error(`Failed to save data (${status.code}): ${status.detail}`);
+      throw new Error(`Failed to delete data (${status.code}): ${status.detail}`);
     }
   }
 
