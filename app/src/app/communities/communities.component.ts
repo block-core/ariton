@@ -115,10 +115,12 @@ export class CommunitiesComponent {
           }
         });
 
+        this.loadDrafts();
+
         // Just set a timeout to load drafts, as the last save might not have been processed yet.
-        setTimeout(() => {
-          this.loadDrafts();
-        }, 300);
+        // setTimeout(() => {
+        //   this.loadDrafts();
+        // }, 300);
       }
     });
 
@@ -238,11 +240,9 @@ export class CommunitiesComponent {
   drafts = signal<any[]>([]);
 
   async loadDrafts() {
-    console.log('LOAD DRAFTS');
+    // TODO: Load drafts and then reload on subscribe, because we save on exit and that is async operation
+    // that will not funish until after next page is loaded.
     const entries = await this.data.load({ type: 'community', status: 'draft' });
-
-    console.log('LOAD DRAFTS DONE');
-    console.log('Draft Entries:', entries);
     this.drafts.set(entries);
   }
 
