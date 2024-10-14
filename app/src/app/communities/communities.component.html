@@ -34,7 +34,7 @@
       You have communities in draft mode. Please review any status update on their verification status.
       <br /><br />
       @for(draft of drafts; track draft) {
-      <a [routerLink]="['/communities', 'create']">{{ draft.data.name }}</a> - Awaiting approval<br />
+      <a [routerLink]="['/communities', 'create', draft.id]">{{ draft.data.name }}</a> - Awaiting approval<br />
       <!-- <a [routerLink]="['/communities', 'create']">Knitting Party 101</a> - Draft<br /> -->
       }
     </div>

@@ -9,7 +9,7 @@ import { MatCardModule } from '@angular/material/card';
 import { FormArray, FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IdentityService } from '../../identity.service';
 import { ProfileService } from '../../profile.service';
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { NavigationService } from '../../navigation.service';
 import { profile } from '../../../protocols';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -22,6 +22,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSliderModule } from '@angular/material/slider';
 import { PricingService } from '../../pricing.service';
 import * as QRCode from 'qrcode';
+import { AppService } from '../../app.service';
+import { DataService } from '../../data.service';
 
 @Component({
   selector: 'app-create',
@@ -63,7 +65,13 @@ export class CreateComponent {
 
   router = inject(Router);
 
-  data = signal<any>({});
+  data = inject(DataService);
+
+  // data = signal<any>({});
+
+  route = inject(ActivatedRoute);
+
+  app = inject(AppService);
 
   @ViewChild('stepper') stepper!: MatStepper;
 
@@ -367,8 +375,40 @@ export class CreateComponent {
     this.owners.removeAt(index);
   }
 
+  // selectedCommunity = signal<string>('');
+  selectedCommunity = signal<string | null>(null);
+
   constructor() {
     this.costLevel = this.pricing.levels['monthly-basic'];
+
+    this.route.paramMap.subscribe((params) => {
+      this.selectedCommunity.set(params.get('id'));
+    });
+
+    effect(
+      async () => {
+        if (this.selectedCommunity() && this.app.initialized()) {
+          console.log('Selected community and app initialized:', this.selectedCommunity());
+
+          const communityId = this.selectedCommunity()!;
+
+          const entry = await this.data.get(communityId);
+          console.log('Community Entry: ', entry);
+
+          // this.selectedProfile.set(null);
+          // this.messages.set([]);
+          // if (this.selectedChat() === ':id' || this.selectedChat() === 'home') {
+          //   return;
+          // }
+          // this.loading.set(true);
+          // const profile = await this.profile.loadProfile(this.selectedChat()!);
+          // this.selectedProfile.set(profile);
+          // await this.loadMessages(this.selectedChat()!);
+          // this.loading.set(false);
+        }
+      },
+      { allowSignalWrites: true },
+    );
 
     effect(async () => {
       if (this.identity.initialized()) {
