@@ -33,10 +33,10 @@
     <mat-card-header>
       <mat-icon mat-card-avatar>cloud_done</mat-icon>
       <mat-card-title>Basic (10 GB)</mat-card-title>
-      <mat-card-subtitle>$2 for 1 month</mat-card-subtitle>
+      <mat-card-subtitle>$8 for 1 month</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      <p>Upgrade your current storage to 10x the amount of storage for only $2 per month.</p>
+      <p>Upgrade your current storage to 10x the amount of storage for only $8 per month.</p>
       <!-- <mat-chip-set>
         <mat-chip>charming</mat-chip>
         <mat-chip>graceful</mat-chip>
@@ -44,7 +44,7 @@
       </mat-chip-set> -->
     </mat-card-content>
     <mat-card-actions>
-      <button mat-button>CHOOSE</button>
+      <button mat-button [disabled]="true">CHOOSE</button>
     </mat-card-actions>
   </mat-card>
 
@@ -52,7 +52,7 @@
     <mat-card-header>
       <mat-icon mat-card-avatar>cloud_done</mat-icon>
       <mat-card-title>Standard (50 GB)</mat-card-title>
-      <mat-card-subtitle>$8 for 1 month</mat-card-subtitle>
+      <mat-card-subtitle>$16 for 1 month</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
       <p>
@@ -61,7 +61,7 @@
       </p>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-button>CHOOSE</button>
+      <button mat-button [disabled]="true">CHOOSE</button>
     </mat-card-actions>
   </mat-card>
 
@@ -69,16 +69,16 @@
     <mat-card-header>
       <mat-icon mat-card-avatar>cloud_done</mat-icon>
       <mat-card-title>Premium (100 GB)</mat-card-title>
-      <mat-card-subtitle>$14 for 1 month</mat-card-subtitle>
+      <mat-card-subtitle>$30 for 1 month</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
       <p>
-        For only $14 per month you can get 100 GB of storage, this is perfect for those who need to store a lot of
+        For only $30 per month you can get 100 GB of storage, this is perfect for those who need to store a lot of
         files.
       </p>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-button>CHOOSE</button>
+      <button mat-button [disabled]="true">CHOOSE</button>
     </mat-card-actions>
   </mat-card>
   } @else {
@@ -100,10 +100,10 @@
     <mat-card-header>
       <mat-icon mat-card-avatar>cloud_done</mat-icon>
       <mat-card-title>Basic (10 GB)</mat-card-title>
-      <mat-card-subtitle>$22 for 1 years</mat-card-subtitle>
+      <mat-card-subtitle>$96 for 1 years</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      <p>Upgrade your current storage to 10x the amount of storage for only $22 per year.</p>
+      <p>Upgrade your current storage to 10x the amount of storage for only $96 per year.</p>
       <!-- <mat-chip-set>
         <mat-chip>charming</mat-chip>
         <mat-chip>graceful</mat-chip>
@@ -119,7 +119,7 @@
     <mat-card-header>
       <mat-icon mat-card-avatar>cloud_done</mat-icon>
       <mat-card-title>Standard (50 GB)</mat-card-title>
-      <mat-card-subtitle>$88 for 1 year</mat-card-subtitle>
+      <mat-card-subtitle>$192 for 1 year</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
       <p>
@@ -136,11 +136,11 @@
     <mat-card-header>
       <mat-icon mat-card-avatar>cloud_done</mat-icon>
       <mat-card-title>Premium (100 GB)</mat-card-title>
-      <mat-card-subtitle>$322 for 1 year</mat-card-subtitle>
+      <mat-card-subtitle>$360 for 1 year</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
       <p>
-        For only $322 per year you can get 100 GB of storage, this is perfect for those who need to store a lot of
+        For only $360 per year you can get 100 GB of storage, this is perfect for those who need to store a lot of
         files.
       </p>
     </mat-card-content>
@@ -150,3 +150,4 @@
   </mat-card>
   }
 </div>
+<p>Upgraded storage is currently unavailable. Please check back in the future.</p>
