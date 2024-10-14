@@ -24,6 +24,7 @@ import { PricingService } from '../../pricing.service';
 import * as QRCode from 'qrcode';
 import { AppService } from '../../app.service';
 import { DataService } from '../../data.service';
+import { StepperSelectionEvent } from '@angular/cdk/stepper';
 
 @Component({
   selector: 'app-create',
@@ -165,6 +166,40 @@ export class CreateComponent {
   scheduleNextCheck = () => {
     setTimeout(this.checkPaymentStatus, 2000);
   };
+
+  async onStepChange(event: StepperSelectionEvent) {
+    console.log('Selected step index:', event.selectedIndex);
+    console.log('Previously selected step index:', event.previouslySelectedIndex);
+
+    // Every time the stepper changes and if the name is valid, we will persist the draft.
+    if (this.secondFormGroup.controls.name.valid) {
+      await this.saveDraft();
+    }
+  }
+
+  async saveDraft() {
+    if (this.draftEntry) {
+      const mergedData = {
+        ...this.draftEntry.data,
+        ...this.firstFormGroup.value,
+        ...this.secondFormGroup.value,
+        ...this.thirdFormGroup.value,
+      };
+
+      // this.draftEntry.data = mergedData;
+
+      console.log('DRAFT ENTRY UPDATE:', this.draftEntry);
+
+      this.draftEntry = await this.data.update(this.draftEntry.record, mergedData, {
+        type: 'community',
+        status: 'draft',
+      });
+
+      // this.draftEntry.data = [...this.secondFormGroup.value, ...this.firstFormGroup.value];
+    } else {
+      this.draftEntry = await this.data.save(this.secondFormGroup.value, { type: 'community', status: 'draft' });
+    }
+  }
 
   async generateInvoice() {
     await this.updateBitcoinPrice();
@@ -378,6 +413,8 @@ export class CreateComponent {
   // selectedCommunity = signal<string>('');
   selectedCommunity = signal<string | null>(null);
 
+  draftEntry: any;
+
   constructor() {
     this.costLevel = this.pricing.levels['monthly-basic'];
 
@@ -394,6 +431,19 @@ export class CreateComponent {
 
           const entry = await this.data.get(communityId);
           console.log('Community Entry: ', entry);
+
+          this.draftEntry = entry;
+
+          entry.data.option = 'monthly-basic';
+
+          this.firstFormGroup.patchValue({
+            option: entry.data.option,
+          });
+
+          this.secondFormGroup.patchValue(entry.data);
+
+          // Skip to second step, since we have the data.
+          this.stepper.next();
 
           // this.selectedProfile.set(null);
           // this.messages.set([]);

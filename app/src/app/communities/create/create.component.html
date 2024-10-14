@@ -1,5 +1,5 @@
 <!-- <form [formGroup]="form" novalidate (ngSubmit)="onSubmit()"> -->
-<mat-stepper #stepper [linear]="true">
+<mat-stepper #stepper [linear]="true" (selectionChange)="onStepChange($event)">
   <mat-step [stepControl]="firstFormGroup">
     <form [formGroup]="firstFormGroup">
       <ng-template matStepLabel>Options</ng-template>

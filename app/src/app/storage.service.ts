@@ -97,7 +97,13 @@ export class StorageService {
       throw new Error(`Failed to save data (${status.code}): ${status.detail}`);
     }
 
-    return record;
+    const entry = {
+      data,
+      id: record.id,
+      record,
+    };
+
+    return entry;
   }
 
   async delete(recordId: string) {
