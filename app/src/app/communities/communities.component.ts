@@ -232,5 +232,32 @@ export class CommunitiesComponent {
     // this.table.dataSource = this.dataSource;
   }
 
-  async createTest() {}
+  async createTest() {
+    const tags = {
+      type: 'community',
+      status: 'draft',
+    };
+
+    const record = await this.data.save({ name: 'Test Community', description: 'This is a test community.' }, tags);
+
+    console.log('Community Data Record:', record);
+
+    // const records = await this.data.load(tags);
+    // console.log('Community Data Records:', records);
+    // const r1 = records[0];
+
+    await this.data.update(
+      record.record,
+      { name: 'Test Community 2', description: 'This is a test community 2.' },
+      tags,
+    );
+
+    const records = await this.data.load(tags);
+    console.log('Community Data Records:', records);
+
+    for (const r of records) {
+      console.log('Community Data Record:', r);
+      await this.data.delete(r.id);
+    }
+  }
 }

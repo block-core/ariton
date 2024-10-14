@@ -3,6 +3,7 @@ import { LayoutService } from './layout.service';
 import { IdentityService } from './identity.service';
 import { AppService } from './app.service';
 import { RecordEntry } from './data';
+import { Record } from '@web5/api';
 
 export interface StorageQueryConfiguration {
   protocol: string;
@@ -17,17 +18,7 @@ export interface StorageQueryConfiguration {
 export class StorageService {
   identity = inject(IdentityService);
 
-  app = inject(AppService);
-
-  constructor() {
-    effect(async () => {
-      if (this.app.initialized()) {
-        await this.initialize();
-      }
-    });
-  }
-
-  private async initialize() {}
+  constructor() {}
 
   async save<T>(configuration: StorageQueryConfiguration, data: any, tags: any) {
     const { record, status } = await this.identity.web5.dwn.records.create({
@@ -41,8 +32,8 @@ export class StorageService {
       },
     });
 
-    if (status.code !== 201) {
-      throw new Error(`Failed to save data: ${status.detail}`);
+    if (status.code !== 202) {
+      throw new Error(`Failed to save data (${status.code}): ${status.detail}`);
     }
 
     const entry: RecordEntry<T> = {
@@ -79,6 +70,24 @@ export class StorageService {
     }
 
     return list;
+  }
+
+  async update(record: Record, data: any, tags: any) {
+    const { status } = await record.update({ data: data, tags: tags });
+
+    if (status.code !== 202) {
+      throw new Error(`Failed to save data (${status.code}): ${status.detail}`);
+    }
+
+    return record;
+  }
+
+  async delete(recordId: string) {
+    const { status } = await this.identity.web5.dwn.records.delete({ message: { recordId } });
+
+    if (status.code !== 202) {
+      throw new Error(`Failed to save data (${status.code}): ${status.detail}`);
+    }
   }
 
   // // Save data to localStorage with prefix

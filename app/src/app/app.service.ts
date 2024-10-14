@@ -11,6 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConnectionService } from './connection.service';
 import { WorkerService } from './worker.service';
 import { EventService } from './event.service';
+import { StorageService } from './storage.service';
 
 export interface AppState {
   selectedAccount: string;
@@ -52,7 +53,9 @@ export class AppService {
 
   loading = signal<boolean>(false);
 
-  storage = inject(LocalStorageService);
+  localStorage = inject(LocalStorageService);
+
+  storage = inject(StorageService);
 
   hash = inject(HashService);
 
@@ -117,11 +120,11 @@ export class AppService {
   //}
 
   saveAccounts() {
-    this.storage.save('accounts', this.accounts());
+    this.localStorage.save('accounts', this.accounts());
   }
 
   saveState() {
-    this.storage.save('state', this.state());
+    this.localStorage.save('state', this.state());
   }
 
   // restore(recoveryPhrase: string) {
@@ -131,7 +134,7 @@ export class AppService {
   // }
 
   hasStateBeenSet() {
-    let state = this.storage.read('state') as AppState;
+    let state = this.localStorage.read('state') as AppState;
 
     if (!state) {
       return false;
@@ -156,7 +159,7 @@ export class AppService {
       bundleTimestamp: '',
     };
 
-    this.storage.save('state', state);
+    this.localStorage.save('state', state);
 
     await this.initialize();
   }
@@ -169,7 +172,7 @@ export class AppService {
     this.loading.set(true);
     console.log('Initializing Ariton...');
 
-    let state = this.storage.read('state') as AppState;
+    let state = this.localStorage.read('state') as AppState;
 
     // If there is no state, it's a new user and return immediately.
     if (!state) {
@@ -178,7 +181,7 @@ export class AppService {
       return;
     }
 
-    let accounts = this.storage.read('accounts') as any[];
+    let accounts = this.localStorage.read('accounts') as any[];
     let result: Web5ConnectResult | undefined;
 
     // If there are no accounts, user has not used app before.
@@ -195,7 +198,7 @@ export class AppService {
       if (result === undefined) {
         // If we fail on initial creation, reset the state so user
         // will retry again when online.
-        this.storage.remove('state');
+        this.localStorage.remove('state');
         this.onboardingState.set(OnboardingState.Error);
         this.loading.set(false);
         return;
@@ -219,13 +222,13 @@ export class AppService {
         },
       ];
 
-      this.storage.save('accounts', accounts);
+      this.localStorage.save('accounts', accounts);
 
       state.selectedAccount = result.did;
 
       this.accounts.set(accounts);
       this.account?.set(accounts[0]);
-      this.storage.save('state', state);
+      this.localStorage.save('state', state);
 
       // A new default account is auto-unlocked with a generate password.
       this.onboardingState.set(OnboardingState.Unlocked);
