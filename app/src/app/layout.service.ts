@@ -170,7 +170,10 @@ export class LayoutService {
     // element.scrollTop = 0;
 
     const elementContent = document.querySelector('.sidenav-content') as any;
-    elementContent.scrollTop = 0;
+
+    if (elementContent) {
+      elementContent.scrollTop = 0;
+    }
   }
 
   disableScrolling() {
