@@ -15,6 +15,7 @@ import { protocolDefinition as todo } from '../protocols/task';
 import { protocolDefinition as connection } from '../protocols/connection';
 import { protocolDefinition as notification } from '../protocols/notification';
 import { protocolDefinition as post } from '../protocols/post';
+import { protocolDefinition as data } from '../protocols/data';
 import { IdentityService } from './identity.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -46,6 +47,7 @@ export class ProtocolService {
       connection,
       notification,
       post,
+      data,
     ];
 
     for (const definition of protocols) {

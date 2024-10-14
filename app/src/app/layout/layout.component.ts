@@ -13,7 +13,7 @@ import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle.component';
 import { LayoutService } from '../layout.service';
 import { MatMenuModule } from '@angular/material/menu';
-import { StorageService } from '../storage.service';
+import { LocalStorageService } from '../local-storage.service';
 import { IdentityService } from '../identity.service';
 import { NewVersionCheckerService } from '../update.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -66,7 +66,7 @@ import { QRCodeDialogComponent } from '../shared/dialog/qrcode-dialog/qrcode-dia
 export class LayoutComponent {
   private breakpointObserver = inject(BreakpointObserver);
 
-  private storage = inject(StorageService);
+  private storage = inject(LocalStorageService);
 
   public identity = inject(IdentityService);
 

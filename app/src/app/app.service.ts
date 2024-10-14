@@ -1,5 +1,5 @@
 import { Injectable, effect, inject, signal } from '@angular/core';
-import { StorageService } from './storage.service';
+import { LocalStorageService } from './local-storage.service';
 import { CryptoService } from './crypto.service';
 import { IdentityService } from './identity.service';
 import { Web5ConnectResult } from '@web5/api';
@@ -52,7 +52,7 @@ export class AppService {
 
   loading = signal<boolean>(false);
 
-  storage = inject(StorageService);
+  storage = inject(LocalStorageService);
 
   hash = inject(HashService);
 
