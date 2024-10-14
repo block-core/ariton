@@ -33,6 +33,7 @@ import { NotificationEvent, NotificationService } from '../notification.service'
 import { AgoPipe } from '../shared/pipes/ago.pipe';
 import { PlayerControlsComponent } from '../apps/app/player/controls/controls.component';
 import { QRCodeDialogComponent } from '../shared/dialog/qrcode-dialog/qrcode-dialog.component';
+import { StorageService } from '../storage.service';
 
 @Component({
   selector: 'app-layout',
@@ -66,7 +67,9 @@ import { QRCodeDialogComponent } from '../shared/dialog/qrcode-dialog/qrcode-dia
 export class LayoutComponent {
   private breakpointObserver = inject(BreakpointObserver);
 
-  private storage = inject(LocalStorageService);
+  private localStorage = inject(LocalStorageService);
+
+  private storage = inject(StorageService);
 
   public identity = inject(IdentityService);
 
@@ -166,7 +169,7 @@ export class LayoutComponent {
 
   async wipe() {
     // Clear all data from localStorage
-    this.storage.clear();
+    this.localStorage.clear();
 
     console.log('Local storage data has been wiped!');
 

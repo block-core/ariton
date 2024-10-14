@@ -16,6 +16,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { AppService } from '../app.service';
 import { LayoutService } from '../layout.service';
+import { DataService } from '../data.service';
 
 type CardContent = {
   title: string;
@@ -97,6 +98,8 @@ export class CommunitiesComponent {
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['name', 'description'];
+
+  data = inject(DataService);
 
   constructor(private router: Router) {
     this.layout.marginOn();
@@ -228,4 +231,6 @@ export class CommunitiesComponent {
     // this.dataSource.paginator = this.paginator;
     // this.table.dataSource = this.dataSource;
   }
+
+  async createTest() {}
 }
