@@ -341,7 +341,9 @@
       <button mat-button matStepperNext>Next</button>
       <br />
       <br />
-      <button mat-button class="warning-button" [disabled]="!draftEntry" (click)="deleteDraft()">Delete Draft</button>
+      <button mat-flat-button class="warning-button" [disabled]="!draftEntry" (click)="deleteDraft()">
+        Delete Draft
+      </button>
     </p>
     <!-- </form> -->
   </mat-step>
@@ -376,7 +378,7 @@
       </p>
 
       <p>
-        <button mat-button (click)="deleteRequest()">Delete the community request</button>
+        <button mat-flat-button (click)="deleteRequest()">Delete the community request</button>
       </p>
     </form>
     } @else {
@@ -435,7 +437,9 @@
       <!-- <button mat-button (click)="stepper.reset()">Reset</button> -->
       <br />
       <br />
-      <button mat-button class="warning-button" [disabled]="!draftEntry" (click)="deleteDraft()">Delete Draft</button>
+      <button mat-flat-button class="warning-button" [disabled]="!draftEntry" (click)="deleteDraft()">
+        Delete Draft
+      </button>
     </div>
     }
   </mat-step>

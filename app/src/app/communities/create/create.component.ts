@@ -182,9 +182,7 @@ export class CreateComponent implements OnDestroy {
     console.log('Previously selected step index:', event.previouslySelectedIndex);
 
     // Every time the stepper changes and if the name is valid, we will persist the draft.
-    if (this.secondFormGroup.controls.name.valid) {
-      await this.saveDraft();
-    }
+    await this.saveDraft();
   }
 
   // TODO: Add this to app level to perhaps same draft data.
@@ -202,6 +200,11 @@ export class CreateComponent implements OnDestroy {
       return;
     }
 
+    // Do not persist draft if no name.
+    if (!this.secondFormGroup.controls.name.value) {
+      return;
+    }
+
     if (this.draftEntry) {
       const mergedData = {
         ...this.draftEntry.data,
@@ -211,7 +214,6 @@ export class CreateComponent implements OnDestroy {
       };
 
       // this.draftEntry.data = mergedData;
-
       console.log('DRAFT ENTRY UPDATE:', this.draftEntry);
 
       this.draftEntry = await this.data.update(this.draftEntry.record, mergedData, {
