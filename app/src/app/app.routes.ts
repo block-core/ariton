@@ -35,7 +35,7 @@ export const routes: Routes = [
     path: 'app/projects',
     loadComponent: () => import('./apps/app/projects/projects.component').then((c) => c.ProjectsComponent),
     title: 'Projects',
-    data: { hide: false, icon: 'diversity_1' },
+    data: { hide: true, icon: 'diversity_1' },
   },
   {
     path: 'communities/create',
