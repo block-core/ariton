@@ -106,17 +106,17 @@ export class CommunitiesComponent {
 
     // Register a new effect.
     effect(() => {
-      setTimeout(() => {
-        if (this.table) {
-          this.dataSource.sort = this.sort;
-          this.dataSource.paginator = this.paginator;
-          this.table.dataSource = this.dataSource;
-        }
-      });
-    });
+      if (this.app.initialized()) {
+        setTimeout(() => {
+          if (this.table) {
+            this.dataSource.sort = this.sort;
+            this.dataSource.paginator = this.paginator;
+            this.table.dataSource = this.dataSource;
+          }
+        });
 
-    effect(() => {
-      console.log(`The checked is: ${this.checked()})`);
+        this.loadDrafts();
+      }
     });
 
     const cards: Community[] = [];
@@ -232,6 +232,15 @@ export class CommunitiesComponent {
     // this.table.dataSource = this.dataSource;
   }
 
+  drafts: any = [];
+
+  async loadDrafts() {
+    const entries = await this.data.load({ type: 'community', status: 'draft' });
+
+    console.log('Draft Entries:', entries);
+    this.drafts = entries;
+  }
+
   async createTest() {
     const tags = {
       type: 'community',
@@ -255,9 +264,9 @@ export class CommunitiesComponent {
     const records = await this.data.load(tags);
     console.log('Community Data Records:', records);
 
-    for (const r of records) {
-      console.log('Community Data Record:', r);
-      await this.data.delete(r.id);
-    }
+    // for (const r of records) {
+    //   console.log('Community Data Record:', r);
+    //   await this.data.delete(r.id);
+    // }
   }
 }

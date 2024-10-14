@@ -25,7 +25,22 @@
   </mat-card-content>
 </mat-card>
 
-@if (viewStyle() == 'card') {
+@if (drafts) {
+
+<mat-card class="toolbar-actions margin-bottom">
+  <mat-card-content class="flex">
+    <strong>NOTICE</strong>
+    <div>
+      You have communities in draft mode. Please review any status update on their verification status.
+      <br /><br />
+      @for(draft of drafts; track draft) {
+      <a [routerLink]="['/communities', 'create']">{{ draft.data.name }}</a> - Awaiting approval<br />
+      <!-- <a [routerLink]="['/communities', 'create']">Knitting Party 101</a> - Draft<br /> -->
+      }
+    </div>
+  </mat-card-content>
+</mat-card>
+} @if (viewStyle() == 'card') {
 <!-- <mat-card appearance="outlined">
   <mat-card-header>
     <mat-card-title>Dog Lovers</mat-card-title>
