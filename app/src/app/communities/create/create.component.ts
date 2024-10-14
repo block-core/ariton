@@ -1,4 +1,4 @@
-import { Component, effect, inject, signal, ViewChild } from '@angular/core';
+import { Component, effect, HostListener, inject, OnDestroy, signal, ViewChild } from '@angular/core';
 import { AvatarComponent } from '../../profile/edit/avatar/avatar.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -53,7 +53,7 @@ import { StepperSelectionEvent } from '@angular/cdk/stepper';
   templateUrl: './create.component.html',
   styleUrl: './create.component.scss',
 })
-export class CreateComponent {
+export class CreateComponent implements OnDestroy {
   private fb = inject(FormBuilder);
 
   identity = inject(IdentityService);
@@ -175,6 +175,16 @@ export class CreateComponent {
     if (this.secondFormGroup.controls.name.valid) {
       await this.saveDraft();
     }
+  }
+
+  // TODO: Add this to app level to perhaps same draft data.
+  @HostListener('window:beforeunload')
+  async handleUnloadEvent() {
+    await this.saveDraft();
+  }
+
+  async ngOnDestroy() {
+    await this.saveDraft();
   }
 
   async saveDraft() {
