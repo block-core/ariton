@@ -115,7 +115,10 @@ export class CommunitiesComponent {
           }
         });
 
-        this.loadDrafts();
+        // Just set a timeout to load drafts, as the last save might not have been processed yet.
+        setTimeout(() => {
+          this.loadDrafts();
+        }, 300);
       }
     });
 

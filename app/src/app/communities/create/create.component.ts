@@ -9,7 +9,7 @@ import { MatCardModule } from '@angular/material/card';
 import { FormArray, FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IdentityService } from '../../identity.service';
 import { ProfileService } from '../../profile.service';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, NavigationStart, Router, RouterModule } from '@angular/router';
 import { NavigationService } from '../../navigation.service';
 import { profile } from '../../../protocols';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -25,6 +25,7 @@ import * as QRCode from 'qrcode';
 import { AppService } from '../../app.service';
 import { DataService } from '../../data.service';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-create',
@@ -74,6 +75,8 @@ export class CreateComponent implements OnDestroy {
 
   app = inject(AppService);
 
+  bitcoinPriceUsd = 0;
+
   @ViewChild('stepper') stepper!: MatStepper;
 
   private _formBuilder = inject(FormBuilder);
@@ -107,11 +110,75 @@ export class CreateComponent implements OnDestroy {
     paymentMethod: ['ln'],
   });
 
+  private routerSubscription: Subscription;
+
+  constructor() {
+    this.routerSubscription = this.router.events.subscribe(async (event) => {
+      if (event instanceof NavigationStart) {
+        // Handle the navigation start event
+        console.log('Navigating away from CreateComponent');
+
+        // This does not help because navigation still occurs while this async function is running.
+        await this.saveDraft();
+      }
+    });
+
+    this.costLevel = this.pricing.levels['monthly-basic'];
+
+    this.route.paramMap.subscribe((params) => {
+      this.selectedCommunity.set(params.get('id'));
+    });
+
+    effect(
+      async () => {
+        if (this.selectedCommunity() && this.app.initialized()) {
+          console.log('Selected community and app initialized:', this.selectedCommunity());
+
+          const communityId = this.selectedCommunity()!;
+
+          const entry = await this.data.get(communityId);
+          console.log('Community Entry: ', entry);
+
+          this.draftEntry = entry;
+
+          entry.data.option = 'monthly-basic';
+
+          this.firstFormGroup.patchValue({
+            option: entry.data.option,
+          });
+
+          this.secondFormGroup.patchValue(entry.data);
+
+          // Skip to second step, since we have the data.
+          this.stepper.next();
+
+          // this.selectedProfile.set(null);
+          // this.messages.set([]);
+          // if (this.selectedChat() === ':id' || this.selectedChat() === 'home') {
+          //   return;
+          // }
+          // this.loading.set(true);
+          // const profile = await this.profile.loadProfile(this.selectedChat()!);
+          // this.selectedProfile.set(profile);
+          // await this.loadMessages(this.selectedChat()!);
+          // this.loading.set(false);
+        }
+      },
+      { allowSignalWrites: true },
+    );
+
+    effect(async () => {
+      if (this.identity.initialized()) {
+        // Set the initial owner to current user.
+        console.log(this.owners);
+        this.owners.setValue([this.identity.did]);
+      }
+    });
+  }
+
   goToNextStep() {
     this.stepper.next();
   }
-
-  bitcoinPriceUsd = 0;
 
   async updateBitcoinPrice() {
     const result = await fetch('https://pay.ariton.app/price');
@@ -192,7 +259,12 @@ export class CreateComponent implements OnDestroy {
   }
 
   async ngOnDestroy() {
-    await this.saveDraft();
+    // await this.saveDraft();
+
+    // Unsubscribe to prevent memory leaks
+    if (this.routerSubscription) {
+      this.routerSubscription.unsubscribe();
+    }
   }
 
   async saveDraft() {
@@ -448,60 +520,6 @@ export class CreateComponent implements OnDestroy {
   selectedCommunity = signal<string | null>(null);
 
   draftEntry: any;
-
-  constructor() {
-    this.costLevel = this.pricing.levels['monthly-basic'];
-
-    this.route.paramMap.subscribe((params) => {
-      this.selectedCommunity.set(params.get('id'));
-    });
-
-    effect(
-      async () => {
-        if (this.selectedCommunity() && this.app.initialized()) {
-          console.log('Selected community and app initialized:', this.selectedCommunity());
-
-          const communityId = this.selectedCommunity()!;
-
-          const entry = await this.data.get(communityId);
-          console.log('Community Entry: ', entry);
-
-          this.draftEntry = entry;
-
-          entry.data.option = 'monthly-basic';
-
-          this.firstFormGroup.patchValue({
-            option: entry.data.option,
-          });
-
-          this.secondFormGroup.patchValue(entry.data);
-
-          // Skip to second step, since we have the data.
-          this.stepper.next();
-
-          // this.selectedProfile.set(null);
-          // this.messages.set([]);
-          // if (this.selectedChat() === ':id' || this.selectedChat() === 'home') {
-          //   return;
-          // }
-          // this.loading.set(true);
-          // const profile = await this.profile.loadProfile(this.selectedChat()!);
-          // this.selectedProfile.set(profile);
-          // await this.loadMessages(this.selectedChat()!);
-          // this.loading.set(false);
-        }
-      },
-      { allowSignalWrites: true },
-    );
-
-    effect(async () => {
-      if (this.identity.initialized()) {
-        // Set the initial owner to current user.
-        console.log(this.owners);
-        this.owners.setValue([this.identity.did]);
-      }
-    });
-  }
 
   ngOnInit() {}
 

@@ -46,9 +46,11 @@ export class LayoutService {
         //   console.log('Keep actions as we are still under same app');
         // } else {
         this.enableScrolling();
+
         // this.layout.resetActions();
         // }
       } else if (event instanceof NavigationEnd) {
+        this.scrollToTop();
         // Navigation ended
         //this.layout.enableScrolling();
         if (this.countChar('/', event.url) > 1) {
@@ -161,6 +163,14 @@ export class LayoutService {
 
   enableScrolling() {
     this.scrolling.set(true);
+  }
+
+  scrollToTop() {
+    // const element = document.querySelector('.sidenav-scroll-wrapper') as any;
+    // element.scrollTop = 0;
+
+    const elementContent = document.querySelector('.sidenav-content') as any;
+    elementContent.scrollTop = 0;
   }
 
   disableScrolling() {
