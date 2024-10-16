@@ -9,61 +9,80 @@ import { MatSelectModule } from '@angular/material/select';
 import { IdentityService } from '../../../identity.service';
 import { CryptoService } from '../../../crypto.service';
 import { AppService } from '../../../app.service';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { DidStellar } from '../../../../crypto/methods/did-stellar';
 
 @Component({
-    selector: 'app-restore',
-    standalone: true,
-    imports: [MatInputModule, MatButtonModule, MatSelectModule, MatIconModule, MatRadioModule, MatCardModule, ReactiveFormsModule],
-    templateUrl: './restore.component.html',
-    styleUrl: './restore.component.scss',
+  selector: 'app-restore',
+  standalone: true,
+  imports: [
+    MatInputModule,
+    MatButtonModule,
+    MatButtonToggleModule,
+    MatSelectModule,
+    MatIconModule,
+    MatRadioModule,
+    MatCardModule,
+    ReactiveFormsModule,
+  ],
+  templateUrl: './restore.component.html',
+  styleUrl: './restore.component.scss',
 })
 export class RestoreComponent {
-    private fb = inject(FormBuilder);
+  private fb = inject(FormBuilder);
 
-    crypto = inject(CryptoService);
+  crypto = inject(CryptoService);
 
-    app = inject(AppService);
+  app = inject(AppService);
 
-    private identity = inject(IdentityService);
+  private identity = inject(IdentityService);
 
-    addressForm = this.fb.group({
-        recoveryPhrase: [null, Validators.required],
-    });
+  addressForm = this.fb.group({
+    recoveryPhrase: [null, Validators.required],
+    importType: ['stellar', Validators.required],
+  });
 
-    async onSubmit() {
-        console.log(this.addressForm.controls.recoveryPhrase.value);
+  async onSubmit() {
+    console.log(this.addressForm.controls.recoveryPhrase.value);
 
-        this.addressForm.disable();
+    this.addressForm.disable();
 
-        this.app.loading.set(true);
+    this.app.loading.set(true);
 
-        // Create a unique password for the user that they can replace.
-        let password = await this.crypto.createPassword();
+    if (this.addressForm.controls.importType.value === 'stellar') {
+      const bearerDid = await DidStellar.fromPrivateKey({
+        privateKey: this.addressForm.controls.recoveryPhrase.value!,
+      });
+      console.log('Bearer DID: ', bearerDid);
+    } else {
+      // Create a unique password for the user that they can replace.
+      let password = await this.crypto.createPassword();
 
-        const account = {
-            did: '',
-            recoveryPhrase: this.addressForm.controls.recoveryPhrase.value!,
-            password,
-            passwordHash: '',
-        };
+      const account = {
+        did: '',
+        recoveryPhrase: this.addressForm.controls.recoveryPhrase.value!,
+        password,
+        passwordHash: '',
+      };
 
-        password = '123';
+      password = '123';
 
-        const result = await this.identity.restore(password, this.addressForm.controls.recoveryPhrase.value!);
+      const result = await this.identity.restore(password, this.addressForm.controls.recoveryPhrase.value!);
 
-        console.log('RESTORE Result: ', result);
+      console.log('RESTORE Result: ', result);
 
-        if (!result) {
-            alert('Failed to restore account.');
-            this.addressForm.enable();
-            return;
-        }
+      if (!result) {
+        alert('Failed to restore account.');
+        this.addressForm.enable();
+        return;
+      }
 
-        account.did = result.did;
+      account.did = result.did;
 
-        this.app.addAccount(account);
-
-        this.app.initialized.set(true);
-        this.app.loading.set(false);
+      this.app.addAccount(account);
     }
+
+    this.app.initialized.set(true);
+    this.app.loading.set(false);
+  }
 }
