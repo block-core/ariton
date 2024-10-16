@@ -12,11 +12,13 @@ import { LayoutService } from '../layout.service';
 import { AppService } from '../app.service';
 import { BearerIdentity } from '@web5/agent';
 import { IdentityService } from '../identity.service';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-accounts',
   standalone: true,
   imports: [
+    MatCardModule,
     MatExpansionModule,
     MatTabsModule,
     MatFormFieldModule,
