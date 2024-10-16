@@ -19,7 +19,7 @@ export interface AppState {
   hidden: any;
   loginAction: string;
   // bundleHash: string | null;
-  bundleTimestamp: string | null;
+  // bundleTimestamp: string | null;
 }
 
 export interface Account {
@@ -27,6 +27,7 @@ export interface Account {
   recoveryPhrase: string;
   password?: string;
   passwordHash?: string;
+  bundleTimestamp: string | null;
 }
 
 export enum OnboardingState {
@@ -75,9 +76,9 @@ export class AppService {
 
   event = inject(EventService);
 
-  state = signal<AppState>({ loginAction: '/dashboard', selectedAccount: '', hidden: {}, bundleTimestamp: '' });
+  state = signal<AppState>({ loginAction: '/dashboard', selectedAccount: '', hidden: {} });
 
-  account = signal<Account>({ did: '', recoveryPhrase: '', password: '', passwordHash: '' });
+  account = signal<Account>({ did: '', recoveryPhrase: '', password: '', passwordHash: '', bundleTimestamp: '' });
 
   accounts = signal<Account[]>([]);
 
@@ -156,7 +157,7 @@ export class AppService {
       selectedAccount: '',
       hidden: {},
       loginAction: '/introduction',
-      bundleTimestamp: '',
+      // bundleTimestamp: '',
     };
 
     this.localStorage.save('state', state);
@@ -306,7 +307,7 @@ export class AppService {
   async firstTimeInitialization() {
     // If the previous bundle hash is the same as the current, we don't need to re-register.
     // For local development, the getHash should be null, so we always re-register.
-    if (this.hash.getTimestamp() != null && this.state().bundleTimestamp === this.hash.getTimestamp()) {
+    if (this.hash.getTimestamp() != null && this.account().bundleTimestamp === this.hash.getTimestamp()) {
       console.log('Bundle hash is the same as the previous one. No need to re-register protocols.');
       return;
     } else {
@@ -317,7 +318,9 @@ export class AppService {
     this.protocol.register();
 
     // Save the current bundle hash to the state.
-    this.state().bundleTimestamp = this.hash.getTimestamp();
-    this.saveState();
+    // this.state().bundleTimestamp = this.hash.getTimestamp();
+    this.account().bundleTimestamp = this.hash.getTimestamp();
+    this.saveAccounts();
+    // this.saveState();
   }
 }

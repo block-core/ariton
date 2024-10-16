@@ -8,7 +8,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { IdentityService } from '../../../identity.service';
 import { CryptoService } from '../../../crypto.service';
-import { AppService } from '../../../app.service';
+import { Account, AppService } from '../../../app.service';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { DidStellar } from '../../../../crypto/methods/did-stellar';
 import { PortableIdentity } from '@web5/agent';
@@ -95,6 +95,7 @@ export class RestoreComponent {
         did: stellarPortableDid.uri,
         recoveryPhrase: this.addressForm.controls.recoveryPhrase.value!,
         password: password,
+        bundleTimestamp: '',
       });
 
       // this.app.state().selectedAccount = this.identity.did;
@@ -110,11 +111,12 @@ export class RestoreComponent {
       // Create a unique password for the user that they can replace.
       let password = await this.crypto.createPassword();
 
-      const account = {
+      const account: Account = {
         did: '',
         recoveryPhrase: this.addressForm.controls.recoveryPhrase.value!,
         password,
         passwordHash: '',
+        bundleTimestamp: '',
       };
 
       password = '123';
