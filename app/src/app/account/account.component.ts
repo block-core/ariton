@@ -1,7 +1,7 @@
 import { Component, effect, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { IdentityService } from '../identity.service';
 import { LayoutService } from '../layout.service';
 import { AppService } from '../app.service';
@@ -21,6 +21,8 @@ export class AccountComponent {
   layout = inject(LayoutService);
 
   app = inject(AppService);
+
+  router = inject(Router);
 
   currentIdentity: BearerIdentity | undefined;
 
@@ -62,5 +64,8 @@ export class AccountComponent {
     }
   }
 
-  deleteAccount() {}
+  async deleteAccount() {
+    await this.identity.activeAgent().identity.delete({ didUri: this.currentIdentity!.did.document.id });
+    this.router.navigate(['/accounts']);
+  }
 }
