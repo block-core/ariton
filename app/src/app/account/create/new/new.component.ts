@@ -5,30 +5,51 @@ import { Web5 } from '@web5/api';
 import { IdentityService } from '../../../identity.service';
 import { DidDht } from '@web5/dids';
 import { Router } from '@angular/router';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatSelectModule } from '@angular/material/select';
+import { MatIconModule } from '@angular/material/icon';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatCardModule } from '@angular/material/card';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-new',
   standalone: true,
-  imports: [MatButtonModule],
+  imports: [
+    MatInputModule,
+    MatButtonModule,
+    MatButtonToggleModule,
+    MatSelectModule,
+    MatIconModule,
+    MatRadioModule,
+    MatCardModule,
+    ReactiveFormsModule,
+  ],
   templateUrl: './new.component.html',
   styleUrl: './new.component.scss',
 })
 export class NewComponent {
+  private fb = inject(FormBuilder);
+
   identity = inject(IdentityService);
 
   router = inject(Router);
+
+  form = this.fb.group({
+    name: ['New account', Validators.required],
+  });
 
   constructor() {}
 
   ngOnInit() {}
 
-  async createAccount() {
+  async onSubmit() {
     console.log('Creating account...');
-
     const agent = this.identity.activeAgent();
 
     console.log('Create...');
-    const bearerIdentity = await agent.identity.create({ metadata: { name: 'My new account' } });
+    const bearerIdentity = await agent.identity.create({ metadata: { name: this.form.controls.name.value! } });
 
     console.log('Export...');
     const portableIdentity = await bearerIdentity.export();

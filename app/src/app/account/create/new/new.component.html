@@ -1,5 +1,13 @@
 <h1>Create new account</h1>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <p>
+    <mat-form-field>
+      <mat-label>Enter account name</mat-label>
+      <input matInput formControlName="name" type="text" />
+    </mat-form-field>
+  </p>
 
-<p>
-    <button mat-flat-button (click)="createAccount()">Create account</button>
-</p>
+  <p>
+    <button mat-flat-button [disabled]="form.invalid">Create account</button>
+  </p>
+</form>
