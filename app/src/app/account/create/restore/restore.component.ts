@@ -13,6 +13,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { DidStellar } from '../../../../crypto/methods/did-stellar';
 import { PortableIdentity } from '@web5/agent';
 import { Router } from '@angular/router';
+import { ProtocolService } from '../../../protocol.service';
 
 @Component({
   selector: 'app-restore',
@@ -36,6 +37,8 @@ export class RestoreComponent {
   crypto = inject(CryptoService);
 
   app = inject(AppService);
+
+  protocol = inject(ProtocolService);
 
   route = inject(Router);
 
@@ -105,6 +108,9 @@ export class RestoreComponent {
         password: password,
         bundleTimestamp: '',
       });
+
+      // After adding account, let's make sure we install the protocols.
+      await this.protocol.register();
 
       // this.app.state().selectedAccount = this.identity.did;
       // this.app.saveState();
