@@ -86,7 +86,18 @@ export class VoluntaryistCovenantComponent {
       },
     });
 
+    const did = await this.identity.activeAgent().did.get({ didUri: this.identity.did });
+    console.log('DID:', did);
+
+    const identities = await this.identity.activeAgent().identity.list();
+    console.log('Identitites:', identities);
+
     const bearerDid = await this.identity.activeAgent().identity.get({ didUri: this.identity.did });
+
+    console.log('this.identity.did:', this.identity.did);
+    console.log('Bearer DID:', bearerDid);
+    console.log('Active Agent:', this.identity.activeAgent());
+
     const vc_jwt = await vc.sign({ did: bearerDid!.did });
 
     const { record } = await this.identity.web5.dwn.records.create({

@@ -59,6 +59,7 @@ export class RestoreComponent {
       const bearerDid = await DidStellar.fromPrivateKey({
         privateKey: this.addressForm.controls.recoveryPhrase.value!,
       });
+
       console.log('Bearer DID: ', bearerDid);
 
       const stellarPortableDid = await bearerDid.export();
@@ -74,8 +75,15 @@ export class RestoreComponent {
 
       try {
         console.log('Portable Identity:', portableIdentity);
-        const importedBearerDid = await agent.did.import({ portableDid: stellarPortableDid });
-        console.log('Imported bearer did: ', importedBearerDid);
+
+        const bearerIdentity1 = await agent.identity.import({ portableIdentity });
+        const bearerIdentity2 = await agent.identity.manage({ portableIdentity: portableIdentity });
+
+        // const importedBearerDid = await agent.did.import({ portableDid: stellarPortableDid });
+        // var importedDid = await agent.identity.import({ portableIdentity });
+        // const importedBearerIdentity = await agent.identity.manage({ portableIdentity: portableIdentity });
+        // const importedBearerDid = await agent.identity.manage({ portableDid: stellarPortableDid });
+        // console.log('Imported bearer did: ', importedBearerDid);
       } catch (err) {
         console.error(err);
       }
@@ -100,7 +108,6 @@ export class RestoreComponent {
 
       // this.app.state().selectedAccount = this.identity.did;
       // this.app.saveState();
-
       // agent.did.dereference({ didUrl: '' });
 
       this.route.navigate(['/profile', this.identity.did]);

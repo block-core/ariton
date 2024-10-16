@@ -110,8 +110,8 @@ export class IdentityService {
       this.web5 = result.web5;
       this.did = result.did;
 
-      // const list1 = await customAgent.identity.list();
-      // console.log('LIST1: ', list1);
+      const list1 = await customAgent.identity.list();
+      console.log('LIST OF ALL IDENTITIES: ', list1);
 
       // const resolvedDid = await this.web5.did.resolve(
       //   'did:stellar:GCFXHS4GXL6BVUCXBWXGTITROWLVYXQKQLF4YH5O5JT3YZXCYPAFBJZB',
