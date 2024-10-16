@@ -4,6 +4,7 @@ import { Web5IdentityAgent } from '@web5/identity-agent';
 import { Web5 } from '@web5/api';
 import { IdentityService } from '../../../identity.service';
 import { DidDht } from '@web5/dids';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-new',
@@ -14,6 +15,8 @@ import { DidDht } from '@web5/dids';
 })
 export class NewComponent {
   identity = inject(IdentityService);
+
+  router = inject(Router);
 
   constructor() {}
 
@@ -36,7 +39,9 @@ export class NewComponent {
     console.log('Manage...');
     const bearerIdentity2 = await agent.identity.manage({ portableIdentity: portableIdentity });
 
-    this.identity.identities = await agent.identity.list();
+    // this.identity.identities = await agent.identity.list();
+
+    this.router.navigate(['/accounts']);
 
     // const DidDht.create();
 

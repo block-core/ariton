@@ -11,6 +11,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { LayoutService } from '../layout.service';
 import { AppService } from '../app.service';
 import { BearerIdentity } from '@web5/agent';
+import { IdentityService } from '../identity.service';
 
 @Component({
   selector: 'app-accounts',
@@ -32,6 +33,8 @@ import { BearerIdentity } from '@web5/agent';
 export class AccountsComponent {
   layout = inject(LayoutService);
 
+  identity = inject(IdentityService);
+
   app = inject(AppService);
 
   identities: BearerIdentity[] = [];
@@ -50,6 +53,10 @@ export class AccountsComponent {
     const agent = this.app.identity.activeAgent();
 
     const identities = await agent.identity.list();
+
+    // Refresh the list of identities. After user delete accounts, they are redirected here.
+    this.identity.identities = identities;
+
     this.identities = identities;
     console.log('Identities:', identities);
   }
