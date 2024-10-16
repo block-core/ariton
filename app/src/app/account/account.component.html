@@ -1,4 +1,7 @@
-<h1>did:dht:umj7apgmkodtrb7mdpjo4h7xinqdnatzgy38j7wi67k9c7sdns1o</h1>
+@if(currentIdentity) {
+
+<h1>{{ currentIdentity.metadata.name }}</h1>
+<p class="ellipsis" [matTooltip]="currentIdentity.did.uri">{{ currentIdentity.did.uri }}</p>
 
 <!--
 <p class="warning2">
@@ -7,3 +10,10 @@
     <button mat-flat-button [routerLink]="['/account', 'password']">Set password now</button>
 </mat-card>
 </p>-->
+
+<button mat-flat-button (click)="backupAccount()">Backup Account</button>
+
+<p>
+  <button mat-flat-button class="warning-button" (click)="deleteAccount()">Delete Account</button>
+</p>
+}
