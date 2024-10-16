@@ -110,8 +110,8 @@ export class IdentityService {
       this.web5 = result.web5;
       this.did = result.did;
 
-      const list1 = await customAgent.identity.list();
-      console.log('LIST1: ', list1);
+      // const list1 = await customAgent.identity.list();
+      // console.log('LIST1: ', list1);
 
       // const resolvedDid = await this.web5.did.resolve(
       //   'did:stellar:GCFXHS4GXL6BVUCXBWXGTITROWLVYXQKQLF4YH5O5JT3YZXCYPAFBJZB',
@@ -119,13 +119,13 @@ export class IdentityService {
 
       // console.log('Resolved DID:', resolvedDid);
 
-      const stellarBearerDid = await DidStellar.fromPrivateKey({
-        privateKey: 'SAV76USXIJOBMEQXPANUOQM6F5LIOTLPDIDVRJBFFE2MDJXG24TAPUU7',
-      });
+      // const stellarBearerDid = await DidStellar.fromPrivateKey({
+      //   privateKey: 'SAV76USXIJOBMEQXPANUOQM6F5LIOTLPDIDVRJBFFE2MDJXG24TAPUU7',
+      // });
 
-      console.log('DID from key: ', stellarBearerDid);
+      // console.log('DID from key: ', stellarBearerDid);
 
-      const stellarPortableDid = await stellarBearerDid.export();
+      // const stellarPortableDid = await stellarBearerDid.export();
 
       // try {
       //   const bearerDid = await customAgent.did.import({ portableDid: stellarPortableDid });
@@ -135,35 +135,35 @@ export class IdentityService {
       //   console.warn('Failed to import bearer DID, likely because of duplicate:', err);
       // }
 
-      const portableIdentity: PortableIdentity = {
-        portableDid: stellarPortableDid,
-        metadata: {
-          name: 'Stellar Identity',
-          tenant: stellarPortableDid.uri,
-          uri: stellarPortableDid.uri,
-          // uri: 'urn:jwk:rTKi_NGEHUMnhVhHyt2Hvxf8dObcImzVVNLB3xyroFo',
-          // connectedDid: ''
-        },
-      };
+      // const portableIdentity: PortableIdentity = {
+      //   portableDid: stellarPortableDid,
+      //   metadata: {
+      //     name: 'Stellar Identity',
+      //     tenant: stellarPortableDid.uri,
+      //     uri: stellarPortableDid.uri,
+      //     // uri: 'urn:jwk:rTKi_NGEHUMnhVhHyt2Hvxf8dObcImzVVNLB3xyroFo',
+      //     // connectedDid: ''
+      //   },
+      // };
 
-      console.log('Portable Identity:', portableIdentity);
+      // console.log('Portable Identity:', portableIdentity);
 
-      // PortableIdentity did = new PortableIdentity
+      // // PortableIdentity did = new PortableIdentity
 
-      try {
-        // Delete first.
-        // await customAgent.did.delete({ didUri: portableIdentity.metadata.uri });
+      // try {
+      //   // Delete first.
+      //   // await customAgent.did.delete({ didUri: portableIdentity.metadata.uri });
 
-        var importedDid = await customAgent.identity.import({ portableIdentity });
-        await customAgent.identity.manage({ portableIdentity: portableIdentity });
+      //   var importedDid = await customAgent.identity.import({ portableIdentity });
+      //   await customAgent.identity.manage({ portableIdentity: portableIdentity });
 
-        console.log('Imported DID:', importedDid);
-      } catch (err) {
-        console.warn('Failed to import bearer DID, likely because of duplicate:', err);
-      }
+      //   console.log('Imported DID:', importedDid);
+      // } catch (err) {
+      //   console.warn('Failed to import bearer DID, likely because of duplicate:', err);
+      // }
 
-      const list = await customAgent.identity.list();
-      console.log('LIST: ', list);
+      // const list = await customAgent.identity.list();
+      // console.log('LIST: ', list);
 
       // const retrievedDid = await customAgent.did.get({ didUri: portableIdentity.metadata.uri });
       // console.log('Retrieved DID:', retrievedDid);

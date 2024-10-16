@@ -11,6 +11,8 @@ import { CryptoService } from '../../../crypto.service';
 import { AppService } from '../../../app.service';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { DidStellar } from '../../../../crypto/methods/did-stellar';
+import { PortableIdentity } from '@web5/agent';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-restore',
@@ -35,6 +37,8 @@ export class RestoreComponent {
 
   app = inject(AppService);
 
+  route = inject(Router);
+
   private identity = inject(IdentityService);
 
   addressForm = this.fb.group({
@@ -50,10 +54,42 @@ export class RestoreComponent {
     this.app.loading.set(true);
 
     if (this.addressForm.controls.importType.value === 'stellar') {
+      const agent = this.identity.activeAgent();
+
       const bearerDid = await DidStellar.fromPrivateKey({
         privateKey: this.addressForm.controls.recoveryPhrase.value!,
       });
       console.log('Bearer DID: ', bearerDid);
+
+      const stellarPortableDid = await bearerDid.export();
+
+      const portableIdentity: PortableIdentity = {
+        portableDid: stellarPortableDid,
+        metadata: {
+          name: 'Stellar Identity',
+          tenant: stellarPortableDid.uri,
+          uri: stellarPortableDid.uri,
+        },
+      };
+
+      try {
+        console.log('Portable Identity:', portableIdentity);
+        const importedBearerDid = await agent.did.import({ portableDid: stellarPortableDid });
+        console.log('Imported bearer did: ', importedBearerDid);
+      } catch (err) {
+        console.error(err);
+      }
+
+      const list = await agent.identity.list();
+      console.log('LIST: ', list);
+
+      // Change the active DID.
+      this.identity.did = stellarPortableDid.uri;
+
+      this.route.navigate(['/profile', this.identity.did]);
+
+      // var importedDid = await customAgent.identity.import({ portableIdentity });
+      // await customAgent.identity.manage({ portableIdentity: portableIdentity });
     } else {
       // Create a unique password for the user that they can replace.
       let password = await this.crypto.createPassword();
