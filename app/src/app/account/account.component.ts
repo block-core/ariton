@@ -49,6 +49,12 @@ export class AccountComponent {
     });
   }
 
+  async activateAccount() {
+    // Change the active DID.
+    this.identity.did = this.currentIdentity!.did.uri;
+    this.router.navigate(['/profile', this.identity.did]);
+  }
+
   async backupAccount() {
     const portableIdentity = await this.currentIdentity?.export();
     if (portableIdentity) {
