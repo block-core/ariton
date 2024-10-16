@@ -78,6 +78,13 @@ export class RestoreComponent {
           // Process the JSON object
           console.log('Parsed JSON object:', jsonObject);
 
+          try {
+            const bearerIdentity = await this.identity.activeAgent().identity.import({ portableIdentity: jsonObject });
+            console.log('Imported successfully');
+          } catch (err) {
+            console.error('Error importing identity:', err);
+          }
+
           const bearerIdentity = await this.identity.activeAgent().identity.manage({ portableIdentity: jsonObject });
           console.log('Imported identity: ', bearerIdentity);
 
