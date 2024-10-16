@@ -1,4 +1,4 @@
-import type { MulticodecCode, MulticodecDefinition, RequireOnly } from '@web5/common';
+import type { RequireOnly } from '@web5/common';
 import type {
   Jwk,
   CryptoApi,
@@ -10,8 +10,7 @@ import type {
   AsymmetricKeyConverter,
   InferKeyGeneratorAlgorithm,
 } from '@web5/crypto';
-
-import { Multicodec, universalTypeOf } from '@web5/common';
+import { universalTypeOf } from '@web5/common';
 import { X25519, Ed25519, Secp256k1, Secp256r1, LocalKeyManager, computeJwkThumbprint } from '@web5/crypto';
 import {
   BearerDid,
@@ -32,89 +31,9 @@ import {
   PortableDid,
 } from '@web5/dids';
 import { getVerificationMethodTypes, keyBytesToMultibaseId, multibaseIdToKeyBytes } from '@web5/dids/utils';
-
-// import {
-//   encodeEd25519PublicKey,
-//   encodeEd25519SecretSeed,
-//   isValidEd25519SecretSeed,
-//   isValidEd25519PublicKey,
-// } from '@futuretense/stellar-strkey';
-// import { Buffer } from 'buffer';
-
 import { StrKey } from './strkey';
 
-// import type { PortableDid } from '../types/portable-did.js';
-// import type { DidCreateOptions, DidCreateVerificationMethod } from './did-method.js';
-// import type {
-//   DidDocument,
-//   DidResolutionOptions,
-//   DidResolutionResult,
-//   DidVerificationMethod,
-// } from '../types/did-core.js';
-
-// import { Did } from '../did.js';
-// import { DidMethod } from './did-method.js';
-// import { BearerDid } from '../bearer-did.js';
-// import { DidError, DidErrorCode } from '../did-error.js';
-// import { KeyWithMulticodec } from '../types/multibase.js';
-// import { EMPTY_DID_RESOLUTION_RESULT } from '../types/did-resolution.js';
-// import { getVerificationMethodTypes, keyBytesToMultibaseId, multibaseIdToKeyBytes } from '../utils.js';
-
-/**
- * Defines the set of options available when creating a new Decentralized Identifier (DID) with the
- * 'did:key' method.
- *
- * Either the `algorithm` or `verificationMethods` option can be specified, but not both.
- * - A new key will be generated using the algorithm identifier specified in either the `algorithm`
- *   property or the `verificationMethods` object's `algorithm` property.
- * - If `verificationMethods` is given, it must contain exactly one entry since DID Key only
- *   supports a single verification method.
- * - If neither is given, the default is to generate a new Ed25519 key.
- *
- * @example
- * ```ts
- * // By default, when no options are given, a new Ed25519 key will be generated.
- * const did = await DidKey.create();
- *
- * // The algorithm to use for key generation can be specified as a top-level option.
- * const did = await DidKey.create({
- *   options: { algorithm = 'secp256k1' }
- * });
- *
- * // Or, alternatively as a property of the verification method.
- * const did = await DidKey.create({
- *   options: {
- *     verificationMethods: [{ algorithm = 'secp256k1' }]
- *   }
- * });
- *
- * // DID Creation with a KMS
- * const keyManager = new LocalKeyManager();
- * const did = await DidKey.create({ keyManager });
- *
- * // DID Resolution
- * const resolutionResult = await DidKey.resolve({ did: did.uri });
- *
- * // Signature Operations
- * const signer = await did.getSigner();
- * const signature = await signer.sign({ data: new TextEncoder().encode('Message') });
- * const isValid = await signer.verify({ data: new TextEncoder().encode('Message'), signature });
- *
- * // Import / Export
- *
- * // Export a BearerDid object to the PortableDid format.
- * const portableDid = await did.export();
- *
- * // Reconstruct a BearerDid object from a PortableDid
- * const did = await DidKey.import(portableDid);
- * ```
- */
 export interface DidStellarCreateOptions<TKms> extends DidCreateOptions<TKms> {
-  /**
-   * Optionally specify the algorithm to be used for key generation.
-   */
-  algorithm?: TKms extends CryptoApi ? InferKeyGeneratorAlgorithm<TKms> : InferKeyGeneratorAlgorithm<LocalKeyManager>;
-
   /**
    * Optionally specify an array of JSON-LD context links for the @context property of the DID
    * document.
@@ -125,52 +44,13 @@ export interface DidStellarCreateOptions<TKms> extends DidCreateOptions<TKms> {
   defaultContext?: string;
 
   /**
-   * Optionally enable encryption key derivation during DID creation.
-   *
-   * By default, this option is set to `false`, which means encryption key derivation is not
-   * performed unless explicitly enabled.
-   *
-   * When set to `true`, an `X25519` key will be derived from the `Ed25519` public key used to
-   * create the DID. This feature enables the same DID to be used for encrypted communication, in
-   * addition to signature verification.
-   *
-   * Notes:
-   * - This option is ONLY applicable when the `algorithm` of the DID's public key is `Ed25519`.
-   * - Enabling this introduces specific cryptographic considerations that should be understood
-   *   before using the same key pair for digital signatures and encrypted communication. See the following for more information:
-   */
-  enableEncryptionKeyDerivation?: boolean;
-
-  /**
-   * Optionally enable experimental public key types during DID creation.
-   * By default, this option is set to `false`, which means experimental public key types are not
-   * supported.
-   *
-   * Note: This implementation of the DID Key method does not support any experimental public key
-   * types.
-   */
-  enableExperimentalPublicKeyTypes?: boolean;
-
-  /**
-   * Optionally specify the format of the public key to be used for DID creation.
-   */
-  publicKeyFormat?: keyof typeof DidKeyVerificationMethodType;
-
-  /**
    * Alternatively, specify the algorithm to be used for key generation of the single verification
    * method in the DID Document.
    */
   verificationMethods?: DidCreateVerificationMethod<TKms>[];
 }
 
-/**
- * Enumerates the types of keys that can be used in a DID Key document.
- *
- * The DID Key method supports various cryptographic key types. These key types are essential for
- * the creation and management of DIDs and their associated cryptographic operations like signing
- * and encryption.
- */
-export enum DidKeyRegisteredKeyType {
+export enum DidStellarRegisteredKeyType {
   /**
    * Ed25519: A public-key signature system using the EdDSA (Edwards-curve Digital Signature
    * Algorithm) and Curve25519.
@@ -196,143 +76,16 @@ export const DidKeyVerificationMethodType = {
   X25519KeyAgreementKey2020: 'https://w3id.org/security/suites/x25519-2020/v1',
 } as const;
 
-/**
- * Private helper that maps algorithm identifiers to their corresponding DID Key
- * {@link DidKeyRegisteredKeyType | registered key type}.
- */
 const AlgorithmToKeyTypeMap = {
-  Ed25519: DidKeyRegisteredKeyType.Ed25519,
+  Ed25519: DidStellarRegisteredKeyType.Ed25519,
 } as const;
 
-/**
- * The `DidKey` class provides an implementation of the 'did:key' DID method.
- *
- * Features:
- * - DID Creation: Create new `did:key` DIDs.
- * - DID Key Management: Instantiate a DID object from an existing verification method key set or
- *                       or a key in a Key Management System (KMS). If supported by the KMS, a DID's
- *                       key can be exported to a portable DID format.
- * - DID Resolution: Resolve a `did:key` to its corresponding DID Document.
- * - Signature Operations: Sign and verify messages using keys associated with a DID.
- *
- * @remarks
- * The `did:key` DID method uses a single public key to generate a DID and does not rely
- * on any external system such as a blockchain or centralized database. This characteristic makes
- * it suitable for use cases where a assertions about a DID Subject can be self-verifiable by
- * third parties.
- *
- * The method-specific identifier is formed by
- * {@link https://datatracker.ietf.org/doc/html/draft-multiformats-multibase#name-base-58-bitcoin-encoding | Multibase base58-btc}
- * encoding the concatenation of the
- * {@link https://github.com/multiformats/multicodec/blob/master/README.md | Multicodec} identifier
- * for the public key type and the raw public key bytes. To form the DID URI, the method-specific
- * identifier is prefixed with the string 'did:key:'.
- *
- * This method can optionally derive an encryption key from the public key used to create the DID
- * if and only if the public key algorithm is `Ed25519`. This feature enables the same DID to be
- * used for encrypted communication, in addition to signature verification. To enable this
- * feature when calling {@link DidKey.create | `DidKey.create()`}, first specify an `algorithm` of
- * `Ed25519` or provide a `keySet` referencing an `Ed25519` key and then set the
- * `enableEncryptionKeyDerivation` option to `true`.
- *
- * Note:
- * - The authors of the DID Key specification have indicated that use of this method for long-lived
- *   use cases is only recommended when accompanied with high confidence that private keys are
- *   securely protected by software or hardware isolation.
- *
- * @see {@link https://w3c-ccg.github.io/did-method-key/ | DID Key Specification}
- *
- * @example
- * ```ts
- * // DID Creation
- * const did = await DidKey.create();
- *
- * // DID Creation with a KMS
- * const keyManager = new LocalKeyManager();
- * const did = await DidKey.create({ keyManager });
- *
- * // DID Resolution
- * const resolutionResult = await DidKey.resolve({ did: did.uri });
- *
- * // Signature Operations
- * const signer = await did.getSigner();
- * const signature = await signer.sign({ data: new TextEncoder().encode('Message') });
- * const isValid = await signer.verify({ data: new TextEncoder().encode('Message'), signature });
- *
- * // Key Management
- *
- * // Instantiate a DID object from an existing key in a KMS
- * const did = await DidKey.fromKeyManager({
- *  didUri: 'did:key:z6MkpUzNmYVTGpqhStxK8yRKXWCRNm1bGYz8geAg2zmjYHKX',
- *  keyManager
- * });
- *
- * // Instantiate a DID object from an existing verification method key
- * const did = await DidKey.fromKeys({
- *   verificationMethods: [{
- *     publicKeyJwk: {
- *       kty: 'OKP',
- *       crv: 'Ed25519',
- *       x: 'cHs7YMLQ3gCWjkacMURBsnEJBcEsvlsE5DfnsfTNDP4'
- *     },
- *     privateKeyJwk: {
- *       kty: 'OKP',
- *       crv: 'Ed25519',
- *       x: 'cHs7YMLQ3gCWjkacMURBsnEJBcEsvlsE5DfnsfTNDP4',
- *       d: 'bdcGE4KzEaekOwoa-ee3gAm1a991WvNj_Eq3WKyqTnE'
- *     }
- *   }]
- * });
- *
- * // Convert a DID object to a portable format
- * const portableDid = await DidKey.toKeys({ did });
- *
- * // Reconstruct a DID object from a portable format
- * const did = await DidKey.fromKeys(portableDid);
- * ```
- */
 export class DidStellar extends DidMethod {
   /**
    * Name of the DID method, as defined in the DID Key specification.
    */
   public static methodName = 'stellar';
 
-  /**
-   * Creates a new DID using the `did:key` method formed from a newly generated key.
-   *
-   * @remarks
-   * The DID URI is formed by
-   * {@link https://datatracker.ietf.org/doc/html/draft-multiformats-multibase#name-base-58-bitcoin-encoding | Multibase base58-btc}
-   * encoding the
-   * {@link https://github.com/multiformats/multicodec/blob/master/README.md | Multicodec}-encoded
-   * public key and prefixing with `did:key:`.
-   *
-   * This method can optionally derive an encryption key from the public key used to create the DID
-   * if and only if the public key algorithm is `Ed25519`. This feature enables the same DID to be
-   * used for encrypted communication, in addition to signature verification. To enable this
-   * feature, specify an `algorithm` of `Ed25519` as either a top-level option or in a
-   * `verificationMethod` and set the `enableEncryptionKeyDerivation` option to `true`.
-   *
-   * Notes:
-   * - If no `options` are given, by default a new Ed25519 key will be generated.
-   * - The `algorithm` and `verificationMethods` options are mutually exclusive. If both are given,
-   *   an error will be thrown.
-   *
-   * @example
-   * ```ts
-   * // DID Creation
-   * const did = await DidKey.create();
-   *
-   * // DID Creation with a KMS
-   * const keyManager = new LocalKeyManager();
-   * const did = await DidKey.create({ keyManager });
-   * ```
-   *
-   * @param params - The parameters for the create operation.
-   * @param params.keyManager - Key Management System (KMS) used to generate keys and sign data.
-   * @param params.options - Optional parameters that can be specified when creating a new DID.
-   * @returns A Promise resolving to a {@link BearerDid} object representing the new DID.
-   */
   public static async create<TKms extends CryptoApi | undefined = undefined>({
     keyManager = new LocalKeyManager(),
     options = {},
@@ -387,42 +140,6 @@ export class DidStellar extends DidMethod {
     return did;
   }
 
-  /**
-   * Creates a new DID using the `did:key` method formed from a newly generated key.
-   *
-   * @remarks
-   * The DID URI is formed by
-   * {@link https://datatracker.ietf.org/doc/html/draft-multiformats-multibase#name-base-58-bitcoin-encoding | Multibase base58-btc}
-   * encoding the
-   * {@link https://github.com/multiformats/multicodec/blob/master/README.md | Multicodec}-encoded
-   * public key and prefixing with `did:key:`.
-   *
-   * This method can optionally derive an encryption key from the public key used to create the DID
-   * if and only if the public key algorithm is `Ed25519`. This feature enables the same DID to be
-   * used for encrypted communication, in addition to signature verification. To enable this
-   * feature, specify an `algorithm` of `Ed25519` as either a top-level option or in a
-   * `verificationMethod` and set the `enableEncryptionKeyDerivation` option to `true`.
-   *
-   * Notes:
-   * - If no `options` are given, by default a new Ed25519 key will be generated.
-   * - The `algorithm` and `verificationMethods` options are mutually exclusive. If both are given,
-   *   an error will be thrown.
-   *
-   * @example
-   * ```ts
-   * // DID Creation
-   * const did = await DidKey.create();
-   *
-   * // DID Creation with a KMS
-   * const keyManager = new LocalKeyManager();
-   * const did = await DidKey.create({ keyManager });
-   * ```
-   *
-   * @param params - The parameters for the create operation.
-   * @param params.keyManager - Key Management System (KMS) used to generate keys and sign data.
-   * @param params.options - Optional parameters that can be specified when creating a new DID.
-   * @returns A Promise resolving to a {@link BearerDid} object representing the new DID.
-   */
   public static async create2<TKms extends CryptoApi | undefined = undefined>({
     keyManager = new LocalKeyManager(),
     options = {},
@@ -582,189 +299,6 @@ export class DidStellar extends DidMethod {
     return did;
   }
 
-  /**
-   * Instantiates a `Did` object from an existing DID using keys in an external Key Management
-   * System (KMS).
-   *
-   * This method returns a `Did` object by resolving an existing `did:jwk` DID URI and verifying
-   * that all associated keys are present in the provided key manager.
-   *
-   * @remarks
-   * The method verifies the presence of key material for every verification method in the DID
-   * document within the given KMS. If any key is missing, an error is thrown.
-   *
-   * This approach ensures that the resulting `Did` object is fully operational with the provided
-   * key manager and that all cryptographic operations related to the DID can be performed.
-   *
-   * @example
-   * ```ts
-   * // Assuming keyManager already contains the key material for the DID.
-   * const didUri = 'did:jwk:example';
-   * const did = await DidJwk.fromKeyManager({ didUri, keyManager });
-   * // The 'did' is now an instance of Did, linked with the provided keyManager.
-   * ```
-   *
-   * @param params - The parameters for the `fromKeyManager` operation.
-   * @param params.didUri - The URI of the DID to be instantiated.
-   * @param params.keyManager - The Key Management System to be used for key management operations.
-   * @returns A Promise resolving to the instantiated `Did` object.
-   * @throws An error if any key in the DID document is not present in the provided KMS.
-   */
-  // public static async fromKeyManager({ didUri, keyManager }: { didUri: string; keyManager: CryptoApi }): Promise<Did> {
-  //   // Resolve the DID URI to a DID Document.
-  //   const { didDocument, didResolutionMetadata } = await DidStellar.resolve(didUri);
-
-  //   // If the given DID isn't "did:jwk", throw an error.
-  //   if (didResolutionMetadata.error === DidErrorCode.MethodNotSupported) {
-  //     throw new DidError(DidErrorCode.MethodNotSupported, `Method not supported`);
-  //   }
-
-  //   // Validate that the DID Resolution Result includes a DID document containing verification methods.
-  //   if (!(didDocument && Array.isArray(didDocument.verificationMethod) && didDocument.verificationMethod.length > 0)) {
-  //     throw new Error(`DID document for '${didUri}' is missing verification methods`);
-  //   }
-
-  //   // Validate that the key material for every verification method in the DID document is present
-  //   // in the provided key manager.
-  //   for (let vm of didDocument.verificationMethod) {
-  //     if (!vm.publicKeyJwk) {
-  //       throw new Error(`Verification method '${vm.id}' does not contain a public key in JWK format`);
-  //     }
-
-  //     // Compute the key URI of the verification method's public key.
-  //     const keyUri = await keyManager.getKeyUri({ key: vm.publicKeyJwk });
-
-  //     // Verify that the key is present in the key manager. If not, an error is thrown.
-  //     await keyManager.getPublicKey({ keyUri });
-  //   }
-
-  //   // DID Metadata is initially empty for this DID method.
-  //   const metadata: DidMetadata = {};
-
-  //   // Define a function that returns a signer for the DID.
-  //   const getSigner = async (params?: { keyUri?: string }) =>
-  //     await DidStellar.getSigner({
-  //       didDocument,
-  //       keyManager,
-  //       keyUri: params?.keyUri,
-  //     });
-
-  //   return { didDocument, getSigner, keyManager, metadata, uri: didUri };
-  // }
-
-  /**
-   * Instantiates a `Did` object for the `did:jwk` method from a given {@link PortableDid}.
-   *
-   * This method allows for the creation of a `Did` object using pre-existing key material,
-   * encapsulated within the `verificationMethods` array of the `PortableDid`. This is particularly
-   * useful when the key material is already available and you want to construct a `Did` object
-   * based on these keys, instead of generating new keys.
-   *
-   * @remarks
-   * The `verificationMethods` array must contain exactly one key since the `did:jwk` method only
-   * supports a single verification method.
-   *
-   * The key material (both public and private keys) should be provided in JWK format. The method
-   * handles the inclusion of these keys in the DID Document and sets up the necessary verification
-   * relationships.
-   *
-   * @example
-   * ```ts
-   * // Example with an existing key in JWK format.
-   * const verificationMethods = [{
-   *   publicKeyJwk: { // public key in JWK format },
-   *   privateKeyJwk: { // private key in JWK format }
-   * }];
-   * const did = await DidKey.fromKeys({ verificationMethods });
-   * ```
-   *
-   * @param params - The parameters for the `fromKeys` operation.
-   * @param params.keyManager - Optionally specify an external Key Management System (KMS) used to
-   *                            generate keys and sign data. If not given, a new
-   *                            {@link @web5/crypto#LocalKeyManager} instance will be created and used.
-   * @returns A Promise resolving to a `Did` object representing the DID formed from the provided keys.
-   * @throws An error if the `verificationMethods` array does not contain exactly one entry.
-   */
-
-  // public static async fromKeys({
-  //   keyManager = new LocalKeyManager(),
-  //   verificationMethods,
-  //   options = {},
-  // }: {
-  //   keyManager?: CryptoApi & KeyImporterExporter<KmsImportKeyParams, KeyIdentifier, KmsExportKeyParams>;
-  //   options?: DidKeyCreateOptions<TKms>;
-  // } & PortableDid): Promise<Did> {
-
-  // public static async fromKeys({
-  //   keyManager = new LocalKeyManager(),
-  //   privateKey,
-  // }: // options = {},
-  // {
-  //   // keyManager?: CryptoApi & KeyImporterExporter<KmsImportKeyParams, KeyIdentifier, KmsExportKeyParams>;
-  //   keyManager?: LocalKeyManager;
-  //   privateKey: Jwk;
-  //   // options: DidKeyCreateOptions<CryptoApi | undefined>;
-  // }): Promise<Did> {
-  //   // Store the private key in the key manager.
-  //   const keyUri = await keyManager.importKey({ key: privateKey });
-
-  //   // Generate a new key using the specified `algorithm`.
-  //   // const keyUri = await keyManager.generateKey({ algorithm });
-  //   const publicKeyJwk = await keyManager.getPublicKey({ keyUri });
-
-  //   // const privateKey = await manager.exportKey({ keyUri });
-  //   // console.log('privateKey', privateKey);
-
-  //   // // From official documentation: https://github.com/stellar-deprecated/docs/blob/master/guides/get-started/create-account.md
-  //   // const privateKeyText = 'SAV76USXIJOBMEQXPANUOQM6F5LIOTLPDIDVRJBFFE2MDJXG24TAPUU7';
-  //   // const publicKeyText = 'GCFXHS4GXL6BVUCXBWXGTITROWLVYXQKQLF4YH5O5JT3YZXCYPAFBJZB';
-
-  //   // const privateKeyArray = StrKey.decodeEd25519SecretSeed(privateKeyText);
-
-  //   // // Convert private key from bytes to JWK format.
-  //   // const privateKeyJwk = await Ed25519.bytesToPrivateKey({ privateKeyBytes: privateKeyArray });
-  //   // console.log('privateKeyJwk', privateKeyJwk);
-
-  //   // const publicKeyJwk = await Ed25519.getPublicKey({ key: privateKeyJwk });
-  //   // console.log('publicKeyJwk', publicKeyJwk);
-
-  //   // const publicKeyBytes = await Ed25519.publicKeyToBytes({
-  //   //   publicKey: publicKeyJwk,
-  //   // });
-
-  //   // const identifier = StrKey.encodeEd25519PublicKey(publicKeyBytes);
-
-  //   // // Use the Stellar identifier as the key ID.
-  //   // privateKeyJwk.kid = identifier;
-
-  //   // debugger;
-
-  //   // const uri1 = await manager.getKeyUri({ key: privateKeyJwk });
-  //   // const uri2 = await manager.getKeyUri({ key: publicKeyJwk });
-
-  //   // if (!verificationMethods || verificationMethods.length !== 1) {
-  //   //   throw new Error(
-  //   //     `Only one verification method can be specified but ${verificationMethods?.length ?? 0} were given`,
-  //   //   );
-  //   // }
-
-  //   // if (!(verificationMethods[0].privateKeyJwk && verificationMethods[0].publicKeyJwk)) {
-  //   //   throw new Error(`Verification method does not contain a public and private key in JWK format`);
-  //   // }
-
-  //   // await keyManager.importKey({ key: verificationMethods[0].privateKeyJwk });
-
-  //   // Create the DID object from the given key material, including DID document, metadata,
-  //   // signer convenience function, and URI.
-  //   const did = await DidStellar.fromPublicKey({
-  //     keyManager,
-  //     publicKey: publicKeyJwk,
-  //     options: {},
-  //   });
-
-  //   return did;
-  // }
-
   public static async fromPrivateKey({
     keyManager = new LocalKeyManager(),
     privateKey,
@@ -783,10 +317,6 @@ export class DidStellar extends DidMethod {
     // Store the private key in the key manager.
     const keyUri = await keyManager.importKey({ key: privateKeyJwk });
 
-    console.log('IMPORTED KEY URI!!!', keyUri);
-
-    // Generate a new key using the specified `algorithm`.
-    // const keyUri = await keyManager.generateKey({ algorithm });
     const publicKeyJwk = await keyManager.getPublicKey({ keyUri });
     //  const publicKeyJwk = await Ed25519.getPublicKey({ key: privateKeyJwk });
 
@@ -797,7 +327,6 @@ export class DidStellar extends DidMethod {
     const identifier = StrKey.encodeEd25519PublicKey(publicKeyBytes);
 
     // const publicKeyBytes = await Ed25519.publicKeyToBytes({ publicKey });
-
     // const identifier = StrKey.encodeEd25519PublicKey(publicKeyBytes);
 
     // Attach the prefix `did:jwk` to form the complete DID URI.
@@ -819,128 +348,15 @@ export class DidStellar extends DidMethod {
       keyManager,
     });
 
-    console.log('BEARER DID:', did);
-
     return did;
-
-    // const did = {
-    //   didDocument,
-    //   metadata,
-    //   uri: didUri,
-    // } as any;
-
-    // return did;
-
-    // const privateKey = await manager.exportKey({ keyUri });
-    // console.log('privateKey', privateKey);
-
-    // // From official documentation: https://github.com/stellar-deprecated/docs/blob/master/guides/get-started/create-account.md
-    // const privateKeyText = 'SAV76USXIJOBMEQXPANUOQM6F5LIOTLPDIDVRJBFFE2MDJXG24TAPUU7';
-    // const publicKeyText = 'GCFXHS4GXL6BVUCXBWXGTITROWLVYXQKQLF4YH5O5JT3YZXCYPAFBJZB';
-
-    // const privateKeyArray = StrKey.decodeEd25519SecretSeed(privateKeyText);
-
-    // // Convert private key from bytes to JWK format.
-    // const privateKeyJwk = await Ed25519.bytesToPrivateKey({ privateKeyBytes: privateKeyArray });
-    // console.log('privateKeyJwk', privateKeyJwk);
-
-    // const publicKeyJwk = await Ed25519.getPublicKey({ key: privateKeyJwk });
-    // console.log('publicKeyJwk', publicKeyJwk);
-
-    // const publicKeyBytes = await Ed25519.publicKeyToBytes({
-    //   publicKey: publicKeyJwk,
-    // });
-
-    // const identifier = StrKey.encodeEd25519PublicKey(publicKeyBytes);
-
-    // // Use the Stellar identifier as the key ID.
-    // privateKeyJwk.kid = identifier;
-
-    // debugger;
-
-    // const uri1 = await manager.getKeyUri({ key: privateKeyJwk });
-    // const uri2 = await manager.getKeyUri({ key: publicKeyJwk });
-
-    // if (!verificationMethods || verificationMethods.length !== 1) {
-    //   throw new Error(
-    //     `Only one verification method can be specified but ${verificationMethods?.length ?? 0} were given`,
-    //   );
-    // }
-
-    // if (!(verificationMethods[0].privateKeyJwk && verificationMethods[0].publicKeyJwk)) {
-    //   throw new Error(`Verification method does not contain a public and private key in JWK format`);
-    // }
-
-    // await keyManager.importKey({ key: verificationMethods[0].privateKeyJwk });
-
-    // Create the DID object from the given key material, including DID document, metadata,
-    // signer convenience function, and URI.
-    // const did = await DidStellar.fromPublicKey({
-    //   keyManager,
-    //   publicKey: publicKeyJwk,
-    //   options: {},
-    // });
-
-    // return did;
   }
 
   /**
-   * Creates a new DID using the DID Key method formed from a public key.
-   *
-   */
-  // private static async fromPublicKey({
-  //   keyManager,
-  //   publicKey,
-  //   options,
-  // }: {
-  //   keyManager: CryptoApi;
-  //   publicKey: Jwk;
-  //   options: DidKeyCreateOptions<CryptoApi | undefined>;
-  // }): Promise<Did> {
-  //   // Convert the public key to a byte array and encode to Base64URL format.
-  //   // const multibaseId = await DidKeyUtils.publicKeyToMultibaseId({ publicKey });
-
-  //   const publicKeyBytes = await Ed25519.publicKeyToBytes({ publicKey });
-
-  //   const identifier = StrKey.encodeEd25519PublicKey(publicKeyBytes);
-
-  //   // Attach the prefix `did:jwk` to form the complete DID URI.
-  //   const didUri = `did:${DidStellar.methodName}:${identifier}`;
-
-  //   // Expand the DID URI string to a DID document.
-  //   const didResolutionResult = await DidStellar.resolve(didUri, options);
-  //   console.log('didResolutionResult', didResolutionResult);
-  //   const didDocument = didResolutionResult.didDocument as DidDocument;
-
-  //   // DID Metadata is initially empty for this DID method.
-  //   const metadata: DidMetadata = {};
-
-  //   // keyManager.sign()
-
-  //   // Define a function that returns a signer for the DID.
-  //   // const getSigner = async (params?: { keyUri?: string }) =>
-  //   //   await keyManager.sign({  });
-
-  //   //   await DidStellar.getSigner({
-  //   //     didDocument,
-  //   //     keyManager,
-  //   //     keyUri: params?.keyUri,
-  //   //   });
-
-  //   return {
-  //     didDocument,
-  //     metadata,
-  //     uri: didUri,
-  //   } as any;
-  //   // return { didDocument, keyManager, metadata, uri: didUri };
-  // }
-
-  /**
-   * Given the W3C DID Document of a `did:key` DID, return the verification method that will be used
-   * for signing messages and credentials. With DID Key, the first verification method in the
+   * Given the W3C DID Document of a `did:stellar` DID, return the verification method that will be used
+   * for signing messages and credentials. With DID Stellar, the first verification method in the
    * authentication property in the DID Document is used.
    *
-   * Note that for DID Key, only one verification method intended for signing can exist so
+   * Note that for DID Stellar, only one verification method intended for signing can exist so
    * specifying `methodId` could be considered redundant or unnecessary. The option is provided for
    * consistency with other DID method implementations.
    *
@@ -983,7 +399,7 @@ export class DidStellar extends DidMethod {
    *
    * @remarks
    * The `verificationMethod` array of the DID document must contain exactly one key since the
-   * `did:key` method only supports a single verification method.
+   * `did:stellar` method only supports a single verification method.
    *
    * @example
    * ```ts
@@ -1029,7 +445,7 @@ export class DidStellar extends DidMethod {
   }
 
   /**
-   * Resolves a `did:key` identifier to a DID Document.
+   * Resolves a `did:stellar` identifier to a DID Document.
    *
    * @param didUri - The DID to be resolved.
    * @param options - Optional parameters for resolving the DID.
@@ -1061,7 +477,7 @@ export class DidStellar extends DidMethod {
   }
 
   /**
-   * Expands a did:key identifier to a DID Document.
+   * Expands a did:stellar identifier to a DID Document.
    *
    * Reference: https://w3c-ccg.github.io/did-method-key/#document-creation-algorithm
    *
@@ -1073,14 +489,9 @@ export class DidStellar extends DidMethod {
     options = {},
   }: {
     didUri: string;
-    options?: Exclude<DidKeyCreateOptions<CryptoApi>, 'algorithm' | 'verificationMethods'> | DidResolutionOptions;
+    options?: Exclude<DidStellarCreateOptions<CryptoApi>, 'algorithm' | 'verificationMethods'> | DidResolutionOptions;
   }): Promise<DidDocument> {
-    const {
-      defaultContext = 'https://www.w3.org/ns/did/v1',
-      enableEncryptionKeyDerivation = false,
-      enableExperimentalPublicKeyTypes = false,
-      publicKeyFormat = 'JsonWebKey2020',
-    } = options;
+    const { defaultContext = 'https://www.w3.org/ns/did/v1' } = options;
 
     /**
      * 1. Initialize document to an empty object.
@@ -1164,48 +575,7 @@ export class DidStellar extends DidMethod {
     didDocument.assertionMethod = [signatureVerificationMethod.id];
     didDocument.capabilityInvocation = [signatureVerificationMethod.id];
     didDocument.capabilityDelegation = [signatureVerificationMethod.id];
-
-    /**
-     * 8. If options.enableEncryptionKeyDerivation is set to true:
-     * Add the encryptionVerificationMethod value to the verificationMethod
-     * array. Initialize the keyAgreement property in document to an array
-     * where the first item is the value of the id property in
-     * encryptionVerificationMethod.
-     */
-    if (enableEncryptionKeyDerivation === true) {
-      /**
-       * Although not covered by the did:key method specification, a sensible
-       * default will be taken to use the 'X25519KeyAgreementKey2020'
-       * verification method type if the given publicKeyFormat is
-       * 'Ed25519VerificationKey2020' and 'JsonWebKey2020' otherwise.
-       */
-      const encryptionPublicKeyFormat =
-        publicKeyFormat === 'Ed25519VerificationKey2020' ? 'X25519KeyAgreementKey2020' : 'JsonWebKey2020';
-
-      /**
-       * 8.1 Initialize the encryptionVerificationMethod to the result of
-       * passing identifier, multibaseValue, and options to an
-       * {@link https://w3c-ccg.github.io/did-method-key/#encryption-method-creation-algorithm | Encryption Method Creation Algorithm}.
-       */
-      // const encryptionVerificationMethod = await this.createEncryptionMethod({
-      //   didUri,
-      //   multibaseValue,
-      //   options: { enableExperimentalPublicKeyTypes, publicKeyFormat: encryptionPublicKeyFormat },
-      // });
-
-      /**
-       * 8.2 Add the encryptionVerificationMethod value to the
-       * verificationMethod array.
-       */
-      // didDocument.verificationMethod.push(encryptionVerificationMethod);
-
-      /**
-       * 8.3. Initialize the keyAgreement property in document to an array
-       * where the first item is the value of the id property in
-       * encryptionVerificationMethod.
-       */
-      didDocument.keyAgreement = [signatureVerificationMethod.id];
-    }
+    didDocument.keyAgreement = [signatureVerificationMethod.id];
 
     /**
      * 9. Initialize the @context property in document to the result of passing document and options to the Context
@@ -1245,289 +615,6 @@ export class DidStellar extends DidMethod {
      */
     return didDocument;
   }
-
-  /**
-   * Decoding a multibase-encoded multicodec value into a verification method
-   * that is suitable for verifying that encrypted information will be
-   * received by the intended recipient.
-   */
-  // private static async createEncryptionMethod({
-  //   didUri,
-  //   multibaseValue,
-  //   options,
-  // }: {
-  //   didUri: string;
-  //   multibaseValue: string;
-  //   options: Required<Pick<DidKeyCreateOptions<CryptoApi>, 'enableExperimentalPublicKeyTypes' | 'publicKeyFormat'>>;
-  // }): Promise<DidVerificationMethod> {
-  //   const { enableExperimentalPublicKeyTypes, publicKeyFormat } = options;
-
-  //   /**
-  //    * 1. Initialize verificationMethod to an empty object.
-  //    */
-  //   const verificationMethod: DidVerificationMethod = { id: '', type: '', controller: '' };
-
-  //   /**
-  //    * 2. Set multicodecValue and raw publicKeyBytes to the result of passing multibaseValue and
-  //    * options to a Derive Encryption Key algorithm.
-  //    */
-  //   const { keyBytes: publicKeyBytes, multicodecCode: multicodecValue } = await DidStellar.deriveEncryptionKey({
-  //     multibaseValue,
-  //   });
-
-  //   /**
-  //    * 3. Ensure the proper key length of raw publicKeyBytes based on the multicodecValue table
-  //    * provided below:
-  //    *
-  //    * Multicodec hexadecimal value: 0xec
-  //    *
-  //    * If the byte length of raw publicKeyBytes does not match the expected public key length for
-  //    * the associated multicodecValue, an invalidPublicKeyLength error MUST be raised.
-  //    */
-  //   const actualLength = publicKeyBytes.byteLength;
-  //   const expectedLength = DidKeyUtils.MULTICODEC_PUBLIC_KEY_LENGTH[multicodecValue];
-  //   if (actualLength !== expectedLength) {
-  //     throw new DidError(
-  //       DidErrorCode.InvalidPublicKeyLength,
-  //       `Expected ${actualLength} bytes. Actual: ${expectedLength}`,
-  //     );
-  //   }
-
-  //   /**
-  //    * 4. Create the multibaseValue by concatenating the letter 'z' and the
-  //    * base58-btc encoding of the concatenation of the multicodecValue and
-  //    * the raw publicKeyBytes.
-  //    */
-  //   const kemMultibaseValue = keyBytesToMultibaseId({
-  //     keyBytes: publicKeyBytes,
-  //     multicodecCode: multicodecValue,
-  //   });
-
-  //   /**
-  //    * 5. Set the verificationMethod.id value by concatenating identifier,
-  //    * a hash character (#), and the multibaseValue. If verificationMethod.id
-  //    * is not a valid DID URL, an invalidDidUrl error MUST be raised.
-  //    */
-  //   verificationMethod.id = `${didUri}#${kemMultibaseValue}`;
-  //   try {
-  //     new URL(verificationMethod.id);
-  //   } catch (error: any) {
-  //     throw new DidError(DidErrorCode.InvalidDidUrl, 'Verification Method ID is not a valid DID URL.');
-  //   }
-
-  //   /**
-  //    * 6. Set the publicKeyFormat value to the options.publicKeyFormat value.
-  //    * 7. If publicKeyFormat is not known to the implementation, an
-  //    * unsupportedPublicKeyType error MUST be raised.
-  //    */
-  //   if (!(publicKeyFormat in DidKeyVerificationMethodType)) {
-  //     throw new DidError(DidErrorCode.UnsupportedPublicKeyType, `Unsupported format: ${publicKeyFormat}`);
-  //   }
-
-  //   /**
-  //    * 8. If options.enableExperimentalPublicKeyTypes is set to false and publicKeyFormat is not
-  //    * Multikey, JsonWebKey2020, or X25519KeyAgreementKey2020, an invalidPublicKeyType error MUST be
-  //    * raised.
-  //    */
-  //   const StandardPublicKeyTypes = ['Multikey', 'JsonWebKey2020', 'X25519KeyAgreementKey2020'];
-  //   if (enableExperimentalPublicKeyTypes === false && !StandardPublicKeyTypes.includes(publicKeyFormat)) {
-  //     throw new DidError(
-  //       DidErrorCode.InvalidPublicKeyType,
-  //       `Specified '${publicKeyFormat}' without setting enableExperimentalPublicKeyTypes to true.`,
-  //     );
-  //   }
-
-  //   /**
-  //    * 9. Set verificationMethod.type to the publicKeyFormat value.
-  //    */
-  //   verificationMethod.type = publicKeyFormat;
-
-  //   /**
-  //    * 10. Set verificationMethod.controller to the identifier value.
-  //    */
-  //   verificationMethod.controller = didUri;
-
-  //   /**
-  //    * 11. If publicKeyFormat is Multikey or X25519KeyAgreementKey2020, set the verificationMethod.publicKeyMultibase
-  //    * value to multibaseValue.
-  //    *
-  //    * Note: This implementation does not currently support the Multikey
-  //    *       format.
-  //    */
-  //   if (publicKeyFormat === 'X25519KeyAgreementKey2020') {
-  //     verificationMethod.publicKeyMultibase = kemMultibaseValue;
-  //   }
-
-  //   /**
-  //    * 12. If publicKeyFormat is JsonWebKey2020, set the verificationMethod.publicKeyJwk value to
-  //    * the result of passing multicodecValue and rawPublicKeyBytes to a JWK encoding algorithm.
-  //    */
-  //   if (publicKeyFormat === 'JsonWebKey2020') {
-  //     const { crv } = await DidKeyUtils.multicodecToJwk({ code: multicodecValue });
-  //     verificationMethod.publicKeyJwk = await DidKeyUtils.keyConverter(crv!).bytesToPublicKey({ publicKeyBytes });
-  //   }
-
-  //   /**
-  //    * 13. Return verificationMethod.
-  //    */
-  //   return verificationMethod;
-  // }
-
-  //   private static multibaseIdToKeyBytes({ multibaseKeyId }: {
-  //   multibaseKeyId: string
-  // }): Required<KeyWithMulticodec> {
-  //     try {
-
-  //     const prefixedKeyB58 = Convert.multibase(multibaseKeyId).toBase58Btc();
-  //     const prefixedKey = Convert.base58Btc(prefixedKeyB58).toUint8Array();
-  //     const { code, data, name } = Multicodec.removePrefix({ prefixedData: prefixedKey });
-
-  //     return { keyBytes: data, multicodecCode: code, multicodecName: name };
-  //   } catch (error: any) {
-  //     throw new DidError(DidErrorCode.InvalidDid, `Invalid multibase identifier: ${multibaseKeyId}`);
-  //   }
-
-  /**
-   * Decodes a multibase-encoded multicodec value into a verification method
-   * that is suitable for verifying digital signatures.
-   * @param options - Signature method creation algorithm inputs.
-   * @returns - A verification method.
-   */
-  // private static async createSignatureMethod({
-  //   didUri,
-  //   multibaseValue,
-  //   options,
-  // }: {
-  //   didUri: string;
-  //   multibaseValue: string;
-  //   options: Required<Pick<DidKeyCreateOptions<CryptoApi>, 'enableExperimentalPublicKeyTypes' | 'publicKeyFormat'>>;
-  // }): Promise<DidVerificationMethod> {
-  //   const { enableExperimentalPublicKeyTypes, publicKeyFormat } = options;
-
-  //   debugger;
-
-  //   /**
-  //    * 1. Initialize verificationMethod to an empty object.
-  //    */
-  //   const verificationMethod: DidVerificationMethod = { id: '', type: '', controller: '' };
-
-  //   /**
-  //    * 2. Set multicodecValue and publicKeyBytes to the result of passing
-  //    * multibaseValue and options to a Decode Public Key algorithm.
-  //    */
-  //   const {
-  //     keyBytes: publicKeyBytes,
-  //     multicodecCode: multicodecValue,
-  //     multicodecName,
-  //   } = multibaseIdToKeyBytes({ multibaseKeyId: multibaseValue });
-
-  //   /**
-  //    * 3. Ensure the proper key length of publicKeyBytes based on the multicodecValue
-  //    * {@link https://w3c-ccg.github.io/did-method-key/#signature-method-creation-algorithm | table provided}.
-  //    * If the byte length of rawPublicKeyBytes does not match the expected public key length for the
-  //    * associated multicodecValue, an invalidPublicKeyLength error MUST be raised.
-  //    */
-  //   const actualLength = publicKeyBytes.byteLength;
-  //   const expectedLength = DidKeyUtils.MULTICODEC_PUBLIC_KEY_LENGTH[multicodecValue];
-  //   if (actualLength !== expectedLength) {
-  //     throw new DidError(
-  //       DidErrorCode.InvalidPublicKeyLength,
-  //       `Expected ${actualLength} bytes. Actual: ${expectedLength}`,
-  //     );
-  //   }
-
-  //   /**
-  //    * 4. Ensure the publicKeyBytes are a proper encoding of the public key type as specified by
-  //    * the multicodecValue. If an invalid public key value is detected, an invalidPublicKey error
-  //    * MUST be raised.
-  //    */
-  //   // let isValid = false;
-  //   // switch (multicodecName) {
-  //   //   case 'secp256k1-pub':
-  //   //     isValid = await Secp256k1.validatePublicKey({ publicKeyBytes });
-  //   //     break;
-  //   //   case 'ed25519-pub':
-  //   //     isValid = await Ed25519.validatePublicKey({ publicKeyBytes });
-  //   //     break;
-  //   //   case 'x25519-pub':
-  //   //     // TODO: Validate key once/if X25519.validatePublicKey() is implemented.
-  //   //     // isValid = X25519.validatePublicKey({ key: rawPublicKeyBytes})
-  //   //     isValid = true;
-  //   //     break;
-  //   // }
-  //   // if (!isValid) {
-  //   //   throw new DidError(DidErrorCode.InvalidPublicKey, 'Invalid public key detected.');
-  //   // }
-
-  //   /**
-  //    * 5. Set the verificationMethod.id value by concatenating identifier, a hash character (#), and
-  //    * the multibaseValue. If verificationMethod.id is not a valid DID URL, an invalidDidUrl error
-  //    * MUST be raised.
-  //    */
-  //   verificationMethod.id = `${didUri}#${multibaseValue}`;
-  //   try {
-  //     new URL(verificationMethod.id);
-  //   } catch (error: any) {
-  //     throw new DidError(DidErrorCode.InvalidDidUrl, 'Verification Method ID is not a valid DID URL.');
-  //   }
-
-  //   /**
-  //    * 6. Set the publicKeyFormat value to the options.publicKeyFormat value.
-  //    * 7. If publicKeyFormat is not known to the implementation, an unsupportedPublicKeyType error
-  //    * MUST be raised.
-  //    */
-  //   if (!(publicKeyFormat in DidKeyVerificationMethodType)) {
-  //     throw new DidError(DidErrorCode.UnsupportedPublicKeyType, `Unsupported format: ${publicKeyFormat}`);
-  //   }
-
-  //   /**
-  //    * 8. If options.enableExperimentalPublicKeyTypes is set to false and publicKeyFormat is not
-  //    * Multikey, JsonWebKey2020, or Ed25519VerificationKey2020, an invalidPublicKeyType error MUST
-  //    * be raised.
-  //    */
-  //   const StandardPublicKeyTypes = ['Multikey', 'JsonWebKey2020', 'Ed25519VerificationKey2020'];
-  //   if (enableExperimentalPublicKeyTypes === false && !StandardPublicKeyTypes.includes(publicKeyFormat)) {
-  //     throw new DidError(
-  //       DidErrorCode.InvalidPublicKeyType,
-  //       `Specified '${publicKeyFormat}' without setting enableExperimentalPublicKeyTypes to true.`,
-  //     );
-  //   }
-
-  //   /**
-  //    * 9. Set verificationMethod.type to the publicKeyFormat value.
-  //    */
-  //   verificationMethod.type = publicKeyFormat;
-
-  //   /**
-  //    * 10. Set verificationMethod.controller to the identifier value.
-  //    */
-  //   verificationMethod.controller = didUri;
-
-  //   /**
-  //    * 11. If publicKeyFormat is Multikey or Ed25519VerificationKey2020,
-  //    * set the verificationMethod.publicKeyMultibase value to multibaseValue.
-  //    *
-  //    * Note: This implementation does not currently support the Multikey
-  //    *       format.
-  //    */
-  //   if (publicKeyFormat === 'Ed25519VerificationKey2020') {
-  //     verificationMethod.publicKeyMultibase = multibaseValue;
-  //   }
-
-  //   /**
-  //    * 12. If publicKeyFormat is JsonWebKey2020, set the verificationMethod.publicKeyJwk value to
-  //    * the result of passing multicodecValue and rawPublicKeyBytes to a JWK encoding algorithm.
-  //    */
-  //   if (publicKeyFormat === 'JsonWebKey2020') {
-  //     const { crv } = await DidKeyUtils.multicodecToJwk({ code: multicodecValue });
-  //     verificationMethod.publicKeyJwk = await DidKeyUtils.keyConverter(crv!).bytesToPublicKey({ publicKeyBytes });
-  //   }
-
-  //   /**
-  //    * 13. Return verificationMethod.
-  //    */
-  //   return verificationMethod;
-  // }
 
   /**
    * Transform a multibase-encoded multicodec value to public encryption key
@@ -1695,43 +782,6 @@ export class DidKeyUtils {
   };
 
   /**
-   * Converts a JWK (JSON Web Key) to a Multicodec code and name.
-   *
-   * @example
-   * ```ts
-   * const jwk: Jwk = { crv: 'Ed25519', kty: 'OKP', x: '...' };
-   * const { code, name } = await DidKeyUtils.jwkToMulticodec({ jwk });
-   * ```
-   *
-   * @param params - The parameters for the conversion.
-   * @param params.jwk - The JSON Web Key to be converted.
-   * @returns A promise that resolves to a Multicodec definition.
-   */
-  // public static async jwkToMulticodec({ jwk }: { jwk: Jwk }): Promise<MulticodecDefinition<MulticodecCode>> {
-  //   const params: string[] = [];
-
-  //   if (jwk.crv) {
-  //     params.push(jwk.crv);
-  //     if (jwk.d) {
-  //       params.push('private');
-  //     } else {
-  //       params.push('public');
-  //     }
-  //   }
-
-  //   const lookupKey = params.join(':');
-  //   const name = DidKeyUtils.JWK_TO_MULTICODEC[lookupKey];
-
-  //   if (name === undefined) {
-  //     throw new Error(`Unsupported JWK to Multicodec conversion: '${lookupKey}'`);
-  //   }
-
-  //   const code = Multicodec.getCodeFromName({ name });
-
-  //   return { code, name };
-  // }
-
-  /**
    * Returns the appropriate public key compressor for the specified cryptographic curve.
    *
    * @param curve - The cryptographic curve to use for the key conversion.
@@ -1771,92 +821,4 @@ export class DidKeyUtils {
 
     return converter;
   }
-
-  /**
-   * Converts a Multicodec code or name to parial JWK (JSON Web Key).
-   *
-   * @example
-   * ```ts
-   * const partialJwk = await DidKeyUtils.multicodecToJwk({ name: 'ed25519-pub' });
-   * ```
-   *
-   * @param params - The parameters for the conversion.
-   * @param params.code - Optional Multicodec code to convert.
-   * @param params.name - Optional Multicodec name to convert.
-   * @returns A promise that resolves to a JOSE format key.
-   */
-  // public static async multicodecToJwk({ code, name }: { code?: MulticodecCode; name?: string }): Promise<Jwk> {
-  //   // Either code or name must be specified, but not both.
-  //   if (!(name ? !code : code)) {
-  //     throw new Error(`Either 'name' or 'code' must be defined, but not both.`);
-  //   }
-
-  //   // If name is undefined, lookup by code.
-  //   name = name === undefined ? Multicodec.getNameFromCode({ code: code! }) : name;
-
-  //   const lookupKey = name;
-  //   const jose = DidKeyUtils.MULTICODEC_TO_JWK[lookupKey];
-
-  //   if (jose === undefined) {
-  //     throw new Error(`Unsupported Multicodec to JWK conversion`);
-  //   }
-
-  //   return { ...jose };
-  // }
-
-  /**
-   * Converts a public key in JWK (JSON Web Key) format to a multibase identifier.
-   *
-   * @remarks
-   * Note: All secp public keys are converted to compressed point encoding
-   *       before the multibase identifier is computed.
-   *
-   * Per {@link https://github.com/multiformats/multicodec/blob/master/table.csv | Multicodec table}:
-   *    Public keys for Elliptic Curve cryptography algorithms (e.g., secp256k1,
-   *    secp256k1r1, secp384r1, etc.) are always represented with compressed point
-   *    encoding (e.g., secp256k1-pub, p256-pub, p384-pub, etc.).
-   *
-   * Per {@link https://datatracker.ietf.org/doc/html/rfc8812#name-jose-and-cose-secp256k1-cur | RFC 8812}:
-   *    "As a compressed point encoding representation is not defined for JWK
-   *    elliptic curve points, the uncompressed point encoding defined there
-   *    MUST be used. The x and y values represented MUST both be exactly
-   *    256 bits, with any leading zeros preserved."
-   *
-   * @example
-   * ```ts
-   * const publicKey = { crv: 'Ed25519', kty: 'OKP', x: '...' };
-   * const multibaseId = await DidKeyUtils.publicKeyToMultibaseId({ publicKey });
-   * ```
-   *
-   * @param params - The parameters for the conversion.
-   * @param params.publicKey - The public key in JWK format.
-   * @returns A promise that resolves to the multibase identifier.
-   */
-  // public static async publicKeyToMultibaseId({ publicKey }: { publicKey: Jwk }): Promise<string> {
-  //   if (!(publicKey?.crv && publicKey.crv in AlgorithmToKeyTypeMap)) {
-  //     throw new DidError(
-  //       DidErrorCode.InvalidPublicKeyType,
-  //       `Public key contains an unsupported key type: ${publicKey?.crv ?? 'undefined'}`,
-  //     );
-  //   }
-
-  //   // Convert the public key from JWK format to a byte array.
-  //   let publicKeyBytes = await DidKeyUtils.keyConverter(publicKey.crv).publicKeyToBytes({ publicKey });
-
-  //   // Compress the public key if it is an elliptic curve key.
-  //   if (/^(secp256k1|P-256|P-384|P-521)$/.test(publicKey.crv)) {
-  //     publicKeyBytes = await DidKeyUtils.keyCompressor(publicKey.crv)({ publicKeyBytes });
-  //   }
-
-  //   // Convert the JSON Web Key (JWK) parameters to a Multicodec name.
-  //   const { name: multicodecName } = await DidKeyUtils.jwkToMulticodec({ jwk: publicKey });
-
-  //   // Compute the multibase identifier based on the provided key.
-  //   const multibaseId = keyBytesToMultibaseId({
-  //     keyBytes: publicKeyBytes,
-  //     multicodecName,
-  //   });
-
-  //   return multibaseId;
-  // }
 }
