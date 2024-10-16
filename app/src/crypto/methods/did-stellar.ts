@@ -783,6 +783,8 @@ export class DidStellar extends DidMethod {
     // Store the private key in the key manager.
     const keyUri = await keyManager.importKey({ key: privateKeyJwk });
 
+    console.log('IMPORTED KEY URI!!!', keyUri);
+
     // Generate a new key using the specified `algorithm`.
     // const keyUri = await keyManager.generateKey({ algorithm });
     const publicKeyJwk = await keyManager.getPublicKey({ keyUri });
@@ -800,8 +802,6 @@ export class DidStellar extends DidMethod {
 
     // Attach the prefix `did:jwk` to form the complete DID URI.
     const didUri = `did:${DidStellar.methodName}:${identifier}`;
-
-    debugger;
 
     // Expand the DID URI string to a DID document.
     const didResolutionResult = await DidStellar.resolve(didUri, {});
@@ -1037,10 +1037,6 @@ export class DidStellar extends DidMethod {
    */
   public static override async resolve(didUri: string, options?: DidResolutionOptions): Promise<DidResolutionResult> {
     try {
-      console.log('RESOLVE!!!!!!!!!!!!!!');
-
-      debugger;
-
       // Attempt to expand the DID URI string to a DID document.
       const didDocument = await DidStellar.createDocument({ didUri, options });
 
@@ -1091,15 +1087,12 @@ export class DidStellar extends DidMethod {
      */
     const didDocument: DidDocument = { id: didUri };
 
-    console.log('CREATING DOCUMENT!!!!', didDocument);
-
     /**
      * 2. Using a colon (:) as the delimiter, split the identifier into its
      * components: a scheme, a method, a version, and a multibaseValue.
      * If there are only three components set the version to the string
      * value 1 and use the last value as the multibaseValue.
      */
-    debugger;
     const parsedDid = Did.parse(didUri);
     if (!parsedDid) {
       throw new DidError(DidErrorCode.InvalidDid, `Invalid DID URI: ${didUri}`);
@@ -1122,7 +1115,6 @@ export class DidStellar extends DidMethod {
       throw new DidError(DidErrorCode.MethodNotSupported, `Method not supported: ${parsedDid.method}`);
     }
 
-    debugger;
     if (!DidStellar.validateIdentifier(parsedDid)) {
       throw new DidError(DidErrorCode.InvalidDid, `Invalid DID URI: ${didUri}`);
     }

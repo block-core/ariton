@@ -1,9 +1,21 @@
 import { Injectable, WritableSignal, signal } from '@angular/core';
 import { Web5 } from '@web5/api';
-import { DidDht } from '@web5/dids';
+import { DidDht, DidJwk } from '@web5/dids';
 import { Web5IdentityAgent } from '@web5/identity-agent';
 import { CryptoService } from './crypto.service';
-import { Web5PlatformAgent } from '@web5/agent';
+import {
+  AgentDidApi,
+  AgentDidResolverCache,
+  BearerIdentity,
+  DwnDidStore,
+  HdIdentityVault,
+  isPortableIdentity,
+  Web5PlatformAgent,
+  PortableIdentity,
+} from '@web5/agent';
+import { Web5UserAgent } from '@web5/user-agent';
+import { LevelStore } from '@web5/common';
+import { DidStellar } from '../crypto/methods/did-stellar';
 
 @Injectable({
   providedIn: 'root',
@@ -70,18 +82,123 @@ export class IdentityService {
 
   async connect(connectedDid: string, password: string) {
     try {
+      const customAgentVault = new HdIdentityVault({
+        keyDerivationWorkFactor: 210_000,
+        store: new LevelStore<string, string>({ location: `DATA/AGENT/VAULT_STORE` }),
+      });
+
+      await customAgentVault.unlock({ password });
+
+      const didApi = new AgentDidApi({
+        didMethods: [DidDht, DidJwk, DidStellar],
+        resolverCache: new AgentDidResolverCache({ location: `DATA/AGENT/DID_RESOLVERCACHE` }),
+        store: new DwnDidStore(),
+      });
+
+      const agentDid = await customAgentVault.getDid();
+
+      const customAgent = await Web5IdentityAgent.create({ didApi, agentDid, agentVault: customAgentVault });
+
       console.log('Connecting to Web5...');
-      const result = await Web5.connect({ connectedDid, password, sync: this.syncInterval });
+
+      const result = await Web5.connect({ agent: customAgent, connectedDid, password, sync: this.syncInterval });
+      // const result = await Web5.connect({ connectedDid, password, sync: this.syncInterval });
+
+      // const list = await customAgent.identity.list();
+      // console.log('LIST: ', list);
+
       this.web5 = result.web5;
       this.did = result.did;
 
-      const agent = result.web5.agent as Web5PlatformAgent;
-      const identites = await agent.identity.list();
+      const list1 = await customAgent.identity.list();
+      console.log('LIST1: ', list1);
 
-      console.log('Identites:', identites);
+      // const resolvedDid = await this.web5.did.resolve(
+      //   'did:stellar:GCFXHS4GXL6BVUCXBWXGTITROWLVYXQKQLF4YH5O5JT3YZXCYPAFBJZB',
+      // );
+
+      // console.log('Resolved DID:', resolvedDid);
+
+      const stellarBearerDid = await DidStellar.fromPrivateKey({
+        privateKey: 'SAV76USXIJOBMEQXPANUOQM6F5LIOTLPDIDVRJBFFE2MDJXG24TAPUU7',
+      });
+
+      console.log('DID from key: ', stellarBearerDid);
+
+      const stellarPortableDid = await stellarBearerDid.export();
+
+      // try {
+      //   const bearerDid = await customAgent.did.import({ portableDid: stellarPortableDid });
+
+      //   console.log('Imported bearer did: ', bearerDid);
+      // } catch (err) {
+      //   console.warn('Failed to import bearer DID, likely because of duplicate:', err);
+      // }
+
+      const portableIdentity: PortableIdentity = {
+        portableDid: stellarPortableDid,
+        metadata: {
+          name: 'Stellar Identity',
+          tenant: stellarPortableDid.uri,
+          uri: stellarPortableDid.uri,
+          // uri: 'urn:jwk:rTKi_NGEHUMnhVhHyt2Hvxf8dObcImzVVNLB3xyroFo',
+          // connectedDid: ''
+        },
+      };
+
+      console.log('Portable Identity:', portableIdentity);
+
+      // PortableIdentity did = new PortableIdentity
+
+      try {
+        // Delete first.
+        // await customAgent.did.delete({ didUri: portableIdentity.metadata.uri });
+
+        var importedDid = await customAgent.identity.import({ portableIdentity });
+        await customAgent.identity.manage({ portableIdentity: portableIdentity });
+
+        console.log('Imported DID:', importedDid);
+      } catch (err) {
+        console.warn('Failed to import bearer DID, likely because of duplicate:', err);
+      }
+
+      const list = await customAgent.identity.list();
+      console.log('LIST: ', list);
+
+      // const retrievedDid = await customAgent.did.get({ didUri: portableIdentity.metadata.uri });
+      // console.log('Retrieved DID:', retrievedDid);
+
+      // try {
+      //   await customAgent.identity.manage({ portableIdentity: portableIdentity });
+      // } catch (err) {
+      //   console.warn('Failed to manage identity:', err);
+      // }
+
+      //  const storedDid = await this.agent.did.import({
+      //    portableDid: portableIdentity.portableDid,
+      //    tenant: portableIdentity.metadata.tenant,
+      //  });
+
+      //     isPortableIdentity
+
+      //     customAgent.identity.manage().create({ didMethod: 'stellar' });
+
+      // await customAgent.identity.manage({ portableIdentity: stellarPortableDid });
+
+      // const dhtDid = await DidDht.create({ options: { publish: false } });
+
+      // DidDht.import(dhtDid);
+
+      // customAgent.identity.import()
+
+      // const agent = result.web5.agent as Web5PlatformAgent;
+      // const identites = await agent.identity.list();
+      // console.log('Identites:', identites);
+      // const agent = this.web5.agent as Web5IdentityAgent;
+      // const list = await agent.identity.list();
+      // console.log('LIST: ', list);
 
       console.log('Web5 Connected.');
-      // console.log('IDENTITY SERVICE:', this.web5);
 
       this.preinitialized.set(true);
       this.initialized.set(true);
@@ -89,7 +206,8 @@ export class IdentityService {
     } catch (err) {
       // TODO: Add UI and retry for Web5 initialize, add proper error handling.
       // Various network connection issues might make this call fail.@
-      alert('Failed to initialize Web5');
+      console.error(err);
+      alert('Failed to initialize Web5:' + err);
     }
 
     return undefined;

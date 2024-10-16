@@ -7,6 +7,9 @@ import { DidCreateVerificationMethod, DidDht, DidJwk, DidKey } from '@web5/dids'
 import { DidStellar } from '../../../crypto/methods/did-stellar';
 import { StrKey } from '../../../crypto/methods/strkey';
 import { Ed25519 } from '@web5/crypto';
+import { Web5 } from '@web5/api';
+import { Web5IdentityAgent } from '@web5/identity-agent';
+import { AgentDidApi } from '@web5/agent';
 
 @Component({
   selector: 'app-create',
@@ -27,6 +30,53 @@ export class CreateComponent {
       if (this.app.initialized()) {
         const privateKeyText = 'SAV76USXIJOBMEQXPANUOQM6F5LIOTLPDIDVRJBFFE2MDJXG24TAPUU7';
         const publicKeyText = 'GCFXHS4GXL6BVUCXBWXGTITROWLVYXQKQLF4YH5O5JT3YZXCYPAFBJZB';
+
+        // const didApi = new AgentDidApi({
+        //   didMethods: [DidDht, DidJwk],
+        //   // resolverCache: new DidResolverCacheMemory(),
+        //   // store: new DwnDidStore(),
+        // });
+
+        // const agent = await Web5IdentityAgent.create({ didApi });
+        // const web5 = await Web5.connect({ agent });
+
+        // console.log('Agent: ', agent);
+        // console.log('Web5: ', web5);
+
+        // import { Web5IdentityAgent } from '@web5/identity-agent'
+
+        // // Create a Web5 Identity Agent instance.
+        // const agent = await Web5IdentityAgent.create();
+
+        //         // Instantiate DID API with an in-memory resolver cache.
+        // const didApi = new AgentDidApi({
+        //   didMethods: [DidDht, DidJwk],
+        //   resolverCache: new DidResolverCacheMemory(),
+        //   store: new DwnDidStore(),
+        // });
+
+        // // Create a Web5 Identity Agent instance.
+        // const agent = await Web5IdentityAgent.create({ agentVault, didApi });
+
+        //         Web5.connect({
+        //           agent:
+        //         })
+
+        //         const agent = this.app.identity.activeAgent();
+        //         agent.identity.create({ method: 'stellar' });
+
+        //             const didApi = new AgentDidApi({
+        //               agent: agent,
+        //               didMethods: [DidDht, DidJwk],
+        //               resolverCache: didResolverCache,
+        //               store: didStore,
+        //             });
+
+        //             didApi ??= new AgentDidApi({
+        //               didMethods: [DidDht, DidJwk],
+        //               resolverCache: new DidResolverCacheLevel({ location: `${dataPath}/DID_RESOLVERCACHE` }),
+        //               store: new DwnDidStore(),
+        //             });
 
         // const did = DidStellar.fromPrivateKey({
         //   privateKey: 'SAV76USXIJOBMEQXPANUOQM6F5LIOTLPDIDVRJBFFE2MDJXG24TAPUU7',

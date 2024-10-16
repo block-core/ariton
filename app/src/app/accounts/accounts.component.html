@@ -1,49 +1,65 @@
 <h1>All Accounts</h1>
 
 <mat-list>
-    <a [routerLink]="['/account', 'did:dht:umj7apgmkodtrb7mdpjo4h7xinqdnatzgy38j7wi67k9c7sdns1o']" mat-list-item class="selectable-list-item">
-        <mat-icon matListItemIcon>account_circle</mat-icon>
-        <span matListItemTitle>SondreB (Voluntaryist)</span>
-        <span matListItemLine>did:dht:umj7apgmkodtrb7mdpjo4h7xinqdnatzgy38j7wi67k9c7sdns1o</span>
-        <!--<div class="account-action-button" matListItemMeta>
+  @for(identity of identities; track identity) {
+  {{ identity.did.uri }}<br />
+  }
+
+  <a
+    [routerLink]="['/account', 'did:dht:umj7apgmkodtrb7mdpjo4h7xinqdnatzgy38j7wi67k9c7sdns1o']"
+    mat-list-item
+    class="selectable-list-item"
+  >
+    <mat-icon matListItemIcon>account_circle</mat-icon>
+    <span matListItemTitle>SondreB (Voluntaryist)</span>
+    <span matListItemLine>did:dht:umj7apgmkodtrb7mdpjo4h7xinqdnatzgy38j7wi67k9c7sdns1o</span>
+    <!--<div class="account-action-button" matListItemMeta>
             <button mat-icon-button [matMenuTriggerFor]="menuActions">
                 <mat-icon>more_vert</mat-icon>
             </button>
         </div>-->
-    </a>
-    <a [routerLink]="['/account', 'did:dht:umj7apgmkodtrb7mdpjo4h7xinqdnatzgy38j7wi67k9c7sdns1o']" mat-list-item class="selectable-list-item">
-        <mat-icon matListItemIcon>account_circle</mat-icon>
-        <span matListItemTitle>Joe</span>
-        <span matListItemLine>did:dht:umj7apgmkodtrb7mdpjo4h7xinqdnatzgy38j7wi67k9c7sdns1o</span>
-        <!--<div class="account-action-button" matListItemMeta>
+  </a>
+  <a
+    [routerLink]="['/account', 'did:dht:umj7apgmkodtrb7mdpjo4h7xinqdnatzgy38j7wi67k9c7sdns1o']"
+    mat-list-item
+    class="selectable-list-item"
+  >
+    <mat-icon matListItemIcon>account_circle</mat-icon>
+    <span matListItemTitle>Joe</span>
+    <span matListItemLine>did:dht:umj7apgmkodtrb7mdpjo4h7xinqdnatzgy38j7wi67k9c7sdns1o</span>
+    <!--<div class="account-action-button" matListItemMeta>
             <button mat-icon-button [matMenuTriggerFor]="menuActions">
                 <mat-icon>more_vert</mat-icon>
             </button>
         </div>-->
-    </a>
-    <a [routerLink]="['/account', 'did:dht:umj7apgmkodtrb7mdpjo4h7xinqdnatzgy38j7wi67k9c7sdns1o']" mat-list-item class="selectable-list-item">
-        <mat-icon matListItemIcon>account_circle</mat-icon>
-        <span matListItemTitle>Luba</span>
-        <span matListItemLine>did:dht:umj7apgmkodtrb7mdpjo4h7xinqdnatzgy38j7wi67k9c7sdns1o</span>
-        <!--<div class="account-action-button" matListItemMeta>
+  </a>
+  <a
+    [routerLink]="['/account', 'did:dht:umj7apgmkodtrb7mdpjo4h7xinqdnatzgy38j7wi67k9c7sdns1o']"
+    mat-list-item
+    class="selectable-list-item"
+  >
+    <mat-icon matListItemIcon>account_circle</mat-icon>
+    <span matListItemTitle>Luba</span>
+    <span matListItemLine>did:dht:umj7apgmkodtrb7mdpjo4h7xinqdnatzgy38j7wi67k9c7sdns1o</span>
+    <!--<div class="account-action-button" matListItemMeta>
             <button mat-icon-button [matMenuTriggerFor]="menuActions">
                 <mat-icon>more_vert</mat-icon>
             </button>
         </div>-->
-    </a>
+  </a>
 </mat-list>
 
 <mat-menu #menuActions="matMenu">
-    <button mat-menu-item [routerLink]="['/settings']">
-        <mat-icon>settings</mat-icon>
-        <span>View</span>
-    </button>
+  <button mat-menu-item [routerLink]="['/settings']">
+    <mat-icon>settings</mat-icon>
+    <span>View</span>
+  </button>
 
-    <mat-divider></mat-divider>
-    <button mat-menu-item>
-        <mat-icon>person_remove</mat-icon>
-        <span>Remove Account from device</span>
-    </button>
+  <mat-divider></mat-divider>
+  <button mat-menu-item>
+    <mat-icon>person_remove</mat-icon>
+    <span>Remove Account from device</span>
+  </button>
 </mat-menu>
 
 <!--
