@@ -36,6 +36,8 @@ export class NewComponent {
     console.log('Manage...');
     const bearerIdentity2 = await agent.identity.manage({ portableIdentity: portableIdentity });
 
+    this.identity.identities = await agent.identity.list();
+
     // const DidDht.create();
 
     //  const res = await Web5.connect({ sync: '5s' });

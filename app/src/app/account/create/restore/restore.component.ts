@@ -91,8 +91,7 @@ export class RestoreComponent {
         console.error(err);
       }
 
-      const list = await agent.identity.list();
-      console.log('LIST: ', list);
+      this.identity.identities = await agent.identity.list();
 
       // Change the active DID.
       this.identity.did = stellarPortableDid.uri;

@@ -51,6 +51,7 @@ export class AccountsComponent {
 
     const identities = await agent.identity.list();
     this.identities = identities;
+    console.log('Identities:', identities);
   }
 
   save() {}

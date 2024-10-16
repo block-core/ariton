@@ -69,6 +69,10 @@ export class IdentityService {
       console.log('Web5 Connected.', this.did);
       // console.log('IDENTITY SERVICE:', this.web5);
 
+      const agent = this.web5.agent as Web5IdentityAgent;
+      this.identities = await agent.identity.list();
+      console.log('LIST OF ALL IDENTITIES: ', this.identities);
+
       this.preinitialized.set(true);
       this.initialized.set(true);
       return result;
@@ -79,6 +83,8 @@ export class IdentityService {
 
     return undefined;
   }
+
+  identities: BearerIdentity[] = [];
 
   async connect(connectedDid: string, password: string) {
     try {
@@ -110,8 +116,8 @@ export class IdentityService {
       this.web5 = result.web5;
       this.did = result.did;
 
-      const list1 = await customAgent.identity.list();
-      console.log('LIST OF ALL IDENTITIES: ', list1);
+      this.identities = await customAgent.identity.list();
+      console.log('LIST OF ALL IDENTITIES: ', this.identities);
 
       // const resolvedDid = await this.web5.did.resolve(
       //   'did:stellar:GCFXHS4GXL6BVUCXBWXGTITROWLVYXQKQLF4YH5O5JT3YZXCYPAFBJZB',

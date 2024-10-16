@@ -202,27 +202,13 @@
             <span>Manage Accounts</span>
           </button>
           <mat-divider></mat-divider>
-          <button
-            [routerLink]="['/account', 'did:dht:umj7apgmkodtrb7mdpjo4h7xinqdnatzgy38j7wi67k9c7sdns1o']"
-            mat-menu-item
-          >
+          @for (account of identity.identities; track account) {
+          <button [routerLink]="['/account', account.did.uri]" mat-menu-item>
             <mat-icon>account_circle</mat-icon>
-            <span>Account 1</span>
+            <span>{{ account.metadata.name }}</span>
           </button>
-          <button
-            [routerLink]="['/account', 'did:dht:umj7apgmkodtrb7mdpjo4h7xinqdnatzgy38j7wi67k9c7sdns1o']"
-            mat-menu-item
-          >
-            <mat-icon>account_circle</mat-icon>
-            <span>Account 2</span>
-          </button>
-          <button
-            [routerLink]="['/account', 'did:dht:umj7apgmkodtrb7mdpjo4h7xinqdnatzgy38j7wi67k9c7sdns1o']"
-            mat-menu-item
-          >
-            <mat-icon>account_circle</mat-icon>
-            <span>Account 3</span>
-          </button>
+          }
+
           <mat-divider></mat-divider>
           <button [routerLink]="['/account/create']" mat-menu-item>
             <mat-icon>person_add</mat-icon>
