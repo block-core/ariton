@@ -36,7 +36,46 @@
     </mat-card-actions>
   </mat-card>
 
-  } @else () {
+  } @else if (addressForm.controls.importType.value == 'ariton') {
+
+  <mat-card class="shipping-card">
+    <mat-card-header>
+      <mat-card-title>Portable DID</mat-card-title>
+      <mat-card-subtitle>Choose your backup file (portableIdentity.json)</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <br />
+
+      <button type="button" mat-button (click)="editFile({})">
+        <mat-icon>upload_file</mat-icon>
+        <span>Choose portable DID files</span>
+      </button>
+
+      <input type="file" id="input" (change)="onFileSelected($event)" multiple style="display: none" />
+
+      <!-- <div class="full-width">
+        <label for="backupFile">Backup File</label>
+        <input type="file" id="backupFile" />
+      </div> -->
+    </mat-card-content>
+    <!-- <mat-card-actions align="end">
+      <button [disabled]="app.loading()" mat-flat-button color="primary" type="submit">Restore</button>
+    </mat-card-actions> -->
+  </mat-card>
+
+  @if (this.importedIdentities.length > 0) {
+  <h1>Imported Accounts</h1>
+
+  <mat-list>
+    @for(identity of this.importedIdentities; track identity) {
+    <a [routerLink]="['/account', identity.did.uri]" mat-list-item class="selectable-list-item">
+      <mat-icon matListItemIcon>account_circle</mat-icon>
+      <span matListItemTitle>{{ identity.metadata.name }}</span>
+      <span matListItemLine>{{ identity.did.uri }}</span>
+    </a>
+    }
+  </mat-list>
+  } } @else () {
   <mat-card class="shipping-card">
     <mat-card-header>
       <mat-card-title>Secret Recovery Phrase</mat-card-title>
