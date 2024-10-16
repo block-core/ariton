@@ -86,6 +86,22 @@ export class RestoreComponent {
       // Change the active DID.
       this.identity.did = stellarPortableDid.uri;
 
+      // const password = await this.crypto.createPassword();
+
+      // REUSE PASSWORD ACROSS ALL IDENTITIES!
+      const password = this.app.account().password;
+
+      this.app.addAccount({
+        did: stellarPortableDid.uri,
+        recoveryPhrase: this.addressForm.controls.recoveryPhrase.value!,
+        password: password,
+      });
+
+      // this.app.state().selectedAccount = this.identity.did;
+      // this.app.saveState();
+
+      // agent.did.dereference({ didUrl: '' });
+
       this.route.navigate(['/profile', this.identity.did]);
 
       // var importedDid = await customAgent.identity.import({ portableIdentity });

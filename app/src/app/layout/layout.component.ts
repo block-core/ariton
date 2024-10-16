@@ -101,8 +101,10 @@ export class LayoutComponent {
   public notifications = signal<NotificationEvent[]>([]);
 
   constructor() {
+    // this.wipe();
     effect(async () => {
       if (this.app.initialized()) {
+        // this.wipe();
         await this.loadNotifications();
       }
     });

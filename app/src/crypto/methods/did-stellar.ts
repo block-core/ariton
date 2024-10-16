@@ -1225,6 +1225,21 @@ export class DidStellar extends DidMethod {
     });
     didDocument['@context'] = contextArray;
 
+    // TODO: HANDLE DWN ENDPOINTS FOR DID STELLAR!
+    // const serviceEndpointNodes = techPreview?.dwnEndpoints ??
+    //   didCreateOptions?.dwnEndpoints ?? ['https://dwn.tbddev.org/beta'];
+
+    // Add the default DWN for Stellar DIDs:
+    didDocument.service = [
+      {
+        id: 'dwn',
+        type: 'DecentralizedWebNode',
+        serviceEndpoint: ['https://dwn.tbddev.org/beta'],
+        enc: '#enc',
+        sig: '#sig',
+      },
+    ];
+
     /**
      * 10. Return document.
      */
