@@ -35,7 +35,7 @@ import { MatCardModule } from '@angular/material/card';
 export class AccountsComponent {
   layout = inject(LayoutService);
 
-  identity = inject(IdentityService);
+  identityService = inject(IdentityService);
 
   app = inject(AppService);
 
@@ -57,7 +57,7 @@ export class AccountsComponent {
     const identities = await agent.identity.list();
 
     // Refresh the list of identities. After user delete accounts, they are redirected here.
-    this.identity.identities = identities;
+    this.identityService.identities = identities;
 
     this.identities = identities;
     console.log('Identities:', identities);
