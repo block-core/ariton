@@ -86,6 +86,13 @@ export class IdentityService {
 
   identities: BearerIdentity[] = [];
 
+  /** This is the root and only agent for the user. */
+  agent!: Web5IdentityAgent;
+
+  // accounts: Web5[] = [];
+
+  accounts: { [key: string]: Web5 } = {};
+
   async connect(connectedDid: string, password: string) {
     try {
       const customAgentVault = new HdIdentityVault({
@@ -104,10 +111,15 @@ export class IdentityService {
       const agentDid = await customAgentVault.getDid();
 
       const customAgent = await Web5IdentityAgent.create({ didApi, agentDid, agentVault: customAgentVault });
+      this.agent = customAgent;
 
       console.log('Connecting to Web5...');
 
       const result = await Web5.connect({ agent: customAgent, connectedDid, password, sync: this.syncInterval });
+
+      // Populate the accounts array with the connected accounts.
+      this.accounts[connectedDid] = result.web5;
+
       // const result = await Web5.connect({ connectedDid, password, sync: this.syncInterval });
 
       // const list = await customAgent.identity.list();
@@ -115,9 +127,6 @@ export class IdentityService {
 
       this.web5 = result.web5;
       this.did = result.did;
-
-      this.identities = await customAgent.identity.list();
-      console.log('LIST OF ALL IDENTITIES: ', this.identities);
 
       // const resolvedDid = await this.web5.did.resolve(
       //   'did:stellar:GCFXHS4GXL6BVUCXBWXGTITROWLVYXQKQLF4YH5O5JT3YZXCYPAFBJZB',
@@ -208,6 +217,10 @@ export class IdentityService {
 
       this.preinitialized.set(true);
       this.initialized.set(true);
+
+      // Start initializing additional Web5 instances for all the identities the user has. Do this in the background.
+      this.loadAccounts(password);
+
       return result;
     } catch (err) {
       // TODO: Add UI and retry for Web5 initialize, add proper error handling.
@@ -217,6 +230,36 @@ export class IdentityService {
     }
 
     return undefined;
+  }
+
+  async loadAccounts(password: string) {
+    this.identities = await this.agent.identity.list();
+    console.log('LIST OF ALL IDENTITIES: ', this.identities);
+
+    for (const identity of this.identities) {
+      const uri = identity?.metadata?.uri;
+
+      let account = this.accounts[uri];
+
+      if (account) {
+        continue;
+      }
+
+      const { web5 } = await Web5.connect({
+        agent: this.agent,
+        connectedDid: uri,
+        password,
+        sync: this.syncInterval,
+      });
+
+      this.accounts[uri] = web5;
+
+      try {
+        await this.agent.sync.registerIdentity({ did: uri });
+      } catch (err) {
+        console.warn('Failed to register sync for account:', err);
+      }
+    }
   }
 
   async restore(password: string, recoveryPhrase: string) {
