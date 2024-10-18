@@ -64,8 +64,8 @@ export class NewComponent {
         id: 'dwn',
         type: 'DecentralizedWebNode',
         serviceEndpoint: ['https://dwn.tbddev.org/beta'],
-        enc: '#enc',
-        sig: '#sig',
+        // enc: '#enc',
+        // sig: '#sig',
       },
     ];
 
@@ -75,7 +75,7 @@ export class NewComponent {
       metadata: { name: this.form.controls.name.value! },
     });
 
-    console.log('Export...');
+    console.log('Export...', bearerIdentity);
     const portableIdentity = await bearerIdentity.export();
 
     // console.log('Import...');
@@ -86,6 +86,16 @@ export class NewComponent {
 
     // Register the Web5 instance.
     const web5 = await this.identity.registerAccount(bearerIdentity2.metadata.uri, this.app.account().password!);
+
+    const newAgent = web5.agent as Web5IdentityAgent;
+
+    // Register the endpoints.
+    console.log('Registering DWN endpoints...');
+
+    // const dwnEndpoints = services.map((service) => service.serviceEndpoint[0].toString());
+    const dwnEndpoints = ['https://dwn.tbddev.org/beta'];
+
+    await this.identity.registerEndpoints(newAgent, bearerIdentity2, dwnEndpoints);
 
     console.log(`Register protocols for ${bearerIdentity2.metadata.uri}`);
 

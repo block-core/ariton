@@ -605,8 +605,8 @@ export class DidStellar extends DidMethod {
         id: 'dwn',
         type: 'DecentralizedWebNode',
         serviceEndpoint: ['https://dwn.tbddev.org/beta'],
-        enc: '#enc',
-        sig: '#sig',
+        // enc: '#enc',
+        // sig: '#sig',
       },
     ];
 

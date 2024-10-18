@@ -15,6 +15,7 @@ import {
   AgentIdentityApi,
   DwnIdentityStore,
   AgentKeyManager,
+  DwnRegistrar,
 } from '@web5/agent';
 import { Web5UserAgent } from '@web5/user-agent';
 import { LevelStore } from '@web5/common';
@@ -277,6 +278,26 @@ export class IdentityService {
     for (const identity of this.identities) {
       const uri = identity?.metadata?.uri;
       await this.registerAccount(uri, password);
+    }
+  }
+
+  async registerEndpoints(agent: Web5IdentityAgent, identity: BearerIdentity, dwnEndpoints: string[] = []) {
+    try {
+      for (const endpoint of dwnEndpoints) {
+        const serverInfo = await agent.rpc.getServerInfo(endpoint);
+        console.log('SERVER INFO: ', serverInfo);
+
+        if (serverInfo.registrationRequirements.length === 0) {
+          console.log('No registration requirements');
+          continue;
+        }
+        // register agent DID
+        await DwnRegistrar.registerTenant(endpoint, agent.agentDid.uri);
+        // register connected Identity DID
+        await DwnRegistrar.registerTenant(endpoint, identity.did.uri);
+      }
+    } catch (error) {
+      console.error('Failed to register DWN endpoints', error);
     }
   }
 
