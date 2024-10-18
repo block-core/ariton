@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { effect, inject, Injectable, signal } from '@angular/core';
 import { IdentityService } from './identity.service';
 import { profile } from '../protocols';
 
@@ -51,7 +51,14 @@ export class ProfileService {
 
   avatarSelected = signal<any>(null);
 
-  constructor() {}
+  constructor() {
+    effect(async () => {
+      if (this.identity.activeAccount()) {
+        console.log('Active account found, loading profile...', this.identity.did);
+        this.openCurrentUserProfile(this.identity.did);
+      }
+    });
+  }
 
   async loadProfile(did: string) {
     // TODO: Implement caching of profiles, since this method is
@@ -72,7 +79,7 @@ export class ProfileService {
     let recordEntry = null;
 
     console.log('RESPONSE FOUND FOR PROFILE:', response);
-    console.log('RECORDS FOUND FOR PROFILE:', response.records);
+    console.log('RECORDS FOUND FOR PROFILE1:', response.records);
 
     if (response.records && response.records.length > 0) {
       // Loop through returned records and print text from each
@@ -173,9 +180,11 @@ export class ProfileService {
   }
 
   async loadProfileRemote(did: string) {
+    console.log('Loading remote profile:', did);
+
     // TODO: Implement caching of profiles, since this method is
     // called by various directives and code, avoiding too many database queries.
-    //Query records with plain text data format
+    // Query records with plain text data format
     const response = await this.identity.web5.dwn.records.query({
       from: did,
       message: {
@@ -188,11 +197,13 @@ export class ProfileService {
       },
     });
 
+    console.log('QUERY FOR PROFILE WORKS??');
+
     let entry: any = {};
     let recordEntry = null;
 
     console.log('RESPONSE FOUND FOR PROFILE:', response);
-    console.log('RECORDS FOUND FOR PROFILE:', response.records);
+    console.log('RECORDS FOUND FOR PROFILE2:', response.records);
 
     if (response.records) {
       // Loop through returned records and print text from each
@@ -207,43 +218,6 @@ export class ProfileService {
     }
 
     return entry;
-
-    // var avatarRecord: any = null;
-    // var avatar: any = null;
-
-    // // If lookup is for current user, just query local DWN.
-    // // if (did == this.identity.did) {
-    // const imageResponse = await this.identity.web5.dwn.records.query({
-    //   from: did,
-    //   message: {
-    //     filter: {
-    //       protocol: profile.uri,
-    //       protocolPath: 'avatar',
-    //       dataFormat: 'image/png',
-    //     },
-    //   },
-    // });
-
-    // if (imageResponse.records && imageResponse.records.length > 0) {
-    //   const record = imageResponse.records[0];
-    //   avatarRecord = record;
-    //   let image = await record.data.text(); //.blob();
-    //   // this.avatar.set(image);
-
-    //   avatar = image;
-    //   // let image = await record.data.blob();
-    //   // this.current.update((profile) => ({ ...profile, profileImage: URL.createObjectURL
-    // }
-    // // }
-
-    // // Returns a structure of both the record and the profile.
-    // return {
-    //   record: recordEntry,
-    //   avatarRecord: avatarRecord,
-    //   avatar: avatar,
-    //   profile: entry,
-    //   did: did,
-    // };
   }
 
   /** Load and sets the profile to selected and current (if same as logged on user) */
@@ -265,100 +239,5 @@ export class ProfileService {
       this.avatar.set(profile.avatar);
       this.current.set(profile.profile as Profile);
     }
-
-    // // If lookup is for current user, just query local DWN.
-    // if (did == this.identity.did) {
-    //   const imageResponse = await this.identity.web5.dwn.records.query({
-    //     message: {
-    //       filter: {
-    //         protocol: profile.uri,
-    //         protocolPath: 'avatar',
-    //         dataFormat: 'image/png',
-    //       },
-    //     },
-    //   });
-
-    //   console.log(imageResponse);
-
-    //   if (imageResponse.records && imageResponse.records.length > 0) {
-    //     const record = imageResponse.records[0];
-    //     let image = await record.data.text(); //.blob();
-    //     console.log('Profile image from DWN:', image);
-    //     this.avatar.set(image);
-    //     // let image = await record.data.blob();
-    //     // this.current.update((profile) => ({ ...profile, profileImage: URL.createObjectURL
-    //   }
-
-    //   const response = await this.identity.web5.dwn.records.query({
-    //     message: {
-    //       filter: {
-    //         protocol: profile.uri,
-    //         protocolPath: 'profile',
-    //         dataFormat: 'application/json',
-    //       },
-    //     },
-    //   });
-
-    //   if (response.records) {
-    //     response.records.forEach(async (record) => {
-    //       let json = await record.data.json();
-    //       console.log(json);
-    //       json = { ...json, id: record.dataCid, did: record.creator, created: record.dateCreated };
-    //       this.current.set(json);
-    //       console.log(json);
-    //       //   this.records.update((records) => [...records, json]);
-    //     });
-    //   }
-    // } else {
-    //   // Query for the external user's profile.
-    //   console.log('QUERY FOR USER PROFILE!!');
-    //   const response = await this.identity.web5.dwn.records.query({
-    //     from: did,
-    //     message: {
-    //       filter: {
-    //         protocol: profile.uri,
-    //         protocolPath: 'profile',
-    //         dataFormat: 'application/json',
-    //       },
-    //     },
-    //   });
-
-    //   console.log('Records in open profile:', response.records);
-
-    //   if (response.records && response.records.length > 0) {
-    //     // Loop through returned records and print text from each
-    //     response.records.forEach(async (record) => {
-    //       let json = await record.data.json();
-    //       console.log(json);
-
-    //       json = { ...json, id: record.dataCid, did: record.creator, created: record.dateCreated };
-
-    //       this.current.set(json);
-
-    //       console.log(json);
-
-    //       //   this.records.update((records) => [...records, json]);
-    //     });
-    //   } else {
-    //     console.log('NOTHING FOUND!!');
-    //     this.current.set({ did: did, bio: '', profileImage: '', profileBanner: '', links: [], title: '', name: 'No profile found' });
-    //   }
-
-    //   //   this.records.set([]);
-    // }
-
-    // console.log('Open profile', did);
-    // this.current.set({
-    //     did,
-    //     birthDate: '1981',
-    //     name: 'SondreB',
-    //     title: 'Voluntaryist',
-    //     bio: 'I am a voluntaryist.',
-    //     profileImage: 'https://ariton.app/assets/sondre.png',
-    //     profileBanner: 'https://avatars.githubusercontent.com/u/1402241?v=4',
-    //     status: 'Online',
-    //     location: 'Norway',
-    //     links: ['https://sondreb.com'],
-    // });
   }
 }

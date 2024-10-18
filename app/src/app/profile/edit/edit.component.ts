@@ -228,6 +228,10 @@ export class ProfileEditComponent {
       // }
     }
 
+    // Reload the current user profile. This could be optimized by just reading the profile and avatar directly
+    // from objects above here, but for now just reload from DWN.
+    await this.profileService.openCurrentUserProfile(this.identity.did);
+
     this.router.navigate(['/profile', this.identity.did]);
   }
 }

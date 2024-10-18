@@ -27,8 +27,6 @@ export class IdentityService {
   syncInterval = '15s';
   //agents = signal<Web5IdentityAgent[]>([]);
 
-  agents: WritableSignal<Web5IdentityAgent[]> = signal([]);
-
   constructor(private cryptoService: CryptoService) {
     /*
     Web5.connect({ sync: this.syncInterval }).then((res) => {
@@ -87,10 +85,17 @@ export class IdentityService {
     return undefined;
   }
 
+  agents: WritableSignal<Web5IdentityAgent[]> = signal([]);
+
   identities: BearerIdentity[] = [];
+  // identities: { [key: string]: BearerIdentity } = {};
 
   /** This is the root and only agent for the user. */
   agent!: Web5IdentityAgent;
+
+  get identity(): BearerIdentity {
+    return this.identities.find((identity) => identity.metadata.uri === this.did) as BearerIdentity;
+  }
 
   // accounts: Web5[] = [];
 
@@ -249,6 +254,9 @@ export class IdentityService {
     return undefined;
   }
 
+  // Define a signal for the active account
+  public activeAccount = signal<Web5 | undefined>(undefined);
+
   async changeAccount(did: string) {
     const account = this.accounts[did];
 
@@ -258,6 +266,8 @@ export class IdentityService {
 
     this.web5 = account;
     this.did = did;
+
+    this.activeAccount.set(this.web5);
   }
 
   async loadAccounts(password: string) {

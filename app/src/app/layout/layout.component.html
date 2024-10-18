@@ -143,6 +143,7 @@
               <h2>{{ profileService.current().name }}</h2>
               {{ profileService.current().title }}<br />
               {{ identity.did | did }}<br />
+              {{ identity.identity?.metadata?.name }}<br />
             </div>
           </div>
 
@@ -205,7 +206,12 @@
           @for (account of identity.identities; track account) {
           <button (click)="changeAccount(account.did.uri)" mat-menu-item>
             <mat-icon>account_circle</mat-icon>
+            @if (account.did.uri === identity.did) {
+            <strong>{{ account.metadata.name }} *</strong>
+            } @else {
             <span>{{ account.metadata.name }}</span>
+
+            }
           </button>
           }
 

@@ -54,7 +54,10 @@ export class NewComponent {
     const agent = this.identity.activeAgent();
 
     console.log('Create...');
-    const bearerIdentity = await agent.identity.create({ metadata: { name: this.form.controls.name.value! } });
+    const bearerIdentity = await agent.identity.create({
+      didOptions: { publish: true },
+      metadata: { name: this.form.controls.name.value! },
+    });
 
     console.log('Export...');
     const portableIdentity = await bearerIdentity.export();
