@@ -283,9 +283,9 @@ export class IdentityService {
   async registerAccount(uri: string, password: string) {
     let account = this.accounts[uri];
 
-    if (account) {
-      return;
-    }
+    // if (account) {
+    //   return;
+    // }
 
     const { web5 } = await Web5.connect({
       agent: this.agent,
@@ -295,12 +295,16 @@ export class IdentityService {
     });
 
     this.accounts[uri] = web5;
+    const agent = web5.agent as Web5IdentityAgent;
 
     try {
-      await this.agent.sync.registerIdentity({ did: uri });
+      await agent.sync.registerIdentity({ did: uri });
+      // await this.agent.sync.registerIdentity({ did: uri });
     } catch (err) {
       console.warn('Failed to register sync for account:', err);
     }
+
+    return web5;
   }
 
   async restore(password: string, recoveryPhrase: string) {

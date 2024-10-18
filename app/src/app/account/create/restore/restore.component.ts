@@ -321,8 +321,13 @@ export class RestoreComponent {
 
       this.identity.identities = await agent.identity.list();
 
+      const web5 = await this.identity.registerAccount(stellarPortableDid.uri, this.app.account().password!);
+
+      // After adding account, let's make sure we install the protocols.
+      await this.protocol.register(web5);
+
       // Change the active DID.
-      this.identity.did = stellarPortableDid.uri;
+      // this.identity.did = stellarPortableDid.uri;
 
       // const password = await this.crypto.createPassword();
 
@@ -336,14 +341,13 @@ export class RestoreComponent {
         bundleTimestamp: '',
       });
 
-      // After adding account, let's make sure we install the protocols.
-      await this.protocol.register();
-
       // this.app.state().selectedAccount = this.identity.did;
       // this.app.saveState();
       // agent.did.dereference({ didUrl: '' });
 
-      this.route.navigate(['/profile', this.identity.did]);
+      this.identity.changeAccount(stellarPortableDid.uri);
+
+      this.route.navigate(['/accounts']);
 
       // var importedDid = await customAgent.identity.import({ portableIdentity });
       // await customAgent.identity.manage({ portableIdentity: portableIdentity });

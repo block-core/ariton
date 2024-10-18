@@ -18,6 +18,7 @@ import { protocolDefinition as post } from '../protocols/post';
 import { protocolDefinition as data } from '../protocols/data';
 import { IdentityService } from './identity.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Web5 } from '@web5/api';
 
 @Injectable({
   providedIn: 'root',
@@ -29,7 +30,7 @@ export class ProtocolService {
 
   constructor() {}
 
-  async register() {
+  async register(web5: Web5) {
     const protocols = [
       note,
       profile,
@@ -51,7 +52,7 @@ export class ProtocolService {
     ];
 
     for (const definition of protocols) {
-      const { protocol, status } = await this.identityService.web5.dwn.protocols.configure({
+      const { protocol, status } = await web5.dwn.protocols.configure({
         message: {
           definition: definition,
         },

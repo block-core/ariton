@@ -3,7 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { Web5IdentityAgent } from '@web5/identity-agent';
 import { Web5 } from '@web5/api';
 import { IdentityService } from '../../../identity.service';
-import { DidDht } from '@web5/dids';
+import { DidDht, DidService } from '@web5/dids';
 import { Router } from '@angular/router';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -13,6 +13,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatCardModule } from '@angular/material/card';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AppService } from '../../../app.service';
+import { ProtocolService } from '../../../protocol.service';
 
 @Component({
   selector: 'app-new',
@@ -35,6 +36,8 @@ export class NewComponent {
 
   identity = inject(IdentityService);
 
+  protocol = inject(ProtocolService);
+
   app = inject(AppService);
 
   router = inject(Router);
@@ -53,9 +56,22 @@ export class NewComponent {
     console.log('Creating account...');
     const agent = this.identity.activeAgent();
 
+    // TODO: Create a service to manage DWN endpoints for end users,
+    // and perhaps have a selection where user can choose which DWN to use
+    // for their new account.
+    const services: DidService[] = [
+      {
+        id: 'dwn',
+        type: 'DecentralizedWebNode',
+        serviceEndpoint: ['https://dwn.tbddev.org/beta'],
+        enc: '#enc',
+        sig: '#sig',
+      },
+    ];
+
     console.log('Create...');
     const bearerIdentity = await agent.identity.create({
-      didOptions: { publish: true },
+      didOptions: { publish: true, services },
       metadata: { name: this.form.controls.name.value! },
     });
 
@@ -69,10 +85,13 @@ export class NewComponent {
     const bearerIdentity2 = await agent.identity.manage({ portableIdentity: portableIdentity });
 
     // Register the Web5 instance.
-    await this.identity.registerAccount(bearerIdentity2.metadata.uri, this.app.account().password!);
+    const web5 = await this.identity.registerAccount(bearerIdentity2.metadata.uri, this.app.account().password!);
+
+    // Install all the protocols.
+    await this.protocol.register(web5);
 
     // Change the active account.
-    this.identity.changeAccount(portableIdentity.metadata.uri);
+    await this.identity.changeAccount(portableIdentity.metadata.uri);
 
     this.router.navigate(['/accounts']);
 

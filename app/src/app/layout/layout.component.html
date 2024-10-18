@@ -143,7 +143,9 @@
               <h2>{{ profileService.current().name }}</h2>
               {{ profileService.current().title }}<br />
               {{ identity.did | did }}<br />
-              {{ identity.identity?.metadata?.name }}<br />
+              @if (identity.identity) {
+              {{ identity.identity.metadata.name }}<br />
+              }
             </div>
           </div>
 

@@ -315,7 +315,7 @@ export class AppService {
     }
 
     // When intialization is finished, make sure we always re-register the protocols.
-    this.protocol.register();
+    this.protocol.register(this.identity.web5);
 
     // Save the current bundle hash to the state.
     // this.state().bundleTimestamp = this.hash.getTimestamp();
