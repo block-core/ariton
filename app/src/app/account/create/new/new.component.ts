@@ -12,6 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCardModule } from '@angular/material/card';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AppService } from '../../../app.service';
 
 @Component({
   selector: 'app-new',
@@ -33,6 +34,8 @@ export class NewComponent {
   private fb = inject(FormBuilder);
 
   identity = inject(IdentityService);
+
+  app = inject(AppService);
 
   router = inject(Router);
 
@@ -60,7 +63,11 @@ export class NewComponent {
     console.log('Manage...');
     const bearerIdentity2 = await agent.identity.manage({ portableIdentity: portableIdentity });
 
-    // this.identity.identities = await agent.identity.list();
+    // Register the Web5 instance.
+    await this.identity.registerAccount(bearerIdentity2.metadata.uri, this.app.account().password!);
+
+    // Change the active account.
+    this.identity.changeAccount(portableIdentity.metadata.uri);
 
     this.router.navigate(['/accounts']);
 

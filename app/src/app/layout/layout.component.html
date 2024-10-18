@@ -203,7 +203,7 @@
           </button>
           <mat-divider></mat-divider>
           @for (account of identity.identities; track account) {
-          <button [routerLink]="['/account', account.did.uri]" mat-menu-item>
+          <button (click)="changeAccount(account.did.uri)" mat-menu-item>
             <mat-icon>account_circle</mat-icon>
             <span>{{ account.metadata.name }}</span>
           </button>

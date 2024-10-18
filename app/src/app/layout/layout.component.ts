@@ -110,6 +110,12 @@ export class LayoutComponent {
     });
   }
 
+  async changeAccount(did: string) {
+    this.identity.changeAccount(did);
+
+    this.router.navigate(['/introduction']);
+  }
+
   async loadNotifications() {
     const notifications = await this.notification.load();
     this.notifications.set(notifications);

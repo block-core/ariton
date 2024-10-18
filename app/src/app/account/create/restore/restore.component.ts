@@ -88,6 +88,12 @@ export class RestoreComponent {
           const bearerIdentity = await this.identity.activeAgent().identity.manage({ portableIdentity: jsonObject });
           console.log('Imported identity: ', bearerIdentity);
 
+          // Register the Web5 instance.
+          await this.identity.registerAccount(bearerIdentity.metadata.uri, this.app.account().password!);
+
+          // Change the active account.
+          this.identity.changeAccount(bearerIdentity.metadata.uri);
+
           this.importedIdentities.push(bearerIdentity);
 
           this.identity.identities = await this.identity.activeAgent().identity.list();

@@ -232,33 +232,47 @@ export class IdentityService {
     return undefined;
   }
 
+  async changeAccount(did: string) {
+    const account = this.accounts[did];
+
+    if (!account) {
+      return;
+    }
+
+    this.web5 = account;
+    this.did = did;
+  }
+
   async loadAccounts(password: string) {
     this.identities = await this.agent.identity.list();
     console.log('LIST OF ALL IDENTITIES: ', this.identities);
 
     for (const identity of this.identities) {
       const uri = identity?.metadata?.uri;
+      await this.registerAccount(uri, password);
+    }
+  }
 
-      let account = this.accounts[uri];
+  async registerAccount(uri: string, password: string) {
+    let account = this.accounts[uri];
 
-      if (account) {
-        continue;
-      }
+    if (account) {
+      return;
+    }
 
-      const { web5 } = await Web5.connect({
-        agent: this.agent,
-        connectedDid: uri,
-        password,
-        sync: this.syncInterval,
-      });
+    const { web5 } = await Web5.connect({
+      agent: this.agent,
+      connectedDid: uri,
+      password,
+      sync: this.syncInterval,
+    });
 
-      this.accounts[uri] = web5;
+    this.accounts[uri] = web5;
 
-      try {
-        await this.agent.sync.registerIdentity({ did: uri });
-      } catch (err) {
-        console.warn('Failed to register sync for account:', err);
-      }
+    try {
+      await this.agent.sync.registerIdentity({ did: uri });
+    } catch (err) {
+      console.warn('Failed to register sync for account:', err);
     }
   }
 
