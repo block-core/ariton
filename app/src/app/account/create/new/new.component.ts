@@ -40,7 +40,7 @@ export class NewComponent {
   router = inject(Router);
 
   form = this.fb.group({
-    name: ['New account', Validators.required],
+    name: ['', Validators.required],
   });
 
   constructor() {}
@@ -48,6 +48,8 @@ export class NewComponent {
   ngOnInit() {}
 
   async onSubmit() {
+    this.form.disable();
+
     console.log('Creating account...');
     const agent = this.identity.activeAgent();
 

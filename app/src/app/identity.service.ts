@@ -12,6 +12,9 @@ import {
   isPortableIdentity,
   Web5PlatformAgent,
   PortableIdentity,
+  AgentIdentityApi,
+  DwnIdentityStore,
+  AgentKeyManager,
 } from '@web5/agent';
 import { Web5UserAgent } from '@web5/user-agent';
 import { LevelStore } from '@web5/common';
@@ -93,6 +96,10 @@ export class IdentityService {
 
   accounts: { [key: string]: Web5 } = {};
 
+  store!: DwnIdentityStore;
+
+  identityApi!: AgentIdentityApi;
+
   async connect(connectedDid: string, password: string) {
     try {
       const customAgentVault = new HdIdentityVault({
@@ -110,7 +117,17 @@ export class IdentityService {
 
       const agentDid = await customAgentVault.getDid();
 
-      const customAgent = await Web5IdentityAgent.create({ didApi, agentDid, agentVault: customAgentVault });
+      this.store = new DwnIdentityStore();
+
+      const identityApi: any = new AgentIdentityApi({ store: this.store });
+      this.identityApi = identityApi;
+
+      const customAgent = await Web5IdentityAgent.create({
+        didApi,
+        agentDid,
+        identityApi,
+        agentVault: customAgentVault,
+      });
       this.agent = customAgent;
 
       console.log('Connecting to Web5...');

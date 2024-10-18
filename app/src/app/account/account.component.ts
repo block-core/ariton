@@ -7,11 +7,25 @@ import { LayoutService } from '../layout.service';
 import { AppService } from '../app.service';
 import { BearerIdentity } from '@web5/agent';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-account',
   standalone: true,
-  imports: [MatCardModule, MatButtonModule, RouterLink, MatTooltipModule],
+  imports: [
+    MatCardModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    FormsModule,
+    MatIconModule,
+    RouterLink,
+    MatTooltipModule,
+  ],
   templateUrl: './account.component.html',
   styleUrl: './account.component.scss',
 })
@@ -25,6 +39,8 @@ export class AccountComponent {
   router = inject(Router);
 
   currentIdentity: BearerIdentity | undefined;
+
+  editing = false;
 
   constructor(private route: ActivatedRoute) {
     this.layout.marginOn();
@@ -54,6 +70,36 @@ export class AccountComponent {
     await this.identity.changeAccount(this.currentIdentity!.did.uri);
 
     this.router.navigate(['/accounts']);
+  }
+
+  title: string | undefined;
+
+  editAccount() {
+    this.title = this.currentIdentity?.metadata.name;
+    this.editing = true;
+  }
+
+  async saveAccount() {
+    const identity = this.currentIdentity!;
+
+    identity.metadata.name = this.title!;
+
+    // First delete as we cannot update.
+    // await this.identity.store.delete({ id: identity.metadata.uri, agent: this.identity.activeAgent() });
+
+    // TODO: This is not possible as of today: https://github.com/TBD54566975/web5-js/issues/696
+
+    // Set the updated identity.
+    await this.identity.store.set({
+      id: identity.metadata.uri,
+      data: identity.metadata,
+      agent: this.identity.activeAgent(),
+      tenant: identity.metadata.tenant,
+      preventDuplicates: true,
+      useCache: true,
+    });
+
+    this.editing = false;
   }
 
   async backupAccount() {

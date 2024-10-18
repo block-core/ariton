@@ -1,6 +1,20 @@
 @if(currentIdentity) {
 
-<h1>{{ currentIdentity.metadata.name }}</h1>
+<h1>
+  @if(editing) {
+  <mat-form-field subscriptSizing="dynamic">
+    <input matInput [(ngModel)]="title" (keydown.enter)="saveAccount()" />
+  </mat-form-field>
+  <button mat-icon-button (click)="saveAccount()">
+    <mat-icon>save</mat-icon>
+  </button>
+  } @else {
+  {{ currentIdentity.metadata.name }}
+  <!-- <button mat-icon-button (click)="editAccount()">
+    <mat-icon>edit</mat-icon>
+  </button> -->
+  }
+</h1>
 <p class="ellipsis" [matTooltip]="currentIdentity.did.uri">{{ currentIdentity.did.uri }}</p>
 
 <!--
