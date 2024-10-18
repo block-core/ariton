@@ -323,6 +323,8 @@ export class RestoreComponent {
 
       const web5 = await this.identity.registerAccount(stellarPortableDid.uri, this.app.account().password!);
 
+      console.log(`Register protocols for ${stellarPortableDid.uri}`);
+
       // After adding account, let's make sure we install the protocols.
       await this.protocol.register(web5);
 

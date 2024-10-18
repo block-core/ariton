@@ -87,6 +87,8 @@ export class NewComponent {
     // Register the Web5 instance.
     const web5 = await this.identity.registerAccount(bearerIdentity2.metadata.uri, this.app.account().password!);
 
+    console.log(`Register protocols for ${bearerIdentity2.metadata.uri}`);
+
     // Install all the protocols.
     await this.protocol.register(web5);
 
