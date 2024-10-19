@@ -326,12 +326,6 @@ export const routes: Routes = [
     data: { hide: true, icon: 'settings' },
   },
   {
-    path: 'settings/help',
-    loadComponent: () => import('./settings/help/help.component').then((c) => c.HelpComponent),
-    title: 'Help',
-    data: { hide: true, icon: 'help' },
-  },
-  {
     path: 'settings/licenses',
     loadComponent: () => import('./settings/licenses/licenses.component').then((c) => c.LicensesComponent),
     title: 'Licenses',
