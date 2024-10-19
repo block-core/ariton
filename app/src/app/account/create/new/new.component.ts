@@ -3,7 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { Web5IdentityAgent } from '@web5/identity-agent';
 import { Web5 } from '@web5/api';
 import { IdentityService } from '../../../identity.service';
-import { DidDht, DidService } from '@web5/dids';
+import { BearerDid, DidDht, DidService } from '@web5/dids';
 import { Router } from '@angular/router';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -59,19 +59,54 @@ export class NewComponent {
     // TODO: Create a service to manage DWN endpoints for end users,
     // and perhaps have a selection where user can choose which DWN to use
     // for their new account.
-    const services: DidService[] = [
+    // const services: DidService[] = [
+    //   {
+    //     id: 'dwn',
+    //     type: 'DecentralizedWebNode',
+    //     serviceEndpoint: ['https://dwn.tbddev.org/beta'],
+    //     enc: '#0',
+    //     sig: '#0',
+    //   },
+    // ];
+
+    const services = [
       {
         id: 'dwn',
         type: 'DecentralizedWebNode',
         serviceEndpoint: ['https://dwn.tbddev.org/beta'],
-        // enc: '#enc',
-        // sig: '#sig',
+        enc: '#enc',
+        sig: '#sig',
       },
     ];
 
-    console.log('Create...');
+    const verificationMethods: any = [
+      {
+        algorithm: 'Ed25519',
+        id: 'sig',
+        purposes: ['assertionMethod', 'authentication'],
+      },
+      {
+        algorithm: 'secp256k1',
+        id: 'enc',
+        purposes: ['keyAgreement'],
+      },
+    ];
+
+    // const did = await DidDht.create({
+    //   options: { services, verificationMethods },
+    // });
+
+    // const didExport = await did.export();
+
+    // let agentDid = await BearerDid.import({ portableDid: didExport });
+
+    // const agent = (DWeb.agent = await Web5UserAgent.create({ agentDid }));
+    // agent.sync.startSync({ interval: options.syncInterval || '2m' }).catch((error) => {
+    //   console.error(`Sync failed: ${error}`);
+    // });
+
     const bearerIdentity = await agent.identity.create({
-      didOptions: { publish: true, services },
+      didOptions: { publish: true, services, verificationMethods: verificationMethods },
       metadata: { name: this.form.controls.name.value! },
     });
 
@@ -94,9 +129,7 @@ export class NewComponent {
 
     // const dwnEndpoints = services.map((service) => service.serviceEndpoint[0].toString());
     const dwnEndpoints = ['https://dwn.tbddev.org/beta'];
-
     await this.identity.registerEndpoints(newAgent, bearerIdentity2, dwnEndpoints);
-
     console.log(`Register protocols for ${bearerIdentity2.metadata.uri}`);
 
     // Install all the protocols.
