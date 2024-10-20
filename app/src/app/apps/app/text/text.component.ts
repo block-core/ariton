@@ -254,7 +254,7 @@ export class TextComponent implements OnDestroy {
       abstract: entry.data.abstract,
       background: entry.data.background,
       collaborators: [],
-      labels: entry.data.labels ?? [],
+      labels: entry.data.labels ?? [''],
       published: entry.record ? entry.record.published : entry.data.published,
       image: entry.data.image,
     };
@@ -316,15 +316,20 @@ export class TextComponent implements OnDestroy {
 
     // delete data.published;
 
-    if (data.labels == null) {
-      data.labels = [];
-    }
+    // We must ensure we always initially save with tags, because we cannot edit
+    // a record that did not have any initial tags.
+    let tags = {
+      labels: [''],
+    };
 
+    // Only set labels on tags if there is any data. It will crash to attempt to save label with empty array.
+    if (data.labels && data.labels.length > 0) {
+      tags = {
+        labels: data.labels,
+      };
+    }
     if (entry.record) {
-      // Will this work?
-      entry.record.tags.labels = data.labels;
-      // entry.record.tags.title = data.title;
-      // entry.record.tags.image = data.image ?? '';
+      entry.record.tags.labels = tags.labels;
 
       const { status } = await entry.record.update({
         data: data,
@@ -334,21 +339,21 @@ export class TextComponent implements OnDestroy {
       console.log('Record status:', status);
       await entry.record.send();
     } else {
-      const { record, status } = await this.identity.web5.dwn.records.create({
+      const query: any = {
         data: data,
         message: {
+          tags,
           published: published,
-          tags: {
-            // image: data.image ?? '',
-            // title: data.title,
-            labels: data.labels,
-          },
           protocol: textDefinition.protocol,
           protocolPath: 'entry',
           schema: textDefinition.types.entry.schema,
           dataFormat: textDefinition.types.entry.dataFormats[0],
         },
-      });
+      };
+
+      console.log('QUERY:', query);
+
+      const { record, status } = await this.identity.web5.dwn.records.create(query);
 
       console.log('Record created:', record);
       console.log('Record status:', status);
