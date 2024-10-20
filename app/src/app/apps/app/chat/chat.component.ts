@@ -339,13 +339,13 @@ export class ChatComponent implements OnDestroy {
         },
       });
 
-      await record?.send(recipientDid);
-      await record?.send();
-
       let json: any = { record: record, data: data, direction: 'out' };
 
       this.messages.update((requests) => [...requests, json]);
       this.message = '';
+
+      await record?.send(recipientDid);
+      await record?.send();
     }
   }
 
