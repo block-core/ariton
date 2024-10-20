@@ -316,6 +316,10 @@ export class TextComponent implements OnDestroy {
 
     // delete data.published;
 
+    if (data.labels == null) {
+      data.labels = [];
+    }
+
     if (entry.record) {
       // Will this work?
       entry.record.tags.labels = data.labels;
