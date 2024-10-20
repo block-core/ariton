@@ -254,7 +254,7 @@ export class TextComponent implements OnDestroy {
       abstract: entry.data.abstract,
       background: entry.data.background,
       collaborators: [],
-      labels: entry.data.labels,
+      labels: entry.data.labels ?? [],
       published: entry.record ? entry.record.published : entry.data.published,
       image: entry.data.image,
     };
