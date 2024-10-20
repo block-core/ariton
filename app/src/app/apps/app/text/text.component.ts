@@ -251,6 +251,7 @@ export class TextComponent implements OnDestroy {
     let data: DialogData = {
       title: entry.data.title,
       body: entry.data.body,
+      abstract: entry.data.abstract,
       background: entry.data.background,
       collaborators: [],
       labels: [''],

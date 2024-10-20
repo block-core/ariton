@@ -6,6 +6,10 @@
     <mat-form-field appearance="outline" class="full-width">
       <input matInput placeholder="Image" maxlength="200" [(ngModel)]="data.image" />
     </mat-form-field>
+    <mat-form-field appearance="outline" class="full-width">
+      <textarea matInput placeholder="Abstract" [(ngModel)]="data.abstract"></textarea>
+      <!-- <input matInput placeholder="Abstract" maxlength="200" [(ngModel)]="data.abstract" /> -->
+    </mat-form-field>
     <div class="editor">
       <app-text-editor [(content)]="data.body"></app-text-editor>
     </div>

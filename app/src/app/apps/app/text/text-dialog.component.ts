@@ -13,6 +13,7 @@ import { TextEditorComponent } from '../../../shared/components/text-editor/text
 export interface DialogData {
   title: string;
   body: string;
+  abstract: string;
   background: string;
   collaborators: string[];
   labels: string[];

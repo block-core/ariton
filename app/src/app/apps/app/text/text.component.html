@@ -26,8 +26,8 @@
       <mat-card-content class="note-body" (click)="editText(entry)">
         @if (entry.data.image) {
         <img [src]="entry.data.image" class="text-image" />
+        } @if(entry.data.abstract) {{{ entry.data.abstract }} } @else {{{ entry.data.body | stripHtml : 200 }}
         }
-        {{ entry.data.body | stripHtml : 200 }}
       </mat-card-content>
       <mat-card-footer>
         <button
