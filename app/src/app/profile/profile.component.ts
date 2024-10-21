@@ -219,7 +219,7 @@ export class ProfileComponent {
         data: data,
         message: {
           published: true, // Make the record public, so they can be queried and view by everyone.
-          tags
+          tags,
           protocol: postDefinition.protocol,
           protocolPath: 'post',
           schema: postDefinition.types.post.schema,
