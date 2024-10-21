@@ -300,9 +300,10 @@ export class NotesComponent implements OnDestroy {
         data,
       });
 
-      await record.send();
-
       console.log('Record status:', status);
+
+      const { status: status2 } = await entry.record.send();
+      console.log('Status 2:', status2);
     } else {
       const { record, status } = await this.identity.web5.dwn.records.create({
         data: data,

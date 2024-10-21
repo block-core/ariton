@@ -707,11 +707,13 @@ export class FolderComponent {
 
   async saveFolder(entry: Record | undefined | null, data: DialogData) {
     if (entry) {
-      // Will this work?
-      entry.tags['name'] = data.name;
-      entry.tags['entryType'] = data.entryType;
+      const tags = {
+        name: data.name,
+        entryType: data.entryType,
+      };
 
       const { status } = await entry.update({
+        tags,
         data: {},
       });
 
