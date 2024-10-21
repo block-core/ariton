@@ -425,9 +425,6 @@ export class FileComponent {
 
   async saveFolder(entry: any, data: DialogData) {
     if (entry.record) {
-      // Will this work?
-      // entry.record.tags.labels = data.labels;
-
       const { status, record } = await entry.record.update({
         data: data,
       });

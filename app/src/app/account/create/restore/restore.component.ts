@@ -15,6 +15,8 @@ import { BearerIdentity, PortableIdentity } from '@web5/agent';
 import { Router, RouterModule } from '@angular/router';
 import { ProtocolService } from '../../../protocol.service';
 import { MatListModule } from '@angular/material/list';
+import { Web5 } from '@web5/api';
+import { Web5IdentityAgent } from '@web5/identity-agent';
 
 @Component({
   selector: 'app-restore',
@@ -75,8 +77,75 @@ export class RestoreComponent {
         const content = reader.result as string;
         try {
           const jsonObject = JSON.parse(content);
+
           // Process the JSON object
           console.log('Parsed JSON object:', jsonObject);
+
+          const identity = await this.identity.agent.identity.import({ portableIdentity: jsonObject });
+
+          await this.identity.agent.sync.registerIdentity({ did: identity.metadata.uri });
+
+          const { web5 } = await Web5.connect({
+            connectedDid: identity.metadata.uri,
+            password: this.app.account().password!,
+            sync: '15s',
+          });
+
+          await this.protocol.register(web5);
+
+          return;
+
+          // const agent = this.identity.agent;
+
+          const identity2 = await this.identity.agent.identity.import({ portableIdentity: jsonObject });
+          console.log('Imported identity:', identity);
+
+          await this.identity.agent.sync.registerIdentity({ did: identity.metadata.uri });
+
+          console.log('Agent DID1: ', this.identity.agent.agentDid.uri);
+
+          // Register the Web5 instance.
+          // const web5 = await this.identity.registerAccount(identity.metadata.uri, this.app.account().password!);
+
+          // console.log('Agent DID2: ', web5.agent.agentDid.uri);
+          console.log('Agent DID3: ', this.identity.agent.agentDid.uri);
+
+          const { web5: web6 } = await Web5.connect({
+            connectedDid: identity.metadata.uri,
+            password: this.app.account().password!,
+            sync: '15s',
+          });
+
+          this.identity.did = identity.metadata.uri;
+          this.identity.web5 = web5;
+          this.identity.agent = web5.agent as Web5IdentityAgent;
+
+          await this.protocol.register(web5);
+
+          return;
+
+          // Change the active account.
+          await this.identity.changeAccount(identity.metadata.uri);
+
+          this.importedIdentities.push(identity);
+
+          this.identity.identities = await this.identity.agent.identity.list();
+
+          console.log('Identities: ', this.identity.identities);
+
+          // await this.protocol.register(web5);
+
+          // const { web5 } = await Web5.connect({
+          //   connectedDid: identity.metadata.uri,
+          //   password: 'stick midnight midnight razor later glare',
+          //   sync: '15s',
+          // });
+
+          // await this.protocol.register(web5);
+
+          // console.log('Registered protocols for identity:', identity);
+
+          return;
 
           try {
             const bearerIdentity = await this.identity.activeAgent().identity.import({ portableIdentity: jsonObject });

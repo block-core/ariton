@@ -65,8 +65,10 @@ export class IdentityService {
         password,
         sync: this.syncInterval,
       });
-      this.web5 = result.web5;
+
       this.did = result.did;
+      this.web5 = result.web5;
+      this.agent = result.web5.agent as Web5IdentityAgent;
 
       console.log('Web5 Connected.', this.did);
       // console.log('IDENTITY SERVICE:', this.web5);
@@ -107,38 +109,42 @@ export class IdentityService {
   identityApi!: AgentIdentityApi;
 
   async connect(connectedDid: string, password: string) {
+    console.log('PASSWORD:', password);
+
     try {
-      const customAgentVault = new HdIdentityVault({
-        keyDerivationWorkFactor: 210_000,
-        store: new LevelStore<string, string>({ location: `DATA/AGENT/VAULT_STORE` }),
-      });
+      // TODO: The following custom agent setup makes restore identity fail. Investigate why.
+      // const customAgentVault = new HdIdentityVault({
+      //   keyDerivationWorkFactor: 210_000,
+      //   store: new LevelStore<string, string>({ location: `DATA/AGENT/VAULT_STORE` }),
+      // });
 
-      await customAgentVault.unlock({ password });
+      // await customAgentVault.unlock({ password });
 
-      const didApi = new AgentDidApi({
-        didMethods: [DidDht, DidJwk, DidStellar],
-        resolverCache: new AgentDidResolverCache({ location: `DATA/AGENT/DID_RESOLVERCACHE` }),
-        store: new DwnDidStore(),
-      });
+      // const didApi = new AgentDidApi({
+      //   didMethods: [DidDht, DidJwk, DidStellar],
+      //   resolverCache: new AgentDidResolverCache({ location: `DATA/AGENT/DID_RESOLVERCACHE` }),
+      //   store: new DwnDidStore(),
+      // });
 
-      const agentDid = await customAgentVault.getDid();
+      // const agentDid = await customAgentVault.getDid();
 
-      this.store = new DwnIdentityStore();
+      // this.store = new DwnIdentityStore();
 
-      const identityApi: any = new AgentIdentityApi({ store: this.store });
-      this.identityApi = identityApi;
+      // const identityApi: any = new AgentIdentityApi({ store: this.store });
+      // this.identityApi = identityApi;
 
-      const customAgent = await Web5IdentityAgent.create({
-        didApi,
-        agentDid,
-        identityApi,
-        agentVault: customAgentVault,
-      });
-      this.agent = customAgent;
+      // const customAgent = await Web5IdentityAgent.create({
+      //   didApi,
+      //   agentDid,
+      //   identityApi,
+      //   agentVault: customAgentVault,
+      // });
+      // this.agent = customAgent;
 
       console.log('Connecting to Web5...');
 
-      const result = await Web5.connect({ agent: customAgent, connectedDid, password, sync: this.syncInterval });
+      // const result = await Web5.connect({ agent: customAgent, connectedDid, password, sync: this.syncInterval });
+      const result = await Web5.connect({ connectedDid, password, sync: this.syncInterval });
 
       // Populate the accounts array with the connected accounts.
       this.accounts[connectedDid] = result.web5;
@@ -148,8 +154,9 @@ export class IdentityService {
       // const list = await customAgent.identity.list();
       // console.log('LIST: ', list);
 
-      this.web5 = result.web5;
       this.did = result.did;
+      this.web5 = result.web5;
+      this.agent = result.web5.agent as Web5IdentityAgent;
 
       // const resolvedDid = await this.web5.did.resolve(
       //   'did:stellar:GCFXHS4GXL6BVUCXBWXGTITROWLVYXQKQLF4YH5O5JT3YZXCYPAFBJZB',
@@ -302,7 +309,7 @@ export class IdentityService {
   }
 
   async registerAccount(uri: string, password: string) {
-    let account = this.accounts[uri];
+    // let account = this.accounts[uri];
 
     // if (account) {
     //   return;
@@ -316,14 +323,14 @@ export class IdentityService {
     });
 
     this.accounts[uri] = web5;
-    const agent = web5.agent as Web5IdentityAgent;
+    // const agent = web5.agent as Web5IdentityAgent;
 
-    try {
-      await agent.sync.registerIdentity({ did: uri });
-      // await this.agent.sync.registerIdentity({ did: uri });
-    } catch (err) {
-      console.warn('Failed to register sync for account:', err);
-    }
+    // try {
+    //   await agent.sync.registerIdentity({ did: uri });
+    //   // await this.agent.sync.registerIdentity({ did: uri });
+    // } catch (err) {
+    //   console.warn('Failed to register sync for account:', err);
+    // }
 
     return web5;
   }
