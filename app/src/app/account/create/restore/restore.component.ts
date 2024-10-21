@@ -85,11 +85,13 @@ export class RestoreComponent {
 
           await this.identity.agent.sync.registerIdentity({ did: identity.metadata.uri });
 
-          const { web5 } = await Web5.connect({
-            connectedDid: identity.metadata.uri,
-            password: this.app.account().password!,
-            sync: '15s',
-          });
+          const web5 = await this.identity.registerAccount(identity.metadata.uri, this.app.account().password!);
+
+          // const { web5 } = await Web5.connect({
+          //   connectedDid: identity.metadata.uri,
+          //   password: this.app.account().password!,
+          //   sync: '15s',
+          // });
 
           await this.protocol.register(web5);
 

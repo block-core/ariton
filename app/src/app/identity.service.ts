@@ -316,7 +316,7 @@ export class IdentityService {
     // }
 
     const { web5 } = await Web5.connect({
-      agent: this.agent,
+      // agent: this.agent,
       connectedDid: uri,
       password,
       sync: this.syncInterval,
