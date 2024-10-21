@@ -318,9 +318,11 @@ export class TextComponent implements OnDestroy {
 
     // We must ensure we always initially save with tags, because we cannot edit
     // a record that did not have any initial tags.
-    let tags = {
-      labels: [''],
-    };
+    // let tags = {
+    //   labels: [''],
+    // };
+
+    let tags = undefined;
 
     // Only set labels on tags if there is any data. It will crash to attempt to save label with empty array.
     if (data.labels && data.labels.length > 0) {
@@ -328,13 +330,18 @@ export class TextComponent implements OnDestroy {
         labels: data.labels,
       };
     }
+
     if (entry.record) {
-      entry.record.tags.labels = tags.labels;
+      // entry.record.tags.labels = tags.labels;
+      // const tags = { entry.record.tags }
 
       const { status } = await entry.record.update({
+        tags: tags,
         data: data,
         published: published,
       });
+
+      // record.update({ tags :{ tag: value }}) should do it.
 
       console.log('Record status:', status);
       await entry.record.send();

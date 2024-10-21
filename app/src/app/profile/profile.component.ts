@@ -197,12 +197,19 @@ export class ProfileComponent {
   async savePost(entry: any, data: DialogData) {
     // console.log('SAVE POST: ', entry, data);
 
-    if (entry.record) {
-      // Will this work?
-      entry.record.tags.labels = data.labels;
+    let tags = undefined;
 
+    // Only set labels on tags if there is any data. It will crash to attempt to save label with empty array.
+    if (data.labels && data.labels.length > 0) {
+      tags = {
+        labels: data.labels,
+      };
+    }
+
+    if (entry.record) {
       const { status, record } = await entry.record.update({
-        data: data,
+        tags,
+        data,
         published: true,
       });
 
@@ -212,9 +219,7 @@ export class ProfileComponent {
         data: data,
         message: {
           published: true, // Make the record public, so they can be queried and view by everyone.
-          tags: {
-            labels: data.labels,
-          },
+          tags
           protocol: postDefinition.protocol,
           protocolPath: 'post',
           schema: postDefinition.types.post.schema,
