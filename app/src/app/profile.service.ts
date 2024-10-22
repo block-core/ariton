@@ -53,7 +53,7 @@ export class ProfileService {
 
   constructor() {
     effect(async () => {
-      if (this.identity.activeAccount()) {
+      if (this.identity.initialized() && this.identity.activeIdentity()) {
         console.log('Active account found, loading profile...', this.identity.did);
         this.openCurrentUserProfile(this.identity.did);
       }

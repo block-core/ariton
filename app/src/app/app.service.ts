@@ -12,9 +12,11 @@ import { ConnectionService } from './connection.service';
 import { WorkerService } from './worker.service';
 import { EventService } from './event.service';
 import { StorageService } from './storage.service';
+import { Web5IdentityAgent } from '@web5/identity-agent';
 
 export interface AppState {
   selectedAccount: string;
+  selectedIdentity: string;
   backupConfirmed?: boolean;
   hidden: any;
   loginAction: string;
@@ -27,6 +29,18 @@ export interface Account {
   recoveryPhrase: string;
   password?: string;
   passwordHash?: string;
+  bundleTimestamp: string | null;
+}
+
+export interface AritonAgent {
+  did: string;
+  recoveryPhrase: string;
+  password?: string;
+  passwordHash?: string;
+}
+
+export interface AritonIdentity {
+  did: string;
   bundleTimestamp: string | null;
 }
 
@@ -76,11 +90,20 @@ export class AppService {
 
   event = inject(EventService);
 
-  state = signal<AppState>({ loginAction: '/dashboard', selectedAccount: '', hidden: {} });
+  state = signal<AppState>({ loginAction: '/dashboard', selectedAccount: '', selectedIdentity: '', hidden: {} });
 
   account = signal<Account>({ did: '', recoveryPhrase: '', password: '', passwordHash: '', bundleTimestamp: '' });
 
   accounts = signal<Account[]>([]);
+
+  // Identities is also branded as "Accounts" for users. Multiple can exists on same agent,
+  // but the Web5 SDK doesn't support changing the active connectedDid yet.
+  identities = signal<AritonIdentity[]>([]);
+
+  // There is a single agent that holds all user identities.
+  agent = signal<AritonAgent | null>(null);
+
+  activeIdentity = signal<AritonIdentity | null | undefined>(null);
 
   /** Parameters that comes from query string during activation of the extension. */
   params = signal<any>({});
@@ -120,12 +143,20 @@ export class AppService {
   //  return this.storage.read('state');
   //}
 
-  saveAccounts() {
-    this.localStorage.save('accounts', this.accounts());
+  saveAgent(agent: AritonAgent) {
+    this.localStorage.save('agent', agent);
   }
 
-  saveState() {
-    this.localStorage.save('state', this.state());
+  saveIdentities(identities: AritonIdentity[]) {
+    this.localStorage.save('identities', identities);
+  }
+
+  saveAccounts(accounts: any) {
+    this.localStorage.save('accounts', accounts);
+  }
+
+  saveState(state: any) {
+    this.localStorage.save('state', state);
   }
 
   // restore(recoveryPhrase: string) {
@@ -146,15 +177,16 @@ export class AppService {
 
   addAccount(account: Account) {
     this.accounts().push(account);
-    this.saveAccounts();
+    this.saveAccounts(this.accounts());
 
     this.state().selectedAccount = account.did;
-    this.saveState();
+    this.saveState(this.state());
   }
 
   async createAccount() {
     let state: AppState = {
       selectedAccount: '',
+      selectedIdentity: '',
       hidden: {},
       loginAction: '/introduction',
       // bundleTimestamp: '',
@@ -173,6 +205,7 @@ export class AppService {
     this.loading.set(true);
     console.log('Initializing Ariton...');
 
+    // Load the state from storage.
     let state = this.localStorage.read('state') as AppState;
 
     // If there is no state, it's a new user and return immediately.
@@ -182,12 +215,17 @@ export class AppService {
       return;
     }
 
-    let accounts = this.localStorage.read('accounts') as any[];
+    // let accounts = this.localStorage.read('accounts') as any[];
+    let identities = this.localStorage.read('identities') as AritonIdentity[];
+    let agent = this.localStorage.read('agent') as AritonAgent;
+
+    console.log('IDENTITIES, AGENT from local:', identities, agent);
+
     let result: Web5ConnectResult | undefined;
 
-    // If there are no accounts, user has not used app before.
-    if (!accounts) {
-      console.log('No accounts found');
+    // If there are no agent, user has not used app before.
+    if (!agent) {
+      console.log('No agent found');
 
       // Create a unique password for the user that they can replace.
       const password = await this.crypto.createPassword();
@@ -208,28 +246,47 @@ export class AppService {
       console.log(result);
       console.log('Initialize connect finished.');
 
-      // if (!result) {
-      //   // TODO: Handle this error condition.
-      //   this.loading.set(false);
-      //   return;
-      // }
-
       // Save the account to storage.
-      accounts = [
-        {
-          did: result.did,
-          recoveryPhrase: result.recoveryPhrase, // TODO: Encrypt this!
-          password: password,
-        },
-      ];
+      // accounts = [
+      //   {
+      //     did: result.did,
+      //     recoveryPhrase: result.recoveryPhrase, // TODO: Encrypt this!
+      //     password: password,
+      //   },
+      // ];
 
-      this.localStorage.save('accounts', accounts);
+      // Save the agent to storage.
+      agent = {
+        did: result.web5.agent.agentDid.uri,
+        recoveryPhrase: result.recoveryPhrase!, // TODO: Encrypt this!
+        password: password,
+      };
 
+      this.saveAgent(agent);
+
+      // Set the newly created identity.
+      const identity = { did: result.did, bundleTimestamp: '' };
+      identities = [identity];
+      this.saveIdentities(identities);
+      this.identities.set(identities);
+
+      console.log('Identities saved:', identities);
+
+      // this.localStorage.save('accounts', accounts);
+      // this.localStorage.save('agent', agent);
+
+      state.selectedIdentity = result.did;
       state.selectedAccount = result.did;
 
-      this.accounts.set(accounts);
-      this.account?.set(accounts[0]);
-      this.localStorage.save('state', state);
+      this.saveState(state);
+
+      // this.accounts.set(accounts);
+      // this.account?.set(accounts[0]);
+      // this.localStorage.save('state', state);
+
+      // this.state.set(state);
+      this.agent.set(agent);
+      this.activeIdentity.set(identity);
 
       // A new default account is auto-unlocked with a generate password.
       this.onboardingState.set(OnboardingState.Unlocked);
@@ -237,15 +294,46 @@ export class AppService {
       // The default account is unlocked upon creation, continue the loading process.
       this.identity.locked.set(false);
     } else {
-      // If there are accounts, select the one from the state.selectedAccount value.
-      const account = accounts.find((account: any) => account.did === state.selectedAccount);
-      this.accounts.set(accounts);
-      this.account?.set(account);
+      let identity: AritonIdentity | undefined;
+
+      if (state.selectedIdentity) {
+        // If there are accounts, select the one from the state.selectedAccount value.
+        identity = identities.find((account: any) => account.did === state.selectedIdentity);
+        console.log('!!! IDENTITIES: ', identities);
+        console.log('!!! IDENTITY: ', identity);
+
+        this.activeIdentity.set(identity);
+
+        // this.accounts.set(accounts);
+        // this.account?.set(account);
+      } else {
+        if (identities.length === 0) {
+          identity = identities[0];
+          this.activeIdentity.set(identity);
+
+          console.log('!!! IDENTITY2: ', identity);
+        }
+      }
 
       // console.log('Account found: ', account);
 
-      if (account.password) {
-        result = await this.identity.connect(account.did, account.password);
+      if (agent.password) {
+        result = await this.identity.connect(identity!.did, agent.password);
+
+        // State date might be lost for some reason, restore it.
+        if (identities.length === 0) {
+          const agent = result?.web5.agent as Web5IdentityAgent;
+          const identities = await agent.identity.list();
+
+          const aritonIdentities: AritonIdentity[] = identities.map((identity) => ({
+            did: identity.metadata.uri,
+            bundleTimestamp: '',
+          }));
+
+          this.saveIdentities(aritonIdentities);
+          this.identities.set(aritonIdentities);
+        }
+
         if (!result) {
           // TODO: Implement error handling for this case.
           this.loading.set(false);
@@ -276,8 +364,12 @@ export class AppService {
     //   console.log('Password created');
     // }
 
-    // Load the user profile.
-    await this.profile.openCurrentUserProfile(this.account().did);
+    try {
+      // Load the user profile.
+      await this.profile.openCurrentUserProfile(this.activeIdentity()!.did);
+    } catch (error) {
+      console.error('Failed to load user profile:', error);
+    }
 
     // Load user and app data.
     await this.loadAppData();
@@ -307,7 +399,7 @@ export class AppService {
   async firstTimeInitialization() {
     // If the previous bundle hash is the same as the current, we don't need to re-register.
     // For local development, the getHash should be null, so we always re-register.
-    if (this.hash.getTimestamp() != null && this.account().bundleTimestamp === this.hash.getTimestamp()) {
+    if (this.hash.getTimestamp() != null && this.activeIdentity()!.bundleTimestamp === this.hash.getTimestamp()) {
       console.log('Bundle hash is the same as the previous one. No need to re-register protocols.');
       return;
     } else {
@@ -320,8 +412,9 @@ export class AppService {
 
     // Save the current bundle hash to the state.
     // this.state().bundleTimestamp = this.hash.getTimestamp();
-    this.account().bundleTimestamp = this.hash.getTimestamp();
-    this.saveAccounts();
+    this.activeIdentity()!.bundleTimestamp = this.hash.getTimestamp();
+    // this.saveAccounts();
+    this.saveIdentities(this.identities());
     // this.saveState();
   }
 }

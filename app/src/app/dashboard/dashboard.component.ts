@@ -55,7 +55,7 @@ export class DashboardComponent {
 
   hideIntroduction() {
     this.appService.state().hidden.introduction = true;
-    this.appService.saveState();
+    this.appService.saveState(this.appService.state());
   }
 
   /** Based on the screen size, switch from standard to one column per row */

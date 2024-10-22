@@ -20,6 +20,7 @@ import {
 import { Web5UserAgent } from '@web5/user-agent';
 import { LevelStore } from '@web5/common';
 import { DidStellar } from '../crypto/methods/did-stellar';
+import { AritonIdentity } from './app.service';
 
 @Injectable({
   providedIn: 'root',
@@ -73,9 +74,9 @@ export class IdentityService {
       console.log('Web5 Connected.', this.did);
       // console.log('IDENTITY SERVICE:', this.web5);
 
-      const agent = this.web5.agent as Web5IdentityAgent;
-      this.identities = await agent.identity.list();
-      console.log('LIST OF ALL IDENTITIES: ', this.identities);
+      // const agent = this.web5.agent as Web5IdentityAgent;
+      // this.identities = await agent.identity.list();
+      // console.log('LIST OF ALL IDENTITIES: ', this.identities);
 
       this.preinitialized.set(true);
       this.initialized.set(true);
@@ -255,7 +256,7 @@ export class IdentityService {
     } catch (err) {
       // TODO: Add UI and retry for Web5 initialize, add proper error handling.
       // Various network connection issues might make this call fail.@
-      console.error(err);
+      console.error('Failed to initialize web5:', err);
       alert('Failed to initialize Web5:' + err);
     }
 
@@ -264,15 +265,19 @@ export class IdentityService {
 
   // Define a signal for the active account
   public activeAccount = signal<Web5 | undefined>(undefined);
+  public activeIdentity = signal<AritonIdentity | undefined>(undefined);
 
   async changeAccount(did: string) {
     const account = this.accounts[did];
+
+    console.log('Changing to this Account:', account);
 
     if (!account) {
       return;
     }
 
     this.web5 = account;
+    this.agent = account.agent as Web5IdentityAgent;
     this.did = did;
 
     this.activeAccount.set(this.web5);
@@ -349,6 +354,7 @@ export class IdentityService {
     } catch (err) {
       // TODO: Add UI and retry for Web5 initialize, add proper error handling.
       // Various network connection issues might make this call fail.@
+      console.warn('Failed to initialize Web5:', err);
       alert('Failed to initialize Web5');
     }
 

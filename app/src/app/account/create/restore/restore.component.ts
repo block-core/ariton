@@ -11,12 +11,14 @@ import { CryptoService } from '../../../crypto.service';
 import { Account, AppService } from '../../../app.service';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { DidStellar } from '../../../../crypto/methods/did-stellar';
-import { BearerIdentity, PortableIdentity } from '@web5/agent';
+import { BearerIdentity, DwnDateSort, PortableIdentity } from '@web5/agent';
 import { Router, RouterModule } from '@angular/router';
 import { ProtocolService } from '../../../protocol.service';
 import { MatListModule } from '@angular/material/list';
-import { Web5 } from '@web5/api';
+import { DwnApi, Web5 } from '@web5/api';
 import { Web5IdentityAgent } from '@web5/identity-agent';
+import { protocolDefinition as noteDefinition } from '../../../../protocols/note';
+import { protocolDefinition as fileDefinition } from '../../../../protocols/file';
 
 @Component({
   selector: 'app-restore',
@@ -60,6 +62,64 @@ export class RestoreComponent {
     document.getElementById('input')?.click();
   }
 
+  async query() {
+    debugger;
+    const query = {
+      message: {
+        filter: {
+          protocol: 'https://schema.ariton.app/note',
+          schema: 'https://schema.ariton.app/note/schema/note',
+          dataFormat: 'application/json',
+        },
+      },
+    };
+
+    console.log('Query:', query);
+    console.log(this.identity.web5.agent);
+    console.log(this.identity.web5.dwn);
+    console.log(this.identity.web5.dwn.records);
+    console.log('Object above');
+
+    var { records, status } = await this.identity.web5.dwn.records.query(query);
+
+    console.log('Status:', status);
+    console.log(records);
+
+    const query2 = {
+      from: this.identity.did,
+      message: {
+        filter: {
+          protocol: 'https://schema.ariton.app/note',
+          schema: 'https://schema.ariton.app/note/schema/note',
+          dataFormat: 'application/json',
+        },
+      },
+    };
+
+    console.log('Query:', query2);
+
+    var { records, status } = await this.identity.web5.dwn.records.query(query2);
+
+    console.log('Status:', status);
+    console.log(records);
+
+    // const query2: any = {
+    //   filter: {
+    //     protocolPath: 'entry',
+    //     protocol: 'https://schema.ariton.app/file',
+    //     schema: 'https://schema.ariton.app/file/schema/entry',
+    //   },
+    //   dateSort: DwnDateSort.CreatedDescending,
+    // };
+
+    // var { records: records2, status: status2 } = await this.identity.web5.dwn.records.query(query2);
+
+    // console.log(records2);
+
+    // console.log('Status 2:', status2);
+    // console.log('Query test complete');
+  }
+
   async onFileSelected(event: any) {
     const files = (event.target as HTMLInputElement).files;
 
@@ -83,17 +143,36 @@ export class RestoreComponent {
 
           const identity = await this.identity.agent.identity.import({ portableIdentity: jsonObject });
 
+          console.log('Imported identity:', identity.metadata.uri);
+
           await this.identity.agent.sync.registerIdentity({ did: identity.metadata.uri });
+
+          const dwnApi = this.identity.web5.dwn as any;
+          console.log('CONNECTED IDENTITY1:', dwnApi.connectedDid);
 
           const web5 = await this.identity.registerAccount(identity.metadata.uri, this.app.account().password!);
 
-          // const { web5 } = await Web5.connect({
-          //   connectedDid: identity.metadata.uri,
-          //   password: this.app.account().password!,
-          //   sync: '15s',
-          // });
+          const dwnApi2 = web5.dwn as any;
+          console.log('CONNECTED IDENTITY2:', dwnApi2.connectedDid);
 
           await this.protocol.register(web5);
+
+          await this.identity.changeAccount(identity.metadata.uri);
+
+          var { records } = await web5.dwn.records.query({
+            from: identity.metadata.uri,
+            message: {
+              filter: {
+                protocol: noteDefinition.protocol,
+                schema: noteDefinition.types.note.schema,
+                dataFormat: noteDefinition.types.note.dataFormats[0],
+              },
+            },
+          });
+
+          console.log('Records:', records);
+
+          // web5.dwn.records.query({ query: { tags: { entryType: 'file' } } });
 
           return;
 

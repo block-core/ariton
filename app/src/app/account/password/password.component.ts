@@ -60,7 +60,8 @@ export class PasswordComponent {
     // Generate hash of the password.
     this.appService.account().passwordHash = '123';
 
-    this.appService.saveAccounts();
+    this.appService.saveAgent(this.appService.agent()!);
+    // this.appService.saveAccounts();
 
     console.log('Password changed');
   }
