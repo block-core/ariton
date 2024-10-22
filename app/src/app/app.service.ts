@@ -15,7 +15,7 @@ import { StorageService } from './storage.service';
 import { Web5IdentityAgent } from '@web5/identity-agent';
 
 export interface AppState {
-  selectedAccount: string;
+  // selectedAccount: string;
   selectedIdentity: string;
   backupConfirmed?: boolean;
   hidden: any;
@@ -90,11 +90,11 @@ export class AppService {
 
   event = inject(EventService);
 
-  state = signal<AppState>({ loginAction: '/dashboard', selectedAccount: '', selectedIdentity: '', hidden: {} });
+  state = signal<AppState>({ loginAction: '/dashboard', selectedIdentity: '', hidden: {} });
 
   account = signal<Account>({ did: '', recoveryPhrase: '', password: '', passwordHash: '', bundleTimestamp: '' });
 
-  accounts = signal<Account[]>([]);
+  // accounts = signal<Account[]>([]);
 
   // Identities is also branded as "Accounts" for users. Multiple can exists on same agent,
   // but the Web5 SDK doesn't support changing the active connectedDid yet.
@@ -175,17 +175,18 @@ export class AppService {
     return true;
   }
 
-  addAccount(account: Account) {
-    this.accounts().push(account);
-    this.saveAccounts(this.accounts());
+  // addAccount(account: Account) {
+  //   // this.accounts().push(account);
+  //   // this.saveAccounts(this.accounts());
 
-    this.state().selectedAccount = account.did;
-    this.saveState(this.state());
-  }
+  //   // this.state().selectedAccount = account.did;
+  //   this.state().selectedIdentity = account.did;
+  //   this.saveState(this.state());
+  // }
 
   async createAccount() {
     let state: AppState = {
-      selectedAccount: '',
+      // selectedAccount: '',
       selectedIdentity: '',
       hidden: {},
       loginAction: '/introduction',
@@ -276,7 +277,7 @@ export class AppService {
       // this.localStorage.save('agent', agent);
 
       state.selectedIdentity = result.did;
-      state.selectedAccount = result.did;
+      // state.selectedAccount = result.did;
 
       this.saveState(state);
 

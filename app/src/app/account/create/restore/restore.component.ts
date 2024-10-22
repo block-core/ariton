@@ -150,103 +150,113 @@ export class RestoreComponent {
           const dwnApi = this.identity.web5.dwn as any;
           console.log('CONNECTED IDENTITY1:', dwnApi.connectedDid);
 
-          const web5 = await this.identity.registerAccount(identity.metadata.uri, this.app.account().password!);
+          this.app.identities.set([...this.app.identities(), { did: identity.metadata.uri, bundleTimestamp: '' }]);
+          this.app.saveIdentities(this.app.identities());
 
-          const dwnApi2 = web5.dwn as any;
-          console.log('CONNECTED IDENTITY2:', dwnApi2.connectedDid);
+          this.app.state().selectedIdentity = identity.metadata.uri;
+          this.app.saveState(this.app.state());
 
-          await this.protocol.register(web5);
+          window.location.reload();
 
-          await this.identity.changeAccount(identity.metadata.uri);
+          // this.app.activeIdentity.set({ did: identity.metadata.uri });
 
-          var { records } = await web5.dwn.records.query({
-            from: identity.metadata.uri,
-            message: {
-              filter: {
-                protocol: noteDefinition.protocol,
-                schema: noteDefinition.types.note.schema,
-                dataFormat: noteDefinition.types.note.dataFormats[0],
-              },
-            },
-          });
+          // const web5 = await this.identity.registerAccount(identity.metadata.uri, this.app.account().password!);
 
-          console.log('Records:', records);
+          // const dwnApi2 = web5.dwn as any;
+          // console.log('CONNECTED IDENTITY2:', dwnApi2.connectedDid);
+
+          // await this.protocol.register(web5);
+
+          // await this.identity.changeAccount(identity.metadata.uri);
+
+          // var { records } = await web5.dwn.records.query({
+          //   from: identity.metadata.uri,
+          //   message: {
+          //     filter: {
+          //       protocol: noteDefinition.protocol,
+          //       schema: noteDefinition.types.note.schema,
+          //       dataFormat: noteDefinition.types.note.dataFormats[0],
+          //     },
+          //   },
+          // });
+
+          // console.log('Records:', records);
 
           // web5.dwn.records.query({ query: { tags: { entryType: 'file' } } });
 
-          return;
+          // return;
 
-          // const agent = this.identity.agent;
+          // // const agent = this.identity.agent;
 
-          const identity2 = await this.identity.agent.identity.import({ portableIdentity: jsonObject });
-          console.log('Imported identity:', identity);
+          // const identity2 = await this.identity.agent.identity.import({ portableIdentity: jsonObject });
+          // console.log('Imported identity:', identity);
 
-          await this.identity.agent.sync.registerIdentity({ did: identity.metadata.uri });
+          // await this.identity.agent.sync.registerIdentity({ did: identity.metadata.uri });
 
-          console.log('Agent DID1: ', this.identity.agent.agentDid.uri);
+          // console.log('Agent DID1: ', this.identity.agent.agentDid.uri);
 
-          // Register the Web5 instance.
-          // const web5 = await this.identity.registerAccount(identity.metadata.uri, this.app.account().password!);
+          // // Register the Web5 instance.
+          // // const web5 = await this.identity.registerAccount(identity.metadata.uri, this.app.account().password!);
 
-          // console.log('Agent DID2: ', web5.agent.agentDid.uri);
-          console.log('Agent DID3: ', this.identity.agent.agentDid.uri);
+          // // console.log('Agent DID2: ', web5.agent.agentDid.uri);
+          // console.log('Agent DID3: ', this.identity.agent.agentDid.uri);
 
-          const { web5: web6 } = await Web5.connect({
-            connectedDid: identity.metadata.uri,
-            password: this.app.account().password!,
-            sync: '15s',
-          });
-
-          this.identity.did = identity.metadata.uri;
-          this.identity.web5 = web5;
-          this.identity.agent = web5.agent as Web5IdentityAgent;
-
-          await this.protocol.register(web5);
-
-          return;
-
-          // Change the active account.
-          await this.identity.changeAccount(identity.metadata.uri);
-
-          this.importedIdentities.push(identity);
-
-          this.identity.identities = await this.identity.agent.identity.list();
-
-          console.log('Identities: ', this.identity.identities);
-
-          // await this.protocol.register(web5);
-
-          // const { web5 } = await Web5.connect({
+          // const { web5: web6 } = await Web5.connect({
           //   connectedDid: identity.metadata.uri,
-          //   password: 'stick midnight midnight razor later glare',
+          //   password: this.app.account().password!,
           //   sync: '15s',
           // });
 
+          // this.identity.did = identity.metadata.uri;
+          // this.identity.web5 = web5;
+          // this.identity.agent = web5.agent as Web5IdentityAgent;
+
           // await this.protocol.register(web5);
 
-          // console.log('Registered protocols for identity:', identity);
+          // return;
 
-          return;
+          // // Change the active account.
+          // await this.identity.changeAccount(identity.metadata.uri);
 
-          try {
-            const bearerIdentity = await this.identity.activeAgent().identity.import({ portableIdentity: jsonObject });
-            console.log('Imported successfully');
-          } catch (err) {
-            console.error('Error importing identity:', err);
-          }
+          // this.importedIdentities.push(identity);
 
-          const bearerIdentity = await this.identity.activeAgent().identity.manage({ portableIdentity: jsonObject });
-          console.log('Imported identity: ', bearerIdentity);
+          // this.identity.identities = await this.identity.agent.identity.list();
 
-          // Register the Web5 instance.
-          await this.identity.registerAccount(bearerIdentity.metadata.uri, this.app.account().password!);
+          // console.log('Identities: ', this.identity.identities);
 
-          // Change the active account.
-          this.identity.changeAccount(bearerIdentity.metadata.uri);
+          // // await this.protocol.register(web5);
 
-          this.importedIdentities.push(bearerIdentity);
+          // // const { web5 } = await Web5.connect({
+          // //   connectedDid: identity.metadata.uri,
+          // //   password: 'stick midnight midnight razor later glare',
+          // //   sync: '15s',
+          // // });
 
-          this.identity.identities = await this.identity.activeAgent().identity.list();
+          // // await this.protocol.register(web5);
+
+          // // console.log('Registered protocols for identity:', identity);
+
+          // return;
+
+          // try {
+          //   const bearerIdentity = await this.identity.activeAgent().identity.import({ portableIdentity: jsonObject });
+          //   console.log('Imported successfully');
+          // } catch (err) {
+          //   console.error('Error importing identity:', err);
+          // }
+
+          // const bearerIdentity = await this.identity.activeAgent().identity.manage({ portableIdentity: jsonObject });
+          // console.log('Imported identity: ', bearerIdentity);
+
+          // // Register the Web5 instance.
+          // await this.identity.registerAccount(bearerIdentity.metadata.uri, this.app.account().password!);
+
+          // // Change the active account.
+          // this.identity.changeAccount(bearerIdentity.metadata.uri);
+
+          // this.importedIdentities.push(bearerIdentity);
+
+          // this.identity.identities = await this.identity.activeAgent().identity.list();
         } catch (error) {
           this.app.openSnackBar(`Error parsing JSON from file ${file.name}: ${error}`, 3000);
           console.error(`Error parsing JSON from file ${file.name}:`, error);
@@ -486,12 +496,12 @@ export class RestoreComponent {
       // REUSE PASSWORD ACROSS ALL IDENTITIES!
       const password = this.app.account().password;
 
-      this.app.addAccount({
-        did: stellarPortableDid.uri,
-        recoveryPhrase: this.addressForm.controls.recoveryPhrase.value!,
-        password: password,
-        bundleTimestamp: '',
-      });
+      // this.app.addAccount({
+      //   did: stellarPortableDid.uri,
+      //   recoveryPhrase: this.addressForm.controls.recoveryPhrase.value!,
+      //   password: password,
+      //   bundleTimestamp: '',
+      // });
 
       // this.app.state().selectedAccount = this.identity.did;
       // this.app.saveState();
@@ -529,7 +539,7 @@ export class RestoreComponent {
 
       account.did = result.did;
 
-      this.app.addAccount(account);
+      // this.app.addAccount(account);
     }
 
     this.app.initialized.set(true);
