@@ -312,6 +312,9 @@ export class AppService {
 
         this.activeIdentity.set(identity);
 
+        // Set the agent value.
+        this.agent.set(agent);
+
         // this.accounts.set(accounts);
         // this.account?.set(account);
       } else {
