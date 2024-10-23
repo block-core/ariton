@@ -11,7 +11,7 @@
     <button [disabled]="appService.loading()" mat-button (click)="back()">Back</button>
     } @else {
     <button [disabled]="appService.loading()" mat-flat-button (click)="createAccount()">Create a new account</button>
-    <button [disabled]="true" mat-button (click)="restoreAccount()">Restore existing account</button>
+    <button [disabled]="appService.loading()" mat-button (click)="restoreAccount()">Restore existing account</button>
     } @if(restore()) {
     <app-restore></app-restore>
     }

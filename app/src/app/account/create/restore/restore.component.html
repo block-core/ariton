@@ -4,8 +4,9 @@
   <p>
     <mat-button-toggle-group formControlName="importType">
       <mat-button-toggle value="ariton">Ariton</mat-button-toggle>
-      <mat-button-toggle value="stellar">Stellar</mat-button-toggle>
-      <mat-button-toggle value="nostr">Nostr</mat-button-toggle>
+      <mat-button-toggle value="did:is" [disabled]="true">FreeID</mat-button-toggle>
+      <mat-button-toggle value="stellar" [disabled]="true">Stellar</mat-button-toggle>
+      <mat-button-toggle value="nostr" [disabled]="true">Nostr</mat-button-toggle>
     </mat-button-toggle-group>
   </p>
 
