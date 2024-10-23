@@ -162,15 +162,24 @@ export class RestoreComponent {
           } else {
             // This is when the user restores from the load screen and no Web5 have been initialized.
 
-            const { password, did, agentDid, recoveryPhrase } = await this.identity.connectWithIdentity(
+            const { password, did, agentDid, recoveryPhrase, web5 } = await this.identity.connectWithIdentity(
               jsonObject as PortableIdentity,
             );
 
-            console.log('Password generated for imported identity: ', password);
+            console.log('DID:', did);
+            console.log('Agent DID:', agentDid);
+            console.log('Web5:', web5);
+
+            // There should be zero from before.
+            this.app.identities.set([...this.app.identities(), { did: did, bundleTimestamp: '' }]);
+            this.app.saveIdentities(this.app.identities());
+
+            this.app.state().selectedIdentity = did;
+            this.app.saveState(this.app.state());
 
             this.app.agent.set({
               did: agentDid,
-              recoveryPhrase: '',
+              recoveryPhrase: recoveryPhrase!,
               password,
             });
 
@@ -178,6 +187,8 @@ export class RestoreComponent {
             this.app.saveAgent(this.app.agent()!);
 
             console.log('Agent password saved:', this.app.agent());
+
+            window.location.reload();
 
             // this.app.account().password = password;
           }

@@ -119,33 +119,102 @@ export class IdentityService {
     // initial account.
     // result = await this.identity.initialConnect(password);
 
-    // const customAgentVault = new HdIdentityVault({
-    //   keyDerivationWorkFactor: 210_000,
-    //   store: new LevelStore<string, string>({ location: `DATA/AGENT/VAULT_STORE` }),
-    // });
+    // Web5.connect();
+
+    const customAgentVault = new HdIdentityVault({
+      keyDerivationWorkFactor: 210_000,
+      store: new LevelStore<string, string>({ location: `DATA/AGENT/VAULT_STORE` }),
+    });
+
+    // customAgentVault.initialize(password, )
     // await customAgentVault.unlock({ password });
-    // const didApi = new AgentDidApi({
-    //   didMethods: [DidDht, DidJwk, DidStellar],
-    //   resolverCache: new AgentDidResolverCache({ location: `DATA/AGENT/DID_RESOLVERCACHE` }),
-    //   store: new DwnDidStore(),
-    // });
+
+    let recoveryPhrase = undefined;
+
+    const didApi = new AgentDidApi({
+      didMethods: [DidDht, DidJwk, DidStellar],
+      resolverCache: new AgentDidResolverCache({ location: `DATA/AGENT/DID_RESOLVERCACHE` }),
+      store: new DwnDidStore(),
+    });
+
     // const agentDid = await customAgentVault.getDid();
-    // this.store = new DwnIdentityStore();
-    // const identityApi: any = new AgentIdentityApi({ store: this.store });
-    // this.identityApi = identityApi;
+
+    this.store = new DwnIdentityStore();
+    const identityApi: any = new AgentIdentityApi({ store: this.store });
+
+    this.identityApi = identityApi;
+
+    const userAgent = await Web5UserAgent.create({ didApi, identityApi, agentVault: customAgentVault });
+
     // const customAgent = await Web5IdentityAgent.create({
     //   didApi,
     //   agentDid,
     //   identityApi,
     //   agentVault: customAgentVault,
     // });
-    // this.agent = customAgent;
+
+    const serviceEndpointNodes = ['https://dwn.tbddev.org/beta'];
+
+    // this.agent = userAgent;
+
+    const firstLaunch = await userAgent.firstLaunch();
+    console.log('FIRST LAUNCH???', firstLaunch);
+
+    if (firstLaunch) {
+      recoveryPhrase = await userAgent.initialize({
+        password,
+        recoveryPhrase,
+        dwnEndpoints: serviceEndpointNodes,
+      });
+
+      console.log('USER AGENT RECOVERY PHRASE:', recoveryPhrase);
+    }
+    await userAgent.start({ password });
+
+    const identity = await userAgent.identity.import({ portableIdentity });
+
+    // Generate a new Identity for the end-user.
+    // const identity = await userAgent.identity.create({
+    //   didMethod: 'dht',
+    //   metadata: { name: 'Imported' },
+    //   didOptions: {
+    //     services: [
+    //       {
+    //         id: 'dwn',
+    //         type: 'DecentralizedWebNode',
+    //         serviceEndpoint: serviceEndpointNodes,
+    //         enc: '#enc',
+    //         sig: '#sig',
+    //       },
+    //     ],
+    //     verificationMethods: [
+    //       {
+    //         algorithm: 'Ed25519',
+    //         id: 'sig',
+    //         purposes: ['assertionMethod', 'authentication'],
+    //       },
+    //       {
+    //         algorithm: 'secp256k1',
+    //         id: 'enc',
+    //         purposes: ['keyAgreement'],
+    //       },
+    //     ],
+    //   },
+    // });
+
+    console.log('IDENTITY MADE IN IMPORT:', identity);
+
+    await userAgent.sync.registerIdentity({ did: identity.did.uri });
+
+    const web5 = new Web5({ agent: userAgent, connectedDid: identity.did.uri });
+    console.log('WEB5:', web5);
 
     return {
       password,
-      agentDid: '123',
-      did: '333',
-      recoveryPhrase: '',
+      agentDid: web5.agent.agentDid.uri,
+      did: identity.did.uri,
+      recoveryPhrase,
+      web5,
     };
   }
 
