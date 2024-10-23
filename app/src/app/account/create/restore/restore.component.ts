@@ -299,6 +299,7 @@ export class RestoreComponent {
       };
 
       reader.onerror = () => {
+        this.app.openSnackBar(`Error reading file ${file.name}: ${reader.error}`, 3000);
         console.error(`Error reading file ${file.name}:`, reader.error);
       };
 
