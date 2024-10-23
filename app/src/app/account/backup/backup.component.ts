@@ -31,7 +31,7 @@ export class BackupComponent {
 
   async copyRecoveryPhrase(): Promise<void> {
     try {
-      await navigator.clipboard.writeText(this.appService.account().recoveryPhrase);
+      await navigator.clipboard.writeText(this.appService.agent()!.recoveryPhrase);
       console.log('Text copied to clipboard');
     } catch (err) {
       console.error('Failed to copy: ', err);

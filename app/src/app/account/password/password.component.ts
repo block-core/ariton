@@ -32,7 +32,7 @@ export class PasswordComponent {
   passwordInputRepeat = new FormControl('', Validators.required);
 
   /** Indicates if the view should be password set or password reset. */
-  reset = computed(() => this.appService.account().passwordHash);
+  reset = computed(() => this.appService.agent()?.passwordHash);
 
   unlocking = signal(false);
 
@@ -55,10 +55,10 @@ export class PasswordComponent {
     await this.identityService.changePassword(oldPassword, newPassword);
 
     // Clear the password from the local state
-    this.appService.account().password = undefined;
+    this.appService.agent()!.password = undefined;
 
     // Generate hash of the password.
-    this.appService.account().passwordHash = '123';
+    this.appService.agent()!.passwordHash = '123';
 
     this.appService.saveAgent(this.appService.agent()!);
     // this.appService.saveAccounts();
@@ -82,7 +82,7 @@ export class PasswordComponent {
       if (this.reset()) {
         password = this.passwordInputPrevious.value!;
       } else {
-        password = this.appService.account().password;
+        password = this.appService.agent()!.password;
       }
 
       await this.changePassword(password, this.passwordInput.value!, this.passwordInputRepeat.value!);

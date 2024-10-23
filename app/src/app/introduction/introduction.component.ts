@@ -16,7 +16,7 @@ import { LayoutService } from '../layout.service';
 export class IntroductionComponent {
   appService = inject(AppService);
 
-  reset = computed(() => this.appService.account().passwordHash);
+  reset = computed(() => this.appService.agent()?.passwordHash);
 
   backup = computed(() => this.appService.state().backupConfirmed);
 
