@@ -467,7 +467,7 @@ export class RestoreComponent {
         console.log('Portable Identity:', portableIdentity);
 
         const bearerIdentity1 = await agent.identity.import({ portableIdentity });
-        const bearerIdentity2 = await agent.identity.manage({ portableIdentity: portableIdentity });
+        // const bearerIdentity2 = await agent.identity.manage({ portableIdentity: portableIdentity });
 
         // const importedBearerDid = await agent.did.import({ portableDid: stellarPortableDid });
         // var importedDid = await agent.identity.import({ portableIdentity });

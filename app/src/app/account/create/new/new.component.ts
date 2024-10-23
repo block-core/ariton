@@ -116,11 +116,8 @@ export class NewComponent {
     // console.log('Import...');
     // const bearerIdentity1 = await agent.identity.import({ portableIdentity });
 
-    console.log('Manage...');
-    const bearerIdentity2 = await agent.identity.manage({ portableIdentity: portableIdentity });
-
     // Register the Web5 instance.
-    const web5 = await this.identity.registerAccount(bearerIdentity2.metadata.uri, this.app.account().password!);
+    const web5 = await this.identity.registerAccount(portableIdentity.metadata.uri, this.app.account().password!);
 
     const newAgent = web5.agent as Web5IdentityAgent;
 
@@ -129,8 +126,8 @@ export class NewComponent {
 
     // const dwnEndpoints = services.map((service) => service.serviceEndpoint[0].toString());
     const dwnEndpoints = ['https://dwn.tbddev.org/beta'];
-    await this.identity.registerEndpoints(newAgent, bearerIdentity2, dwnEndpoints);
-    console.log(`Register protocols for ${bearerIdentity2.metadata.uri}`);
+    await this.identity.registerEndpoints(newAgent, bearerIdentity, dwnEndpoints);
+    console.log(`Register protocols for ${portableIdentity.metadata.uri}`);
 
     // Install all the protocols.
     await this.protocol.register(web5);
