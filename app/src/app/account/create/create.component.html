@@ -1,13 +1,15 @@
 <h1>Add account</h1>
 
+<p class="warning">Support for multiple accounts is coming soon!</p>
+
 <p>
   Ariton allows you to have any number of accounts and you have multiple ways to keep your account keys safe and secure.
 </p>
 
 <p>First choose if you want to create a new account or restore existing:</p>
 
-<button mat-flat-button [routerLink]="['new']">Create new account</button>
+<button mat-flat-button [disabled]="true" [routerLink]="['new']">Create new account</button>
 &nbsp;
-<button mat-flat-button [routerLink]="['restore']">Restore existing account</button>
+<button mat-flat-button [disabled]="true" [routerLink]="['restore']">Restore existing account</button>
 
 <p class="dimmed">The software is provided 'as is', without warranty of any kind. Use at your own discretion.</p>
