@@ -35,7 +35,7 @@ export class UnlockComponent {
 
   async onSubmit() {
     this.unlocking.set(true);
-    const unlocked = await this.identityService.unlock(this.passwordInput.value!);
+    const unlocked = await this.identityService.unlock(this.identityService.did, this.passwordInput.value!);
 
     if (unlocked) {
       console.log('Vault unlocked');

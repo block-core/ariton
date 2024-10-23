@@ -155,6 +155,10 @@ export class IdentityService {
       // const list = await customAgent.identity.list();
       // console.log('LIST: ', list);
 
+      if (result.did != connectedDid) {
+        console.error('Connected DID does not match the result DID:', connectedDid, result.did);
+      }
+
       this.did = result.did;
       this.web5 = result.web5;
       this.agent = result.web5.agent as Web5IdentityAgent;
@@ -340,26 +344,26 @@ export class IdentityService {
     return web5;
   }
 
-  async restore(password: string, recoveryPhrase: string) {
-    try {
-      console.log('Connecting to Web5...');
-      const result = await Web5.connect({ recoveryPhrase, password, sync: this.syncInterval });
-      this.web5 = result.web5;
-      this.did = result.did;
+  // async restore(password: string, recoveryPhrase: string) {
+  //   try {
+  //     console.log('Connecting to Web5...');
+  //     const result = await Web5.connect({ recoveryPhrase, password, sync: this.syncInterval });
+  //     this.web5 = result.web5;
+  //     this.did = result.did;
 
-      console.log('Web5 Connected.');
-      this.preinitialized.set(true);
-      this.initialized.set(true);
-      return result;
-    } catch (err) {
-      // TODO: Add UI and retry for Web5 initialize, add proper error handling.
-      // Various network connection issues might make this call fail.@
-      console.warn('Failed to initialize Web5:', err);
-      alert('Failed to initialize Web5');
-    }
+  //     console.log('Web5 Connected.');
+  //     this.preinitialized.set(true);
+  //     this.initialized.set(true);
+  //     return result;
+  //   } catch (err) {
+  //     // TODO: Add UI and retry for Web5 initialize, add proper error handling.
+  //     // Various network connection issues might make this call fail.@
+  //     console.warn('Failed to initialize Web5:', err);
+  //     alert('Failed to initialize Web5');
+  //   }
 
-    return undefined;
-  }
+  //   return undefined;
+  // }
 
   activeAgent() {
     const agent = this.web5.agent as Web5IdentityAgent;
@@ -383,16 +387,26 @@ export class IdentityService {
     this.locked.set(true);
   }
 
-  async unlock(password: string) {
+  async unlock(did: string, password: string) {
     try {
       console.log('Connecting to Web5...');
-      const { did: userDid, web5, recoveryPhrase } = await Web5.connect({ sync: this.syncInterval, password });
+      const {
+        did: userDid,
+        web5,
+        recoveryPhrase,
+      } = await Web5.connect({ connectedDid: did, sync: this.syncInterval, password });
 
       if (recoveryPhrase) {
       }
 
       this.did = userDid;
       this.web5 = web5;
+
+      if (did != userDid) {
+        console.error('Connected DID does not match the result DID:', userDid, did);
+      }
+
+      console.log('UNLOCK WAS CALLED!!');
 
       this.initialized.set(true);
       this.locked.set(false);

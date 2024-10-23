@@ -148,6 +148,12 @@ export class AppService {
   }
 
   saveIdentities(identities: AritonIdentity[]) {
+    if (!identities || identities.length == 0) {
+      console.log('IDENTITIES ARE EMPTY!!!');
+      debugger;
+      return;
+    }
+
     this.localStorage.save('identities', identities);
   }
 
@@ -293,6 +299,7 @@ export class AppService {
       this.onboardingState.set(OnboardingState.Unlocked);
 
       // The default account is unlocked upon creation, continue the loading process.
+      console.log('LOCKED FALSE, IDENTITIES1', this.identities());
       this.identity.locked.set(false);
     } else {
       let identity: AritonIdentity | undefined;
@@ -333,6 +340,9 @@ export class AppService {
 
           this.saveIdentities(aritonIdentities);
           this.identities.set(aritonIdentities);
+        } else {
+          this.saveIdentities(identities);
+          this.identities.set(identities);
         }
 
         if (!result) {
@@ -341,11 +351,13 @@ export class AppService {
         } else {
           // Existing account was successfully unlocked.
           this.onboardingState.set(OnboardingState.Unlocked);
+          console.log('LOCKED FALSE, IDENTITIES2', this.identities());
           this.identity.locked.set(false);
         }
       } else {
         // If the account does not have a password, it means the user has not
         // persisted it. We need to ask for the password.
+        console.log('LOCKED TRUE, IDENTITIES3', this.identities());
         this.identity.locked.set(true);
         this.onboardingState.set(OnboardingState.Locked);
       }
@@ -383,9 +395,9 @@ export class AppService {
     this.worker.start();
 
     // Hook up to handle events from remote and local DWN.
-    this.event.initialize();
+    await this.event.initialize();
 
-    this.firstTimeInitialization();
+    await this.firstTimeInitialization();
   }
 
   private async loadAppData() {
@@ -398,6 +410,10 @@ export class AppService {
 
   /** Only run when the hash bundle has changed (updated app) */
   async firstTimeInitialization() {
+    console.log('First time initialization...');
+    console.log(this.identities());
+    console.log(this.activeIdentity());
+
     // If the previous bundle hash is the same as the current, we don't need to re-register.
     // For local development, the getHash should be null, so we always re-register.
     if (this.hash.getTimestamp() != null && this.activeIdentity()!.bundleTimestamp === this.hash.getTimestamp()) {

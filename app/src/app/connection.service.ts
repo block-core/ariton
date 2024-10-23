@@ -672,6 +672,7 @@ export class ConnectionService {
       },
     };
 
+    console.log('IDENTITY: ', this.identity);
     console.log('LOAD REQUESTS:', query);
 
     const { records } = await this.identity.web5.dwn.records.query(query);

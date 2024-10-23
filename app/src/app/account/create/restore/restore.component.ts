@@ -63,7 +63,6 @@ export class RestoreComponent {
   }
 
   async query() {
-    debugger;
     const query = {
       message: {
         filter: {
@@ -527,17 +526,16 @@ export class RestoreComponent {
 
       password = '123';
 
-      const result = await this.identity.restore(password, this.addressForm.controls.recoveryPhrase.value!);
+      // const result = await this.identity.restore(password, this.addressForm.controls.recoveryPhrase.value!);
+      // console.log('RESTORE Result: ', result);
 
-      console.log('RESTORE Result: ', result);
+      // if (!result) {
+      //   alert('Failed to restore account.');
+      //   this.addressForm.enable();
+      //   return;
+      // }
 
-      if (!result) {
-        alert('Failed to restore account.');
-        this.addressForm.enable();
-        return;
-      }
-
-      account.did = result.did;
+      // account.did = result.did;
 
       // this.app.addAccount(account);
     }
