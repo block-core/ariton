@@ -1,4 +1,4 @@
-import { Injectable, WritableSignal, signal } from '@angular/core';
+import { Injectable, WritableSignal, inject, signal } from '@angular/core';
 import { Web5 } from '@web5/api';
 import { DidDht, DidJwk } from '@web5/dids';
 import { Web5IdentityAgent } from '@web5/identity-agent';
@@ -108,6 +108,46 @@ export class IdentityService {
   store!: DwnIdentityStore;
 
   identityApi!: AgentIdentityApi;
+
+  crypto = inject(CryptoService);
+
+  async connectWithIdentity(portableIdentity: PortableIdentity) {
+    // Create a unique password for the user that they can replace.
+    const password = await this.crypto.createPassword();
+
+    // Initialize the identity service with the password to create an
+    // initial account.
+    // result = await this.identity.initialConnect(password);
+
+    // const customAgentVault = new HdIdentityVault({
+    //   keyDerivationWorkFactor: 210_000,
+    //   store: new LevelStore<string, string>({ location: `DATA/AGENT/VAULT_STORE` }),
+    // });
+    // await customAgentVault.unlock({ password });
+    // const didApi = new AgentDidApi({
+    //   didMethods: [DidDht, DidJwk, DidStellar],
+    //   resolverCache: new AgentDidResolverCache({ location: `DATA/AGENT/DID_RESOLVERCACHE` }),
+    //   store: new DwnDidStore(),
+    // });
+    // const agentDid = await customAgentVault.getDid();
+    // this.store = new DwnIdentityStore();
+    // const identityApi: any = new AgentIdentityApi({ store: this.store });
+    // this.identityApi = identityApi;
+    // const customAgent = await Web5IdentityAgent.create({
+    //   didApi,
+    //   agentDid,
+    //   identityApi,
+    //   agentVault: customAgentVault,
+    // });
+    // this.agent = customAgent;
+
+    return {
+      password,
+      agentDid: '123',
+      did: '333',
+      recoveryPhrase: '',
+    };
+  }
 
   async connect(connectedDid: string, password: string) {
     console.log('PASSWORD:', password);

@@ -140,22 +140,47 @@ export class RestoreComponent {
           // Process the JSON object
           console.log('Parsed JSON object:', jsonObject);
 
-          const identity = await this.identity.agent.identity.import({ portableIdentity: jsonObject });
+          // Import from within the app, this is currently NOT supported
+          // due to issues with lack of support for the Web5 API.
+          if (this.identity.initialized()) {
+            const identity = await this.identity.agent.identity.import({ portableIdentity: jsonObject });
 
-          console.log('Imported identity:', identity.metadata.uri);
+            console.log('Imported identity:', identity.metadata.uri);
 
-          await this.identity.agent.sync.registerIdentity({ did: identity.metadata.uri });
+            await this.identity.agent.sync.registerIdentity({ did: identity.metadata.uri });
 
-          const dwnApi = this.identity.web5.dwn as any;
-          console.log('CONNECTED IDENTITY1:', dwnApi.connectedDid);
+            const dwnApi = this.identity.web5.dwn as any;
+            console.log('CONNECTED IDENTITY1:', dwnApi.connectedDid);
 
-          this.app.identities.set([...this.app.identities(), { did: identity.metadata.uri, bundleTimestamp: '' }]);
-          this.app.saveIdentities(this.app.identities());
+            this.app.identities.set([...this.app.identities(), { did: identity.metadata.uri, bundleTimestamp: '' }]);
+            this.app.saveIdentities(this.app.identities());
 
-          this.app.state().selectedIdentity = identity.metadata.uri;
-          this.app.saveState(this.app.state());
+            this.app.state().selectedIdentity = identity.metadata.uri;
+            this.app.saveState(this.app.state());
 
-          window.location.reload();
+            window.location.reload();
+          } else {
+            // This is when the user restores from the load screen and no Web5 have been initialized.
+
+            const { password, did, agentDid, recoveryPhrase } = await this.identity.connectWithIdentity(
+              jsonObject as PortableIdentity,
+            );
+
+            console.log('Password generated for imported identity: ', password);
+
+            this.app.agent.set({
+              did: agentDid,
+              recoveryPhrase: '',
+              password,
+            });
+
+            // Persist the generate password for the agent.
+            this.app.saveAgent(this.app.agent()!);
+
+            console.log('Agent password saved:', this.app.agent());
+
+            // this.app.account().password = password;
+          }
 
           // this.app.activeIdentity.set({ did: identity.metadata.uri });
 
