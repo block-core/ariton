@@ -16,13 +16,13 @@ export const protocolDefinition = {
       $role: true,
     },
     entry: {
-      $actions: [{ role: 'collaborator', can: ['create', 'update', 'read', 'delete'] }],
+      $actions: [{ role: 'collaborator', can: ['create', 'update', 'read', 'delete', 'query', 'subscribe'] }],
       entry: {
-        $actions: [{ role: 'collaborator', can: ['create', 'update', 'read', 'delete'] }],
+        $actions: [{ role: 'collaborator', can: ['create', 'update', 'read', 'delete', 'query', 'subscribe'] }],
         entry: {
-          $actions: [{ role: 'collaborator', can: ['create', 'update', 'read', 'delete'] }],
+          $actions: [{ role: 'collaborator', can: ['create', 'update', 'read', 'delete', 'query', 'subscribe'] }],
           entry: {
-            $actions: [{ role: 'collaborator', can: ['create', 'update', 'read', 'delete'] }],
+            $actions: [{ role: 'collaborator', can: ['create', 'update', 'read', 'delete', 'query', 'subscribe'] }],
           },
         },
       },

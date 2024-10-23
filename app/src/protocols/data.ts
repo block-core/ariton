@@ -16,7 +16,7 @@ export const protocolDefinition = {
     //   $role: true,
     // },
     data: {
-      // $actions: [{ role: 'collaborator', can: ['create', 'update', 'read', 'delete'] }],
+      // $actions: [{ role: 'collaborator', can: ['create', 'update', 'read', 'delete', 'query', 'subscribe'] }],
     },
   },
 };
