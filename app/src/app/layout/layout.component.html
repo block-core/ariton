@@ -14,7 +14,7 @@
     [opened]="(isHandset$ | async) === false"
   >
     <mat-toolbar class="toolbar-logo-container">
-      <a [routerLink]="['/introduction']"> <img class="toolbar-logo" src="ariton-icon-dark.svg" /></a>
+      <img class="toolbar-logo" [routerLink]="['/introduction']" src="ariton-icon-dark.svg" />
 
       <picture class="toolbar-text">
         <source srcset="ariton-text-light.svg" media="(prefers-color-scheme: dark)" />
