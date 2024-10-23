@@ -1,4 +1,4 @@
-<h1>Backup your agent</h1>
+<h1>Backup your agent and account</h1>
 
 <p>
   Your agent is your virtual assistant that helps organize your data on Ariton. It is different and independent from
@@ -7,8 +7,23 @@
 
 <mat-card appearance="outlined">
   <mat-card-header>
+    <mat-card-title>Account Backup</mat-card-title>
+    <mat-card-subtitle>Download a file you can use to restore your account on other devices.</mat-card-subtitle>
+    <mat-card-subtitle>User DID: {{ identityService.did }}</mat-card-subtitle>
+  </mat-card-header>
+  <!-- <mat-card-content>User DID: {{ identityService.did }}</mat-card-content> -->
+  <mat-card-actions>
+    <button mat-flat-button (click)="backup()">
+      <span>Save Backup</span>
+    </button>
+  </mat-card-actions>
+</mat-card>
+
+<mat-card appearance="outlined">
+  <mat-card-header>
     <mat-card-title>Secret Recovery Phrase</mat-card-title>
     <mat-card-subtitle>Keep it hidden, keep it safe</mat-card-subtitle>
+    <mat-card-subtitle>Agent DID: {{ appService.agent()?.did }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content class="recovery-phrase-container">
     <p class="recovery-phrase" [ngClass]="{ blur: !reveal() }">

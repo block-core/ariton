@@ -12,6 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { Web5IdentityAgent } from '@web5/identity-agent';
+import { UtilityService } from '../utility.service';
 
 @Component({
   selector: 'app-account',
@@ -38,6 +39,8 @@ export class AccountComponent {
   app = inject(AppService);
 
   router = inject(Router);
+
+  utils = inject(UtilityService);
 
   currentIdentity: BearerIdentity | undefined;
 
@@ -105,17 +108,7 @@ export class AccountComponent {
 
   async backupAccount() {
     const portableIdentity = await this.currentIdentity?.export();
-    if (portableIdentity) {
-      const blob = new Blob([JSON.stringify(portableIdentity)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'portableIdentity.json';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    }
+    return this.utils.backupAccount({ portableIdentity });
   }
 
   async deleteAccount() {

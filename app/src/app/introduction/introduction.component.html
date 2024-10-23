@@ -10,8 +10,9 @@
 </p>
 
 <p>
-  If you want to keep your account, you can <strong>take a backup</strong> of it. This will allow you to use your
-  account on other devices, and if you delete your browser data, you can restore it.
+  If you want to keep your agent, you can <strong>take a backup</strong> of it. This will allow you to use your agent on
+  other devices in the future, and if you delete your browser data, you can restore it. You must also do individual
+  backups of your accounts.
 </p>
 
 <p>
@@ -27,9 +28,9 @@
   } @else {
   <button mat-flat-button [routerLink]="['/account/password']"><s>Set a password</s></button>
   } @if (!backup()) {
-  <button mat-flat-button [routerLink]="['/account/backup']">Backup your account</button>
+  <button mat-flat-button [routerLink]="['/account/backup']">Backup your agent</button>
   } @else {
-  <button mat-flat-button [routerLink]="['/account/backup']"><s>Backup your account</s></button>
+  <button mat-flat-button [routerLink]="['/account/backup']"><s>Backup your agent</s></button>
   }
 </p>
 

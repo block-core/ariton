@@ -1,4 +1,4 @@
-import { Component, effect, signal } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -8,6 +8,7 @@ import { AppService } from '../../app.service';
 import { CommonModule } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router, RouterModule } from '@angular/router';
+import { UtilityService } from '../../utility.service';
 
 @Component({
   selector: 'app-backup',
@@ -21,12 +22,22 @@ export class BackupComponent {
 
   reveal = signal<boolean>(false);
 
+  utils = inject(UtilityService);
+
   constructor(private router: Router, public identityService: IdentityService, public appService: AppService) {}
 
   async backupToFile() {
     const portableDid = await this.identityService.activeAgent().vault.backup();
     const data = portableDid.data; // Assuming portableDid is the string you want to save
     await this.saveFile(data);
+  }
+
+  async backup() {
+    const portableIdentity = await this.identityService
+      .activeAgent()
+      .identity.export({ didUri: this.identityService.did });
+
+    await this.utils.backupAccount({ portableIdentity });
   }
 
   async copyRecoveryPhrase(): Promise<void> {
