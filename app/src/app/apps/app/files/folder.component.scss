@@ -11,3 +11,9 @@ table {
   max-width: 36px;
   min-width: 36px;
 }
+
+@media (max-width: 600px) {
+  .hide-on-small-screen {
+    display: none;
+  }
+}
