@@ -64,6 +64,10 @@ export class AppComponent {
     this.appService.initialized.set(true);
   }
 
+  async wipe() {
+    await this.appService.wipe();
+  }
+
   restore = signal<boolean>(false);
 
   async restoreAccount() {

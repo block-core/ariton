@@ -176,23 +176,7 @@ export class LayoutComponent {
   }
 
   async wipe() {
-    // Clear all data from localStorage
-    this.localStorage.clear();
-
-    console.log('Local storage data has been wiped!');
-
-    // Clear all data from IndexedDb
-    await indexedDB.deleteDatabase('level-js-DATA/AGENT');
-    await indexedDB.deleteDatabase('level-js-DATA/AGENT/DID_RESOLVERCACHE');
-    await indexedDB.deleteDatabase('level-js-DATA/AGENT/DWN_DATASTORE');
-    await indexedDB.deleteDatabase('level-js-DATA/AGENT/DWN_EVENTLOG');
-    await indexedDB.deleteDatabase('level-js-DATA/AGENT/DWN_MESSAGEINDEX');
-    await indexedDB.deleteDatabase('level-js-DATA/AGENT/DWN_MESSAGESTORE');
-    await indexedDB.deleteDatabase('level-js-DATA/AGENT/VAULT_STORE');
-
-    console.log('Data has been wiped!');
-
-    window.location.reload();
+    await this.app.wipe();
   }
 
   applyUpdate(): void {

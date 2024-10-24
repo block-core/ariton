@@ -19,7 +19,10 @@
   } @case(2) {
   <div class="unlock-container">
     <app-unlock></app-unlock>
-    <p>Issues? <button mat-button (click)="forceClose()">Close loading sceen</button></p>
+    <p>
+      Issues? <button mat-button (click)="forceClose()">Close loading sceen</button> or
+      <button mat-button (click)="wipe()">Delete all data</button>
+    </p>
   </div>
   } @case(3) {
 
@@ -42,7 +45,10 @@
   <mat-spinner></mat-spinner>
   }
 
-  <p>Issues? <button mat-button (click)="forceClose()">Close loading sceen</button></p>
+  <p>
+    Issues? <button mat-button (click)="forceClose()">Close loading sceen</button> or
+    <button mat-button (click)="wipe()">Delete all data</button>
+  </p>
 </div>
 
 }
