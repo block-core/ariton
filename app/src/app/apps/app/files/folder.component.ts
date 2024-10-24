@@ -673,7 +673,7 @@ export class FolderComponent {
 
   async editFolder(entry: Record | undefined | null) {
     let data: DialogData = {
-      name: entry ? entry.tags['name'] : 'Untitled folder',
+      name: entry ? entry.tags['name'] : '',
       entryType: 'folder',
     };
 
