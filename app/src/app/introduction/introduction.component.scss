@@ -61,8 +61,10 @@ h1 {
   }
 
   .community-illustration {
-    max-width: 192px;
-    margin-left: 0.6em;
-    margin-bottom: 0.6em;
+    max-width: 100%;
+    width: 100%;
+    transform: scale(0.9);
+    transform-origin: center;
+    margin: 0;
   }
 }
