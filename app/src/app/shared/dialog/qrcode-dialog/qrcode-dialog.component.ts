@@ -17,6 +17,8 @@ import { UtilityService } from '../../../utility.service';
 export class QRCodeDialogComponent {
   qrStyle = 'did';
 
+  qrValue = '';
+
   util = inject(UtilityService);
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: { did: string }) {}
@@ -25,11 +27,13 @@ export class QRCodeDialogComponent {
     this.generateQR(this.data.did);
   }
 
-  copyDid() {
-    this.util.copyToClipboard(this.data.did);
+  copyValue() {
+    this.util.copyToClipboard(this.qrValue);
   }
 
   generateQR(data: string) {
+    this.qrValue = data;
+
     const canvas = document.querySelector('canvas');
     QRCode.toCanvas(canvas, data, { width: 256 }, (error: any) => {
       if (error) {
