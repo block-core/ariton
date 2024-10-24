@@ -1,1 +1,16 @@
-<canvas #qrCanvas></canvas>
+<h2 mat-dialog-title>QR Code</h2>
+<mat-dialog-content>
+  <canvas #qrCanvas></canvas>
+  <br />
+  <mat-button-toggle-group
+    hideSingleSelectionIndicator="true"
+    [(ngModel)]="qrStyle"
+    (change)="onToggleGroupChange($event)"
+  >
+    <mat-button-toggle value="did">Identifier (in-app)</mat-button-toggle>
+    <mat-button-toggle value="profile">Profile URL (camera)</mat-button-toggle>
+  </mat-button-toggle-group>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-flat-button [mat-dialog-close]="true" cdkFocusInitial>Close</button>
+</mat-dialog-actions>
