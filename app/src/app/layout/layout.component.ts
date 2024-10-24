@@ -138,8 +138,10 @@ export class LayoutComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed', result);
-      this.router.navigate(['/profile', result]);
+      if (result) {
+        console.log('The dialog was closed', result);
+        this.router.navigate(['/profile', result]);
+      }
     });
   }
 
