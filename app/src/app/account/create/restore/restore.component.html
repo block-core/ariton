@@ -12,7 +12,7 @@
 
   @if (addressForm.controls.importType.value == 'stellar') {
 
-  <mat-card class="shipping-card">
+  <mat-card class="restore-card">
     <mat-card-header>
       <mat-card-title>Private Key</mat-card-title>
       <mat-card-subtitle>Enter your Stellar private key (starts with 'S')</mat-card-subtitle>
@@ -37,19 +37,26 @@
     </mat-card-actions>
   </mat-card>
 
-  } @else if (addressForm.controls.importType.value == 'ariton') {
-
-  <mat-card class="shipping-card">
+  } @else if (addressForm.controls.importType.value == 'ariton') { @if (loading) {
+  <mat-card class="restore-card">
+    <mat-card-header>
+      <mat-card-title>Importing...</mat-card-title>
+      <mat-card-subtitle>Please wait. App will reload.</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content class="restore-card-content">
+      <mat-spinner></mat-spinner>
+    </mat-card-content>
+  </mat-card>
+  } @else {
+  <mat-card class="restore-card">
     <mat-card-header>
       <mat-card-title>Portable DID</mat-card-title>
       <mat-card-subtitle>Choose your backup file (portableIdentity.json)</mat-card-subtitle>
     </mat-card-header>
-    <mat-card-content>
-      <br />
-
+    <mat-card-content class="restore-card-content">
       <button type="button" mat-button (click)="editFile({})">
         <mat-icon>upload_file</mat-icon>
-        <span>Choose portable DID files</span>
+        <span>Choose portable DID file</span>
       </button>
 
       <input type="file" id="input" (change)="onFileSelected($event)" style="display: none" />
@@ -65,8 +72,7 @@
       <button [disabled]="app.loading()" mat-flat-button color="primary" type="submit">Restore</button>
     </mat-card-actions> -->
   </mat-card>
-
-  @if (this.importedIdentities.length > 0) {
+  } @if (this.importedIdentities.length > 0) {
   <h1>Imported Accounts</h1>
 
   <mat-list>
@@ -79,12 +85,12 @@
     }
   </mat-list>
   } } @else () {
-  <mat-card class="shipping-card">
+  <mat-card class="restore-card">
     <mat-card-content>
       <p>Support for Nostr is coming in the future</p>
     </mat-card-content>
   </mat-card>
-  <!-- <mat-card class="shipping-card">
+  <!-- <mat-card class="restore-card">
     <mat-card-header>
       <mat-card-title>Secret Recovery Phrase</mat-card-title>
       <mat-card-subtitle>Enter your 12 words backup</mat-card-subtitle>

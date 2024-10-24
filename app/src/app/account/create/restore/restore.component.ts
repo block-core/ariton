@@ -19,6 +19,7 @@ import { DwnApi, Web5 } from '@web5/api';
 import { Web5IdentityAgent } from '@web5/identity-agent';
 import { protocolDefinition as noteDefinition } from '../../../../protocols/note';
 import { protocolDefinition as fileDefinition } from '../../../../protocols/file';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-restore',
@@ -34,6 +35,7 @@ import { protocolDefinition as fileDefinition } from '../../../../protocols/file
     MatRadioModule,
     MatCardModule,
     ReactiveFormsModule,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './restore.component.html',
   styleUrl: './restore.component.scss',
@@ -119,6 +121,8 @@ export class RestoreComponent {
     // console.log('Query test complete');
   }
 
+  loading = false;
+
   async onFileSelected(event: any) {
     const files = (event.target as HTMLInputElement).files;
 
@@ -135,6 +139,8 @@ export class RestoreComponent {
       reader.onload = async () => {
         const content = reader.result as string;
         try {
+          this.loading = true;
+
           const jsonObject = JSON.parse(content);
 
           // Process the JSON object
@@ -296,6 +302,8 @@ export class RestoreComponent {
           this.app.openSnackBar(`Error parsing JSON from file ${file.name}: ${error}`, 3000);
           console.error(`Error parsing JSON from file ${file.name}:`, error);
         }
+
+        this.loading = false;
       };
 
       reader.onerror = () => {
