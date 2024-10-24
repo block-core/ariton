@@ -52,4 +52,13 @@ export class UtilityService {
       URL.revokeObjectURL(url);
     }
   }
+
+  async copyToClipboard(text: string) {
+    try {
+      await navigator.clipboard.writeText(text);
+      this.snackBar.open('Copied to clipboard', undefined, { duration: 2000 });
+    } catch (err) {
+      console.error('Failed to copy: ', err);
+    }
+  }
 }

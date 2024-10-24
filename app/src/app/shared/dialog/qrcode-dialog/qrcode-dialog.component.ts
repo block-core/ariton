@@ -1,24 +1,32 @@
-import { Component, Inject } from '@angular/core';
+import { Component, inject, Inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
 import * as QRCode from 'qrcode';
+import { UtilityService } from '../../../utility.service';
 
 @Component({
   selector: 'app-qrcode-dialog',
   standalone: true,
-  imports: [MatDialogModule, MatButtonModule, MatButtonToggleModule, FormsModule],
+  imports: [MatDialogModule, MatButtonModule, MatButtonToggleModule, FormsModule, MatIconModule],
   templateUrl: './qrcode-dialog.component.html',
   styleUrl: './qrcode-dialog.component.scss',
 })
 export class QRCodeDialogComponent {
   qrStyle = 'did';
 
+  util = inject(UtilityService);
+
   constructor(@Inject(MAT_DIALOG_DATA) public data: { did: string }) {}
 
   ngAfterViewInit() {
     this.generateQR(this.data.did);
+  }
+
+  copyDid() {
+    this.util.copyToClipboard(this.data.did);
   }
 
   generateQR(data: string) {

@@ -1,5 +1,5 @@
 <h2 mat-dialog-title>QR Code</h2>
-<mat-dialog-content>
+<mat-dialog-content class="qr-code-content centered-dialog-content">
   <canvas #qrCanvas></canvas>
   <br />
   <mat-button-toggle-group
@@ -10,7 +10,14 @@
     <mat-button-toggle value="did">Identifier (in-app)</mat-button-toggle>
     <mat-button-toggle value="profile">Profile URL (camera)</mat-button-toggle>
   </mat-button-toggle-group>
+
+  <p class="wrap">
+    {{ data.did }}
+    <button class="copy-button" matTooltip="Copy the recovery phrase" mat-icon-button (click)="copyDid()">
+      <mat-icon>content_copy</mat-icon>
+    </button>
+  </p>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button mat-flat-button [mat-dialog-close]="true" cdkFocusInitial>Close</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Close</button>
 </mat-dialog-actions>

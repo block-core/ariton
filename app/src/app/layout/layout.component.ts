@@ -121,14 +121,14 @@ export class LayoutComponent {
     this.notifications.set(notifications);
   }
 
-  async copyDID(did: string) {
-    try {
-      await navigator.clipboard.writeText(did);
-      this.app.openSnackBar('Your DID copied to clipboard');
-    } catch (err) {
-      console.error('Failed to copy: ', err);
-    }
-  }
+  // async copyDID(did: string) {
+  //   try {
+  //     await navigator.clipboard.writeText(did);
+  //     this.app.openSnackBar('Your DID copied to clipboard');
+  //   } catch (err) {
+  //     console.error('Failed to copy: ', err);
+  //   }
+  // }
 
   qrScan() {
     const dialogRef = this.dialog.open(QRCodeScanDialogComponent, {

@@ -285,14 +285,14 @@ export class ProfileComponent {
     // };
   }
 
-  async copyDID(did: string) {
-    try {
-      await navigator.clipboard.writeText(did);
-      this.app.openSnackBar('DID copied to clipboard');
-    } catch (err) {
-      console.error('Failed to copy: ', err);
-    }
-  }
+  // async copyDID(did: string) {
+  //   try {
+  //     await navigator.clipboard.writeText(did);
+  //     this.app.openSnackBar('DID copied to clipboard');
+  //   } catch (err) {
+  //     console.error('Failed to copy: ', err);
+  //   }
+  // }
 
   async copyUrl(entry: any) {
     const url = `${document.location.origin}/profile/${entry.record.creator}/posts/${entry.record.id}`;
