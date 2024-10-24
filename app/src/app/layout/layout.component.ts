@@ -140,6 +140,7 @@ export class LayoutComponent {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         console.log('The dialog was closed', result);
+        this.layout.toggleSearch();
         this.router.navigate(['/profile', result]);
       }
     });
