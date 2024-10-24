@@ -17,7 +17,11 @@
       <span>({{ data().profile.title }})</span>
       }
     </h1>
-    <span class="ellipsis">{{ data().did }}</span>
+    <span class="ellipsis"
+      ><button class="copy-button" matTooltip="Show QR code" mat-icon-button (click)="showQR(data().did)">
+        <mat-icon>qr_code</mat-icon></button
+      >{{ data().did }}
+    </span>
   </div>
   <div class="spacer"></div>
   <div class="profile-header-menu">
