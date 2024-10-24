@@ -31,11 +31,6 @@ export class QRCodeDialogComponent {
   }
 
   onToggleGroupChange(event: MatButtonToggleChange) {
-    // Handle the change event
-    console.log('Selected value:', event.value);
-    console.log(this.qrStyle);
-    // Add your logic here
-
     if (this.qrStyle == 'profile') {
       this.generateQR(`https://profile.ariton.app/?did=${this.data.did}`);
     } else {
