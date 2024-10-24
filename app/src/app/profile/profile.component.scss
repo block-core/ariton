@@ -12,7 +12,7 @@
 
 .profile-header-menu {
   /** Needed to avoid horizontal scrolling */
-  padding-right: 4px;
+  padding-right: 1em;
 }
 
 h1 span {
@@ -53,15 +53,6 @@ h1 {
 
 .profile-header-text {
   width: 100%;
-}
-
-@media (max-width: 959.98px) {
-  .profile-header {
-    gap: 10;
-    flex-direction: column;
-    margin-left: 1em;
-    margin-right: 1em;
-  }
 }
 
 .post-body {
@@ -106,3 +97,17 @@ h1 {
 //   text-align: center;
 //   display: block;
 // }
+
+@media (max-width: 1024px) {
+  .profile-header {
+    gap: 10;
+    flex-direction: column;
+    margin-left: 0.4em;
+    margin-right: 0.4em;
+  }
+
+  .profile-header-menu {
+    /** Needed to avoid horizontal scrolling */
+    padding-right: 0.4em;
+  }
+}
