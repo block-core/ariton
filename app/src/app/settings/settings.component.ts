@@ -9,6 +9,7 @@ import { DidResolutionResult } from '@web5/dids';
 import { CommonModule } from '@angular/common';
 import { LayoutService } from '../layout.service';
 import { MatCardModule } from '@angular/material/card';
+import { AppService } from '../app.service';
 
 @Component({
   selector: 'app-settings',
@@ -25,6 +26,8 @@ export class SettingsComponent {
   identity = inject(IdentityService);
 
   layout = inject(LayoutService);
+
+  app = inject(AppService);
 
   document = signal<DidResolutionResult | undefined>(undefined);
 
@@ -50,6 +53,10 @@ export class SettingsComponent {
 
     let nodes = document.didDocument?.service?.filter((service) => service.type === 'DecentralizedWebNode');
     this.nodes.set(nodes);
+  }
+
+  async wipe() {
+    return this.app.wipe();
   }
 
   toggleDebug() {

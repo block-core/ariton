@@ -176,7 +176,7 @@ export class LayoutComponent {
   }
 
   async wipe() {
-    await this.app.wipe();
+    return this.app.wipe();
   }
 
   applyUpdate(): void {

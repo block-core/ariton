@@ -65,7 +65,7 @@ export class AppComponent {
   }
 
   async wipe() {
-    await this.appService.wipe();
+    return this.appService.wipe();
   }
 
   restore = signal<boolean>(false);

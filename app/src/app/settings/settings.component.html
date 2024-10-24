@@ -61,6 +61,11 @@ Language: {{ settings().language }}
     Debug Tool
   </a>
 
+  <a mat-list-item class="warning" (click)="wipe()">
+    <mat-icon matListItemIcon>delete_forever</mat-icon>
+    Reset All Data (Wipe)
+  </a>
+
   <!-- <a mat-list-item [routerLink]="['handler']">
     <mat-icon matListItemIcon>search</mat-icon>
     Register Protocol Handler (Web Only)
