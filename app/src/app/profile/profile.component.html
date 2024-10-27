@@ -76,6 +76,7 @@
         <span class="hide-small">Posts</span>
       </ng-template>
 
+      @if (data().did == this.identity.did) {
       <mat-card class="toolbar-actions margin">
         <mat-card-content>
           <button type="button" mat-button (click)="newPost()">
@@ -92,6 +93,7 @@
           </button>
         </mat-card-content>
       </mat-card>
+      }
 
       <div class="posts-items margin">
         @for (entry of posts(); track entry) {
