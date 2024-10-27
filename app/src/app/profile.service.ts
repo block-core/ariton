@@ -224,6 +224,7 @@ export class ProfileService {
   async openCurrentUserProfile(did: string) {
     console.log('Open current user profile', did);
     const profile = await this.loadProfile(did);
+    this.avatar.set(profile.avatar);
     this.current.set(profile.profile as Profile);
   }
 
