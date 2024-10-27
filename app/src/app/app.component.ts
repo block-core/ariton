@@ -92,7 +92,6 @@ export class AppComponent {
 
   async ngOnInit() {
     await this.appService.initialize();
-
     // If this is first time user visits, we will give them option
     // to create a new account or restore existing.
     // if (this.appService.hasStateBeenSet()) {

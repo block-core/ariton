@@ -62,6 +62,7 @@ import { StorageService } from '../storage.service';
     DidPipe,
     AgoPipe,
     PlayerControlsComponent,
+    MatTooltipModule,
   ],
 })
 export class LayoutComponent {
@@ -107,6 +108,37 @@ export class LayoutComponent {
         // this.wipe();
         await this.loadNotifications();
       }
+    });
+  }
+
+  deferredPrompt: any;
+  showInstallButton = false;
+
+  installPWA() {
+    // Hide the install button
+    this.showInstallButton = false;
+    // Show the install prompt
+    this.deferredPrompt.prompt();
+    // Wait for the user to respond to the prompt
+    this.deferredPrompt.userChoice.then((choiceResult: any) => {
+      if (choiceResult.outcome === 'accepted') {
+        console.log('User accepted the install prompt');
+      } else {
+        console.log('User dismissed the install prompt');
+      }
+      // Clear the deferredPrompt variable
+      this.deferredPrompt = null;
+    });
+  }
+
+  async ngOnInit() {
+    window.addEventListener('beforeinstallprompt', (e) => {
+      // Prevent the mini-infobar from appearing on mobile
+      e.preventDefault();
+      // Stash the event so it can be triggered later.
+      this.deferredPrompt = e;
+      // Update UI to show the install button
+      this.showInstallButton = true;
     });
   }
 

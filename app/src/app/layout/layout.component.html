@@ -86,6 +86,10 @@
         <button matTooltip="Update available. Click to update now." mat-icon-button (click)="applyUpdate()">
           <mat-icon>get_app</mat-icon>
         </button>
+        } @if(showInstallButton) {
+        <button [matTooltip]="'Install App'" class="notification-toolbar" mat-icon-button (click)="installPWA()">
+          <mat-icon>install_mobile</mat-icon>
+        </button>
         }
 
         <button class="notification-toolbar" mat-icon-button [matMenuTriggerFor]="menuNotifications">
@@ -178,6 +182,13 @@
           </button>
           <mat-divider></mat-divider>
 
+          @if(showInstallButton) {
+          <button class="notification-menu" (click)="installPWA()" mat-menu-item>
+            <mat-icon>install_mobile</mat-icon>
+            <span>Install App</span>
+          </button>
+          }
+
           <button class="notification-menu" [routerLink]="['/notifications']" mat-menu-item>
             <mat-icon>notifications</mat-icon>
             <span>Notifications</span>
@@ -187,6 +198,7 @@
             <mat-icon>settings</mat-icon>
             <span>Settings</span>
           </button>
+
           <mat-divider></mat-divider>
           <a href="https://help.ariton.app" target="_blank" mat-menu-item>
             <mat-icon>help</mat-icon>
