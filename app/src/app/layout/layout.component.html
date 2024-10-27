@@ -133,9 +133,20 @@
           </button> -->
         </mat-menu>
 
+        @if (profileService.avatar()) {
+        <button class="toolbar-profile-button" mat-icon-button [matMenuTriggerFor]="menu">
+          <img
+            class="toolbar-profile-icon"
+            [src]="profileService.avatar() | safeResourceUrl"
+            onerror="this.src='/avatar-placeholder.png';this.onerror='';"
+          />
+        </button>
+        } @else {
         <button mat-icon-button [matMenuTriggerFor]="menu">
           <mat-icon>account_circle</mat-icon>
         </button>
+        }
+
         <mat-menu #menu="matMenu">
           <div class="account-menu-profile" [routerLink]="['/profile', identity.did]">
             <img
