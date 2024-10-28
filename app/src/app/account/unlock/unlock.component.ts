@@ -43,8 +43,7 @@ export class UnlockComponent {
     } else {
       console.log('Failed to unlock vault');
       this.invalidPassword.set(true);
+      this.unlocking.set(false);
     }
-
-    this.unlocking.set(false);
   }
 }
