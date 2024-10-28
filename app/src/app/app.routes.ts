@@ -278,6 +278,12 @@ export const routes: Routes = [
     data: { hide: true, icon: 'account_circle' },
   },
   {
+    path: 'account/password/reset',
+    loadComponent: () => import('./account/reset/reset.component').then((c) => c.PasswordResetComponent),
+    title: 'Password',
+    data: { hide: true, icon: 'account_circle' },
+  },
+  {
     path: 'account/backup',
     loadComponent: () => import('./account/backup/backup.component').then((c) => c.BackupComponent),
     title: 'Backup',

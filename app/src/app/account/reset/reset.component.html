@@ -1,0 +1,48 @@
+@if (reset()) {
+<h1>Reset your password</h1>
+}
+
+<!-- TODO: Check if user has already set custom password, then change this into a change password dialog -->
+
+<form (ngSubmit)="onSubmit()">
+  @if (reset()) {
+  <mat-form-field class="full-width">
+    <mat-label>Enter your old password</mat-label>
+    <input matInput [formControl]="passwordInputPrevious" type="password" />
+  </mat-form-field>
+  <br />
+  }
+
+  <!-- <mat-form-field class="full-width">
+        <mat-label>Enter your new password</mat-label>
+        <input matInput [formControl]="passwordInput" type="password" />
+    </mat-form-field>
+    <br />
+
+    <mat-form-field class="full-width">
+        <mat-label>Repeat your new password</mat-label>
+        <input matInput [formControl]="passwordInputRepeat" type="password" />
+    </mat-form-field> -->
+
+  &nbsp;
+  <button mat-flat-button type="submit" color="primary" [disabled]="!(passwordInputPrevious.valid && !unlocking())">
+    @if (unlocking()) {
+    <mat-spinner diameter="20"></mat-spinner>
+    } @else {
+    <span>Remove password protection</span>
+    }
+  </button>
+
+  <p>
+    @if (invalidPassword()) {
+    <mat-error>Password is <strong>invalid</strong></mat-error>
+    }
+  </p>
+
+  <mat-card appearance="outlined">
+    <mat-card-content>
+      <strong>Remove your personal password</strong>
+      <p>This will enable auto-login on Ariton. You won't need to remember a password.</p></mat-card-content
+    >
+  </mat-card>
+</form>
