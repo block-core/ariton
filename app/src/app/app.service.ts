@@ -449,7 +449,7 @@ export class AppService {
     this.worker.start();
 
     // Hook up to handle events from remote and local DWN.
-    await this.event.initialize();
+    await this.event.initialize(this.identity);
 
     await this.firstTimeInitialization();
   }

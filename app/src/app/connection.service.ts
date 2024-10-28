@@ -1,4 +1,4 @@
-import { computed, inject, Injectable, signal } from '@angular/core';
+import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { IdentityService } from './identity.service';
 import { protocolDefinition as connectionDefinition } from '../protocols/connection';
 import { Record } from '@web5/api';
@@ -8,6 +8,7 @@ import { DwnDateSort } from '@web5/agent';
 import { UtilityService } from './utility.service';
 import { VerifiableCredential } from '@web5/credentials';
 import { credential } from '../protocols';
+import { EventService } from './event.service';
 
 export interface ConnectionData {
   did?: string;
@@ -42,6 +43,8 @@ export enum ConnectionType {
 export class ConnectionService {
   identity = inject(IdentityService);
 
+  events = inject(EventService);
+
   utility = inject(UtilityService);
 
   blocks = signal<ConnectionBlockEntry[]>([]);
@@ -56,7 +59,17 @@ export class ConnectionService {
 
   loading = signal<boolean>(false);
 
-  constructor() {}
+  constructor() {
+    effect(
+      async () => {
+        // Whenever there is an change to the connection protocol records, we will update the connections.
+        if (this.events.connectionProtocol()) {
+          await this.reloadRequests();
+        }
+      },
+      { allowSignalWrites: true },
+    );
+  }
 
   /** Creates a connection entry that opens up a trust line between identities. */
   async create(entry: ConnectionEntry, type: ConnectionType) {
