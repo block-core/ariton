@@ -219,8 +219,6 @@ export class IdentityService {
   }
 
   async connect(connectedDid: string, password: string) {
-    console.log('PASSWORD:', password);
-
     try {
       // TODO: The following custom agent setup makes restore identity fail. Investigate why.
       // const customAgentVault = new HdIdentityVault({

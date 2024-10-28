@@ -405,8 +405,6 @@ export class AppService {
   }
 
   async lock() {
-    console.log(this.agent()?.passwordHash);
-
     if (!this.agent()?.passwordHash || this.agent()?.passwordHash === '') {
       this.router.navigate(['/account', 'password']);
       return;
