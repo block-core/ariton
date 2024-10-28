@@ -3,6 +3,7 @@ import { ConnectionService } from './connection.service';
 import { IdentityService } from './identity.service';
 import { Record } from '@web5/api';
 import { protocolDefinition as connectionDefinition } from '../protocols/connection';
+import { protocolDefinition as chatDefinition } from '../protocols/chat';
 
 @Injectable({
   providedIn: 'root',
@@ -18,6 +19,12 @@ export class EventService {
     return this.#connectionProtocol;
   }
 
+  #chatProtocol = signal<Record | null>(null);
+
+  get chatProtocol() {
+    return this.#chatProtocol;
+  }
+
   constructor() {}
 
   /** Call to setup event listeners and orchestration of data updates. */
@@ -31,7 +38,7 @@ export class EventService {
     // for now we will handle event subscriptions in this centralized service.
     const subscriptionHandler = (record: Record) => {
       this.#connectionProtocol.set(record);
-      console.log('!!!! Received local:', record);
+      console.log('!!!! Received local for connection:', record);
     };
 
     const subscriptionHandlerRemote = (record: Record) => {
@@ -58,13 +65,32 @@ export class EventService {
     //   console.error(err);
     // }
 
-    const { status } = await identity.web5.dwn.records.subscribe({
+    const subscriptionChatHandler = (record: Record) => {
+      this.#chatProtocol.set(record);
+      console.log('!!!! Received local for chat:', record);
+    };
+
+    // const subscriptionChatHandler = (record: Record) => {
+    //   this.#connectionProtocol.set(record);
+    //   console.log('!!!! Received local:', record);
+    // };
+
+    await identity.web5.dwn.records.subscribe({
       message: {
         filter: {
           protocol: connectionDefinition.protocol,
         },
       },
       subscriptionHandler,
+    });
+
+    await identity.web5.dwn.records.subscribe({
+      message: {
+        filter: {
+          protocol: chatDefinition.protocol,
+        },
+      },
+      subscriptionHandler: subscriptionChatHandler,
     });
 
     // console.log('SUBSCRIPTION STATUS: ', status);

@@ -27,6 +27,7 @@ import { DwnDateSort } from '@web5/agent';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { credential } from '../../../../protocols';
 import { VerifiableCredential } from '@web5/credentials';
+import { EventService } from '../../../event.service';
 
 export interface Section {
   id: string;
@@ -108,6 +109,8 @@ export class ChatComponent implements OnDestroy {
 
   loading = signal<boolean>(false);
 
+  events = inject(EventService);
+
   messages = signal<MessageEntry[]>([]);
 
   message: string = '';
@@ -123,6 +126,13 @@ export class ChatComponent implements OnDestroy {
     this.route.paramMap.subscribe((params) => {
       this.layout.disableScrolling();
       this.selectedChat.set(params.get('id'));
+    });
+
+    effect(async () => {
+      if (this.events.chatProtocol()) {
+        console.log('Chat protocol received:', this.events.chatProtocol());
+        await this.load();
+      }
     });
 
     effect(async () => {
