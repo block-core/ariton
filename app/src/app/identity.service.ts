@@ -494,6 +494,8 @@ export class IdentityService {
     console.log('Vault locked');
 
     this.locked.set(true);
+
+    this.initialized.set(false);
   }
 
   async unlock(did: string, password: string) {

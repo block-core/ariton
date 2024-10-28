@@ -244,6 +244,10 @@ export class AppService {
 
     // let accounts = this.localStorage.read('accounts') as any[];
     let identities = this.localStorage.read('identities') as AritonIdentity[];
+
+    // Set the accounts after reading from storage.
+    this.identities.set(identities);
+
     let agent = this.localStorage.read('agent') as AritonAgent;
 
     console.log('IDENTITIES, AGENT from local:', identities, agent);
@@ -346,8 +350,6 @@ export class AppService {
         }
       }
 
-      // console.log('Account found: ', account);
-
       if (agent.password) {
         result = await this.identity.connect(identity!.did, agent.password);
 
@@ -356,17 +358,25 @@ export class AppService {
           const agent = result?.web5.agent as Web5IdentityAgent;
           const identities = await agent.identity.list();
 
+          console.log('IDENTITIES FROM identity.list:', identities);
+
           const aritonIdentities: AritonIdentity[] = identities.map((identity) => ({
             did: identity.metadata.uri,
             bundleTimestamp: '',
           }));
 
+          console.log('Mapped identities:', aritonIdentities);
+
           this.saveIdentities(aritonIdentities);
           this.identities.set(aritonIdentities);
         } else {
-          this.saveIdentities(identities);
-          this.identities.set(identities);
+          // DO WE NEED TO SAVE??
+          // this.saveIdentities(identities);
+          // this.identities.set(identities);
         }
+
+        console.log('IDENTITIES FOR SAVING: ', identities);
+        console.log('IDENTITIES SET: ', this.identities());
 
         if (!result) {
           // TODO: Implement error handling for this case.
@@ -381,12 +391,25 @@ export class AppService {
         // If the account does not have a password, it means the user has not
         // persisted it. We need to ask for the password.
         console.log('LOCKED TRUE, IDENTITIES3', this.identities());
+        console.log('LOCKED TRUE, IDENTITIES4', identities);
+
         this.identity.locked.set(true);
         this.onboardingState.set(OnboardingState.Locked);
       }
     }
 
     this.state.set(state);
+  }
+
+  async lock() {
+    // TODO: Validate if we need to do more when locking the account.
+    console.log('Locking account...');
+
+    await this.identity.lock();
+
+    this.onboardingState.set(OnboardingState.Locked);
+
+    this.initialized.set(false);
   }
 
   async onUnlocked() {

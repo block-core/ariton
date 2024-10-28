@@ -218,8 +218,8 @@ export class LayoutComponent {
     this.updateService.applyUpdate();
   }
 
-  lock() {
-    this.identity.lock();
+  async lock() {
+    return this.app.lock();
   }
 
   navigateBack() {
