@@ -2,13 +2,15 @@
 
 <h1>Unlock your account</h1>
 
-<p>You have configured your Ariton account with a secure personal password.<br />Enter password to unlock your account.</p>
+<p>
+  You have configured your Ariton account with a secure personal password.<br />Enter password to unlock your account.
+</p>
 
 <form (ngSubmit)="onSubmit()">
-    <mat-form-field>
-        <mat-label>Enter your password</mat-label>
-        <input matInput [formControl]="passwordInput" type="password" />
-        <!--
+  <mat-form-field>
+    <mat-label>Enter your password</mat-label>
+    <input matInput [formControl]="passwordInput" type="password" />
+    <!--
     <button
         type="button"
       mat-icon-button
@@ -19,20 +21,20 @@
     >
       <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
     </button>-->
-    </mat-form-field>
+  </mat-form-field>
 
-    &nbsp;
-    <button mat-flat-button type="submit" color="primary" [disabled]="!(passwordInput.valid && !unlocking())">
-        @if (unlocking()) {
-            <mat-spinner diameter="20"></mat-spinner>
-        } @else {
-            <span>Unlock</span>
-        }
-    </button>
+  &nbsp;
+  <button mat-flat-button type="submit" color="primary" [disabled]="!(passwordInput.valid && !unlocking())">
+    @if (unlocking()) {
+    <mat-spinner diameter="20"></mat-spinner>
+    } @else {
+    <span>Unlock</span>
+    }
+  </button>
 
-    <p>
-        @if (invalidPassword()) {
-            <mat-error>Password is <strong>invalid</strong></mat-error>
-        }
-    </p>
+  <p>
+    @if (invalidPassword()) {
+    <mat-error>Password is <strong>invalid</strong></mat-error>
+    }
+  </p>
 </form>

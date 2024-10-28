@@ -35,6 +35,7 @@ export class UnlockComponent {
 
   async onSubmit() {
     this.unlocking.set(true);
+    this.passwordInput.disable();
     const unlocked = await this.identityService.unlock(this.identityService.did, this.passwordInput.value!);
 
     if (unlocked) {
@@ -44,6 +45,7 @@ export class UnlockComponent {
       console.log('Failed to unlock vault');
       this.invalidPassword.set(true);
       this.unlocking.set(false);
+      this.passwordInput.enable();
     }
   }
 }
