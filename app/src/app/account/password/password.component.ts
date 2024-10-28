@@ -6,7 +6,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, RouterModule } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { AppService } from '../../app.service';
 
@@ -22,6 +22,7 @@ import { AppService } from '../../app.service';
     MatInputModule,
     MatButtonModule,
     MatIconModule,
+    RouterModule,
   ],
   templateUrl: './password.component.html',
   styleUrl: './password.component.scss',

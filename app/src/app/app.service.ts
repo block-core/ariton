@@ -13,6 +13,7 @@ import { WorkerService } from './worker.service';
 import { EventService } from './event.service';
 import { StorageService } from './storage.service';
 import { Web5IdentityAgent } from '@web5/identity-agent';
+import { Router } from '@angular/router';
 
 export interface AppState {
   // selectedAccount: string;
@@ -89,6 +90,8 @@ export class AppService {
   snackBar = inject(MatSnackBar);
 
   event = inject(EventService);
+
+  router = inject(Router);
 
   state = signal<AppState>({ loginAction: '/dashboard', selectedIdentity: '', hidden: {} });
 
@@ -402,6 +405,13 @@ export class AppService {
   }
 
   async lock() {
+    console.log(this.agent()?.passwordHash);
+
+    if (!this.agent()?.passwordHash || this.agent()?.passwordHash === '') {
+      this.router.navigate(['/account', 'password']);
+      return;
+    }
+
     // TODO: Validate if we need to do more when locking the account.
     console.log('Locking account...');
 
