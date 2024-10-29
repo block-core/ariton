@@ -67,11 +67,13 @@
         <mat-spinner diameter="20"></mat-spinner>
         }
         <mat-menu #menuListActions="matMenu">
+          @if (list.record.author === identity.did) {
           <button mat-menu-item (click)="collaboratorDialog(list)">
             <mat-icon>person_add_alt</mat-icon>
             <span>Collaborators</span>
           </button>
           <mat-divider></mat-divider>
+          }
           <button mat-menu-item (click)="deleteList(list)">
             <mat-icon>delete</mat-icon>
             <span>Delete</span>
