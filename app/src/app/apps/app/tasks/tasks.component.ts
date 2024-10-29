@@ -529,11 +529,11 @@ export class TasksComponent {
     console.log('Send status 2: ', status2);
 
     // If the task is shared, send it back to creator.
-    // if (todo.record.creator != this.identity.did) {
-    //   console.log('SENDING TASK TO CREATOR:', todo.record.creator);
-    //   const { status } = await todo.record.send(todo.record.creator);
-    //   console.log('UPDATE STATUS:', status);
-    // }
+    if (todo.record.creator != this.identity.did) {
+      console.log('SENDING TASK TO CREATOR:', todo.record.creator);
+      const { status } = await todo.record.send(todo.record.creator);
+      console.log('UPDATE STATUS:', status);
+    }
 
     // Send to all collaborators.
     // await this.sendToCollaborators(todo.record, list.data.collaborators);
