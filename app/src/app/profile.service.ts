@@ -3,6 +3,7 @@ import { IdentityService } from './identity.service';
 import { profile } from '../protocols';
 import { CacheService } from './cache.service';
 import { Record } from '@web5/api';
+import { CacheTimeout } from './cache-timeout-settings';
 
 export interface Profile {
   did: string;
@@ -123,7 +124,7 @@ export class ProfileService {
       did: did,
     } as ProfileResult;
 
-    this.cache.save(did, result, 5000);
+    this.cache.save(did, result, CacheTimeout.PROFILE);
 
     return result;
   }
