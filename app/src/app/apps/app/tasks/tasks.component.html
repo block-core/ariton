@@ -1,26 +1,9 @@
-<!-- <mat-tab-group>
-  <mat-tab>
-    <ng-template mat-tab-label>
-      <span class="hide-small">Personal</span>
-    </ng-template> -->
-
 <div>
   @if (!selectedList()) {
   <button mat-flat-button (click)="newList()">
     <mat-icon>add</mat-icon>
     New list
   </button>
-  <!-- <button mat-flat-button (click)="loadRoles()">
-    <mat-icon>add</mat-icon>
-    Query roles</button
-  ><button mat-flat-button (click)="loadRemote()">
-    <mat-icon>add</mat-icon>
-    Query remote
-  </button>
-  <button mat-flat-button (click)="createTests()">
-    <mat-icon>add</mat-icon>
-    Create records</button
-  > -->
   <br />
   }
 
@@ -128,63 +111,4 @@
   </div>
 
   <br /><br />
-
-  <!-- @for(todo of todos(); track todo) {
-<div class="todo-list" [routerLink]="['/app', 'todo', todo.id]">
-  author: {{ todo.data.creator }}<br />
-  Description: {{ todo.data.description }}<br />
-  completed: {{ todo.data.completed }}<br />
 </div>
-} -->
-
-  <!-- <div class="container">
-    <h2>To do</h2>
-
-    <div
-      cdkDropList
-      #todoList="cdkDropList"
-      [cdkDropListData]="todo"
-      [cdkDropListConnectedTo]="doneList"
-      class="list"
-      (cdkDropListDropped)="drop($event)"
-    >
-      @for (item of todo; track item) {
-      <div class="list-item" cdkDrag>{{ item }}</div>
-      }
-    </div>
-  </div>
-
-  <div class="container">
-    <h2>Done</h2>
-
-    <div
-      cdkDropList
-      #doneList="cdkDropList"
-      [cdkDropListData]="done"
-      [cdkDropListConnectedTo]="todoList"
-      class="list"
-      (cdkDropListDropped)="drop($event)"
-    >
-      @for (item of done; track item) {
-      <div class="list-item" cdkDrag>{{ item }}</div>
-      }
-    </div>
-  </div> -->
-</div>
-
-<!-- </mat-tab>
-  <mat-tab>
-    <ng-template mat-tab-label>
-      <span class="hide-small">Business</span>
-    </ng-template>
-
-    <div class="container responsive-grid"></div>
-  </mat-tab>
-  <mat-tab>
-    <ng-template mat-tab-label>
-      <span class="hide-small">Groceries</span>
-    </ng-template>
-
-    <div class="container responsive-grid"></div>
-  </mat-tab>
-</mat-tab-group> -->

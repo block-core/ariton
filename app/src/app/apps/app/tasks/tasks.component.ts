@@ -129,20 +129,7 @@ export class TasksComponent {
   /** Gets a list of tasks with the supplied parent id. */
   async getList(list: any) {
     // Fetch tasks under list
-
     console.log('GET LIST: ', list.record.creator);
-
-    // const { records, status: status2 } = await this.identity.web5.dwn.records.query({
-    //   from: entry.data.did,
-    //   message: {
-    //     protocolRole: 'list/collaborator',
-    //     filter: {
-    //       contextId: record.contextId,
-    //       protocol: taskDefinition.protocol,
-    //       protocolPath: 'list/task',
-    //     },
-    //   },
-    // });
 
     const query: any = {
       // from: list.record.creator,
@@ -342,14 +329,6 @@ export class TasksComponent {
   }
 
   collaboratorDialog(list: any) {
-    // let data: DialogData = {
-    //   title: entry.data.title,
-    //   body: entry.data.body,
-    //   background: entry.data.background,
-    //   collaborators: [],
-    //   labels: [''],
-    // };
-
     let data = {
       title: list.data.title,
       id: list.id,
@@ -363,8 +342,6 @@ export class TasksComponent {
     const original = JSON.parse(JSON.stringify(data));
 
     const dialogRef = this.dialog.open(CollaboratorDialogComponent, {
-      // maxWidth: '80vw',
-      // maxHeight: '80vh',
       data: data,
     });
 
@@ -407,55 +384,6 @@ export class TasksComponent {
     return dialogRef.afterClosed();
   }
 
-  // async assignRoleToList(record: Record, recordData: any, collaborators: string[]) {
-  //   for (let collaborator of collaborators) {
-  //     // Assign collaborator role to the DID.
-  //     const tags = {
-  //       role: true,
-  //     };
-
-  //     // This will fail if the DID already have a role assigned.
-  //     // TODO: Implement a query to see if the user already has role assigned and skip this step.
-  //     const { record: roleRecord, status: roleStatus } = await this.identity.web5.dwn.records.create({
-  //       data: {},
-  //       message: {
-  //         tags: tags,
-  //         recipient: collaborator,
-  //         protocol: taskDefinition.protocol,
-  //         protocolPath: 'collaborator',
-  //         schema: taskDefinition.types.collaborator.schema,
-  //         dataFormat: taskDefinition.types.collaborator.dataFormats[0],
-  //       },
-  //     });
-
-  //     console.log('Role status:', roleStatus);
-  //     console.log('Role record:', roleRecord);
-
-  //     // Only send the role record to SELF, this should not be shared with the collaborator.
-  //     await roleRecord?.send(this.identity.did);
-
-  //     const data = {
-  //       recordId: record.id,
-  //       app: 'tasks',
-  //       title: recordData.title,
-  //     };
-
-  //     // Create a connection request to the collaborator.
-  //     const entry = await this.connection.request(collaborator, data, ConnectionType.Data);
-
-  //     // Send the connection request to the collaborator.
-  //     await entry.record.send(collaborator);
-
-  //     // const { status } = await record.send(collaborator);
-  //     // console.log('Send record to collaborator:', status, record);
-
-  //     // if (status.code !== 202) {
-  //     //   this.snackBar.open(`Code: ${status.code}, Error: ${status.detail}`, 'Close', {
-  //     //     duration: 3000,
-  //     //   });
-  //   }
-  // }
-
   async sendConnectRequests(record: Record, recordData: any, collaborators: string[]) {
     for (let collaborator of collaborators) {
       // Assign collaborator role to the DID.
@@ -487,22 +415,6 @@ export class TasksComponent {
       console.log('Role status:', roleStatus);
       console.log('Role record:', roleRecord);
 
-      // const { record: roleRecord2, status: roleStatus2 } = await this.identity.web5.dwn.records.create({
-      //   data: {},
-      //   message: {
-      //     tags: tags,
-      //     recipient: collaborator,
-      //     protocol: taskDefinition.protocol,
-      //     protocolPath: 'collaborator',
-      //     schema: taskDefinition.types.collaborator.schema,
-      //     dataFormat: taskDefinition.types.collaborator.dataFormats[0],
-      //   },
-      // });
-
-      // console.log('!!!!!');
-      // console.log('Role status2:', roleStatus2);
-      // console.log('Role record2:', roleRecord2);
-
       // Only send the role record to SELF, this should not be shared with the collaborator.
       await roleRecord?.send(this.identity.did);
 
@@ -527,38 +439,6 @@ export class TasksComponent {
       //   });
     }
   }
-
-  // async sendToCollaborators(record: Record, collaborators: string[], everything: boolean = false) {
-  //   for (let collaborator of collaborators) {
-  //     const { status } = await record.send(collaborator);
-  //     console.log('Send record to collaborator:', status, record);
-
-  //     if (status.code !== 202) {
-  //       this.snackBar.open(`Code: ${status.code}, Error: ${status.detail}`, 'Close', {
-  //         duration: 3000,
-  //       });
-  //     }
-  //   }
-
-  //   if (everything) {
-  //     const tasks = await this.getList(record.id);
-
-  //     for (let collaborator of collaborators) {
-  //       for (let task of tasks) {
-  //         const { status } = await task.record.send(collaborator);
-  //         console.log('Send task to collaborator:', status);
-
-  //         if (status.code !== 202) {
-  //           this.snackBar.open(`Code: ${status.code}, Error: ${status.detail}`, 'Close', {
-  //             duration: 3000,
-  //           });
-  //         }
-  //       }
-  //       // const { status } = await record.send(collaborator);
-  //       // console.log('Send status to collaborator:', status);
-  //     }
-  //   }
-  // }
 
   editList(list: any) {
     list.editing = true;
@@ -711,170 +591,10 @@ export class TasksComponent {
     // todoRecord?.update({ protocolRole: 'list/collaborator' });
 
     console.log('VALIDATE collaborator:', todoRecord);
-
     // await this.sendToCollaborators(todoRecord!, list.data.collaborators);
   }
 
-  async loadRoles() {
-    this.list = [];
-
-    const { records } = await this.identity.web5.dwn.records.query({
-      message: {
-        // protocolRole: 'list',
-        filter: {
-          // tags: { role: true },
-          protocol: taskDefinition.protocol,
-          // schema: taskDefinition.types.list.schema,
-          protocolPath: 'list/collaborator',
-        },
-        dateSort: DwnDateSort.CreatedAscending,
-      },
-    });
-
-    // const { record, status } = await this.identity.web5.dwn.records.read({
-    //   from: entry.data.did,
-    //   message: {
-    //     protocolRole: 'collaborator',
-    //     filter: {
-    //       protocolPath: 'list',
-    //       recordId: entry.data.recordId,
-    //     },
-    //   },
-    // });
-
-    console.log('ROLE RECORDS: ', records);
-
-    // for (let record of records!) {
-    //   const data = await record.data.json();
-    //   let list: any = { record, data, id: record.id };
-
-    //   list.todos = await this.getList(list.id);
-
-    //   this.list.push(list);
-    // }
-  }
-
-  async loadRemote() {
-    this.list = [];
-
-    // PAGING:
-    // this.identity.web5.dwn.records.query({ message: { pagination } })
-
-    const query = {
-      from: 'did:dht:swboka9qm4ywhsoz19ja7gz9et9ccqhy8y88aikae1bwmfiuem3o',
-      message: {
-        // protocolRole: 'list/collaborator',
-        filter: {
-          // contextId: 'bafyreib3ivgo5vmt77w7cdg2kjyjbjfzdjw3so2yz7bd6redz7kfbsmvmi',
-          protocol: taskDefinition.protocol,
-          protocolPath: 'list',
-          schema: taskDefinition.types.list.schema,
-          dataFormat: taskDefinition.types.list.dataFormats[0],
-          // protocolPath: 'list',
-          // protocolPath: 'list/bafyreiduwnbofvuoqomjvwyphix6geuzhybsb7fhvn426pw5hp75zm4pki',
-          // schema: taskDefinition.types.list.schema,
-        },
-        dateSort: DwnDateSort.CreatedAscending,
-      },
-    };
-
-    console.log(query);
-
-    const { records } = await this.identity.web5.dwn.records.query(query);
-
-    const { record } = await this.identity.web5.dwn.records.read({
-      from: 'did:dht:swboka9qm4ywhsoz19ja7gz9et9ccqhy8y88aikae1bwmfiuem3o',
-      message: {
-        protocolRole: 'list/collaborator',
-        filter: {
-          recordId: 'bafyreib3ivgo5vmt77w7cdg2kjyjbjfzdjw3so2yz7bd6redz7kfbsmvmi',
-          protocol: taskDefinition.protocol,
-        },
-      },
-    });
-
-    console.log('SINGLE RECORD:', record);
-
-    const json = await record.data.json();
-    console.log('SINGLE JSON:', json);
-
-    // const { record, status } = await this.identity.web5.dwn.records.read({
-    //   from: entry.data.did,
-    //   message: {
-    //     protocolRole: 'collaborator',
-    //     filter: {
-    //       protocolPath: 'list',
-    //       recordId: entry.data.recordId,
-    //     },
-    //   },
-    // });
-
-    console.log('REMOTE RECORDS: ', records);
-
-    for (let record of records!) {
-      const data = await record.data.json();
-
-      console.log('REMOTE RECORD DATA:', data);
-
-      // let list: any = { record, data, id: record.id };
-
-      // list.todos = await this.getList(list.id);
-
-      // this.list.push(list);
-    }
-  }
-
-  async createTests() {
-    const sharedListData = {
-      type: 'list',
-      title: 'New list',
-      description: 'What to do?',
-      author: this.identity.did,
-      collaborators: [],
-    };
-
-    const { record: record1, status: status1 } = await this.identity.web5.dwn.records.create({
-      data: sharedListData,
-      message: {
-        // recipient: 'did:dht:4jt77q3d3sjndj9drdxtdppjqegmu8zaxo8ktw8xwr5ecrsn5mby',
-        protocol: taskDefinition.protocol,
-        protocolPath: 'list',
-        // protocolRole: 'list/collaborator',
-        schema: taskDefinition.types.list.schema,
-        dataFormat: taskDefinition.types.list.dataFormats[0],
-      },
-    });
-
-    console.log('STATUS: ', status1);
-    record1?.send(this.identity.did);
-
-    // Create two role records, one with parentContext and one without.
-    const tags = {
-      role: true,
-    };
-
-    const query: any = {
-      data: {},
-      message: {
-        tags: tags,
-        recipient: 'did:dht:4jt77q3d3sjndj9drdxtdppjqegmu8zaxo8ktw8xwr5ecrsn5mby',
-        protocol: taskDefinition.protocol,
-        parentContextId: record1!.contextId,
-        protocolPath: 'list/collaborator',
-        schema: taskDefinition.types.collaborator.schema,
-      },
-    };
-
-    console.log('QUERY:', query);
-
-    const { record: roleRecord, status: roleStatus } = await this.identity.web5.dwn.records.create(query);
-    console.log('ROLE STATUS:', roleStatus);
-    roleRecord?.send(this.identity.did);
-  }
-
   async newList() {
-    // const recipientDID = 'did:dht:bi3bzoke6rq6fbkojpo5ebtg45eqx1owqrb4esex8t9nz14ugnao';
-
     const sharedListData = {
       type: 'list',
       title: 'New list',
