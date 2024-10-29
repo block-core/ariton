@@ -4,15 +4,12 @@ import { IdentityService } from './identity.service';
 import { Record } from '@web5/api';
 import { protocolDefinition as connectionDefinition } from '../protocols/connection';
 import { protocolDefinition as chatDefinition } from '../protocols/chat';
+import { protocolDefinition as taskDefinition } from '../protocols/task';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EventService {
-  // connections = inject(ConnectionService);
-
-  // identity = inject(IdentityService);
-
   #connectionProtocol = signal<Record | null>(null);
 
   get connectionProtocol() {
@@ -23,6 +20,12 @@ export class EventService {
 
   get chatProtocol() {
     return this.#chatProtocol;
+  }
+
+  #taskProtocol = signal<Record | null>(null);
+
+  get taskProtocol() {
+    return this.#taskProtocol;
   }
 
   constructor() {}
@@ -70,10 +73,10 @@ export class EventService {
       console.log('!!!! Received local for chat:', record);
     };
 
-    // const subscriptionChatHandler = (record: Record) => {
-    //   this.#connectionProtocol.set(record);
-    //   console.log('!!!! Received local:', record);
-    // };
+    const subscriptionTaskHandler = (record: Record) => {
+      this.#taskProtocol.set(record);
+      console.log('!!!! Received local for task:', record);
+    };
 
     await identity.web5.dwn.records.subscribe({
       message: {
@@ -93,37 +96,14 @@ export class EventService {
       subscriptionHandler: subscriptionChatHandler,
     });
 
-    // console.log('SUBSCRIPTION STATUS: ', status);
-
-    // try {
-    //   // This invocation will query Bob's DWeb Nodes
-    //   const { status: status2 } = await this.identity.web5.dwn.records.subscribe({
-    //     from: this.identity.did,
-    //     message: {
-    //       filter: {
-    //         protocol: connectionDefinition.protocol,
-    //       },
-    //     },
-    //     subscriptionHandler: subscriptionHandlerRemote,
-    //   });
-
-    //   console.log('SUBSCRIPTION STATUS2: ', status2);
-    // } catch (err) {
-    //   console.error(err);
-    // }
-
-    // const subscriptionHandler = (record: Record) => {
-    //   console.log('received', record);
-    // };
-    // const { status } = await this.identity.web5.dwn.records.query({
-    //   from: 'did:example:bob',
-    //   message: {
-    //     filter: {
-    //       protocol: 'https://schema.org/protocols/social',
-    //     },
-    //   },
-    //   subscriptionHandler,
-    // });
+    await identity.web5.dwn.records.subscribe({
+      message: {
+        filter: {
+          protocol: taskDefinition.protocol,
+        },
+      },
+      subscriptionHandler: subscriptionTaskHandler,
+    });
 
     console.log('Event Service initialized.');
   }

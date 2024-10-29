@@ -31,6 +31,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConnectionService, ConnectionType } from '../../../connection.service';
 import { protocolDefinition as noteDefinition } from '../../../../protocols/note';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { EventService } from '../../../event.service';
 
 @Component({
   selector: 'app-todo',
@@ -76,11 +77,25 @@ export class TasksComponent {
 
   snackBar = inject(MatSnackBar);
 
+  events = inject(EventService);
+
   selectedList = signal<string | null>(null);
 
   selectedRecord = signal<Record | null>(null);
 
   constructor() {
+    effect(
+      async () => {
+        // TODO: Implement a granular way to handle events. This is brute force when any updates happen.
+        if (this.events.taskProtocol()) {
+          setTimeout(async () => {
+            await this.load();
+          }, 2000);
+        }
+      },
+      { allowSignalWrites: true },
+    );
+
     effect(
       async () => {
         if (this.app.initialized()) {
@@ -219,49 +234,49 @@ export class TasksComponent {
     console.log('SHARED LISTS:', shared);
 
     // If this is a shared list, we need to query remotely for updates.
-    for (let list of shared) {
-      console.log('LIST:', list);
-      console.log('FROM:', list.record.creator);
-      console.log('RECORD:', list.record.id);
-      console.log('RECORD:', list.data.recordId);
+    // for (let list of shared) {
+    //   console.log('LIST:', list);
+    //   console.log('FROM:', list.record.creator);
+    //   console.log('RECORD:', list.record.id);
+    //   console.log('RECORD:', list.data.recordId);
 
-      const query = {
-        from: list.record.creator,
-        message: {
-          protocolRole: 'list/collaborator',
-          filter: {
-            protocolPath: 'list',
-            recordId: list.record.id,
-          },
-        },
-      };
+    //   const query = {
+    //     from: list.record.creator,
+    //     message: {
+    //       protocolRole: 'list/collaborator',
+    //       filter: {
+    //         protocolPath: 'list',
+    //         recordId: list.record.id,
+    //       },
+    //     },
+    //   };
 
-      const { record, status } = await this.identity.web5.dwn.records.read(query);
+    //   const { record, status } = await this.identity.web5.dwn.records.read(query);
 
-      if (record.dateModified != list.record.dateModified) {
-        const data = await record.data.json();
+    //   if (record.dateModified != list.record.dateModified) {
+    //     const data = await record.data.json();
 
-        let list: any = { record, data, id: record.id };
-        list.todos = await this.getList(list);
+    //     let list: any = { record, data, id: record.id };
+    //     list.todos = await this.getList(list);
 
-        const index = this.list.findIndex((item) => item.id === list.id);
+    //     const index = this.list.findIndex((item) => item.id === list.id);
 
-        if (index !== -1) {
-          this.list[index] = list;
-        } else {
-          this.list.push(list);
-        }
+    //     if (index !== -1) {
+    //       this.list[index] = list;
+    //     } else {
+    //       this.list.push(list);
+    //     }
 
-        // Import the updated record.
-        try {
-          await record.import();
-        } catch (err) {
-          console.error('Import error, this is expected 😂🤣🥲 until SDK is updated:', err);
-        }
-      } else {
-        console.log('NO UPDATE, RECORD IS NOT MODIFIED!!');
-      }
-    }
+    //     // Import the updated record.
+    //     try {
+    //       await record.import();
+    //     } catch (err) {
+    //       console.error('Import error, this is expected 😂🤣🥲 until SDK is updated:', err);
+    //     }
+    //   } else {
+    //     console.log('NO UPDATE, RECORD IS NOT MODIFIED!!');
+    //   }
+    // }
   }
 
   collaboratorDialog(list: any) {
