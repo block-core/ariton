@@ -572,6 +572,13 @@ export class TasksComponent {
 
   async deleteList(list: any) {
     await list.record.delete({ prune: true });
+
+    if (list.record.author != this.identity.did) {
+      console.log('SENDING THE DELETE TO REMOTE USER!');
+      // Send the delete operation to the author.
+      await list.record.send(list.record.author);
+    }
+
     this.list = this.list.filter((l) => l.id !== list.id);
   }
 
