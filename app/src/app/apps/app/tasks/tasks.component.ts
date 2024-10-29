@@ -100,6 +100,7 @@ export class TasksComponent {
       async () => {
         if (this.app.initialized()) {
           await this.load();
+          this.startAutoLoad();
         }
       },
       { allowSignalWrites: true },
@@ -117,6 +118,12 @@ export class TasksComponent {
         this.selectedList.set(params.get('id'));
       }
     });
+  }
+
+  startAutoLoad() {
+    setInterval(async () => {
+      await this.reloadRemoteLists();
+    }, 30000);
   }
 
   /** Gets a list of tasks with the supplied parent id. */
@@ -179,6 +186,15 @@ export class TasksComponent {
     return todo;
   }
 
+  /** Reloads all remote (collaborative) lists. */
+  async reloadRemoteLists() {
+    const shared = this.list.filter((l) => l.record.author != this.identity.did);
+
+    for (let list of shared) {
+      await this.reloadList(list);
+    }
+  }
+
   async reloadList(list: any) {
     const query = {
       from: list.record.creator,
@@ -234,49 +250,49 @@ export class TasksComponent {
     console.log('SHARED LISTS:', shared);
 
     // If this is a shared list, we need to query remotely for updates.
-    // for (let list of shared) {
-    //   console.log('LIST:', list);
-    //   console.log('FROM:', list.record.creator);
-    //   console.log('RECORD:', list.record.id);
-    //   console.log('RECORD:', list.data.recordId);
+    for (let list of shared) {
+      console.log('LIST:', list);
+      console.log('FROM:', list.record.creator);
+      console.log('RECORD:', list.record.id);
+      console.log('RECORD:', list.data.recordId);
 
-    //   const query = {
-    //     from: list.record.creator,
-    //     message: {
-    //       protocolRole: 'list/collaborator',
-    //       filter: {
-    //         protocolPath: 'list',
-    //         recordId: list.record.id,
-    //       },
-    //     },
-    //   };
+      const query = {
+        from: list.record.creator,
+        message: {
+          protocolRole: 'list/collaborator',
+          filter: {
+            protocolPath: 'list',
+            recordId: list.record.id,
+          },
+        },
+      };
 
-    //   const { record, status } = await this.identity.web5.dwn.records.read(query);
+      const { record, status } = await this.identity.web5.dwn.records.read(query);
 
-    //   if (record.dateModified != list.record.dateModified) {
-    //     const data = await record.data.json();
+      if (record.dateModified != list.record.dateModified) {
+        const data = await record.data.json();
 
-    //     let list: any = { record, data, id: record.id };
-    //     list.todos = await this.getList(list);
+        let list: any = { record, data, id: record.id };
+        list.todos = await this.getList(list);
 
-    //     const index = this.list.findIndex((item) => item.id === list.id);
+        const index = this.list.findIndex((item) => item.id === list.id);
 
-    //     if (index !== -1) {
-    //       this.list[index] = list;
-    //     } else {
-    //       this.list.push(list);
-    //     }
+        if (index !== -1) {
+          this.list[index] = list;
+        } else {
+          this.list.push(list);
+        }
 
-    //     // Import the updated record.
-    //     try {
-    //       await record.import();
-    //     } catch (err) {
-    //       console.error('Import error, this is expected 😂🤣🥲 until SDK is updated:', err);
-    //     }
-    //   } else {
-    //     console.log('NO UPDATE, RECORD IS NOT MODIFIED!!');
-    //   }
-    // }
+        // Import the updated record.
+        try {
+          await record.import();
+        } catch (err) {
+          console.error('Import error, this is expected 😂🤣🥲 until SDK is updated:', err);
+        }
+      } else {
+        console.log('NO UPDATE, RECORD IS NOT MODIFIED!!');
+      }
+    }
   }
 
   collaboratorDialog(list: any) {
