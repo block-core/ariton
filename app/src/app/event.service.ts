@@ -40,13 +40,17 @@ export class EventService {
     // Some of these should perhaps be handled individually in each server, but
     // for now we will handle event subscriptions in this centralized service.
     const subscriptionHandler = (record: Record) => {
-      this.#connectionProtocol.set(record);
-      console.log('!!!! Received local for connection:', record);
+      setTimeout(() => {
+        this.#connectionProtocol.set(record);
+        console.log('!!!! Received local for connection:', record);
+      }, 1000);
     };
 
     const subscriptionHandlerRemote = (record: Record) => {
-      this.#connectionProtocol.set(record);
-      console.log('!!!! Received remote:', record);
+      setTimeout(() => {
+        this.#connectionProtocol.set(record);
+        console.log('!!!! Received remote:', record);
+      }, 1000);
     };
 
     // TODO: Remote subscribe does not work yet. Need to fix in web5-js.
@@ -69,13 +73,17 @@ export class EventService {
     // }
 
     const subscriptionChatHandler = (record: Record) => {
-      this.#chatProtocol.set(record);
-      console.log('!!!! Received local for chat:', record);
+      setTimeout(() => {
+        this.#chatProtocol.set(record);
+        console.log('!!!! Received local for chat:', record);
+      }, 1000);
     };
 
     const subscriptionTaskHandler = (record: Record) => {
-      this.#taskProtocol.set(record);
-      console.log('!!!! Received local for task:', record);
+      setTimeout(() => {
+        this.#taskProtocol.set(record);
+        console.log('!!!! Received local for task:', record);
+      }, 1000);
     };
 
     await identity.web5.dwn.records.subscribe({

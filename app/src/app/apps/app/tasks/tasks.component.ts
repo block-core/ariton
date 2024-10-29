@@ -209,17 +209,29 @@ export class TasksComponent {
 
     const { record, status } = await this.identity.web5.dwn.records.read(query);
 
-    const data = await record.data.json();
+    // If the record has been deleted remotely, remove locally.
+    if (record.deleted) {
+      const index = this.list.findIndex((item) => item.id === list.id);
 
-    list = { record, data, id: record.id };
-    list.todos = await this.getList(list);
+      if (index !== -1) {
+        this.list.splice(index, 1);
+      }
 
-    const index = this.list.findIndex((item) => item.id === list.id);
-
-    if (index !== -1) {
-      this.list[index] = list;
+      const importResult = await record.import();
+      console.log('IMPORT RESULT FROM DELETE OPEARTION:', importResult);
     } else {
-      this.list.push(list);
+      const data = await record.data.json();
+
+      list = { record, data, id: record.id };
+      list.todos = await this.getList(list);
+
+      const index = this.list.findIndex((item) => item.id === list.id);
+
+      if (index !== -1) {
+        this.list[index] = list;
+      } else {
+        this.list.push(list);
+      }
     }
   }
 
@@ -269,28 +281,62 @@ export class TasksComponent {
 
       const { record, status } = await this.identity.web5.dwn.records.read(query);
 
-      if (record.dateModified != list.record.dateModified) {
-        const data = await record.data.json();
+      console.log('READ STATUS:', status);
 
-        let list: any = { record, data, id: record.id };
-        list.todos = await this.getList(list);
+      // The record might have been deleted and not returned anymore, or user might have deleted our
+      // role assignment.
+      if (!record) {
+        // Code: 404 Not Found might be returned here.
+        console.log('RECORD NOT FOUND, DELETED REMOTELY?', list.record.id);
 
+        // Delete locally... perhaps this is an issue if we get 404 for other reasons?
+        if (status.code === 404) {
+          await list.record.delete();
+
+          const index = this.list.findIndex((item) => item.id === list.id);
+
+          if (index !== -1) {
+            this.list.splice(index, 1);
+          }
+        }
+
+        return;
+      }
+
+      // If the record has been deleted remotely, remove locally.
+      if (record.deleted) {
         const index = this.list.findIndex((item) => item.id === list.id);
 
         if (index !== -1) {
-          this.list[index] = list;
-        } else {
-          this.list.push(list);
+          this.list.splice(index, 1);
         }
 
-        // Import the updated record.
-        try {
-          await record.import();
-        } catch (err) {
-          console.error('Import error, this is expected 😂🤣🥲 until SDK is updated:', err);
-        }
+        const importResult = await record.import();
+        console.log('IMPORT RESULT FROM DELETE OPERATION:', importResult);
       } else {
-        console.log('NO UPDATE, RECORD IS NOT MODIFIED!!');
+        if (record.dateModified != list.record.dateModified) {
+          const data = await record.data.json();
+
+          let list: any = { record, data, id: record.id };
+          list.todos = await this.getList(list);
+
+          const index = this.list.findIndex((item) => item.id === list.id);
+
+          if (index !== -1) {
+            this.list[index] = list;
+          } else {
+            this.list.push(list);
+          }
+
+          // Import the updated record.
+          try {
+            await record.import();
+          } catch (err) {
+            console.error('Import error, this is expected 😂🤣🥲 until SDK is updated:', err);
+          }
+        } else {
+          console.log('NO UPDATE, RECORD IS NOT MODIFIED!!');
+        }
       }
     }
   }
