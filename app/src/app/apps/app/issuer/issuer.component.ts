@@ -12,6 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { UtilityService } from '../../../utility.service';
 
 @Component({
   selector: 'app-issuer',
@@ -34,6 +35,8 @@ export class IssuerComponent {
   vcType = 'IdentityCredential';
 
   app = inject(AppService);
+
+  util = inject(UtilityService);
 
   identity = inject(IdentityService);
 
@@ -82,6 +85,10 @@ export class IssuerComponent {
     if (vcRecords!.length > 0) {
       this.signed = true;
     }
+  }
+
+  copyValue() {
+    this.util.copyToClipboard(this.credential);
   }
 
   async sign() {

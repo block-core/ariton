@@ -18,7 +18,8 @@
       <mat-card>
         <mat-card-header>
           <mat-card-title>
-            @if (signed) { You have signed the Voluntaryist Covenant } @else { Sign the Voluntaryist Covenant }
+            Issue Credential
+            <!-- @if (signed) { You have signed the Voluntaryist Covenant } @else { Issue Credential } -->
           </mat-card-title>
         </mat-card-header>
         <mat-card-content>
@@ -50,14 +51,21 @@
             <mat-icon>search</mat-icon>
           </button> -->
 
-          <p>
+          @if (credential) {
+          <p class="wrap">
+            <strong>Credential:</strong><br />
             {{ credential }}
+            <button class="copy-button" matTooltip="Copy the credential" mat-icon-button (click)="copyValue()">
+              <mat-icon>content_copy</mat-icon>
+            </button>
           </p>
+          }
         </mat-card-content>
         <mat-card-actions>
-          <button mat-flat-button (click)="sign()" [disabled]="loading || signed">
-            @if (signed) { Signed Covenant } @else { Sign Credential }</button
-          >&nbsp;
+          <button mat-flat-button (click)="sign()" [disabled]="loading">Sign Credential</button>
+          <!-- <button mat-flat-button (click)="sign()" [disabled]="loading || signed">
+            @if (signed) { Sign Credential } @else { Sign Credential }</button
+          >&nbsp; -->
           <!-- <button mat-button (click)="withdraw()" [disabled]="!signed">Withdraw the signature</button> -->
         </mat-card-actions>
       </mat-card>
