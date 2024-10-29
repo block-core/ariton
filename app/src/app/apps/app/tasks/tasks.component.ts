@@ -602,8 +602,6 @@ export class TasksComponent {
   }
 
   async addTask(list: any) {
-    // const todoRecipient = 'did:dht:bi3bzoke6rq6fbkojpo5ebtg45eqx1owqrb4esex8t9nz14ugnao';
-
     if (!list.todos) {
       list.todos = [];
     }
@@ -617,19 +615,30 @@ export class TasksComponent {
       collaborators: [],
     };
 
-    // newTodoDescription.value = '';
-
     const { record: todoRecord, status: createStatus } = await this.identity.web5.dwn.records.create({
       data: taskData,
       message: {
         protocol: taskDefinition.protocol,
         protocolPath: 'list/task',
-        protocolRole: 'collaborator',
+        protocolRole: 'list/collaborator',
         schema: taskDefinition.types.task.schema,
         dataFormat: taskDefinition.types.task.dataFormats[0],
         parentContextId: taskData.parentId,
       },
     });
+
+    console.log('createStatus:', createStatus);
+
+    const resultSelf = await todoRecord?.send();
+    console.log('Result self:', resultSelf?.status);
+
+    if (list.record.author != this.identity.did) {
+      console.log(`SENDING TASK TO AUTHOR!!! ${list.record.author}`);
+      const response = await todoRecord?.send(list.record.author);
+      console.log('Send Status: ', response?.status);
+
+      console.log('SENDING LIST TO COLLABORATORS!!!', list);
+    }
 
     // todoRecord?.update({ protocolRole: 'list/collaborator' });
 
