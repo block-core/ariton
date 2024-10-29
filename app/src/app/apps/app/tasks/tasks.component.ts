@@ -586,6 +586,8 @@ export class TasksComponent {
   }
 
   async saveTask(todo: any, list: any) {
+    console.log('Save task:', todo, list);
+
     todo.editing = false;
 
     const query: any = {
@@ -606,9 +608,9 @@ export class TasksComponent {
     console.log('Send status 2: ', status2);
 
     // If the task is shared, send it back to creator.
-    if (todo.record.creator != this.identity.did) {
-      console.log('SENDING TASK TO CREATOR:', todo.record.creator);
-      const { status } = await todo.record.send(todo.record.creator);
+    if (list.record.creator != this.identity.did) {
+      console.log('SENDING TASK TO CREATOR:', list.record.creator);
+      const { status } = await todo.record.send(list.record.creator);
       console.log('UPDATE STATUS:', status);
     }
 
