@@ -88,6 +88,12 @@ export const routes: Routes = [
     data: { hide: true, icon: 'assured_workload' },
   },
   {
+    path: 'app/issuer',
+    loadComponent: () => import('./apps/app/issuer/issuer.component').then((c) => c.IssuerComponent),
+    title: 'Issuer',
+    data: { hide: true, icon: 'assured_workload' },
+  },
+  {
     path: 'marketplace',
     loadComponent: () => import('./marketplace/marketplace.component').then((c) => c.MarketplaceComponent),
     title: 'Marketplace',

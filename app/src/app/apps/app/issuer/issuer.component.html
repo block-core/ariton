@@ -1,0 +1,103 @@
+<mat-tab-group>
+  <mat-tab>
+    <ng-template mat-tab-label> <mat-icon class="example-tab-icon">badge</mat-icon>&nbsp; Credentials </ng-template>
+    <div class="padding">
+      <mat-card>
+        <mat-card-content>
+          <h1>Choose Credential to issue</h1>
+
+          <p>To be done: Add a list of available schemas to choose from.</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </mat-tab>
+  <mat-tab>
+    <ng-template mat-tab-label> <mat-icon class="example-tab-icon">verified</mat-icon>&nbsp; Credential </ng-template>
+
+    <div class="padding">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>
+            @if (signed) { You have signed the Voluntaryist Covenant } @else { Sign the Voluntaryist Covenant }
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-form-field subscriptSizing="dynamic" class="did-input">
+            <input matInput placeholder="DID" [(ngModel)]="did" />
+          </mat-form-field>
+
+          <mat-form-field subscriptSizing="dynamic" class="did-input">
+            <input matInput placeholder="Identifier" [(ngModel)]="identifier" />
+          </mat-form-field>
+
+          <mat-form-field subscriptSizing="dynamic" class="did-input">
+            <input matInput placeholder="Name" [(ngModel)]="name" />
+          </mat-form-field>
+
+          <mat-form-field subscriptSizing="dynamic" class="did-input">
+            <input matInput placeholder="Birthdate" [(ngModel)]="birthdate" />
+          </mat-form-field>
+
+          <mat-form-field subscriptSizing="dynamic" class="did-input">
+            <input matInput placeholder="Gender" [(ngModel)]="gender" />
+          </mat-form-field>
+
+          <mat-form-field subscriptSizing="dynamic" class="did-input">
+            <input matInput placeholder="Photograph" [(ngModel)]="photograph" />
+          </mat-form-field>
+
+          <!-- <button class="chat-action" mat-icon-button (click)="lookup()">
+            <mat-icon>search</mat-icon>
+          </button> -->
+
+          <p>
+            {{ credential }}
+          </p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-flat-button (click)="sign()" [disabled]="loading || signed">
+            @if (signed) { Signed Covenant } @else { Sign Credential }</button
+          >&nbsp;
+          <!-- <button mat-button (click)="withdraw()" [disabled]="!signed">Withdraw the signature</button> -->
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </mat-tab>
+  <mat-tab>
+    <ng-template mat-tab-label> <mat-icon class="example-tab-icon">person_search</mat-icon>&nbsp; Search </ng-template>
+
+    <div class="padding">
+      <h2>Check signing status</h2>
+
+      <mat-form-field subscriptSizing="dynamic" class="did-input">
+        <input matInput placeholder="DID..." [(ngModel)]="did" (keydown.enter)="lookup()" />
+      </mat-form-field>
+      <button class="chat-action" mat-icon-button (click)="lookup()">
+        <mat-icon>search</mat-icon>
+      </button>
+
+      @if (lookupSigned !== undefined) {
+      <p>
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>Signature Status</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p>
+              @if (lookupSigned) {
+              <mat-icon class="signature-icon" inline="true">verified_user</mat-icon>
+              } @else {
+              <mat-icon class="signature-icon" inline="true">gpp_bad</mat-icon>
+              }
+            </p>
+            <p>The identity with the following DID has @if (!lookupSigned) { not } signed the convenant:</p>
+            <p class="ellipsis">
+              {{ did }}
+            </p>
+          </mat-card-content>
+        </mat-card>
+      </p>
+      }
+    </div>
+  </mat-tab>
+</mat-tab-group>

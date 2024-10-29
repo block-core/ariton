@@ -173,6 +173,13 @@ export class AppsComponent {
     });
 
     cards.push({
+      title: 'Issuer',
+      id: 'issuer',
+      description: 'Generic Credential Issuer app.',
+      imageUrl: '/icons/apps/issuer.webp',
+    });
+
+    cards.push({
       title: 'Voluntaryist Covenant',
       id: 'voluntaryist-covenant',
       description:
