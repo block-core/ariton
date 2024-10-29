@@ -617,12 +617,19 @@ export class TasksComponent {
   }
 
   async deleteList(list: any) {
-    await list.record.delete({ prune: true });
+    console.log('LIST.RECORD.AUTHOR:', list.record.author);
+
+    const deleteResult = await list.record.delete({ prune: true });
+
+    console.log('Delete result: ', deleteResult);
+    console.log('list.record.author: ', list.record.author);
+    console.log('this.identity.did: ', this.identity.did);
 
     if (list.record.author != this.identity.did) {
       console.log('SENDING THE DELETE TO REMOTE USER!');
       // Send the delete operation to the author.
-      await list.record.send(list.record.author);
+      const sendResult = await list.record.send(list.record.author);
+      console.log('Send Result:', sendResult);
     }
 
     this.list = this.list.filter((l) => l.id !== list.id);
@@ -892,8 +899,8 @@ export class TasksComponent {
 
     console.log('VALIDATE collaborator:', record);
 
-    const data = await record!.data.json();
-    const list = { record, data, id: record!.id };
+    // const data = await record!.data.json();
+    const list = { record, sharedListData, id: record!.id };
 
     this.list.push(list);
     // this.list.update((requests) => [...requests, list]);
