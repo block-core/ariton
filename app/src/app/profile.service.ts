@@ -1,6 +1,8 @@
 import { effect, inject, Injectable, signal } from '@angular/core';
 import { IdentityService } from './identity.service';
 import { profile } from '../protocols';
+import { CacheService } from './cache.service';
+import { Record } from '@web5/api';
 
 export interface Profile {
   did: string;
@@ -13,6 +15,14 @@ export interface Profile {
   location?: string;
   links: string[];
   birthDate?: string;
+}
+
+export interface ProfileResult {
+  record: Record | null;
+  avatarRecord: Record | null;
+  avatar: any;
+  profile: any;
+  did: string;
 }
 
 @Injectable({
@@ -51,6 +61,8 @@ export class ProfileService {
 
   avatarSelected = signal<any>(null);
 
+  cache = new CacheService();
+
   constructor() {
     effect(async () => {
       if (this.identity.initialized() && this.identity.activeIdentity()) {
@@ -60,7 +72,13 @@ export class ProfileService {
     });
   }
 
-  async loadProfile(did: string) {
+  async loadProfile(did: string): Promise<ProfileResult> {
+    let result: ProfileResult | null = this.cache.read(did);
+
+    if (result) {
+      return result as ProfileResult;
+    }
+
     // TODO: Implement caching of profiles, since this method is
     // called by various directives and code, avoiding too many database queries.
     //Query records with plain text data format
@@ -96,13 +114,18 @@ export class ProfileService {
     var { avatar, avatarRecord } = await this.loadAvatar(did);
 
     // Returns a structure of both the record and the profile.
-    return {
+
+    result = {
       record: recordEntry,
       avatarRecord: avatarRecord,
       avatar: avatar,
       profile: entry,
       did: did,
-    };
+    } as ProfileResult;
+
+    this.cache.save(did, result, 5000);
+
+    return result;
   }
 
   async loadAvatar(did: string) {

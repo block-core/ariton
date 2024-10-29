@@ -90,8 +90,8 @@ export class ProfileComponent {
           if (userId && userId !== 'undefined') {
             this.did = userId!;
             console.log('USER ID SET!!', userId);
+            await this.loadUserProfile(userId);
             await this.loadPosts(userId);
-            this.loadUserProfile(userId);
           }
         });
       }

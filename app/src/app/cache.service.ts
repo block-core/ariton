@@ -1,31 +1,40 @@
 import { Injectable } from '@angular/core';
 
-@Injectable({
-    providedIn: 'root',
-})
+// @Injectable({
+//   providedIn: 'root',
+// })
 export class CacheService {
-    /** Right now we will never invalidate any data, we will just keep storing more and more. */
-    data: any = {};
+  /** Data storage with TTL */
+  data: { [key: string]: { value: any; expiration: number } } = {};
 
-    constructor() {}
+  constructor() {}
 
-    // Save data to localStorage with prefix
-    save(key: string, value: any): void {
-        this.data[key] = value;
+  // Save data with optional TTL in milliseconds
+  save(key: string, value: any, ttl?: number): void {
+    const expiration = ttl ? Date.now() + ttl : Infinity;
+    this.data[key] = { value, expiration };
+  }
+
+  // Read data and check for expiration
+  read<T>(key: string): T | null {
+    const entry = this.data[key];
+    if (!entry) {
+      return null;
     }
-
-    // Read data from localStorage with prefix
-    read<T>(key: string): T | null {
-        return this.data[key];
+    if (entry.expiration < Date.now()) {
+      delete this.data[key];
+      return null;
     }
+    return entry.value;
+  }
 
-    // Remove data from localStorage with prefix
-    remove(key: string): void {
-        delete this.data[key];
-    }
+  // Remove data from storage
+  remove(key: string): void {
+    delete this.data[key];
+  }
 
-    // Clear all data from localStorage that matches the prefix
-    clear(): void {
-        this.data = {};
-    }
+  // Clear all data
+  clear(): void {
+    this.data = {};
+  }
 }
