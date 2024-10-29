@@ -210,7 +210,7 @@ export class TasksComponent {
     const { record, status } = await this.identity.web5.dwn.records.read(query);
 
     // If the record has been deleted remotely, remove locally.
-    if (record.deleted) {
+    if (record == null || record.deleted) {
       const index = this.list.findIndex((item) => item.id === list.id);
 
       if (index !== -1) {
@@ -304,7 +304,7 @@ export class TasksComponent {
       }
 
       // If the record has been deleted remotely, remove locally.
-      if (record.deleted) {
+      if (record == null || record.deleted) {
         const index = this.list.findIndex((item) => item.id === list.id);
 
         if (index !== -1) {
@@ -689,6 +689,13 @@ export class TasksComponent {
       },
     });
 
+    // const data = await todoRecord!.data.json();
+    const todoEntry = await this.getTaskEntryFromRecord(todoRecord!);
+
+    list.todos.push(todoEntry);
+    console.log(list);
+    this.changeRef.markForCheck();
+
     console.log('createStatus:', createStatus);
 
     const resultSelf = await todoRecord?.send();
@@ -698,21 +705,12 @@ export class TasksComponent {
       console.log(`SENDING TASK TO AUTHOR!!! ${list.record.author}`);
       const response = await todoRecord?.send(list.record.author);
       console.log('Send Status: ', response?.status);
-
       console.log('SENDING LIST TO COLLABORATORS!!!', list);
     }
 
     // todoRecord?.update({ protocolRole: 'list/collaborator' });
 
     console.log('VALIDATE collaborator:', todoRecord);
-
-    // const data = await todoRecord!.data.json();
-    const todoEntry = await this.getTaskEntryFromRecord(todoRecord!);
-
-    list.todos.push(todoEntry);
-    console.log(list);
-
-    this.changeRef.markForCheck();
 
     // await this.sendToCollaborators(todoRecord!, list.data.collaborators);
   }
@@ -902,7 +900,7 @@ export class TasksComponent {
     console.log('VALIDATE collaborator:', record);
 
     // const data = await record!.data.json();
-    const list = { record, sharedListData, id: record!.id };
+    const list = { record, data: sharedListData, id: record!.id };
 
     this.list.push(list);
     // this.list.update((requests) => [...requests, list]);
