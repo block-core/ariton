@@ -78,25 +78,18 @@ export class ProfileService {
     let entry: any = {};
     let recordEntry = null;
 
-    console.log('RESPONSE FOUND FOR PROFILE:', response);
-    console.log('RECORDS FOUND FOR PROFILE1:', response.records);
-
+    // Did we find a local copy of profile?
     if (response.records && response.records.length > 0) {
-      // Loop through returned records and print text from each
-      for (const record of response.records) {
-        // Import the profile record to our local DWN. This way we can quickly access it later.
-        record.import();
+      console.log(`Found local copy of profile. Only picking the first one of ${response.records.length} found.`);
 
-        console.log('IMPORTING PROFILE RECORD:', record);
+      recordEntry = response.records[0];
+      let recordJson = await recordEntry.data.json();
+      entry = { ...recordJson, id: recordEntry.dataCid, did: recordEntry.creator, created: recordEntry.dateCreated };
 
-        recordEntry = record;
-        let recordJson = await record.data.json();
-        entry = { ...recordJson, id: record.dataCid, did: record.creator, created: record.dateCreated };
-
-        // Load without waiting, so next request will have locally updated record.
-        this.loadProfileRemote(did);
-      }
+      // Load without waiting, so next request will have locally updated record.
+      this.loadProfileRemote(did);
     } else {
+      // Load remote and wait.
       entry = await this.loadProfileRemote(did);
     }
 
@@ -128,6 +121,8 @@ export class ProfileService {
     });
 
     if (imageResponse.records && imageResponse.records.length > 0) {
+      console.log(`Found avatar for user. Selecting the first of ${imageResponse.records.length} found.`);
+
       const record = imageResponse.records[0];
 
       avatarRecord = record;
@@ -197,24 +192,21 @@ export class ProfileService {
       },
     });
 
-    console.log('QUERY FOR PROFILE WORKS??');
-
     let entry: any = {};
     let recordEntry = null;
 
-    console.log('RESPONSE FOUND FOR PROFILE:', response);
-    console.log('RECORDS FOUND FOR PROFILE2:', response.records);
+    if (response.records && response.records.length > 0) {
+      console.log(
+        `Found a profile remotely. Selecting the first of ${response.records.length} found. Importing it to local DWN.`,
+      );
+      recordEntry = response.records[0];
+      let recordJson = await recordEntry.data.json();
+      entry = { ...recordJson, id: recordEntry.dataCid, did: recordEntry.creator, created: recordEntry.dateCreated };
 
-    if (response.records) {
-      // Loop through returned records and print text from each
-      for (const record of response.records) {
-        // Import the profile record to our local DWN. This way we can quickly access it later.
-        record.import();
-
-        recordEntry = record;
-        let recordJson = await record.data.json();
-        entry = { ...recordJson, id: record.dataCid, did: record.creator, created: record.dateCreated };
-      }
+      // TODO: We need a nice way to avoid importing if already exists.
+      recordEntry.import();
+    } else {
+      console.log(`No profile found for user. Returning empty result for ${did}`);
     }
 
     return entry;
