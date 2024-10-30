@@ -13,6 +13,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { UtilityService } from '../../../utility.service';
+import { MatRadioModule } from '@angular/material/radio';
 
 @Component({
   selector: 'app-issuer',
@@ -27,6 +28,7 @@ import { UtilityService } from '../../../utility.service';
     MatIconModule,
     MatButtonModule,
     MatTabsModule,
+    MatRadioModule,
   ],
   templateUrl: './issuer.component.html',
   styleUrl: './issuer.component.scss',
@@ -54,7 +56,7 @@ export class IssuerComponent {
 
   name = '';
 
-  gender = '';
+  gender = 'M';
 
   birthdate = '';
 
@@ -62,8 +64,21 @@ export class IssuerComponent {
 
   credential = '';
 
+  issueDate = '';
+
+  expiryDate = '';
+
   constructor() {
     this.layout.marginOff();
+
+    const issueDate = new Date();
+    issueDate.setHours(24, 59, 59, 0);
+
+    const expirationDate = new Date(issueDate);
+    expirationDate.setFullYear(expirationDate.getFullYear() + 5);
+
+    this.issueDate = issueDate.toISOString();
+    this.expiryDate = expirationDate.toISOString();
 
     effect(() => {
       if (this.app.initialized()) {
@@ -96,6 +111,7 @@ export class IssuerComponent {
 
     const expirationDate = new Date();
     expirationDate.setFullYear(expirationDate.getFullYear() + 5);
+    expirationDate.setHours(24, 0, 0, 0);
 
     const vc = await VerifiableCredential.create({
       type: this.vcType,
@@ -127,21 +143,25 @@ export class IssuerComponent {
 
     this.credential = vc_jwt;
 
-    // const { record } = await this.identity.web5.dwn.records.create({
-    //   data: vc_jwt,
-    //   message: {
-    //     schema: this.vcType,
-    //     dataFormat: credential.format,
-    //     published: true,
-    //   },
-    // });
+    const { record } = await this.identity.web5.dwn.records.create({
+      data: vc_jwt,
+      message: {
+        tags: {
+          type: 'FreeID',
+        },
+        schema: this.vcType,
+        dataFormat: credential.format,
+        published: true,
+      },
+    });
 
-    // console.log('VC RECORD:', record);
+    console.log('VC RECORD:', record);
 
-    // const { status } = await record!.send(this.identity.did);
-    // console.log('Record sent:', status, record);
+    const { status } = await record!.send(this.identity.did);
+    console.log('Record sent:', status, record);
 
     this.signed = true;
+    this.loading = false;
   }
 
   async lookup() {
@@ -151,6 +171,9 @@ export class IssuerComponent {
       from: this.did,
       message: {
         filter: {
+          tags: {
+            type: 'FreeID',
+          },
           schema: this.vcType,
           dataFormat: credential.format,
         },
@@ -162,10 +185,20 @@ export class IssuerComponent {
     // TODO: Here we should actually validate the VC.
     if (records!.length > 0) {
       this.lookupSigned = true;
+
+      const jwt_vc = await records![0].data.text();
+      const vc = VerifiableCredential.parseJwt({ vcJwt: jwt_vc });
+
+      this.vc = vc;
+      this.lookupCredential = vc.vcDataModel.credentialSubject;
+      console.log('VC:', vc);
     } else {
       this.lookupSigned = false;
     }
   }
+
+  vc: VerifiableCredential | null = null;
+  lookupCredential: any = null;
 
   async withdraw() {
     var { records: vcRecords } = await this.identity.web5.dwn.records.query({

@@ -22,28 +22,44 @@
             <!-- @if (signed) { You have signed the Voluntaryist Covenant } @else { Issue Credential } -->
           </mat-card-title>
         </mat-card-header>
-        <mat-card-content>
-          <mat-form-field subscriptSizing="dynamic" class="did-input">
+        <mat-card-content class="credential-form">
+          <mat-form-field class="did-input">
+            <mat-label>Decentralized Identifier (DID)</mat-label>
             <input matInput placeholder="DID" [(ngModel)]="did" />
           </mat-form-field>
 
-          <mat-form-field subscriptSizing="dynamic" class="did-input">
-            <input matInput placeholder="Identifier" [(ngModel)]="identifier" />
+          <mat-form-field class="did-input">
+            <mat-label>Identifier (ISSUER-YEAR-IDENTIFIER-SEQUENCE)</mat-label>
+            <input matInput placeholder="Eg. LFID-07-0001-01" [(ngModel)]="identifier" />
           </mat-form-field>
 
-          <mat-form-field subscriptSizing="dynamic" class="did-input">
+          <mat-form-field class="did-input">
+            <mat-label>Date of issue</mat-label>
+            <input matInput [(ngModel)]="issueDate" />
+          </mat-form-field>
+
+          <mat-form-field class="did-input">
+            <mat-label>Date of expiry</mat-label>
+            <input matInput [(ngModel)]="expiryDate" />
+          </mat-form-field>
+
+          <mat-form-field class="did-input">
+            <mat-label>Name</mat-label>
             <input matInput placeholder="Name" [(ngModel)]="name" />
           </mat-form-field>
 
-          <mat-form-field subscriptSizing="dynamic" class="did-input">
+          <mat-form-field class="did-input">
+            <mat-label>Birthdate</mat-label>
             <input matInput placeholder="Birthdate" [(ngModel)]="birthdate" />
           </mat-form-field>
 
-          <mat-form-field subscriptSizing="dynamic" class="did-input">
-            <input matInput placeholder="Gender" [(ngModel)]="gender" />
-          </mat-form-field>
+          <mat-radio-group class="gender-input" [(ngModel)]="gender">
+            <mat-radio-button value="M">Male</mat-radio-button>
+            <mat-radio-button value="F">Female</mat-radio-button>
+          </mat-radio-group>
 
-          <mat-form-field subscriptSizing="dynamic" class="did-input">
+          <mat-form-field class="did-input">
+            <mat-label>Photograph (Base64)</mat-label>
             <input matInput placeholder="Photograph" [(ngModel)]="photograph" />
           </mat-form-field>
 
@@ -62,7 +78,9 @@
           }
         </mat-card-content>
         <mat-card-actions>
-          <button mat-flat-button (click)="sign()" [disabled]="loading">Sign Credential</button>
+          <button mat-flat-button (click)="sign()" [disabled]="loading">
+            Sign and Save Credential (Public Accessible)
+          </button>
           <!-- <button mat-flat-button (click)="sign()" [disabled]="loading || signed">
             @if (signed) { Sign Credential } @else { Sign Credential }</button
           >&nbsp; -->
@@ -71,11 +89,11 @@
       </mat-card>
     </div>
   </mat-tab>
-  <!-- <mat-tab>
-    <ng-template mat-tab-label> <mat-icon class="example-tab-icon">person_search</mat-icon>&nbsp; Search </ng-template>
+  <mat-tab>
+    <ng-template mat-tab-label> <mat-icon class="example-tab-icon">person_search</mat-icon>&nbsp; Validate</ng-template>
 
     <div class="padding">
-      <h2>Check signing status</h2>
+      <h2>Check verification status</h2>
 
       <mat-form-field subscriptSizing="dynamic" class="did-input">
         <input matInput placeholder="DID..." [(ngModel)]="did" (keydown.enter)="lookup()" />
@@ -98,14 +116,28 @@
               <mat-icon class="signature-icon" inline="true">gpp_bad</mat-icon>
               }
             </p>
-            <p>The identity with the following DID has @if (!lookupSigned) { not } signed the convenant:</p>
+            <p>The identity with the following DID has @if (!lookupSigned) { no } valid FreeID:</p>
             <p class="ellipsis">
               {{ did }}
             </p>
+
+            @if (lookupCredential) {
+            <h2>{{ lookupCredential.name }}</h2>
+            <p>
+              {{ lookupCredential.identifier }}
+            </p>
+            <p>
+              {{ lookupCredential.dateOfBirth }}
+            </p>
+            <p>@if (lookupCredential.gender == 'M') { Male } @else { Female }</p>
+            <p>
+              <img src="data:image/png;base64,{{ lookupCredential.photo }}" />
+            </p>
+            }
           </mat-card-content>
         </mat-card>
       </p>
       }
     </div>
-  </mat-tab> -->
+  </mat-tab>
 </mat-tab-group>

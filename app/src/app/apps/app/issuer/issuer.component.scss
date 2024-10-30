@@ -1,7 +1,16 @@
 .did-input {
-  width: calc(100% - 40px);
+  width: calc(100%);
 }
 
 .signature-icon {
   font-size: 4em;
+}
+
+.gender-input {
+  margin-bottom: 1em;
+  display: inline-block;
+}
+
+.credential-form {
+  padding-top: 1em;
 }
