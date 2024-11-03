@@ -195,6 +195,14 @@ export class AppsComponent {
       imageUrl: '/icons/apps/player.jpg',
     });
 
+    cards.push({
+      title: 'Known Customer Credential',
+      id: 'kcc',
+      description:
+        'Allows issuance of Known Customer Credential (KCC) to users that includes evidence from their KYC verification.',
+      imageUrl: '/icons/apps/kcc.webp',
+    });
+
     // for (let i = 0; i < this.images.length; i++) {
     //   cards.push({
     //     title: `App ${i + 1}`,

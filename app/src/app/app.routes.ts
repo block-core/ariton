@@ -94,10 +94,16 @@ export const routes: Routes = [
     data: { hide: true, icon: 'assured_workload' },
   },
   {
+    path: 'app/kcc',
+    loadComponent: () => import('./apps/app/kcc/kcc.component').then((c) => c.KnownCustomerCredentialComponent),
+    title: 'Known Customer Credential',
+    data: { hide: true, icon: 'assured_workload' },
+  },
+  {
     path: 'marketplace',
     loadComponent: () => import('./marketplace/marketplace.component').then((c) => c.MarketplaceComponent),
     title: 'Marketplace',
-    data: { icon: 'storefront' },
+    data: { hide: true, icon: 'storefront' },
   },
   {
     path: 'apps',
