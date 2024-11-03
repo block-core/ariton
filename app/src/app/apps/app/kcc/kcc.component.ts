@@ -50,7 +50,7 @@ export class KnownCustomerCredentialComponent {
 
   lookupSigned: boolean | undefined = undefined;
 
-  did = '';
+  did = 'did:dht:rr1w5z9hdjtt76e6zmqmyyxc5cfnwjype6prz45m6z1qsbm8yjao';
 
   identifier = '';
 
@@ -85,6 +85,20 @@ export class KnownCustomerCredentialComponent {
         this.load();
       }
     });
+  }
+
+  async requestPermission() {
+    const issuerDidUri = this.identity.did;
+
+    // The CORS configuration on this endpoint doesn't allow us to read it in the browser,
+    // but it doesn't matter as the browser doesn't need to read the response, the request will
+    // go out and the server will register the permission.
+    try {
+      const result = await fetch(`https://vc-to-dwn.tbddev.org/authorize?issuerDid=${issuerDidUri}`);
+      console.log(result);
+    } catch (error) {
+      console.log('Failed to request permission:', error);
+    }
   }
 
   async load() {

@@ -20,12 +20,24 @@
     </div>
   </mat-tab>
   <mat-tab>
-    <ng-template mat-tab-label> <mat-icon class="example-tab-icon">badge</mat-icon>&nbsp; Permission </ng-template>
+    <ng-template mat-tab-label> <mat-icon class="example-tab-icon">lock_reset</mat-icon>&nbsp; Permission </ng-template>
     <div class="padding">
       <mat-card>
         <mat-card-content>
-          <h1>Ask for Permission</h1>
-          <p>To be done: Add a list of available schemas to choose from.</p>
+          <h1>Ask for delivery permission</h1>
+          <p>
+            You can ask for permission to deliver a credential to a specific DID. The DID is a decentralized identifier
+            that is unique to the person or entity you want to deliver the credential to.
+          </p>
+          <p>
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Enter DID</mat-label>
+              <input matInput placeholder="DID" readonly="true" [(ngModel)]="did" />
+            </mat-form-field>
+          </p>
+          <p>
+            <button mat-button (click)="requestPermission()">Ask for permission</button>
+          </p>
         </mat-card-content>
       </mat-card>
     </div>
