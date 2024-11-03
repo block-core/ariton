@@ -99,6 +99,8 @@ export class KnownCustomerCredentialComponent {
 
   permissionReceived = false;
 
+  credentials: any[] = [];
+
   async requestPermission() {
     this.permissionRequested = true;
     const issuerDidUri = this.identity.did;
@@ -216,6 +218,7 @@ export class KnownCustomerCredentialComponent {
       from: this.did,
       message: {
         filter: {
+          // author: this.did,
           schema: 'https://vc-to-dwn.tbddev.org/vc-protocol/schema/credential',
           dataFormat: credential.format,
         },
@@ -224,21 +227,31 @@ export class KnownCustomerCredentialComponent {
 
     console.log('VC RECORDS:', records);
 
+    this.credentials = [];
+
     // TODO: Here we should actually validate the VC.
     if (records!.length > 0) {
-      this.lookupSigned = true;
+      for (const record of records!) {
+        this.lookupSigned = true;
 
-      const jwt_vc = await records![0].data.text();
+        const jwt_vc = await record.data.text();
 
-      console.log(jwt_vc);
+        console.log(jwt_vc);
 
-      const vc = VerifiableCredential.parseJwt({ vcJwt: jwt_vc });
+        const vc = VerifiableCredential.parseJwt({ vcJwt: jwt_vc });
 
-      console.log(vc.vcDataModel.credentialSubject);
+        this.credentials.push({
+          vc,
+          jwt: jwt_vc,
+          record,
+        });
 
-      this.vc = vc;
-      this.lookupCredential = vc.vcDataModel.credentialSubject;
-      console.log('VC:', this.vc);
+        console.log(vc.vcDataModel.credentialSubject);
+
+        // this.vc = vc;
+        // this.lookupCredential = vc.vcDataModel.credentialSubject;
+        // console.log('VC:', this.vc);
+      }
     } else {
       this.lookupSigned = false;
     }

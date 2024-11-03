@@ -147,35 +147,40 @@
         <mat-icon>search</mat-icon>
       </button>
 
-      @if (lookupSigned !== undefined) {
+      @if (lookupSigned !== undefined) { @for (credential of credentials; track credential) {
       <p>
         <mat-card>
           <mat-card-header>
-            <mat-card-title>Signature Status</mat-card-title>
+            <mat-card-title>Known Customer Credential</mat-card-title>
           </mat-card-header>
           <mat-card-content>
-            <p>
+            <!-- <p>
               @if (lookupSigned) {
               <mat-icon class="signature-icon" inline="true">verified_user</mat-icon>
               } @else {
               <mat-icon class="signature-icon" inline="true">gpp_bad</mat-icon>
               }
-            </p>
-            <p>The identity with the following DID has @if (!lookupSigned) { no } valid KCC issued by you:</p>
+            </p> -->
+            <p>The identity with the following DID has @if (!lookupSigned) { no } valid KCC issued by :</p>
+
             <p class="ellipsis">
-              {{ did }}
+              {{ credential.vc.issuer }}
             </p>
 
-            @if (lookupCredential) {
-            <h2>Tier: {{ lookupCredential.tier }}</h2>
-            <p>Residence: {{ lookupCredential.countryOfResidence }}</p>
-            <p>Jurisdiction: {{ lookupCredential.jurisdiction.country }}</p>
-            <p>Evidence: {{ vc?.vcDataModel?.['evidence'][0] | json }}</p>
+            <!-- <p class="ellipsis">
+              {{ did }}
+            </p> -->
+
+            @if (credential) {
+            <h2>Tier: {{ credential.vc.vcDataModel.credentialSubject.tier }}</h2>
+            <p>Residence: {{ credential.vc.vcDataModel.credentialSubject.countryOfResidence }}</p>
+            <p>Jurisdiction: {{ credential.vc.vcDataModel.credentialSubject.jurisdiction?.country }}</p>
+            <p>Evidence: {{ credential.vc.vcDataModel?.['evidence'][0] | json }}</p>
             }
           </mat-card-content>
         </mat-card>
       </p>
-      }
+      } }
     </div>
   </mat-tab>
 </mat-tab-group>
