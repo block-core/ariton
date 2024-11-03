@@ -68,6 +68,16 @@ export class KnownCustomerCredentialComponent {
 
   expiryDate = '';
 
+  countryOfResidence = '';
+
+  tier = 'Silver';
+
+  jurisdiction = '';
+
+  document_verification = 'passport utility_bill driver_license';
+
+  permissionRequested = false;
+
   constructor() {
     this.layout.marginOff();
 
@@ -87,7 +97,10 @@ export class KnownCustomerCredentialComponent {
     });
   }
 
+  permissionReceived = false;
+
   async requestPermission() {
+    this.permissionRequested = true;
     const issuerDidUri = this.identity.did;
 
     // The CORS configuration on this endpoint doesn't allow us to read it in the browser,
@@ -99,6 +112,8 @@ export class KnownCustomerCredentialComponent {
     } catch (error) {
       console.log('Failed to request permission:', error);
     }
+
+    this.permissionReceived = true;
   }
 
   async load() {
@@ -128,17 +143,27 @@ export class KnownCustomerCredentialComponent {
     expirationDate.setHours(24, 0, 0, 0);
 
     const vc = await VerifiableCredential.create({
-      type: this.vcType,
+      // type: this.vcType,
       issuer: this.identity.did,
       subject: this.did,
       data: {
-        identifier: this.identifier,
-        name: this.name,
-        dateOfBirth: this.birthdate,
-        gender: this.gender,
-        photo: this.photograph,
+        countryOfResidence: this.countryOfResidence,
+        tier: this.tier,
+        jurisdiction: {
+          country: this.jurisdiction,
+        },
       },
       expirationDate: expirationDate.toISOString(),
+      evidence: [
+        {
+          kind: 'document_verification',
+          checks: this.document_verification.split(' '),
+        },
+      ],
+      credentialSchema: {
+        id: 'https://vc.schemas.host/kcc.schema.json', // URL to the schema used
+        type: 'JsonSchema', // Format type of the schema used for the KCC
+      },
     });
 
     const did = await this.identity.activeAgent().did.get({ didUri: this.identity.did });
@@ -157,22 +182,28 @@ export class KnownCustomerCredentialComponent {
 
     this.credential = vc_jwt;
 
-    const { record } = await this.identity.web5.dwn.records.create({
+    const { record, status } = await this.identity.web5.dwn.records.create({
       data: vc_jwt,
       message: {
-        tags: {
-          type: 'FreeID',
-        },
-        schema: this.vcType,
+        // tags: {
+        //   type: 'FreeID',
+        // },
+
+        protocol: 'https://vc-to-dwn.tbddev.org/vc-protocol',
+        protocolPath: 'credential',
+        protocolRole: 'issuer',
+        schema: 'https://vc-to-dwn.tbddev.org/vc-protocol/schema/credential',
         dataFormat: credential.format,
         published: true,
       },
     });
 
+    console.log('VC STATUS:', status);
     console.log('VC RECORD:', record);
 
-    const { status } = await record!.send(this.identity.did);
-    console.log('Record sent:', status, record);
+    // Send to the credential receiver:
+    const { status: sendStatus } = await record!.send(this.did);
+    console.log('Record sent:', sendStatus, record);
 
     this.signed = true;
     this.loading = false;
@@ -185,10 +216,7 @@ export class KnownCustomerCredentialComponent {
       from: this.did,
       message: {
         filter: {
-          tags: {
-            type: 'FreeID',
-          },
-          schema: this.vcType,
+          schema: 'https://vc-to-dwn.tbddev.org/vc-protocol/schema/credential',
           dataFormat: credential.format,
         },
       },
@@ -201,11 +229,16 @@ export class KnownCustomerCredentialComponent {
       this.lookupSigned = true;
 
       const jwt_vc = await records![0].data.text();
+
+      console.log(jwt_vc);
+
       const vc = VerifiableCredential.parseJwt({ vcJwt: jwt_vc });
+
+      console.log(vc.vcDataModel.credentialSubject);
 
       this.vc = vc;
       this.lookupCredential = vc.vcDataModel.credentialSubject;
-      console.log('VC:', vc);
+      console.log('VC:', this.vc);
     } else {
       this.lookupSigned = false;
     }

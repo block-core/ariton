@@ -30,7 +30,7 @@ export const protocolDefinition = {
         },
         {
           role: 'judge',
-          can: ['query', 'read'],
+          can: ['query', 'read', 'subscribe'],
         },
       ],
     },

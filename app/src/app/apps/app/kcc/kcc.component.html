@@ -36,10 +36,20 @@
             </mat-form-field>
           </p>
           <p>
-            <button mat-button (click)="requestPermission()">Ask for permission</button>
+            <button mat-button [disabled]="permissionRequested" (click)="requestPermission()">
+              Ask for permission
+            </button>
           </p>
         </mat-card-content>
       </mat-card>
+
+      @if (permissionReceived) {
+      <p>
+        <mat-card class="success">
+          <mat-card-content> Successfully received permission to delivery credential.</mat-card-content>
+        </mat-card>
+      </p>
+      }
     </div>
   </mat-tab>
   <mat-tab>
@@ -60,25 +70,25 @@
           </mat-form-field>
 
           <mat-form-field class="did-input">
-            <mat-label>Identifier (ISSUER-YEAR-IDENTIFIER-SEQUENCE)</mat-label>
-            <input matInput placeholder="Eg. LFID-07-0001-01" [(ngModel)]="identifier" />
+            <mat-label>Country of Residence</mat-label>
+            <input matInput placeholder="Eg. US" [(ngModel)]="countryOfResidence" />
           </mat-form-field>
 
           <mat-form-field class="did-input">
-            <mat-label>Date of issue</mat-label>
-            <input matInput [(ngModel)]="issueDate" />
+            <mat-label>Customer Tier</mat-label>
+            <input matInput [(ngModel)]="tier" />
           </mat-form-field>
 
           <mat-form-field class="did-input">
-            <mat-label>Date of expiry</mat-label>
-            <input matInput [(ngModel)]="expiryDate" />
+            <mat-label>Jurisdiction</mat-label>
+            <input matInput [(ngModel)]="jurisdiction" />
           </mat-form-field>
 
           <mat-form-field class="did-input">
-            <mat-label>Name</mat-label>
-            <input matInput placeholder="Name" [(ngModel)]="name" />
+            <mat-label>Documents Verification</mat-label>
+            <input matInput placeholder="Space separated list" [(ngModel)]="document_verification" />
           </mat-form-field>
-
+          <!-- 
           <mat-form-field class="did-input">
             <mat-label>Birthdate</mat-label>
             <input matInput placeholder="Birthdate" [(ngModel)]="birthdate" />
@@ -87,37 +97,41 @@
           <mat-radio-group class="gender-input" [(ngModel)]="gender">
             <mat-radio-button value="M">Male</mat-radio-button>
             <mat-radio-button value="F">Female</mat-radio-button>
-          </mat-radio-group>
-
+          </mat-radio-group> -->
+          <!-- 
           <mat-form-field class="did-input">
-            <mat-label>Photograph (Base64)</mat-label>
-            <input matInput placeholder="Photograph" [(ngModel)]="photograph" />
-          </mat-form-field>
+            <mat-label>Evidence</mat-label>
+            <input matInput placeholder="Eviendece" [(ngModel)]="evidence" />
+          </mat-form-field> -->
 
           <!-- <button class="chat-action" mat-icon-button (click)="lookup()">
             <mat-icon>search</mat-icon>
           </button> -->
-
-          @if (credential) {
-          <p class="wrap">
-            <strong>Credential:</strong><br />
-            {{ credential }}
-            <button class="copy-button" matTooltip="Copy the credential" mat-icon-button (click)="copyValue()">
-              <mat-icon>content_copy</mat-icon>
-            </button>
-          </p>
-          }
         </mat-card-content>
         <mat-card-actions>
-          <button mat-flat-button (click)="sign()" [disabled]="loading">
-            Sign and Save Credential (Public Accessible)
-          </button>
+          <button mat-flat-button (click)="sign()" [disabled]="loading">Sign and Save Credential</button>
           <!-- <button mat-flat-button (click)="sign()" [disabled]="loading || signed">
             @if (signed) { Sign Credential } @else { Sign Credential }</button
           >&nbsp; -->
           <!-- <button mat-button (click)="withdraw()" [disabled]="!signed">Withdraw the signature</button> -->
         </mat-card-actions>
       </mat-card>
+
+      @if (credential) {
+      <p>
+        <mat-card>
+          <mat-card-content>
+            <p class="wrap">
+              <strong>Credential:</strong><br />
+              {{ credential }}
+              <button class="copy-button" matTooltip="Copy the credential" mat-icon-button (click)="copyValue()">
+                <mat-icon>content_copy</mat-icon>
+              </button>
+            </p>
+          </mat-card-content>
+        </mat-card>
+      </p>
+      }
     </div>
   </mat-tab>
   <mat-tab>
@@ -147,23 +161,16 @@
               <mat-icon class="signature-icon" inline="true">gpp_bad</mat-icon>
               }
             </p>
-            <p>The identity with the following DID has @if (!lookupSigned) { no } valid FreeID:</p>
+            <p>The identity with the following DID has @if (!lookupSigned) { no } valid KCC issued by you:</p>
             <p class="ellipsis">
               {{ did }}
             </p>
 
             @if (lookupCredential) {
-            <h2>{{ lookupCredential.name }}</h2>
-            <p>
-              {{ lookupCredential.identifier }}
-            </p>
-            <p>
-              {{ lookupCredential.dateOfBirth }}
-            </p>
-            <p>@if (lookupCredential.gender == 'M') { Male } @else { Female }</p>
-            <p>
-              <img src="data:image/png;base64,{{ lookupCredential.photo }}" />
-            </p>
+            <h2>Tier: {{ lookupCredential.tier }}</h2>
+            <p>Residence: {{ lookupCredential.countryOfResidence }}</p>
+            <p>Jurisdiction: {{ lookupCredential.jurisdiction.country }}</p>
+            <p>Evidence: {{ vc?.vcDataModel?.['evidence'][0] | json }}</p>
             }
           </mat-card-content>
         </mat-card>

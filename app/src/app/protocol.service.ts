@@ -16,6 +16,7 @@ import { protocolDefinition as connection } from '../protocols/connection';
 import { protocolDefinition as notification } from '../protocols/notification';
 import { protocolDefinition as post } from '../protocols/post';
 import { protocolDefinition as data } from '../protocols/data';
+import { protocolDefinition as vc } from '../protocols/vc';
 import { IdentityService } from './identity.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Web5 } from '@web5/api';
@@ -49,6 +50,7 @@ export class ProtocolService {
       notification,
       post,
       data,
+      vc,
     ];
 
     for (const definition of protocols) {
