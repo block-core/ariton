@@ -4,6 +4,7 @@ import { profile } from '../protocols';
 import { CacheService } from './cache.service';
 import { Record } from '@web5/api';
 import { CacheTimeout } from './cache-timeout-settings';
+import { ConnectionService } from './connection.service';
 
 export interface Profile {
   did: string;
@@ -31,6 +32,8 @@ export interface ProfileResult {
 })
 export class ProfileService {
   identity = inject(IdentityService);
+
+  connection = inject(ConnectionService);
 
   current = signal<Profile>({
     did: '',
@@ -114,6 +117,8 @@ export class ProfileService {
 
     var { avatar, avatarRecord } = await this.loadAvatar(did);
 
+    const isFriend = this.connection.friends().find((f) => f.data.did == did) ? true : false;
+
     // Returns a structure of both the record and the profile.
 
     result = {
@@ -122,6 +127,7 @@ export class ProfileService {
       avatar: avatar,
       profile: entry,
       did: did,
+      friend: isFriend,
     } as ProfileResult;
 
     this.cache.save(did, result, CacheTimeout.PROFILE);
