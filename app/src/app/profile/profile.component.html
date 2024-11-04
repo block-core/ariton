@@ -15,8 +15,8 @@
       {{ data().profile.name }}
       @if(data().profile.title) {
       <span>({{ data().profile.title }})</span>
+      } @if (data().did !== this.identity.did) { @if (layout.tiny()) { @if (!data().friend) {
 
-      @if (data().did !== this.identity.did) { @if (layout.tiny()) { @if (!data().friend) {
       <button class="icon-button" mat-icon-button (click)="addFriend(data().did)">
         <mat-icon>person_add</mat-icon>
       </button>
@@ -34,7 +34,7 @@
         <mat-icon>chat_bubble</mat-icon>
         Message
       </button>
-      } } } }
+      } } }
 
       <button mat-icon-button [matMenuTriggerFor]="menuProfile">
         <mat-icon>more_vert</mat-icon>
