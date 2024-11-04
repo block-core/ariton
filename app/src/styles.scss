@@ -299,6 +299,10 @@ input {
   color: var(--mdc-text-button-label-text-color);
 }
 
+.icon-button .mat-icon {
+  color: var(--mdc-text-button-label-text-color);
+}
+
 [mat-icon-button] {
   vertical-align: middle !important;
 }

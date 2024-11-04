@@ -34,6 +34,8 @@ export class LayoutService {
 
   small = signal<boolean>(false);
 
+  tiny = signal<boolean>(false);
+
   constructor() {
     this.router.events.subscribe((event: any) => {
       if (event instanceof NavigationStart) {
@@ -68,6 +70,7 @@ export class LayoutService {
     });
 
     const customBreakpoint = '(max-width: 959.98px)';
+    const tinyBreakpoint = '(max-width: 600px)';
 
     // Observe the custom breakpoint
     this.breakpointObserver.observe([customBreakpoint]).subscribe((result) => {
@@ -77,6 +80,16 @@ export class LayoutService {
       } else {
         // Code to execute when the viewport is greater than 959.98px
         this.small.set(false);
+      }
+    });
+
+    this.breakpointObserver.observe([tinyBreakpoint]).subscribe((result) => {
+      if (result.matches) {
+        // Code to execute when the viewport is 959.98px or less
+        this.tiny.set(true);
+      } else {
+        // Code to execute when the viewport is greater than 959.98px
+        this.tiny.set(false);
       }
     });
 

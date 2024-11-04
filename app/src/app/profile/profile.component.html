@@ -15,7 +15,24 @@
       {{ data().profile.name }}
       @if(data().profile.title) {
       <span>({{ data().profile.title }})</span>
+      } @if (layout.tiny()) {
+      <button class="icon-button" mat-icon-button (click)="addFriend(data().did)">
+        <mat-icon>person_add</mat-icon>
+      </button>
+      <button class="icon-button" mat-icon-button [routerLink]="['/app', 'chat', data().did]">
+        <mat-icon>chat_bubble</mat-icon>
+      </button>
+      } @else {
+      <button mat-button (click)="addFriend(data().did)">
+        <mat-icon>person_add</mat-icon>
+        Add friend
+      </button>
+      <button mat-button [routerLink]="['/app', 'chat', data().did]">
+        <mat-icon>chat_bubble</mat-icon>
+        Message
+      </button>
       }
+
       <button mat-icon-button [matMenuTriggerFor]="menuProfile">
         <mat-icon>more_vert</mat-icon>
       </button>
@@ -35,13 +52,13 @@
 
   <mat-menu #menuProfile="matMenu">
     @if (data().did !== this.identity.did) {
-    <button mat-menu-item [routerLink]="['/app', 'chat', data().did]">
-      <mat-icon>chat_bubble</mat-icon>
-      <span>Message</span>
-    </button>
     <button mat-menu-item (click)="addFriend(data().did)">
       <mat-icon>person_add</mat-icon>
       <span>Add Friend</span>
+    </button>
+    <button mat-menu-item [routerLink]="['/app', 'chat', data().did]">
+      <mat-icon>chat_bubble</mat-icon>
+      <span>Message</span>
     </button>
     <mat-divider></mat-divider>
     } @if (data().did === this.identity.did) {
