@@ -195,8 +195,8 @@ export class KnownCustomerCredentialComponent {
         protocolPath: 'credential',
         protocolRole: 'issuer',
         schema: 'https://vc-to-dwn.tbddev.org/vc-protocol/schema/credential',
-        dataFormat: credential.format,
-        published: true,
+        dataFormat: 'application/vc+jwt',
+        // published: true,
       },
     });
 
