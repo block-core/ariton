@@ -83,6 +83,8 @@ export class ProfileService {
       return result as ProfileResult;
     }
 
+    // let profileJson: any = undefined;
+
     // TODO: Implement caching of profiles, since this method is
     // called by various directives and code, avoiding too many database queries.
     //Query records with plain text data format
@@ -98,34 +100,41 @@ export class ProfileService {
     });
 
     let entry: any = {};
-    let recordEntry = null;
+    // let recordEntry = null;
 
     // Did we find a local copy of profile?
     if (response.records && response.records.length > 0) {
       console.log(`Found local copy of profile. Only picking the first one of ${response.records.length} found.`);
 
-      recordEntry = response.records[0];
-      let recordJson = await recordEntry.data.json();
-      entry = { ...recordJson, id: recordEntry.dataCid, did: recordEntry.creator, created: recordEntry.dateCreated };
+      // recordEntry = response.records[0];
+      let recordJson = await response.records[0].data.json();
+
+      entry = {
+        profile: recordJson,
+        record: response.records[0],
+        // id: recordEntry.dataCid,
+        // did: recordEntry.creator,
+        // created: recordEntry.dateCreated,
+      };
 
       // Load without waiting, so next request will have locally updated record.
       this.loadProfileRemote(did);
     } else {
       // Load remote and wait.
       entry = await this.loadProfileRemote(did);
+      // recordEntry = entry.record;
+      // profile = entry.profile;
     }
 
-    var { avatar, avatarRecord } = await this.loadAvatar(did);
-
+    const avatarResult = await this.loadAvatar(did);
     const isFriend = this.connection.friends().find((f) => f.data.did == did) ? true : false;
 
     // Returns a structure of both the record and the profile.
-
     result = {
-      record: recordEntry,
-      avatarRecord: avatarRecord,
-      avatar: avatar,
-      profile: entry,
+      record: entry.record,
+      avatarRecord: avatarResult.avatarRecord,
+      avatar: avatarResult.avatar,
+      profile: entry.profile,
       did: did,
       friend: isFriend,
     } as ProfileResult;
@@ -154,18 +163,26 @@ export class ProfileService {
       console.log(`Found avatar for user. Selecting the first of ${imageResponse.records.length} found.`);
 
       const record = imageResponse.records[0];
-
-      avatarRecord = record;
+      // avatarRecord = record;
       let image = await record.data.text(); //.blob();
       // this.avatar.set(image);
       avatar = image;
 
+      // If it's in cache, update the cache.
+      let result: ProfileResult | null = this.cache.read(did);
+
+      // Update the cache entry.
+      if (result) {
+        result.avatarRecord = record;
+        result.avatar = avatar;
+      }
+
       // Load remotely and import, so next time it's accessed it will render latest.
       this.loadAvatarRemote(did);
     } else {
-      let { avatar, avatarRecord } = await this.loadAvatarRemote(did);
-      avatar = avatar;
-      avatarRecord = avatarRecord;
+      const result = await this.loadAvatarRemote(did);
+      avatar = result.avatar;
+      avatarRecord = result.avatarRecord;
     }
 
     return {
@@ -199,6 +216,15 @@ export class ProfileService {
       avatarRecord = record;
       let image = await record.data.text();
       avatar = image;
+
+      // If it's in cache, update the cache.
+      let result: ProfileResult | null = this.cache.read(did);
+
+      // Update the cache entry.
+      if (result) {
+        result.avatar = avatar;
+        result.avatarRecord = avatarRecord;
+      }
     }
 
     return { avatar, avatarRecord };
@@ -231,7 +257,25 @@ export class ProfileService {
       );
       recordEntry = response.records[0];
       let recordJson = await recordEntry.data.json();
-      entry = { ...recordJson, id: recordEntry.dataCid, did: recordEntry.creator, created: recordEntry.dateCreated };
+
+      entry = {
+        profile: recordJson,
+        record: recordEntry,
+        // id: recordEntry.dataCid,
+        // did: recordEntry.creator,
+        // created: recordEntry.dateCreated,
+      };
+
+      // console.log(JSON.stringify(recordJson));
+
+      // If it's in cache, update the cache.
+      let result: ProfileResult | null = this.cache.read(did);
+
+      // Update the cache entry.
+      if (result) {
+        result.profile = recordJson;
+        result.record = recordEntry;
+      }
 
       // TODO: We need a nice way to avoid importing if already exists.
       recordEntry.import();

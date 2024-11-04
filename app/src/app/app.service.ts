@@ -253,7 +253,7 @@ export class AppService {
 
     let agent = this.localStorage.read('agent') as AritonAgent;
 
-    console.log('IDENTITIES, AGENT from local:', identities, agent);
+    // console.log('IDENTITIES, AGENT from local:', identities, agent);
 
     let result: Web5ConnectResult | undefined;
 

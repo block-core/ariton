@@ -396,7 +396,7 @@ export class IdentityService {
 
   async loadAccounts(password: string) {
     this.identities = await this.agent.identity.list();
-    console.log('LIST OF ALL IDENTITIES: ', this.identities);
+    // console.log('LIST OF ALL IDENTITIES: ', this.identities);
 
     for (const identity of this.identities) {
       const uri = identity?.metadata?.uri;
