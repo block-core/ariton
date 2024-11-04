@@ -11,8 +11,16 @@
         <button mat-flat-button [routerLink]="['/profile', request.data.did]">VIEW</button>
         <button mat-button [routerLink]="['/app', 'chat', request.data.did]">MESSAGE</button>
       </app-profile-card>
-      } @empty { No friends yet, don't fret. <br /><br />Find some friends in real life or online, get their unique
-      identifier or scan their QR code! }
+      } @empty {
+      <div class="empty-list">
+        <strong>No friends yet</strong>, don't fret.<br /><br />Find some friends in real life or online, get their
+        unique identifier or scan their QR code! <br /><br />
+        Check out this
+        <a [routerLink]="['/profile', 'did:dht:wfcf3guhgb183rbfx5r4a5u3kh9tgjnmdp75xdphyj6wbaxxym7o']"
+          >profile of Sondre</a
+        >.
+      </div>
+      }
     </div>
 
     <mat-menu #menu="matMenu" xPosition="before">
