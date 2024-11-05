@@ -5,6 +5,47 @@
       <span class="hide-small">Friends</span>
     </ng-template>
 
+    <mat-list>
+      <!-- <div mat-subheader>Folders</div> -->
+      @for (folder of friends; track folder) {
+      <mat-list-item>
+        <!-- <mat-icon matListItemAvatar>folder</mat-icon> -->
+        <mat-icon matListItemIcon>folder</mat-icon>
+        <div matListItemContent>
+          <div matLine>{{ folder.data.did }}</div>
+          <!-- Primary text -->
+          <!-- <div matLine>{{ folder.record.dateCreated | date }}</div> -->
+          <!-- Secondary text -->
+          <!-- <div matLine>{{ folder }}</div> -->
+          <!-- Tertiary text -->
+        </div>
+        <div matListItemMeta>
+          <button mat-icon-button [matMenuTriggerFor]="menuProfile">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+        </div>
+        <mat-menu #menuProfile="matMenu">
+          <button mat-menu-item [routerLink]="['/profile', folder.data.did]">
+            <mat-icon>account_circle</mat-icon>
+            <span>View Profile</span>
+          </button>
+          <mat-divider></mat-divider>
+
+          <button mat-menu-item [routerLink]="['/app', 'chat', folder.data.did]">
+            <mat-icon>chat_bubble</mat-icon>
+            <span>Message</span>
+          </button>
+        </mat-menu>
+
+        <!-- <div class="mdc-list-item__end ng-star-inserted">
+          <button mat-icon-button [matMenuTriggerFor]="menuProfile">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+        </div> -->
+      </mat-list-item>
+      }
+    </mat-list>
+
     <div class="container responsive-grid">
       @for(request of friends; track request) {
       <app-profile-card [did]="request.data.did!">

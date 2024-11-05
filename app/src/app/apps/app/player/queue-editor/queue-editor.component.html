@@ -1,0 +1,14 @@
+<h2>Queue Editor</h2>
+<input [(ngModel)]="newItemTitle" placeholder="Title" />
+<select [(ngModel)]="newItemType">
+  <option value="music">Music</option>
+  <option value="podcast">Podcast</option>
+  <option value="video">Video</option>
+</select>
+<button (click)="addItem()">Add to Queue</button>
+
+<ul>
+  <li *ngFor="let item of queue">
+    {{ item.title }} ({{ item.type }}) <button (click)="removeItem(item.id)">Remove</button>
+  </li>
+</ul>

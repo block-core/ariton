@@ -155,12 +155,13 @@
               onerror="this.src='/avatar-placeholder.png';this.onerror='';"
             />
             <div>
+              @if (profileService.current()) {
               <h2>{{ profileService.current().name }}</h2>
               {{ profileService.current().title }}<br />
               {{ identity.did | did }}<br />
               @if (identity.identity) {
               {{ identity.identity.metadata.name }}<br />
-              }
+              } }
             </div>
           </div>
 
