@@ -1,10 +1,23 @@
 <mat-tab-group>
   <mat-tab>
-    <ng-template mat-tab-label>
+    <!-- <ng-template mat-tab-label>
       <mat-icon class="tab-icon">person</mat-icon>
       <span class="hide-small">Friends</span>
+    </ng-template> -->
+
+    <ng-template mat-tab-label>
+      <div class="tab-header-content">
+        <div class="tab-title">
+          <mat-icon class="tab-icon">person</mat-icon>
+          <span class="hide-small">Friends</span>
+        </div>
+        <button mat-icon-button (click)="toggleViewMode()" class="view-toggle">
+          <mat-icon>{{ viewMode() === 'list' ? 'grid_view' : 'view_list' }}</mat-icon>
+        </button>
+      </div>
     </ng-template>
 
+    @if (viewMode() === 'list') {
     <mat-list>
       <!-- <div mat-subheader>Folders</div> -->
       @for (folder of friends; track folder) {
@@ -46,6 +59,8 @@
       }
     </mat-list>
 
+    } @else {
+
     <div class="container responsive-grid">
       @for(request of friends; track request) {
       <app-profile-card [did]="request.data.did!">
@@ -63,6 +78,8 @@
       </div>
       }
     </div>
+
+    }
 
     <mat-menu #menu="matMenu" xPosition="before">
       <button mat-menu-item>

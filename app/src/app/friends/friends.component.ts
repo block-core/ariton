@@ -1,4 +1,4 @@
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, effect, inject, signal, model } from '@angular/core';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -17,6 +17,8 @@ import { LayoutService } from '../layout.service';
 import { FriendService } from '../friend.service';
 import { ConnectionEntry, ConnectionService } from '../connection.service';
 import { RequestComponent } from '../settings/connections/request.component';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-friends',
@@ -35,6 +37,8 @@ import { RequestComponent } from '../settings/connections/request.component';
     DidComponent,
     RouterModule,
     RequestComponent,
+    MatButtonToggleModule,
+    FormsModule,
   ],
   templateUrl: './friends.component.html',
   styleUrl: './friends.component.scss',
@@ -53,6 +57,8 @@ export class FriendsComponent {
   layout = inject(LayoutService);
 
   app = inject(AppService);
+
+  viewMode = model<'list' | 'thumbnail'>('list');
 
   constructor() {
     this.layout.resetActions();
@@ -81,6 +87,10 @@ export class FriendsComponent {
 
     // Get a local reference to friends, we probably will add features such as sorting in the future.
     this.friends = this.connection.friends();
+  }
+
+  toggleViewMode() {
+    this.viewMode.set(this.viewMode() === 'list' ? 'thumbnail' : 'list');
   }
 
   ngOnInit() {

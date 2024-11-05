@@ -45,3 +45,26 @@ mat-card-actions button {
   display: inline-block;
   text-align: left;
 }
+
+// In friends.component.scss
+.tab-header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.tab-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.view-toggle {
+  margin-left: 16px;
+}
+
+// Optional: if you want to ensure consistent spacing
+.tab-icon {
+  margin-right: 4px;
+}
