@@ -77,3 +77,16 @@ mat-card-actions button {
 .search-input {
   background-color: transparent;
 }
+
+.avatar-icon {
+  border-radius: 50%;
+}
+
+.friend-list-item {
+  cursor: pointer;
+}
+
+.friend-list-item:hover {
+  /* Use the Material Design hover color */
+  background-color: var(--mat-list-item-hover);
+}

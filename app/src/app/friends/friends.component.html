@@ -36,16 +36,20 @@
     <mat-list>
       <!-- <div mat-subheader>Folders</div> -->
       @for (folder of friends; track folder) {
-      <mat-list-item>
-        <!-- <mat-icon matListItemAvatar>folder</mat-icon> -->
-        <mat-icon matListItemIcon>folder</mat-icon>
+      <mat-list-item class="friend-list-item">
+        <img
+          [routerLink]="['/profile', folder.data.did]"
+          matListItemIcon
+          [src]="folder.avatar | safeResourceUrl"
+          onerror="this.src='/avatar-placeholder.png';this.onerror='';"
+          alt="Avatar"
+          class="avatar-icon"
+        />
         <div matListItemContent>
-          <div matLine>{{ folder.data.did }}</div>
-          <!-- Primary text -->
-          <!-- <div matLine>{{ folder.record.dateCreated | date }}</div> -->
-          <!-- Secondary text -->
-          <!-- <div matLine>{{ folder }}</div> -->
-          <!-- Tertiary text -->
+          <div matLine [routerLink]="['/profile', folder.data.did]">
+            {{ folder.profile?.profile?.name }}
+            @if (folder.profile?.profile?.title) { ({{ folder.profile?.profile?.title }}) }
+          </div>
         </div>
         <div matListItemMeta>
           <button mat-icon-button [matMenuTriggerFor]="menuProfile">
@@ -64,12 +68,6 @@
             <span>Message</span>
           </button>
         </mat-menu>
-
-        <!-- <div class="mdc-list-item__end ng-star-inserted">
-          <button mat-icon-button [matMenuTriggerFor]="menuProfile">
-            <mat-icon>more_vert</mat-icon>
-          </button>
-        </div> -->
       </mat-list-item>
       }
     </mat-list>

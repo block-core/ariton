@@ -19,6 +19,8 @@ import { ConnectionEntry, ConnectionService } from '../connection.service';
 import { RequestComponent } from '../settings/connections/request.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { FormsModule } from '@angular/forms';
+import { ProfileService } from '../profile.service';
+import { SafeUrlPipe } from '../shared/pipes/safe-url.pipe';
 
 @Component({
   selector: 'app-friends',
@@ -39,12 +41,13 @@ import { FormsModule } from '@angular/forms';
     RequestComponent,
     MatButtonToggleModule,
     FormsModule,
+    SafeUrlPipe,
   ],
   templateUrl: './friends.component.html',
   styleUrl: './friends.component.scss',
 })
 export class FriendsComponent {
-  friends: ConnectionEntry[] = [];
+  friends: ConnectionEntry[] | any[] = [];
 
   requests: ConnectionEntry[] = [];
 
@@ -58,7 +61,13 @@ export class FriendsComponent {
 
   app = inject(AppService);
 
+  profile = inject(ProfileService);
+
   viewMode = model<'list' | 'thumbnail'>('list');
+
+  private avatarUrls: { [key: string]: string } = {};
+
+  private profiles: { [key: string]: any } = {};
 
   constructor() {
     this.layout.resetActions();
@@ -76,6 +85,17 @@ export class FriendsComponent {
     });
   }
 
+  // async avatar(did: string | undefined) {
+  //   console.log('Load avatar:', did);
+  //   if (did == null) {
+  //     return;
+  //   }
+
+  //   const avatar = await this.profile.loadAvatar(did);
+  //   console.log('Avatar:', avatar);
+  //   return avatar?.avatar;
+  // }
+
   async loadRequests() {
     this.requests = this.connection.friendRequests();
   }
@@ -87,6 +107,36 @@ export class FriendsComponent {
 
     // Get a local reference to friends, we probably will add features such as sorting in the future.
     this.friends = this.connection.friends();
+
+    for (var friend of this.friends) {
+      // This is a temporary solution to load the profile and avatars,
+      // it's not really very optimiazed at all.
+      const profile = await this.profile.loadProfile(friend.data.did!);
+      if (profile) {
+        this.profiles[friend.data.did!] = profile;
+      }
+
+      const avatar = await this.profile.loadAvatar(friend.data.did!);
+      // const avatar = await this.avatar(friend.data.did);
+      if (avatar && avatar.avatar) {
+        this.avatarUrls[friend.data.did!] = avatar.avatar;
+      }
+
+      const f = friend as any;
+
+      f.profile = profile;
+      f.avatar = avatar.avatar;
+    }
+
+    console.log(this.avatarUrls);
+
+    // this.friends.forEach(async (friend) => {
+
+    // });
+  }
+
+  getAvatarUrl(did: string): string {
+    return this.avatarUrls[did] || '/avatar-placeholder.png';
   }
 
   toggleViewMode() {
