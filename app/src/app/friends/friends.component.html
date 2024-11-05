@@ -11,11 +11,26 @@
           <mat-icon class="tab-icon">person</mat-icon>
           <span class="hide-small">Friends</span>
         </div>
-        <button mat-icon-button (click)="toggleViewMode()" class="view-toggle">
-          <mat-icon>{{ viewMode() === 'list' ? 'grid_view' : 'view_list' }}</mat-icon>
-        </button>
       </div>
     </ng-template>
+
+    <div class="app-toolbar">
+      <!-- <mat-card class="toolbar-actions margin-bottom margin"> -->
+      <div class="flex">
+        <span class="toolbar-spacer">
+          <input type="search" class="search-input" placeholder="Filter friends" />
+        </span>
+        <mat-button-toggle-group hideSingleSelectionIndicator="true" [(ngModel)]="viewMode">
+          <mat-button-toggle value="list">
+            <mat-icon>view_list</mat-icon>
+          </mat-button-toggle>
+          <mat-button-toggle value="thumbnail">
+            <mat-icon>grid_view</mat-icon>
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+      <!-- </mat-card> -->
+    </div>
 
     @if (viewMode() === 'list') {
     <mat-list>
