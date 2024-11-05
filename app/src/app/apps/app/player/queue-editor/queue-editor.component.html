@@ -1,21 +1,47 @@
-<h2>Queue Editor</h2>
-<input [(ngModel)]="newItemTitle" placeholder="Title" />
-<select [(ngModel)]="newItemType">
-  <option value="music">Music</option>
-  <option value="podcast">Podcast</option>
-  <option value="video">Video</option>
-</select>
-<button (click)="addItem()">Add to Queue</button>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Queue Editor</mat-card-title>
+  </mat-card-header>
 
-@if (queue?.length) {
-<ul>
-  @for (item of queue; track item.id) {
-  <li>
-    {{ item.title }} ({{ item.type }})
-    <button (click)="removeItem(item.id)">Remove</button>
-  </li>
-  }
-</ul>
-} @else {
-<p>The queue is empty</p>
-}
+  <mat-card-content>
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Title</mat-label>
+        <input matInput [(ngModel)]="newItemTitle" placeholder="Enter title" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Type</mat-label>
+        <mat-select [(ngModel)]="newItemType">
+          <mat-option value="music">Music</mat-option>
+          <mat-option value="podcast">Podcast</mat-option>
+          <mat-option value="video">Video</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" (click)="addItem()">
+        <mat-icon>add</mat-icon>
+        Add to Queue
+      </button>
+    </div>
+
+    @if (queue?.length) {
+    <mat-list>
+      @for (item of queue; track item.id) {
+      <mat-list-item>
+        <span matListItemTitle>{{ item.title }}</span>
+        <span matListItemLine>{{ item.type }}</span>
+        <button mat-icon-button color="warn" (click)="removeItem(item.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-list-item>
+      }
+    </mat-list>
+    } @else {
+    <mat-card-content class="empty-state">
+      <mat-icon>queue_music</mat-icon>
+      <p>The queue is empty</p>
+    </mat-card-content>
+    }
+  </mat-card-content>
+</mat-card>
