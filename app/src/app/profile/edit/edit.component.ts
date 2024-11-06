@@ -86,6 +86,10 @@ export class ProfileEditComponent {
   }
 
   updateForm(profile: any) {
+    if (!profile) {
+      return;
+    }
+
     console.log('Patching form with:', profile);
 
     this.form.patchValue({
