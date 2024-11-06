@@ -17,9 +17,12 @@ import { protocolDefinition as notification } from '../protocols/notification';
 import { protocolDefinition as post } from '../protocols/post';
 import { protocolDefinition as data } from '../protocols/data';
 import { protocolDefinition as vc } from '../protocols/vc';
+import { protocolDefinition as name } from '../protocols/name';
+
 import { IdentityService } from './identity.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Web5 } from '@web5/api';
+import { AdminService } from './admin.service';
 
 @Injectable({
   providedIn: 'root',
@@ -27,12 +30,14 @@ import { Web5 } from '@web5/api';
 export class ProtocolService {
   identityService = inject(IdentityService);
 
+  admin = inject(AdminService);
+
   snackBar = inject(MatSnackBar);
 
   constructor() {}
 
   async register(web5: Web5) {
-    const protocols = [
+    let protocols: any[] = [
       note,
       profile,
       community,
@@ -52,6 +57,14 @@ export class ProtocolService {
       data,
       vc,
     ];
+
+    if (this.admin.isOwner(this.identityService.did)) {
+      protocols = [...protocols, ...[name]];
+    }
+
+    if (this.admin.isAdmin(this.identityService.did)) {
+      protocols = [...protocols, ...[]];
+    }
 
     for (const definition of protocols) {
       const { protocol, status } = await web5.dwn.protocols.configure({

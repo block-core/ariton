@@ -4,7 +4,12 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class AdminService {
-  readonly #ADMIN_DIDS: string[] = ['did:ion:test:example1', 'did:ion:test:example2', 'did:ion:test:example3'];
+  readonly #OWNER_DIDS: string[] = ['did:dht:jtubj7jooigmx9y7dz13j9kxhoy3pyo6jzizh3irkmwity3saxko'];
+
+  readonly #ADMIN_DIDS: string[] = [
+    'did:dht:jtubj7jooigmx9y7dz13j9kxhoy3pyo6jzizh3irkmwity3saxko',
+    'did:dht:wfcf3guhgb183rbfx5r4a5u3kh9tgjnmdp75xdphyj6wbaxxym7o',
+  ];
 
   constructor() {}
 
@@ -14,5 +19,13 @@ export class AdminService {
 
   public isAdmin(did: string): boolean {
     return this.#ADMIN_DIDS.includes(did);
+  }
+
+  public getOwnerDids(): string[] {
+    return [...this.#OWNER_DIDS];
+  }
+
+  public isOwner(did: string): boolean {
+    return this.#OWNER_DIDS.includes(did);
   }
 }

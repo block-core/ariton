@@ -24,7 +24,12 @@
       </picture>
     </mat-toolbar>
     <mat-nav-list>
-      @for (item of rootRoutes; track $index) {
+      @if (admin.isAdmin(identity.did)) {
+      <a mat-list-item [routerLink]="['/admin']" #link="routerLinkActive" routerLinkActive [activated]="link.isActive">
+        <mat-icon matListItemIcon>admin_panel_settings</mat-icon>
+        @if (!collapsed() ){ Admin }
+      </a>
+      } @for (item of rootRoutes; track $index) {
       <a mat-list-item [routerLink]="item.path" #link="routerLinkActive" routerLinkActive [activated]="link.isActive">
         <mat-icon matListItemIcon>{{ item.data!['icon'] }}</mat-icon>
         @if (!collapsed() ){

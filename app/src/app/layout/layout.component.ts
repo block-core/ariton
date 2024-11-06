@@ -34,6 +34,7 @@ import { AgoPipe } from '../shared/pipes/ago.pipe';
 import { PlayerControlsComponent } from '../apps/app/player/controls/controls.component';
 import { QRCodeDialogComponent } from '../shared/dialog/qrcode-dialog/qrcode-dialog.component';
 import { StorageService } from '../storage.service';
+import { AdminService } from '../admin.service';
 
 @Component({
   selector: 'app-layout',
@@ -81,6 +82,8 @@ export class LayoutComponent {
   private app = inject(AppService);
 
   public layout = inject(LayoutService);
+
+  admin = inject(AdminService);
 
   private navigation = inject(NavigationService);
 

@@ -20,6 +20,12 @@ export const routes: Routes = [
     data: { hide: true, icon: 'lightbulb' },
   },
   {
+    path: 'admin',
+    loadComponent: () => import('./admin/admin.component').then((c) => c.AdminComponent),
+    title: 'Admin',
+    data: { hide: true, icon: 'dashboard' },
+  },
+  {
     path: 'dashboard',
     loadComponent: () => import('./dashboard/dashboard.component').then((c) => c.DashboardComponent),
     title: 'Dashboard',
