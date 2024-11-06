@@ -45,6 +45,41 @@
       >{{ data().did }}
     </span>
   </div>
+  } @else {
+  <div class="profile-header-text">
+    <h1>
+      <!-- {{ data().did }} -->
+      @if (data().did !== this.identity.did) { @if (layout.tiny()) { @if (!data().friend) {
+
+      <button class="icon-button" mat-icon-button (click)="addFriend(data().did)">
+        <mat-icon>person_add</mat-icon>
+      </button>
+      } @else {
+      <button class="icon-button" mat-icon-button [routerLink]="['/app', 'chat', data().did]">
+        <mat-icon>chat_bubble</mat-icon>
+      </button>
+      } } @else { @if (!data().friend) {
+      <button mat-button (click)="addFriend(data().did)">
+        <mat-icon>person_add</mat-icon>
+        Add friend
+      </button>
+      } @else {
+      <button mat-button [routerLink]="['/app', 'chat', data().did]">
+        <mat-icon>chat_bubble</mat-icon>
+        Message
+      </button>
+      } } }
+
+      <button mat-icon-button [matMenuTriggerFor]="menuProfile">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+    </h1>
+    <span class="ellipsis"
+      ><button class="copy-button" matTooltip="Show QR code" mat-icon-button (click)="showQR(data().did)">
+        <mat-icon>qr_code</mat-icon></button
+      >{{ data().did }}
+    </span>
+  </div>
   }
   <div class="spacer"></div>
   <!-- <div class="profile-header-menu">
