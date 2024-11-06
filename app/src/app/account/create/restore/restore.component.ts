@@ -149,6 +149,7 @@ export class RestoreComponent {
           // Import from within the app, this is currently NOT supported
           // due to issues with lack of support for the Web5 API.
           if (this.identity.initialized()) {
+            console.log('FIRST OPTION');
             const identity = await this.identity.agent.identity.import({ portableIdentity: jsonObject });
 
             console.log('Imported identity:', identity.metadata.uri);
@@ -167,6 +168,7 @@ export class RestoreComponent {
             window.location.reload();
           } else {
             // This is when the user restores from the load screen and no Web5 have been initialized.
+            console.log('SECOND OPTION');
 
             const { password, did, agentDid, recoveryPhrase, web5 } = await this.identity.connectWithIdentity(
               jsonObject as PortableIdentity,

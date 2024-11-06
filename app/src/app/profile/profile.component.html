@@ -8,8 +8,7 @@
   />
   } @else {
   <img class="profile-header-icon" src="/avatar-placeholder.png" />
-  }
-
+  } @if (data().profile) {
   <div class="profile-header-text">
     <h1>
       {{ data().profile.name }}
@@ -46,6 +45,7 @@
       >{{ data().did }}
     </span>
   </div>
+  }
   <div class="spacer"></div>
   <!-- <div class="profile-header-menu">
     <button mat-icon-button [matMenuTriggerFor]="menuProfile">
@@ -175,6 +175,7 @@
         <span class="hide-small">About</span>
       </ng-template>
 
+      @if (data().profile) {
       <div class="about-tab-container">
         <div class="profile-items">
           @if (data().profile.birthDate) {
@@ -194,15 +195,8 @@
           {{ data().profile.bio }}
         </div>
         }
-
-        <!-- 
-        Example of how to use a popover, new HTML feature:
-        
-        <button popovertarget="my-popover">Open popover</button>
-        <div id="my-popover" popover>
-          <p>I'm full of information</p>
-        </div> -->
       </div>
+      }
     </mat-tab>
 
     <mat-tab>
