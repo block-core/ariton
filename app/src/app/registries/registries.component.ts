@@ -14,6 +14,7 @@ import { LayoutService } from '../layout.service';
 import { AppService } from '../app.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { Record } from '@web5/api';
 
 @Component({
   selector: 'app-registries',
@@ -43,7 +44,7 @@ export class RegistriesComponent implements AfterViewInit {
 
   app = inject(AppService);
 
-  records = signal<any[]>([]);
+  records = signal<{ record: Record; data: any; id: string }[]>([]);
 
   layout = inject(LayoutService);
 
@@ -80,29 +81,29 @@ export class RegistriesComponent implements AfterViewInit {
 
     console.log('FOUND REGISTRY RECORDS:', records);
 
-    // for (let entry of this.records()) {
-    //   console.log('DELETING:', entry);
-    //   const { status } = await entry.record.delete();
-    //   console.log('DELETE STATUS:', status);
-    // }
-
-    // Reset local records
-    this.records.set([]);
-
     if (records) {
+      const recordIds = records.map((record) => record.id);
+      const existingRecordIds = this.records().map((entry) => entry.record.id);
+
+      // Find records to remove (exists in current but not in new records)
+      const recordsToRemove = existingRecordIds.filter((id) => !recordIds.includes(id));
+
+      // Find new records to add (exists in new but not in current)
+      const recordsToAdd = recordIds.filter((id) => !existingRecordIds.includes(id));
+
+      // Remove old records
+      this.records.update((records) => [...records.filter((entry) => !recordsToRemove.includes(entry.record.id))]);
+
       for (let record of records!) {
-        let data = await record.data.json();
-        let json: any = { record: record, data: data };
+        if (recordsToAdd.includes(record.id)) {
+          let data = await record.data.json();
+          let json: any = { record: record, data: data };
+          this.records.update((records) => [...records, json]);
 
-        this.records.update((records) => [...records, json]);
-
-        // Import the record locally for caching.
-        // TODO: Add TTL to these records so they can be refreshed.
-        // const { status } = await record.import();
-
-        // Try to import if the record is not already imported. It will give conflict if already imported.
-        const { status } = await record.import();
-        console.log('IMPORT STATUS:', status);
+          // Try to import if the record is not already imported. It will give conflict if already imported.
+          const { status } = await record.import();
+          console.log('IMPORT STATUS:', status);
+        }
       }
     }
 
