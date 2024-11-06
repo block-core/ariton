@@ -166,7 +166,9 @@
               {{ identity.did | did }}<br />
               @if (identity.identity) {
               {{ identity.identity.metadata.name }}<br />
-              } }
+              } } @else {
+              {{ identity.did | did }}
+              }
             </div>
           </div>
 
