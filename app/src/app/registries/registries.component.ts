@@ -15,6 +15,7 @@ import { AppService } from '../app.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Record } from '@web5/api';
+import { AdminService } from '../admin.service';
 
 @Component({
   selector: 'app-registries',
@@ -50,6 +51,8 @@ export class RegistriesComponent implements AfterViewInit {
 
   loading = signal<boolean>(true);
 
+  admin = inject(AdminService);
+
   constructor(private router: Router) {
     this.layout.marginOn();
 
@@ -64,7 +67,7 @@ export class RegistriesComponent implements AfterViewInit {
 
   async loadRemote() {
     const query = {
-      from: this.app.aritonDid,
+      from: this.admin.getIdentifierForApp('registries'),
       message: {
         filter: {
           protocol: registry.uri,

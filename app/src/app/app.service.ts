@@ -115,7 +115,7 @@ export class AppService {
 
   dependencies: any;
 
-  aritonDid = 'did:dht:mo7am9cz6qrjwoc4kapffeue9kjw6igdh9dmqd3ywdif6qa7ju4o';
+  // aritonDid = 'did:dht:mo7am9cz6qrjwoc4kapffeue9kjw6igdh9dmqd3ywdif6qa7ju4o';
 
   constructor() {
     console.log(`Ariton v${this.package.version} (${this.hash.getTimestamp()})`);
