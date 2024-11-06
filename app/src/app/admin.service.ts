@@ -6,6 +6,10 @@ import { Injectable } from '@angular/core';
 export class AdminService {
   readonly #OWNER_DIDS: string[] = ['did:dht:jtubj7jooigmx9y7dz13j9kxhoy3pyo6jzizh3irkmwity3saxko'];
 
+  readonly #APPS: { [key: string]: string } = {
+    registries: 'did:dht:jtubj7jooigmx9y7dz13j9kxhoy3pyo6jzizh3irkmwity3saxko',
+  };
+
   readonly #ADMIN_DIDS: string[] = [
     'did:dht:jtubj7jooigmx9y7dz13j9kxhoy3pyo6jzizh3irkmwity3saxko',
     'did:dht:wfcf3guhgb183rbfx5r4a5u3kh9tgjnmdp75xdphyj6wbaxxym7o',
@@ -19,6 +23,10 @@ export class AdminService {
 
   public isAdmin(did: string): boolean {
     return this.#ADMIN_DIDS.includes(did);
+  }
+
+  public getIdentifierForApp(app: string) {
+    return this.#APPS[app];
   }
 
   public getOwnerDids(): string[] {

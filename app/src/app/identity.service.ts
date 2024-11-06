@@ -115,6 +115,7 @@ export class IdentityService {
     // Create a unique password for the user that they can replace.
     const password = await this.crypto.createPassword();
 
+    console.log('Password created');
     // Initialize the identity service with the password to create an
     // initial account.
     // result = await this.identity.initialConnect(password);
@@ -143,6 +144,8 @@ export class IdentityService {
     const identityApi: any = new AgentIdentityApi({ store: this.store });
 
     this.identityApi = identityApi;
+
+    console.log('Creating user agent...');
 
     const userAgent = await Web5UserAgent.create({ didApi, identityApi, agentVault: customAgentVault });
 

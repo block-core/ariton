@@ -11,9 +11,21 @@ export const protocolDefinition = {
     hero: {
       dataFormats: ['image/gif', 'image/png', 'image/jpeg'],
     },
+    admin: {
+      schema: 'https://schema.ariton.app/name/admin',
+      dataFormats: ['application/json'],
+    },
   },
   structure: {
-    profile: {},
+    admin: {
+      $role: true,
+    },
+    profile: {
+      // admin: {
+      //   $role: true,
+      // },
+      $actions: [{ role: 'admin', can: ['create', 'read', 'update', 'query', 'subscribe', 'co-update', 'co-delete'] }],
+    },
     avatar: {},
     hero: {},
   },

@@ -1,1 +1,30 @@
-<p>admin works!</p>
+<mat-tab-group>
+  <mat-tab [label]="'Registries'">
+    <h2>Admins</h2>
+    <div class="margin">
+      <!-- <button mat-button (click)="givePermission('did:dht:mo7am9cz6qrjwoc4kapffeue9kjw6igdh9dmqd3ywdif6qa7ju4o')">
+        Give Role to Single
+      </button> -->
+      <!-- <button mat-button (click)="givePermissions()">Give Roles to Admins</button> -->
+      <button mat-button (click)="logRecords()">Log Records</button>
+      <button mat-button (click)="deleteRegistries()">Delete Registries</button>
+      <button mat-button (click)="fillRegistries()">Populate Registries</button>
+    </div>
+
+    <h2>Owners</h2>
+    <div class="margin">
+      <button mat-button (click)="logPermissions()">Show Roles</button>
+      <button mat-button (click)="givePermissions()">Give Roles to Admins</button>
+      <!-- <button mat-button (click)="logPermissions()">Log Roles</button>
+      <button mat-button (click)="logRecords()">Log Records</button>
+      <button mat-button (click)="deleteRegistries()">Delete Registries</button>
+      <button mat-button (click)="fillRegistries()">Populate Registries</button> -->
+    </div>
+
+    @if (roles() && roles().length > 0) {
+    <h3>User's with roles:</h3>
+    @for(role of roles(); track role) {
+    <div>{{ role }}</div>
+    } }
+  </mat-tab>
+</mat-tab-group>
