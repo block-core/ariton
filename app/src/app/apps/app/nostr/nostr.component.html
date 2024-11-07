@@ -1,0 +1,9 @@
+<div class="events-container">
+  <h2>Real-Time Nostr Events</h2>
+  <div *ngIf="events">
+    <div *ngFor="let event of events;  " class="event">
+      <p><strong>Author:</strong> {{ event.pubkey }}</p>
+      <p><strong>Content:</strong> {{ event.content }}</p>
+     </div>
+  </div>
+</div>
