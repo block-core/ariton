@@ -17,6 +17,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { AppService } from '../app.service';
 import { LayoutService } from '../layout.service';
 import { DataService } from '../data.service';
+import { RecordEntry } from '../data';
 
 type CardContent = {
   title: string;
@@ -105,7 +106,7 @@ export class CommunitiesComponent {
     this.layout.marginOn();
 
     // Register a new effect.
-    effect(() => {
+    effect(async () => {
       if (this.app.initialized()) {
         setTimeout(() => {
           if (this.table) {
@@ -115,7 +116,8 @@ export class CommunitiesComponent {
           }
         });
 
-        this.loadDrafts();
+        await this.loadCommunities();
+        await this.loadDrafts();
 
         // Just set a timeout to load drafts, as the last save might not have been processed yet.
         // setTimeout(() => {
@@ -224,7 +226,11 @@ export class CommunitiesComponent {
   }
 
   open(community: string) {
-    this.router.navigate(['community', community]);
+    this.router.navigate(['/community', community]);
+  }
+
+  join(community: string) {
+    this.router.navigate(['/community', community, 'join']);
   }
 
   ngOnInit() {
@@ -239,11 +245,18 @@ export class CommunitiesComponent {
 
   drafts = signal<any[]>([]);
 
+  communities = signal<RecordEntry<any>[]>([]);
+
   async loadDrafts() {
     // TODO: Load drafts and then reload on subscribe, because we save on exit and that is async operation
     // that will not funish until after next page is loaded.
     const entries = await this.data.load({ type: 'community', status: 'draft' });
     this.drafts.set(entries);
+  }
+
+  async loadCommunities() {
+    const entries = await this.data.load({ type: 'community', status: 'active' });
+    this.communities.set(entries);
   }
 
   async createTest() {

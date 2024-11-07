@@ -61,7 +61,27 @@
 </mat-card> -->
 
 <div class="container responsive-grid">
-  @for(card of cards(); track card) {
+  @for(community of communities(); track community) {
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title
+        ><a class="link" [routerLink]="['/community', community.id]">{{ community.data.name }}</a></mat-card-title
+      >
+    </mat-card-header>
+    <br />
+    <img mat-card-image [src]="community.data.avatar" />
+    <mat-card-content>
+      <br />
+      <p>
+        {{ community.data.bio }}
+      </p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button (click)="open(community.id)">VIEW</button>
+      <button mat-button (click)="open(community.id)">JOIN</button>
+    </mat-card-actions>
+  </mat-card>
+  } @for(card of cards(); track card) {
   <mat-card>
     <mat-card-header>
       <mat-card-title>{{ card.name }} </mat-card-title>
