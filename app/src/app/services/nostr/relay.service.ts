@@ -36,10 +36,9 @@ export class RelayService implements OnDestroy {
   private loadRelaysFromLocalStorage(): Relay[] {
     const storedRelays = JSON.parse(localStorage.getItem('nostrRelays') || '[]');
     const defaultRelays: Relay[] = [
-      { url: 'wss://relay1.ariton.app', connected: false, retries: 0, retryTimeout: null, accessType: 'read-write' },
-      { url: 'wss://relay2.ariton.app', connected: false, retries: 0, retryTimeout: null, accessType: 'read-write' },
+      // { url: 'wss://relay1.ariton.app', connected: false, retries: 0, retryTimeout: null, accessType: 'read-write' },
+      // { url: 'wss://relay2.ariton.app', connected: false, retries: 0, retryTimeout: null, accessType: 'read-write' },
       { url: 'wss://relay.primal.net', connected: false, retries: 0, retryTimeout: null, accessType: 'read-write' },
-      { url: 'wss://relay.damus.io', connected: false, retries: 0, retryTimeout: null, accessType: 'read-write' },
     ];
 
     return storedRelays.length > 0
