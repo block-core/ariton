@@ -94,7 +94,7 @@ export class CommunitiesComponent {
   // }
 
   //viewStyle = signal('card');
-  viewStyle = model<string>('card');
+  viewStyle = model<string>('thumbnail');
 
   checked = model<boolean>(false);
 
