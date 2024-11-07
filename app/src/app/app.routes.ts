@@ -422,4 +422,10 @@ export const routes: Routes = [
     title: 'Management',
     data: { hide: true, icon: 'manage_accounts' },
   },
+  {
+    path: 'app/nostr',
+    loadComponent: () => import('./apps/app/nostr/nostr.component').then((c) => c.NostrComponent),
+    title: 'Nostr client',
+    data: { hide: true, icon: 'assured_workload' },
+  },
 ];
