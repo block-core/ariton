@@ -40,7 +40,7 @@
       <h2>Payments</h2>
       <mat-form-field appearance="fill">
         <mat-label>API Key</mat-label>
-        <input matInput (input)="handleApiKeyChange($event)" placeholder="Enter API Key" />
+        <input matInput [(ngModel)]="apiKey" (input)="handleApiKeyChange($event)" placeholder="Enter API Key" />
       </mat-form-field>
       <button mat-button (click)="refreshPayments()">
         <mat-icon>refresh</mat-icon>

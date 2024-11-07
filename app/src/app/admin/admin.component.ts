@@ -13,6 +13,8 @@ import { AdminService } from '../admin.service';
 import { LayoutService } from '../layout.service';
 import { IdentityService } from '../identity.service';
 import { CommonModule } from '@angular/common';
+import { LocalStorageService } from '../local-storage.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 interface Payment {
   id: string;
@@ -34,6 +36,8 @@ interface Payment {
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
+    ReactiveFormsModule,
+    FormsModule,
   ],
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.scss',
@@ -43,6 +47,7 @@ export class AdminComponent {
   identity = inject(IdentityService);
   admin = inject(AdminService);
   layout = inject(LayoutService);
+  storage = inject(LocalStorageService);
 
   roles = signal<string[]>([]);
   payments = signal<Payment[]>([]);
@@ -55,9 +60,21 @@ export class AdminComponent {
 
   apiKey = '';
 
+  ngOnInit() {
+    const adminState = this.storage.read('admin-state') as any;
+    console.log('Admin state:', adminState);
+
+    if (adminState) {
+      this.apiKey = adminState.apikey;
+    }
+  }
+
   handleApiKeyChange(event: Event) {
     const inputElement = event.target as HTMLInputElement;
     this.apiKey = inputElement.value;
+
+    this.storage.save('admin-state', { apikey: this.apiKey });
+
     this.refreshPayments();
   }
 
@@ -68,11 +85,14 @@ export class AdminComponent {
 
     this.isLoadingPayments.set(true);
     try {
-      const response = await fetch(`https://pay.ariton.app/payments/incoming/?apikey=${this.apiKey}&all=true`);
+      const response = await fetch(
+        `https://pay.ariton.app/payments/incoming/?apikey=${this.apiKey}&all=true&externalId=`,
+      );
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = (await response.json()) as Payment[];
+      console.log('Payments:', data);
       this.payments.set(data);
     } catch (error) {
       console.error('Failed to fetch payments:', error);
