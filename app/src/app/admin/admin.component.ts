@@ -1,23 +1,86 @@
 import { Component, inject, signal } from '@angular/core';
 import { MatTabsModule } from '@angular/material/tabs';
-import { IdentityService } from '../identity.service';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTableModule } from '@angular/material/table';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { HttpClient } from '@angular/common/http';
 import { registry } from '../../protocols';
 import { AdminService } from '../admin.service';
-import { MatButtonModule } from '@angular/material/button';
+import { LayoutService } from '../layout.service';
+import { IdentityService } from '../identity.service';
+import { CommonModule } from '@angular/common';
+
+interface Payment {
+  id: string;
+  amount: number;
+  status: string;
+  createdAt: string;
+}
 
 @Component({
   selector: 'app-admin',
   standalone: true,
-  imports: [MatTabsModule, MatButtonModule],
+  imports: [
+    CommonModule,
+    MatTabsModule,
+    MatButtonModule,
+    MatTableModule,
+    MatProgressSpinnerModule,
+    MatIconModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+  ],
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.scss',
 })
 export class AdminComponent {
+  private http = inject(HttpClient);
   identity = inject(IdentityService);
-
   admin = inject(AdminService);
+  layout = inject(LayoutService);
 
   roles = signal<string[]>([]);
+  payments = signal<Payment[]>([]);
+  isLoadingPayments = signal<boolean>(false);
+
+  constructor() {
+    this.layout.marginOff();
+    // this.refreshPayments(); // Load payments on init
+  }
+
+  apiKey = '';
+
+  handleApiKeyChange(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    this.apiKey = inputElement.value;
+    this.refreshPayments();
+  }
+
+  async refreshPayments() {
+    if (!this.apiKey) {
+      return;
+    }
+
+    this.isLoadingPayments.set(true);
+    try {
+      const response = await fetch(`https://pay.ariton.app/payments/incoming/?apikey=${this.apiKey}&all=true`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = (await response.json()) as Payment[];
+      this.payments.set(data);
+    } catch (error) {
+      console.error('Failed to fetch payments:', error);
+      this.payments.set([]);
+    } finally {
+      this.isLoadingPayments.set(false);
+    }
+  }
 
   async givePermissions() {
     for (let did of this.admin.getAdminDids()) {
@@ -311,5 +374,21 @@ export class AdminComponent {
       url: '',
       icon: 'https://www.liberstad.cc/liberstad-square-512x512.png',
     });
+  }
+
+  // Community methods
+  async logCommunities() {
+    // Implement community logging logic
+    console.log('Logging communities...');
+  }
+
+  async deleteCommunities() {
+    // Implement community deletion logic
+    console.log('Deleting communities...');
+  }
+
+  async fillCommunities() {
+    // Implement community population logic
+    console.log('Populating communities...');
   }
 }
