@@ -323,8 +323,10 @@ export class CreateComponent implements OnDestroy {
 
     this.invoice = '';
 
+    const externalId = `${this.identity.did}|${this.draftEntry.record.id}`;
+
     const result = await fetch(
-      `https://pay.ariton.app/invoice?description=Ariton%20Community%20Payment&amount=${satoshis}&id=123`,
+      `https://pay.ariton.app/invoice?description=Ariton%20Community%20Payment&amount=${satoshis}&id=${externalId}`,
     );
 
     if (result.ok) {
