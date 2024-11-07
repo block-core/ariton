@@ -61,7 +61,7 @@
 </mat-card> -->
 
 <div class="container responsive-grid">
-  @for(community of dataSource.data; track community) {
+  @if (dataSource) { @for(community of dataSource.data; track community) {
   <mat-card>
     <mat-card-header>
       <mat-card-title
@@ -81,7 +81,7 @@
       <button mat-button (click)="join(community.id)">JOIN</button>
     </mat-card-actions>
   </mat-card>
-  }
+  } }
 
   <!-- @for(card of cards(); track card) {
   <mat-card>
