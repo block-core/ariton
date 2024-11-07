@@ -7,7 +7,7 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatTable, MatTableModule } from '@angular/material/table';
+import { MatTable, MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { Community, TableDataSource } from './communities-datasource';
@@ -55,10 +55,11 @@ export class CommunitiesComponent {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatTable) table!: MatTable<Community>;
-  dataSource = new TableDataSource();
+  // @ViewChild(MatTable) table!: MatTable<any>;
+  dataSource!: TableDataSource; // = new TableDataSource();
+  // dataSource: MatTableDataSource<UserData>;
 
-  cards = signal<Community[]>([]);
+  // cards = signal<Community[]>([]);
 
   app = inject(AppService);
 
@@ -93,7 +94,7 @@ export class CommunitiesComponent {
   // }
 
   //viewStyle = signal('card');
-  viewStyle = model<string>('card');
+  viewStyle = model<string>('table');
 
   checked = model<boolean>(false);
 
@@ -103,21 +104,56 @@ export class CommunitiesComponent {
   data = inject(DataService);
 
   constructor(private router: Router) {
+    // this.dataSource.data = [];
+
     this.layout.marginOn();
+
+    // Register a new effect.
+    // effect(() => {
+    //   if (this.viewStyle() === 'table') {
+    //     setTimeout(() => {
+    //       // this.dataSource.sort = this.sort;
+    //       // this.dataSource.paginator = this.paginator;
+    //       // this.table.dataSource = this.cards();
+
+    //       console.log('DATA SOURCE SEt ON TABLE!!!');
+
+    //       // this.table.dataSource = this.dataSource;
+    //     });
+    //   }
+    // });
+
+    effect(() => {
+      const currentView = this.viewStyle();
+      console.log(`View style changed to: ${currentView}`);
+
+      if (currentView === 'table') {
+        console.log('DATA SOURCE: ', this.dataSource);
+        // console.log('TABLE: ', this.table);
+        // this.table.dataSource = this.communities();
+        // this.dataSource.sort = this.sort;
+        // this.dataSource.paginator = this.paginator;
+        // this.table.dataSource = this.dataSource;
+      }
+    });
 
     // Register a new effect.
     effect(async () => {
       if (this.app.initialized()) {
-        setTimeout(() => {
-          if (this.table) {
-            this.dataSource.sort = this.sort;
-            this.dataSource.paginator = this.paginator;
-            this.table.dataSource = this.dataSource;
-          }
-        });
+        // setTimeout(() => {
+        //   if (this.table) {
+        //     this.dataSource.sort = this.sort;
+        //     this.dataSource.paginator = this.paginator;
+        //     this.table.dataSource = this.dataSource;
+        //   }
+        // });
 
-        await this.loadCommunities();
+        // await this.loadCommunities();
         await this.loadDrafts();
+
+        this.dataSource = new TableDataSource(this.data);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
 
         // Just set a timeout to load drafts, as the last save might not have been processed yet.
         // setTimeout(() => {
@@ -220,9 +256,9 @@ export class CommunitiesComponent {
       apps: ['events', 'media', 'files'],
     });
 
-    this.cards.set(cards);
+    // this.cards.set(cards);
 
-    this.dataSource.data = cards;
+    // this.dataSource.data = cards;
   }
 
   open(community: string) {
@@ -238,9 +274,13 @@ export class CommunitiesComponent {
   }
 
   ngAfterViewInit(): void {
-    // this.dataSource.sort = this.sort;
     // this.dataSource.paginator = this.paginator;
+    // this.dataSource.sort = this.sort;
     // this.table.dataSource = this.dataSource;
+    // const dataSource = new MatTableDataSource([]);
+    // dataSource.paginator = this.paginator;
+    // dataSource.sort = this.sort;
+    // this.dataSource = dataSource;
   }
 
   drafts = signal<any[]>([]);
@@ -257,6 +297,19 @@ export class CommunitiesComponent {
   async loadCommunities() {
     const entries = await this.data.load({ type: 'community', status: 'active' });
     this.communities.set(entries);
+
+    // this.dataSource.data = entries;
+
+    // setTimeout(() => {
+    //   console.log('SETTING TABLE:', this.dataSource, this.paginator, this.table);
+    //   if (this.table) {
+    //     this.dataSource.sort = this.sort;
+    //     this.dataSource.paginator = this.paginator;
+    //     this.table.dataSource = this.dataSource;
+
+    //     console.log('SETTING TABLE:', this.dataSource, this.paginator, this.table);
+    //   }
+    // });
   }
 
   async createTest() {
