@@ -426,6 +426,6 @@ export const routes: Routes = [
     path: 'app/nostr',
     loadComponent: () => import('./apps/app/nostr/nostr.component').then((c) => c.NostrComponent),
     title: 'Nostr client',
-    data: { hide: true, icon: 'assured_workload' },
+    data: { hide: false, icon: 'favorite' },
   },
 ];
