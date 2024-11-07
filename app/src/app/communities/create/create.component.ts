@@ -526,7 +526,7 @@ export class CreateComponent implements OnDestroy {
       // status: profile.status,
       // location: profile.location,
       // birthDate: profile.birthDate,
-      // avatar: profile.avatar,
+      avatar: profile.avatar,
       // hero: profile.hero,
     });
 

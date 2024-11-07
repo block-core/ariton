@@ -230,7 +230,7 @@ export class CommunitiesComponent {
   }
 
   join(community: string) {
-    this.router.navigate(['/community', community, 'join']);
+    this.router.navigate(['/community', community], { queryParams: { join: true } });
   }
 
   ngOnInit() {

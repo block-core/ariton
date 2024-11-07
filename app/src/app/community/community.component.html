@@ -1,4 +1,53 @@
+@if (community()) {
+
 <mat-tab-group>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon class="tab-icon">info</mat-icon>
+      <span class="hide-small">About</span>
+    </ng-template>
+
+    <ng-template matTabContent>
+      <div class="tab-content">
+        <mat-card class="discussion-card">
+          <mat-card-header>
+            <mat-card-title>About this community</mat-card-title>
+            <mat-card-subtitle [matTooltip]="community()!.record.dateCreated"
+              >Created {{ community()!.record.dateCreated | ago }}</mat-card-subtitle
+            >
+          </mat-card-header>
+          <mat-card-content>
+            <p>About: {{ community()!.data.bio }}</p>
+            <p>
+              Tier: <strong class="capitalize">{{ community()!.data.option }}</strong>
+            </p>
+            <p>
+              Type: <strong class="capitalize">{{ community()!.data.type }}</strong>
+            </p>
+            <p>
+              Membership fee: $<strong>{{ community()!.data.fee }}</strong>
+            </p>
+            <p>
+              Max members: <strong>{{ community()!.data.members }}</strong>
+            </p>
+            <!-- <p>JSON: {{ community()!.data | json }}</p> -->
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="discussion-card">
+          <mat-card-header>
+            <mat-card-title>Owner</mat-card-title>
+            <!-- <mat-card-subtitle [matTooltip]="community()!.record.dateCreated"
+              >Created {{ community()!.record.dateCreated | ago }}</mat-card-subtitle
+            > -->
+          </mat-card-header>
+          <mat-card-content>
+            <app-profile-header [did]="community()!.data.owners[0]"></app-profile-header>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </ng-template>
+  </mat-tab>
   <mat-tab>
     <ng-template mat-tab-label>
       <mat-icon class="tab-icon">chat</mat-icon>
@@ -308,3 +357,9 @@
     </ng-template>
   </mat-tab>
 </mat-tab-group>
+
+} @else {
+
+<mat-spinner></mat-spinner>
+
+}

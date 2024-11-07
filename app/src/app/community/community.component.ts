@@ -1,10 +1,10 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { AgoPipe } from '../shared/pipes/ago.pipe';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { MatListModule } from '@angular/material/list';
 import { CommonModule } from '@angular/common';
 import { SizePipe } from '../shared/pipes/size.pipe';
@@ -12,6 +12,11 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatInputModule } from '@angular/material/input';
 import { AppService } from '../app.service';
 import { LayoutService } from '../layout.service';
+import { DataService } from '../data.service';
+import { RecordEntry } from '../data';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { ProfileHeaderComponent } from '../shared/components/profile-header/profile-header.component';
 
 @Component({
   selector: 'app-community',
@@ -28,6 +33,9 @@ import { LayoutService } from '../layout.service';
     MatButtonModule,
     MatTabsModule,
     MatIconModule,
+    MatProgressSpinnerModule,
+    MatTooltipModule,
+    ProfileHeaderComponent,
   ],
   templateUrl: './community.component.html',
   styleUrl: './community.component.scss',
@@ -41,10 +49,38 @@ export class CommunityComponent {
 
   layout = inject(LayoutService);
 
-  constructor() {}
+  route = inject(ActivatedRoute);
+
+  data = inject(DataService);
+
+  selectedCommunity = signal<string | null>(null);
+
+  community = signal<RecordEntry<any> | null>(null);
+
+  constructor() {
+    effect(async () => {
+      if (this.app.initialized() && this.selectedCommunity()) {
+        await this.loadCommunity();
+      }
+    });
+  }
 
   ngOnInit() {
     this.layout.marginOff();
+
+    this.route.paramMap.subscribe((params) => {
+      this.layout.resetActions();
+
+      const id = params.get('id');
+
+      console.log('Loading community: ', id);
+
+      if (!id || id == ':id' || id == 'home') {
+        this.selectedCommunity.set(null);
+      } else {
+        this.selectedCommunity.set(params.get('id'));
+      }
+    });
 
     const photos: any[] = [];
     for (let i = 0; i < this.images.length; i++) {
@@ -79,5 +115,10 @@ export class CommunityComponent {
 
   hideMembersSearch() {
     this.searchingMembers.set(false);
+  }
+
+  async loadCommunity() {
+    const entry = await this.data.get(this.selectedCommunity()!);
+    this.community.set(entry);
   }
 }
