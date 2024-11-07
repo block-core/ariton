@@ -149,8 +149,10 @@ export class CreateComponent implements OnDestroy {
 
           this.secondFormGroup.patchValue(entry.data);
 
-          // Skip to second step, since we have the data.
-          this.stepper.next();
+          if (this.stepper) {
+            // Skip to second step, since we have the data.
+            this.stepper.next();
+          }
 
           // this.selectedProfile.set(null);
           // this.messages.set([]);
@@ -221,6 +223,12 @@ export class CreateComponent implements OnDestroy {
         console.log('Payment is paid');
         this.paymentStatus = 'Paid';
         this.paid = true;
+
+        // this.draftEntry.data.status = 'active';
+        // Persist the community as published and paid for.
+        // This will continue to only be stored on user's DWNs and not official Ariton one just yet,
+        // for that it will require a manual approval.
+        await this.saveDraft(true);
       } else {
         console.log('Payment is not paid');
         this.paymentStatus = 'Not Paid';
@@ -267,7 +275,7 @@ export class CreateComponent implements OnDestroy {
     }
   }
 
-  async saveDraft() {
+  async saveDraft(published = false) {
     if (this.draftDeleted) {
       return;
     }
@@ -278,6 +286,12 @@ export class CreateComponent implements OnDestroy {
     }
 
     if (this.draftEntry) {
+      // If the status is already active, just return and don't allow editing anymore in this UI.
+      if (this.draftEntry.record.tags['status'] === 'active') {
+        console.warn('This community is already ACTIVE! Editing not allowed in this UI.');
+        return;
+      }
+
       const mergedData = {
         ...this.draftEntry.data,
         ...this.firstFormGroup.value,
@@ -288,10 +302,15 @@ export class CreateComponent implements OnDestroy {
       // this.draftEntry.data = mergedData;
       console.log('DRAFT ENTRY UPDATE:', this.draftEntry);
 
-      this.draftEntry = await this.data.update(this.draftEntry.record, mergedData, {
-        type: 'community',
-        status: 'draft',
-      });
+      this.draftEntry = await this.data.update(
+        this.draftEntry.record,
+        mergedData,
+        {
+          type: 'community',
+          status: this.paid ? 'active' : 'draft',
+        },
+        published,
+      );
 
       // this.draftEntry.data = [...this.secondFormGroup.value, ...this.firstFormGroup.value];
     } else {
@@ -301,7 +320,7 @@ export class CreateComponent implements OnDestroy {
         ...this.thirdFormGroup.value,
       };
 
-      this.draftEntry = await this.data.save(mergedData, { type: 'community', status: 'draft' });
+      this.draftEntry = await this.data.save(mergedData, { type: 'community', status: 'draft' }, published);
     }
 
     console.log('SAVE DRAFT DONE!');
@@ -360,10 +379,15 @@ export class CreateComponent implements OnDestroy {
     }
   }
 
-  save() {
+  /** The save operation will first publish the community draft. This ensures that Ariton can access
+   * the draft to publish when payment is received.
+   */
+  async save() {
     this.saved = true;
 
-    this.generateInvoice();
+    await this.saveDraft(true);
+
+    await this.generateInvoice();
   }
 
   premiumPeriod = 'monthly';

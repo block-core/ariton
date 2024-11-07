@@ -31,8 +31,8 @@ export class DataService {
     // this.identity.activeAgent().identity.
   }
 
-  async save(data: any, tags: any) {
-    return this.app.storage.save(this.configuration, data, tags);
+  async save(data: any, tags: any, published = false) {
+    return this.app.storage.save(this.configuration, data, tags, published);
   }
 
   async load(tags: any) {
@@ -43,8 +43,8 @@ export class DataService {
     return this.app.storage.get(recordId);
   }
 
-  async update(record: Record, data: any, tags: any) {
-    return this.app.storage.update(record, data, tags);
+  async update(record: Record, data: any, tags: any, published = false) {
+    return this.app.storage.update(record, data, tags, published);
   }
 
   async delete(record: Record) {

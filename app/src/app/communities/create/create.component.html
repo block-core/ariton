@@ -1,4 +1,16 @@
 <!-- <form [formGroup]="form" novalidate (ngSubmit)="onSubmit()"> -->
+
+@if (draftEntry?.record?.tags['status'] === 'active') {
+<div class="margin">
+  <h1>Community created!</h1>
+  <p>
+    Your community has been created and is now active. It is not yet published, but you can start inviting members to it
+    and start using it.
+  </p>
+  <a [routerLink]="['/community', draftEntry.record.id]">Go to community</a>
+</div>
+} @else {
+
 <mat-stepper #stepper [linear]="true" (selectionChange)="onStepChange($event)">
   <mat-step [stepControl]="firstFormGroup">
     <form [formGroup]="firstFormGroup">
@@ -444,5 +456,5 @@
     }
   </mat-step>
 </mat-stepper>
-
+}
 <!-- </form> -->

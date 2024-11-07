@@ -20,10 +20,11 @@ export class StorageService {
 
   constructor() {}
 
-  async save<T>(configuration: StorageQueryConfiguration, data: any, tags: any) {
+  async save<T>(configuration: StorageQueryConfiguration, data: any, tags: any, published = false) {
     const { record, status } = await this.identity.web5.dwn.records.create({
       data: data,
       message: {
+        published: published,
         tags: tags,
         protocol: configuration.protocol,
         protocolPath: configuration.protocolPath,
@@ -90,8 +91,8 @@ export class StorageService {
     return entry;
   }
 
-  async update(record: Record, data: any, tags: any) {
-    const { status } = await record.update({ data: data, tags: tags });
+  async update(record: Record, data: any, tags: any, published = false) {
+    const { status } = await record.update({ published: published, data: data, tags: tags });
 
     if (status.code !== 202) {
       throw new Error(`Failed to save data (${status.code}): ${status.detail}`);
