@@ -40,8 +40,13 @@
       <h2>Payments</h2>
       <mat-form-field appearance="fill">
         <mat-label>API Key</mat-label>
-        <input matInput [(ngModel)]="apiKey" (input)="handleApiKeyChange($event)" placeholder="Enter API Key" />
-      </mat-form-field>
+        <input
+          matInput
+          [(ngModel)]="apiKey"
+          (input)="handleApiKeyChange($event)"
+          placeholder="Enter API Key"
+        /> </mat-form-field
+      >&nbsp;
       <button mat-button (click)="refreshPayments()">
         <mat-icon>refresh</mat-icon>
         Refresh Payments
@@ -58,15 +63,25 @@
         </ng-container>
 
         <!-- Amount Column -->
+        <ng-container matColumnDef="isPaid">
+          <th mat-header-cell *matHeaderCellDef>Paid</th>
+          <td mat-cell *matCellDef="let payment">{{ payment.isPaid }}</td>
+        </ng-container>
+
+        <!-- Amount Column -->
         <ng-container matColumnDef="amount">
-          <th mat-header-cell *matHeaderCellDef>Amount</th>
-          <td mat-cell *matCellDef="let payment">{{ payment.amount }}</td>
+          <th mat-header-cell *matHeaderCellDef>Amount (sats)</th>
+          <td mat-cell *matCellDef="let payment">{{ payment.receivedSat }}</td>
         </ng-container>
 
         <!-- Status Column -->
         <ng-container matColumnDef="status">
-          <th mat-header-cell *matHeaderCellDef>Status</th>
-          <td mat-cell *matCellDef="let payment">{{ payment.status }}</td>
+          <th mat-header-cell *matHeaderCellDef>External Id</th>
+          <td mat-cell *matCellDef="let payment">
+            <span class="ellipsis">{{ payment.externalId.split('|')[0] }}</span>
+
+            <span class="ellipsis">{{ payment.externalId.split('|')[1] }}</span>
+          </td>
         </ng-container>
 
         <!-- Date Column -->
@@ -75,8 +90,8 @@
           <td mat-cell *matCellDef="let payment">{{ payment.createdAt | date }}</td>
         </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="['id', 'amount', 'status', 'date']"></tr>
-        <tr mat-row *matRowDef="let row; columns: ['id', 'amount', 'status', 'date']"></tr>
+        <tr mat-header-row *matHeaderRowDef="['isPaid', 'amount', 'status', 'date']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['isPaid', 'amount', 'status', 'date']"></tr>
       </table>
       } @if (!payments() || payments().length === 0) {
       <mat-card>
