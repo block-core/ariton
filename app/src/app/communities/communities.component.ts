@@ -18,6 +18,7 @@ import { AppService } from '../app.service';
 import { LayoutService } from '../layout.service';
 import { DataService } from '../data.service';
 import { RecordEntry } from '../data';
+import { AdminService } from '../admin.service';
 
 type CardContent = {
   title: string;
@@ -64,6 +65,8 @@ export class CommunitiesComponent {
   app = inject(AppService);
 
   layout = inject(LayoutService);
+
+  admin = inject(AdminService);
 
   images = ['nature', 'sky', 'grass', 'mountains', 'rivers', 'glacier', 'forest'];
 
@@ -151,7 +154,7 @@ export class CommunitiesComponent {
         // await this.loadCommunities();
         await this.loadDrafts();
 
-        this.dataSource = new TableDataSource(this.data);
+        this.dataSource = new TableDataSource(this.data, this.admin.getIdentifierForApp('communities'));
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
 
@@ -296,7 +299,19 @@ export class CommunitiesComponent {
 
   async loadCommunities() {
     const entries = await this.data.load({ type: 'community', status: 'active' });
-    this.communities.set(entries);
+
+    console.log('Found local communities:', entries);
+    // this.communities.set(entries);
+
+    // const did = this.admin
+
+    const entriesExternal = await this.data.load(
+      { type: 'community', status: 'active' },
+      this.admin.getIdentifierForApp('communities'),
+    );
+    this.communities.set([...entries, ...entriesExternal]);
+
+    console.log('Found external communities:', entriesExternal);
 
     // this.dataSource.data = entries;
 

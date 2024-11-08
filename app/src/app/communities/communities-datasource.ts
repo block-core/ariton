@@ -38,14 +38,15 @@ export interface Community {
 }
 
 export class TableDataSource extends MatTableDataSource<RecordEntry<any>> {
-  constructor(private dataService: DataService) {
+  constructor(private dataService: DataService, private did: string) {
     super();
     this.load();
   }
 
   async load() {
     const entries = await this.dataService.load({ type: 'community', status: 'active' });
-    this.data = entries;
+    const entriesExternal = await this.dataService.load({ type: 'community', status: 'active' }, this.did);
+    this.data = [...entries, ...entriesExternal];
   }
 }
 

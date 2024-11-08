@@ -84,7 +84,7 @@ export class CommunityComponent {
       const id = params.get('id');
       const did = params.get('did');
 
-      this.did = did || '';
+      this.did = did || this.admin.getIdentifierForApp('communities');
       console.log('Loading community: ', id);
       console.log('Loading owner: ', did);
 

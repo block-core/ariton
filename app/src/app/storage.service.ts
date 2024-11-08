@@ -46,8 +46,8 @@ export class StorageService {
     return entry;
   }
 
-  async load<T>(configuration: StorageQueryConfiguration, tags: any) {
-    var { records } = await this.identity.web5.dwn.records.query({
+  async load<T>(configuration: StorageQueryConfiguration, tags: any, from: string | null = null) {
+    let query: any = {
       message: {
         filter: {
           tags: tags,
@@ -56,7 +56,13 @@ export class StorageService {
           dataFormat: configuration.dataFormat,
         },
       },
-    });
+    };
+
+    if (from) {
+      query.from = from;
+    }
+
+    var { records } = await this.identity.web5.dwn.records.query(query);
 
     if (!records || records.length === 0) {
       return [];
