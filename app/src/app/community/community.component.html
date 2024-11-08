@@ -45,6 +45,20 @@
             <app-profile-header [did]="community()!.data.owners[0]"></app-profile-header>
           </mat-card-content>
         </mat-card>
+
+        @if (admin.isAdmin(identity.did)) {
+        <mat-card class="discussion-card">
+          <mat-card-header>
+            <mat-card-title>Administration</mat-card-title>
+            <!-- <mat-card-subtitle [matTooltip]="community()!.record.dateCreated"
+              >Created {{ community()!.record.dateCreated | ago }}</mat-card-subtitle
+            > -->
+          </mat-card-header>
+          <mat-card-content>
+            <button mat-button (click)="publishCommunity()">Approve Community (Import &amp; Publish)</button>
+          </mat-card-content>
+        </mat-card>
+        }
       </div>
     </ng-template>
   </mat-tab>

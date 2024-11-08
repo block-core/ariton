@@ -73,8 +73,14 @@ export class StorageService {
     return list;
   }
 
-  async get<T>(recordId: string) {
-    var { record, status } = await this.identity.web5.dwn.records.read({ message: { filter: { recordId } } });
+  async get<T>(recordId: string, from: string | null = null) {
+    let query: any = { message: { filter: { recordId } } };
+
+    if (from) {
+      query.from = from;
+    }
+
+    var { record, status } = await this.identity.web5.dwn.records.read(query);
 
     if (status.code !== 200) {
       throw new Error(`Failed to get data (${status.code}): ${status.detail}`);

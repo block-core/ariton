@@ -39,8 +39,8 @@ export class DataService {
     return this.app.storage.load(this.configuration, tags);
   }
 
-  async get(recordId: string) {
-    return this.app.storage.get(recordId);
+  async get(recordId: string, from: string | null = null) {
+    return this.app.storage.get(recordId, from);
   }
 
   async update(record: Record, data: any, tags: any, published = false) {

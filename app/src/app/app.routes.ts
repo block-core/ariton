@@ -62,6 +62,12 @@ export const routes: Routes = [
     data: { hide: true, icon: 'diversity_2' },
   },
   {
+    path: 'community/:id/:did',
+    loadComponent: () => import('./community/community.component').then((c) => c.CommunityComponent),
+    title: 'Communities',
+    data: { hide: true, icon: 'diversity_2' },
+  },
+  {
     path: 'friends',
     loadComponent: () => import('./friends/friends.component').then((c) => c.FriendsComponent),
     title: 'Friends',

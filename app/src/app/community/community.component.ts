@@ -17,6 +17,8 @@ import { RecordEntry } from '../data';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ProfileHeaderComponent } from '../shared/components/profile-header/profile-header.component';
+import { AdminService } from '../admin.service';
+import { IdentityService } from '../identity.service';
 
 @Component({
   selector: 'app-community',
@@ -53,9 +55,15 @@ export class CommunityComponent {
 
   data = inject(DataService);
 
+  admin = inject(AdminService);
+
+  identity = inject(IdentityService);
+
   selectedCommunity = signal<string | null>(null);
 
   community = signal<RecordEntry<any> | null>(null);
+
+  searchingMembers = signal<boolean>(false);
 
   constructor() {
     effect(async () => {
@@ -65,6 +73,8 @@ export class CommunityComponent {
     });
   }
 
+  did = '';
+
   ngOnInit() {
     this.layout.marginOff();
 
@@ -72,8 +82,11 @@ export class CommunityComponent {
       this.layout.resetActions();
 
       const id = params.get('id');
+      const did = params.get('did');
 
+      this.did = did || '';
       console.log('Loading community: ', id);
+      console.log('Loading owner: ', did);
 
       if (!id || id == ':id' || id == 'home') {
         this.selectedCommunity.set(null);
@@ -106,7 +119,12 @@ export class CommunityComponent {
     this.photos.set(photos);
   }
 
-  searchingMembers = signal<boolean>(false);
+  async publishCommunity() {
+    const result = await this.community()?.record.import();
+    // const result = await this.community()?.record.send(this.admin.getIdentifierForApp('communities'));
+    console.log('Community import status: ', result);
+    console.log('Publish community');
+  }
 
   searchMembers() {
     this.searchingMembers.set(true);
@@ -118,7 +136,7 @@ export class CommunityComponent {
   }
 
   async loadCommunity() {
-    const entry = await this.data.get(this.selectedCommunity()!);
+    const entry = await this.data.get(this.selectedCommunity()!, this.did);
     this.community.set(entry);
   }
 }

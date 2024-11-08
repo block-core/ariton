@@ -27,38 +27,37 @@ export const protocolDefinition = {
       dataFormats: ['text/plain'],
     },
     globalAdmin: {
-      schema: 'https://schema.ariton.app/community/schema/globalAdmin',
+      schema: 'https://schema.ariton.app/community/globalAdmin',
       dataFormats: ['application/json'],
     },
     admin: {
-      schema: 'https://schema.ariton.app/community/schema/admin',
+      schema: 'https://schema.ariton.app/community/admin',
       dataFormats: ['application/json'],
     },
   },
   structure: {
     globalAdmin: {
       $role: true,
+      $actions: [
+        {
+          role: 'globalAdmin',
+          can: ['create', 'read', 'update', 'query', 'subscribe', 'co-update', 'co-delete'],
+        },
+      ],
     },
     friend: {
       $role: true,
     },
     community: {
       $actions: [
-        {
-          role: 'globalAdmin',
-          can: ['create', 'update'],
-
-          //can: ['create', 'read', 'update', 'delete', 'prune', 'co-prune', 'co-delete', 'co-update'],
-        },
+        { role: 'globalAdmin', can: ['create', 'read', 'update', 'query', 'subscribe', 'co-update', 'co-delete'] },
       ],
-
       admin: {
         $role: true,
         $actions: [
           {
             role: 'globalAdmin',
-            can: ['create', 'update'],
-
+            can: ['create', 'read', 'update', 'query', 'subscribe', 'co-update', 'co-delete'],
             //can: ['create', 'read', 'update', 'delete', 'prune', 'co-prune', 'co-delete', 'co-update'],
           },
         ],

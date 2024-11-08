@@ -3,9 +3,20 @@
     <div class="margin">
       <h2>Communities</h2>
       <!-- Add community management buttons here -->
-      <button mat-button (click)="logRecords()">Log Communities</button>
+      <!-- <button mat-button (click)="logRecords()">Log Communities</button>
       <button mat-button (click)="deleteRegistries()">Delete Communities</button>
-      <button mat-button (click)="fillRegistries()">Populate Communities</button>
+      <button mat-button (click)="fillRegistries()">Populate Communities</button> -->
+    </div>
+    <div class="margin">
+      <h2>Owners</h2>
+      <!-- <button mat-button (click)="logPermissions()">Show Roles</button> -->
+      <button mat-button (click)="givePermissionsToCommunity()">Give Roles to Admins</button>
+
+      @if (roles() && roles().length > 0) {
+      <h3>User's with roles:</h3>
+      @for(role of roles(); track role) {
+      <div>{{ role }}</div>
+      } }
     </div>
   </mat-tab>
 
@@ -25,7 +36,7 @@
     <div class="margin">
       <h2>Owners</h2>
       <button mat-button (click)="logPermissions()">Show Roles</button>
-      <button mat-button (click)="givePermissions()">Give Roles to Admins</button>
+      <button mat-button (click)="givePermissionsToRegistry()">Give Roles to Admins</button>
 
       @if (roles() && roles().length > 0) {
       <h3>User's with roles:</h3>

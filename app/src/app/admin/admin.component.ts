@@ -9,6 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { HttpClient } from '@angular/common/http';
 import { registry } from '../../protocols';
+import { community } from '../../protocols';
 import { AdminService } from '../admin.service';
 import { LayoutService } from '../layout.service';
 import { IdentityService } from '../identity.service';
@@ -102,9 +103,15 @@ export class AdminComponent {
     }
   }
 
-  async givePermissions() {
+  async givePermissionsToRegistry() {
     for (let did of this.admin.getAdminDids()) {
-      await this.givePermission(did);
+      await this.givePermissionToCommunity(did);
+    }
+  }
+
+  async givePermissionsToCommunity() {
+    for (let did of this.admin.getAdminDids()) {
+      await this.givePermissionToCommunity(did);
     }
   }
 
@@ -184,7 +191,7 @@ export class AdminComponent {
     // }
   }
 
-  async givePermission(did: string) {
+  async givePermissionToRegistry(did: string) {
     // Assign collaborator role to the DID.
     const tags = {
       role: true,
@@ -228,6 +235,59 @@ export class AdminComponent {
     const { record: roleRecord, status: roleStatus } = await this.identity.web5.dwn.records.create(query);
 
     const ownerDid = this.admin.getIdentifierForApp('registries');
+    const { status: sendStatus } = await roleRecord!.send(ownerDid);
+
+    console.log('Send status:', sendStatus);
+
+    console.log('!!!!!');
+    console.log('Role status:', roleStatus);
+    console.log('Role record:', roleRecord);
+  }
+
+  async givePermissionToCommunity(did: string) {
+    // Assign collaborator role to the DID.
+    const tags = {
+      role: true,
+    };
+
+    // const query = {
+    //   data: {},
+    //   message: {
+    //     tags: tags,
+    //     recipient: collaborator,
+    //     protocol: taskDefinition.protocol,
+    //     parentContextId: record.contextId, // Make the role a child of the list.
+    //     // protocolPath: 'list/collaborator',
+    //     protocolPath: 'list/collaborator',
+    //     schema: taskDefinition.types.collaborator.schema,
+    //     // dataFormat: taskDefinition.types.collaborator.dataFormats[0],
+    //   },
+    // };
+
+    const query = {
+      store: false,
+      data: {},
+      message: {
+        tags: tags,
+        recipient: did,
+        protocol: community.uri,
+        // parentContextId: record.contextId, // Make the role a child of the list.
+        // protocolPath: 'list/collaborator',
+        schema: 'https://schema.ariton.app/community/globalAdmin',
+        protocolPath: 'globalAdmin',
+        // protocolRole: 'profile/admin',
+        // schema: registry.definition.types.profile.dataFormats.types.collaborator.schema,
+        // dataFormat: taskDefinition.types.collaborator.dataFormats[0],
+      },
+    };
+
+    console.log('QUERY:', query);
+
+    // This will fail if the DID already have a role assigned.
+    // TODO: Implement a query to see if the user already has role assigned and skip this step.
+    const { record: roleRecord, status: roleStatus } = await this.identity.web5.dwn.records.create(query);
+
+    const ownerDid = this.admin.getIdentifierForApp('communities');
     const { status: sendStatus } = await roleRecord!.send(ownerDid);
 
     console.log('Send status:', sendStatus);

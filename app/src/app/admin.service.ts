@@ -8,6 +8,7 @@ export class AdminService {
 
   readonly #APPS: { [key: string]: string } = {
     registries: 'did:dht:jtubj7jooigmx9y7dz13j9kxhoy3pyo6jzizh3irkmwity3saxko',
+    communities: 'did:dht:jtubj7jooigmx9y7dz13j9kxhoy3pyo6jzizh3irkmwity3saxko',
   };
 
   readonly #ADMIN_DIDS: string[] = [
