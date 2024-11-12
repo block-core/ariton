@@ -30,6 +30,7 @@
     <button mat-button (click)="dwnQuery()">Query</button>
     <button mat-button (click)="dwnRead()">Read</button>
     <button mat-button (click)="lookupRecord()" [disabled]="!targetDid || !recordId">Lookup Record</button>
+    <button mat-button (click)="resolveDid()" [disabled]="!targetDid">Resolve DID</button>
   </mat-card-actions>
 </mat-card>
 

@@ -263,4 +263,25 @@ export class DebugComponent {
       this.result = '';
     }
   }
+
+  async resolveDid() {
+    if (!this.targetDid) {
+      this.status = 'Error: DID are required';
+      return;
+    }
+
+    try {
+      const result = await this.identity.web5.did.resolve(this.targetDid);
+
+      if (result) {
+        // this.status = `${result.code}: ${status.detail}`;
+        this.result = JSON.stringify(result.didDocument, null, 2);
+      } else {
+        this.result = 'Not found';
+      }
+    } catch (error) {
+      this.status = `Error: ${error}`;
+      this.result = '';
+    }
+  }
 }
