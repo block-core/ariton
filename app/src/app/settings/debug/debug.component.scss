@@ -3,3 +3,9 @@
   word-wrap: break-word;
   font-family: monospace;
 }
+
+// In debug.component.scss
+.full-width {
+  width: 100%;
+  margin-bottom: 1rem;
+}

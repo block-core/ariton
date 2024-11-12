@@ -255,7 +255,12 @@ export class IdentityService {
       console.log('Connecting to Web5...');
 
       // const result = await Web5.connect({ agent: customAgent, connectedDid, password, sync: this.syncInterval });
-      const result = await Web5.connect({ connectedDid, password, sync: this.syncInterval });
+      const result = await Web5.connect({
+        didCreateOptions: { dwnEndpoints: [] },
+        connectedDid,
+        password,
+        sync: this.syncInterval,
+      });
 
       // Populate the accounts array with the connected accounts.
       this.accounts[connectedDid] = result.web5;
@@ -435,6 +440,7 @@ export class IdentityService {
     // }
 
     const { web5 } = await Web5.connect({
+      didCreateOptions: { dwnEndpoints: [] },
       // agent: this.agent,
       connectedDid: uri,
       password,
@@ -506,7 +512,12 @@ export class IdentityService {
         did: userDid,
         web5,
         recoveryPhrase,
-      } = await Web5.connect({ connectedDid: did, sync: this.syncInterval, password });
+      } = await Web5.connect({
+        didCreateOptions: { dwnEndpoints: [] },
+        connectedDid: did,
+        sync: this.syncInterval,
+        password,
+      });
 
       if (recoveryPhrase) {
       }

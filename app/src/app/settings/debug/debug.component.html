@@ -11,6 +11,16 @@
     <mat-card-title>DWN Tool</mat-card-title>
   </mat-card-header>
   <mat-card-content>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Target DID</mat-label>
+      <input matInput [(ngModel)]="targetDid" placeholder="Enter DID" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Record ID</mat-label>
+      <input matInput [(ngModel)]="recordId" placeholder="Enter Record ID" />
+    </mat-form-field>
+
     <mat-form-field appearance="outline" subscriptSizing="dynamic" class="full-width">
       <textarea rows="6" matInput #body placeholder="Query (JSON)" [(ngModel)]="query"></textarea>
     </mat-form-field>
@@ -19,6 +29,7 @@
     <button mat-button (click)="dwnWrite()">Write</button>
     <button mat-button (click)="dwnQuery()">Query</button>
     <button mat-button (click)="dwnRead()">Read</button>
+    <button mat-button (click)="lookupRecord()" [disabled]="!targetDid || !recordId">Lookup Record</button>
   </mat-card-actions>
 </mat-card>
 

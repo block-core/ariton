@@ -51,6 +51,9 @@ export class DebugComponent {
 
   syncInterval = '15s';
 
+  targetDid: string = '';
+  recordId: string = '';
+
   async createInstance(num: number) {
     const password = 'password' + num;
 
@@ -226,5 +229,38 @@ export class DebugComponent {
 
     this.status = `${status.code}: ${status.detail}`;
     this.result = JSON.stringify(record, null, 2);
+  }
+
+  async lookupRecord() {
+    if (!this.targetDid || !this.recordId) {
+      this.status = 'Error: Both DID and Record ID are required';
+      return;
+    }
+
+    try {
+      const { record, status } = await this.identity.web5.dwn.records.read({
+        // from: this.targetDid,
+        message: {
+          filter: {
+            recordId: this.recordId,
+          },
+        },
+      });
+
+      // const { record, status } = await this.identity.web5.dwn.records.read({
+      //   from: this.targetDid,
+      //   message: {
+      //     filter: {
+      //       recordId: this.recordId,
+      //     },
+      //   },
+      // });
+
+      this.status = `${status.code}: ${status.detail}`;
+      this.result = JSON.stringify(record, null, 2);
+    } catch (error) {
+      this.status = `Error: ${error}`;
+      this.result = '';
+    }
   }
 }
