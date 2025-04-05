@@ -29,6 +29,8 @@ export class IdentityService {
   syncInterval = '15s';
   //agents = signal<Web5IdentityAgent[]>([]);
 
+  defaultDwnEndpoints = ['https://dwn1.ariton.app'];
+
   constructor(private cryptoService: CryptoService) {
     /*
     Web5.connect({ sync: this.syncInterval }).then((res) => {
@@ -59,8 +61,10 @@ export class IdentityService {
 
   async initialConnect(password: string) {
     try {
-      console.log('Connecting to Web5...');
+      const endpoints = { dwnEndpoints: this.defaultDwnEndpoints };
+      console.log('Connecting to Web5...', endpoints);
       const result = await Web5.connect({
+        didCreateOptions: endpoints,
         // didCreateOptions: { dwnEndpoints: ['https://dwn.gcda.xyz', 'https://dwn.tbddev.org/beta'] },
         // didCreateOptions: { dwnEndpoints: ['https://dwn.tbddev.org/beta'] },
         password,
@@ -256,7 +260,7 @@ export class IdentityService {
 
       // const result = await Web5.connect({ agent: customAgent, connectedDid, password, sync: this.syncInterval });
       const result = await Web5.connect({
-        didCreateOptions: { dwnEndpoints: [] },
+        // didCreateOptions: { dwnEndpoints: ['https://dwn1.ariton.app'] },
         connectedDid,
         password,
         sync: this.syncInterval,
@@ -440,7 +444,7 @@ export class IdentityService {
     // }
 
     const { web5 } = await Web5.connect({
-      didCreateOptions: { dwnEndpoints: [] },
+      // didCreateOptions: { dwnEndpoints: ['https://dwn1.ariton.app'] },
       // agent: this.agent,
       connectedDid: uri,
       password,
@@ -513,7 +517,7 @@ export class IdentityService {
         web5,
         recoveryPhrase,
       } = await Web5.connect({
-        didCreateOptions: { dwnEndpoints: [] },
+        // didCreateOptions: { dwnEndpoints: ['https://dwn1.ariton.app'] },
         connectedDid: did,
         sync: this.syncInterval,
         password,

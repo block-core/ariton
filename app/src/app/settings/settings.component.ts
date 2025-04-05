@@ -55,6 +55,19 @@ export class SettingsComponent {
     this.nodes.set(nodes);
   }
 
+  async addDwn() {
+    console.log(JSON.stringify(this.identity.identity.did.document.service));
+
+    await this.identity.activeAgent().identity.setDwnEndpoints({
+      didUri: this.identity.did,
+      endpoints: ['https://dwn.tbddev.org/beta', 'https://dwn1.ariton.app'],
+    });
+
+    console.log(JSON.stringify(this.identity.identity.did.document.service));
+
+    await this.loadDIDDocument();
+  }
+
   async wipe() {
     return this.app.wipe();
   }

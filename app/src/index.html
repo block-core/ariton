@@ -32,6 +32,17 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+
+    <script>
+      (function () {
+        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (prefersDarkScheme) {
+          document.body.classList.add('dark-theme');
+        } else {
+          document.body.classList.remove('dark-theme');
+        }
+      })();
+    </script>
   </head>
   <body class="mat-typography">
     <app-root></app-root>
