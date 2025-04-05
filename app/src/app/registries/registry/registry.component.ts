@@ -21,26 +21,25 @@ export interface Section {
 }
 
 @Component({
-  selector: 'app-registry',
-  templateUrl: './registry.component.html',
-  styleUrl: './registry.component.scss',
-  standalone: true,
-  imports: [
-    MatChipsModule,
-    MatButtonModule,
-    MatListModule,
-    MatIconModule,
-    DatePipe,
-    MatDividerModule,
-    MatCardModule,
-    MatTableModule,
-    MatTooltipModule,
-    RouterModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatTabsModule,
-    FormsModule,
-  ],
+    selector: 'app-registry',
+    templateUrl: './registry.component.html',
+    styleUrl: './registry.component.scss',
+    imports: [
+        MatChipsModule,
+        MatButtonModule,
+        MatListModule,
+        MatIconModule,
+        DatePipe,
+        MatDividerModule,
+        MatCardModule,
+        MatTableModule,
+        MatTooltipModule,
+        RouterModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatTabsModule,
+        FormsModule,
+    ]
 })
 export class RegistryComponent implements AfterViewInit {
   registryService = inject(RegistryService);

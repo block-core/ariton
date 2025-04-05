@@ -24,23 +24,22 @@ import { NavigationService } from '../../../navigation.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
-  selector: 'app-file',
-  standalone: true,
-  imports: [
-    FileViewerComponent,
-    SizePipe,
-    BreadcrumbComponent,
-    CommonModule,
-    MatListModule,
-    MatIconModule,
-    AgoPipe,
-    BreadcrumbComponent,
-    MatToolbarModule,
-    MatButtonModule,
-    MatTooltipModule,
-  ],
-  templateUrl: './file.component.html',
-  styleUrl: './file.component.scss',
+    selector: 'app-file',
+    imports: [
+        FileViewerComponent,
+        SizePipe,
+        BreadcrumbComponent,
+        CommonModule,
+        MatListModule,
+        MatIconModule,
+        AgoPipe,
+        BreadcrumbComponent,
+        MatToolbarModule,
+        MatButtonModule,
+        MatTooltipModule,
+    ],
+    templateUrl: './file.component.html',
+    styleUrl: './file.component.scss'
 })
 export class FileComponent {
   entries = signal<any[]>([]);

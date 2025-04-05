@@ -15,21 +15,20 @@ import { Web5IdentityAgent } from '@web5/identity-agent';
 import { UtilityService } from '../utility.service';
 
 @Component({
-  selector: 'app-account',
-  standalone: true,
-  imports: [
-    MatCardModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    FormsModule,
-    MatIconModule,
-    RouterLink,
-    MatTooltipModule,
-  ],
-  templateUrl: './account.component.html',
-  styleUrl: './account.component.scss',
+    selector: 'app-account',
+    imports: [
+        MatCardModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        FormsModule,
+        MatIconModule,
+        RouterLink,
+        MatTooltipModule,
+    ],
+    templateUrl: './account.component.html',
+    styleUrl: './account.component.scss'
 })
 export class AccountComponent {
   identity = inject(IdentityService);

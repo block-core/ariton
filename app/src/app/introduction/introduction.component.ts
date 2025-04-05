@@ -7,11 +7,10 @@ import { MatCardModule } from '@angular/material/card';
 import { LayoutService } from '../layout.service';
 
 @Component({
-  selector: 'app-introduction',
-  standalone: true,
-  imports: [MatCardModule, MatButtonModule, MatDividerModule, RouterLink],
-  templateUrl: './introduction.component.html',
-  styleUrl: './introduction.component.scss',
+    selector: 'app-introduction',
+    imports: [MatCardModule, MatButtonModule, MatDividerModule, RouterLink],
+    templateUrl: './introduction.component.html',
+    styleUrl: './introduction.component.scss'
 })
 export class IntroductionComponent {
   appService = inject(AppService);

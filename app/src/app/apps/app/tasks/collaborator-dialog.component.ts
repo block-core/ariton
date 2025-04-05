@@ -18,22 +18,21 @@ export interface DialogData {
 }
 
 @Component({
-  selector: 'app-collaborator-dialog',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatTooltipModule,
-    MatMenuModule,
-    MatIconModule,
-    MatButtonModule,
-    MatInputModule,
-    MatDialogModule,
-    FormsModule,
-    MatCardModule,
-    ReactiveFormsModule,
-  ],
-  templateUrl: './collaborator-dialog.component.html',
-  styleUrl: './collaborator-dialog.component.scss',
+    selector: 'app-collaborator-dialog',
+    imports: [
+        CommonModule,
+        MatTooltipModule,
+        MatMenuModule,
+        MatIconModule,
+        MatButtonModule,
+        MatInputModule,
+        MatDialogModule,
+        FormsModule,
+        MatCardModule,
+        ReactiveFormsModule,
+    ],
+    templateUrl: './collaborator-dialog.component.html',
+    styleUrl: './collaborator-dialog.component.scss'
 })
 export class CollaboratorDialogComponent {
   private fb = inject(FormBuilder);

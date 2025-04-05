@@ -34,29 +34,28 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { EventService } from '../../../event.service';
 
 @Component({
-  selector: 'app-todo',
-  standalone: true,
-  imports: [
-    MatFormFieldModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    FormsModule,
-    MatCheckboxModule,
-    CdkDrag,
-    CdkDropList,
-    CdkDropListGroup,
-    CommonModule,
-    MatButtonModule,
-    RouterModule,
-    MatTabsModule,
-    MatIconModule,
-    MatMenuModule,
-    MatDividerModule,
-    MatProgressSpinnerModule,
-    MatTooltipModule,
-  ],
-  templateUrl: './tasks.component.html',
-  styleUrl: './tasks.component.scss',
+    selector: 'app-todo',
+    imports: [
+        MatFormFieldModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        FormsModule,
+        MatCheckboxModule,
+        CdkDrag,
+        CdkDropList,
+        CdkDropListGroup,
+        CommonModule,
+        MatButtonModule,
+        RouterModule,
+        MatTabsModule,
+        MatIconModule,
+        MatMenuModule,
+        MatDividerModule,
+        MatProgressSpinnerModule,
+        MatTooltipModule,
+    ],
+    templateUrl: './tasks.component.html',
+    styleUrl: './tasks.component.scss'
 })
 export class TasksComponent {
   list: any[] = [];

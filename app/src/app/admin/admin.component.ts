@@ -25,23 +25,22 @@ interface Payment {
 }
 
 @Component({
-  selector: 'app-admin',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatTabsModule,
-    MatButtonModule,
-    MatTableModule,
-    MatProgressSpinnerModule,
-    MatIconModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatInputModule,
-    ReactiveFormsModule,
-    FormsModule,
-  ],
-  templateUrl: './admin.component.html',
-  styleUrl: './admin.component.scss',
+    selector: 'app-admin',
+    imports: [
+        CommonModule,
+        MatTabsModule,
+        MatButtonModule,
+        MatTableModule,
+        MatProgressSpinnerModule,
+        MatIconModule,
+        MatCardModule,
+        MatFormFieldModule,
+        MatInputModule,
+        ReactiveFormsModule,
+        FormsModule,
+    ],
+    templateUrl: './admin.component.html',
+    styleUrl: './admin.component.scss'
 })
 export class AdminComponent {
   private http = inject(HttpClient);

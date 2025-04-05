@@ -11,11 +11,10 @@ import { ProfileHeaderComponent } from '../../shared/components/profile-header/p
 import { RecordEntry } from '../../data';
 
 @Component({
-  selector: 'app-connection',
-  standalone: true,
-  imports: [ProfileHeaderComponent, AgoPipe, CommonModule, MatCardModule, MatButtonModule, MatIconModule, RouterModule],
-  templateUrl: './connection.component.html',
-  styleUrl: './connection.component.scss',
+    selector: 'app-connection',
+    imports: [ProfileHeaderComponent, AgoPipe, CommonModule, MatCardModule, MatButtonModule, MatIconModule, RouterModule],
+    templateUrl: './connection.component.html',
+    styleUrl: './connection.component.scss'
 })
 export class ConnectionComponent {
   @Input() public entry?: ConnectionEntry = undefined;

@@ -14,20 +14,19 @@ import { ConnectionEntry, ConnectionService, ConnectionType } from '../connectio
 import { IdentityService } from '../identity.service';
 
 @Component({
-  selector: 'app-notifications',
-  standalone: true,
-  imports: [
-    ProfileHeaderComponent,
-    ProfileCardComponent,
-    MatButtonModule,
-    MatCardModule,
-    MatIconModule,
-    MatMenuModule,
-    RouterModule,
-    AgoPipe,
-  ],
-  templateUrl: './notifications.component.html',
-  styleUrl: './notifications.component.scss',
+    selector: 'app-notifications',
+    imports: [
+        ProfileHeaderComponent,
+        ProfileCardComponent,
+        MatButtonModule,
+        MatCardModule,
+        MatIconModule,
+        MatMenuModule,
+        RouterModule,
+        AgoPipe,
+    ],
+    templateUrl: './notifications.component.html',
+    styleUrl: './notifications.component.scss'
 })
 export class NotificationsComponent {
   registration: ServiceWorkerRegistration | undefined;

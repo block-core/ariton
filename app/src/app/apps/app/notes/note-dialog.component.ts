@@ -17,20 +17,19 @@ export interface DialogData {
 }
 
 @Component({
-  selector: 'app-note-dialog',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatTooltipModule,
-    MatMenuModule,
-    MatIconModule,
-    MatButtonModule,
-    MatInputModule,
-    MatDialogModule,
-    FormsModule,
-  ],
-  templateUrl: './note-dialog.component.html',
-  styleUrl: './note-dialog.component.scss',
+    selector: 'app-note-dialog',
+    imports: [
+        CommonModule,
+        MatTooltipModule,
+        MatMenuModule,
+        MatIconModule,
+        MatButtonModule,
+        MatInputModule,
+        MatDialogModule,
+        FormsModule,
+    ],
+    templateUrl: './note-dialog.component.html',
+    styleUrl: './note-dialog.component.scss'
 })
 export class NoteDialogComponent {
   private fb = inject(FormBuilder);

@@ -18,20 +18,19 @@ export interface DialogData {
 }
 
 @Component({
-  selector: 'app-agreement-dialog',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatTooltipModule,
-    MatMenuModule,
-    MatIconModule,
-    MatButtonModule,
-    MatInputModule,
-    MatDialogModule,
-    FormsModule,
-  ],
-  templateUrl: './agreement-dialog.component.html',
-  styleUrl: './agreement-dialog.component.scss',
+    selector: 'app-agreement-dialog',
+    imports: [
+        CommonModule,
+        MatTooltipModule,
+        MatMenuModule,
+        MatIconModule,
+        MatButtonModule,
+        MatInputModule,
+        MatDialogModule,
+        FormsModule,
+    ],
+    templateUrl: './agreement-dialog.component.html',
+    styleUrl: './agreement-dialog.component.scss'
 })
 export class AgreementDialogComponent {
   private fb = inject(FormBuilder);

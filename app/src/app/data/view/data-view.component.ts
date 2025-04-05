@@ -10,10 +10,9 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 
 @Component({
     selector: 'app-data-view',
-    standalone: true,
     imports: [RouterLink, CommonModule, MatTabsModule, MatIconModule, MatButtonModule, MatListModule],
     templateUrl: './data-view.component.html',
-    styleUrl: './data-view.component.scss',
+    styleUrl: './data-view.component.scss'
 })
 export class DataViewComponent {
     record = signal<any>(null);

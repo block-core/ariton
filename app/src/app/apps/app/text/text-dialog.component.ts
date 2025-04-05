@@ -22,22 +22,21 @@ export interface DialogData {
 }
 
 @Component({
-  selector: 'app-text-dialog',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatTooltipModule,
-    MatMenuModule,
-    MatIconModule,
-    MatButtonModule,
-    MatInputModule,
-    MatDialogModule,
-    FormsModule,
-    MatCheckboxModule,
-    TextEditorComponent,
-  ],
-  templateUrl: './text-dialog.component.html',
-  styleUrl: './text-dialog.component.scss',
+    selector: 'app-text-dialog',
+    imports: [
+        CommonModule,
+        MatTooltipModule,
+        MatMenuModule,
+        MatIconModule,
+        MatButtonModule,
+        MatInputModule,
+        MatDialogModule,
+        FormsModule,
+        MatCheckboxModule,
+        TextEditorComponent,
+    ],
+    templateUrl: './text-dialog.component.html',
+    styleUrl: './text-dialog.component.scss'
 })
 export class TextDialogComponent {
   private fb = inject(FormBuilder);

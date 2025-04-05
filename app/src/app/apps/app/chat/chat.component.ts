@@ -57,30 +57,29 @@ export interface MessageEntry {
 }
 
 @Component({
-  selector: 'app-chat',
-  standalone: true,
-  imports: [
-    RouterModule,
-    CommonModule,
-    MatTooltipModule,
-    MatToolbarModule,
-    FormsModule,
-    MatButtonModule,
-    MatIconModule,
-    MatInputModule,
-    MatListModule,
-    MatMenuModule,
-    DatePipe,
-    AgoPipe,
-    MatButtonToggleModule,
-    MatFormFieldModule,
-    ReactiveFormsModule,
-    ProfileImageDirective,
-    ProfileNameDirective,
-    MatProgressSpinnerModule,
-  ],
-  templateUrl: './chat.component.html',
-  styleUrl: './chat.component.scss',
+    selector: 'app-chat',
+    imports: [
+        RouterModule,
+        CommonModule,
+        MatTooltipModule,
+        MatToolbarModule,
+        FormsModule,
+        MatButtonModule,
+        MatIconModule,
+        MatInputModule,
+        MatListModule,
+        MatMenuModule,
+        DatePipe,
+        AgoPipe,
+        MatButtonToggleModule,
+        MatFormFieldModule,
+        ReactiveFormsModule,
+        ProfileImageDirective,
+        ProfileNameDirective,
+        MatProgressSpinnerModule,
+    ],
+    templateUrl: './chat.component.html',
+    styleUrl: './chat.component.scss'
 })
 export class ChatComponent implements OnDestroy {
   viewStyle = model<string>('card');

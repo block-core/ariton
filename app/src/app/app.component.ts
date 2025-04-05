@@ -13,24 +13,23 @@ import { RestoreComponent } from './account/create/restore/restore.component';
 import { OnboardingState } from './app.service';
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [
-    RestoreComponent,
-    MatButtonModule,
-    MatProgressSpinnerModule,
-    RouterOutlet,
-    LayoutComponent,
-    UnlockComponent,
-  ],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css',
-  providers: [
-    {
-      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
-      useValue: { appearance: 'outline' },
-    },
-  ],
+    selector: 'app-root',
+    imports: [
+        RestoreComponent,
+        MatButtonModule,
+        MatProgressSpinnerModule,
+        RouterOutlet,
+        LayoutComponent,
+        UnlockComponent,
+    ],
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.css',
+    providers: [
+        {
+            provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+            useValue: { appearance: 'outline' },
+        },
+    ]
 })
 export class AppComponent {
   title = 'app';

@@ -16,22 +16,21 @@ import { UtilityService } from '../../../utility.service';
 import { MatRadioModule } from '@angular/material/radio';
 
 @Component({
-  selector: 'app-issuer',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatInputModule,
-    MatFormFieldModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatCardModule,
-    MatIconModule,
-    MatButtonModule,
-    MatTabsModule,
-    MatRadioModule,
-  ],
-  templateUrl: './issuer.component.html',
-  styleUrl: './issuer.component.scss',
+    selector: 'app-issuer',
+    imports: [
+        CommonModule,
+        MatInputModule,
+        MatFormFieldModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatCardModule,
+        MatIconModule,
+        MatButtonModule,
+        MatTabsModule,
+        MatRadioModule,
+    ],
+    templateUrl: './issuer.component.html',
+    styleUrl: './issuer.component.scss'
 })
 export class IssuerComponent {
   vcType = 'IdentityCredential';

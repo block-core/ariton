@@ -21,26 +21,25 @@ import { AdminService } from '../admin.service';
 import { IdentityService } from '../identity.service';
 
 @Component({
-  selector: 'app-community',
-  standalone: true,
-  imports: [
-    MatInputModule,
-    MatToolbarModule,
-    SizePipe,
-    CommonModule,
-    MatListModule,
-    RouterModule,
-    AgoPipe,
-    MatCardModule,
-    MatButtonModule,
-    MatTabsModule,
-    MatIconModule,
-    MatProgressSpinnerModule,
-    MatTooltipModule,
-    ProfileHeaderComponent,
-  ],
-  templateUrl: './community.component.html',
-  styleUrl: './community.component.scss',
+    selector: 'app-community',
+    imports: [
+        MatInputModule,
+        MatToolbarModule,
+        SizePipe,
+        CommonModule,
+        MatListModule,
+        RouterModule,
+        AgoPipe,
+        MatCardModule,
+        MatButtonModule,
+        MatTabsModule,
+        MatIconModule,
+        MatProgressSpinnerModule,
+        MatTooltipModule,
+        ProfileHeaderComponent,
+    ],
+    templateUrl: './community.component.html',
+    styleUrl: './community.component.scss'
 })
 export class CommunityComponent {
   images = ['nature', 'sky', 'grass', 'mountains', 'rivers', 'glacier', 'forest', 'streams', 'rain', 'clouds'];

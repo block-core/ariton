@@ -14,21 +14,20 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-voluntaryist-covenant',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatInputModule,
-    MatFormFieldModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatCardModule,
-    MatIconModule,
-    MatButtonModule,
-    MatTabsModule,
-  ],
-  templateUrl: './voluntaryist-covenant.component.html',
-  styleUrl: './voluntaryist-covenant.component.scss',
+    selector: 'app-voluntaryist-covenant',
+    imports: [
+        CommonModule,
+        MatInputModule,
+        MatFormFieldModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatCardModule,
+        MatIconModule,
+        MatButtonModule,
+        MatTabsModule,
+    ],
+    templateUrl: './voluntaryist-covenant.component.html',
+    styleUrl: './voluntaryist-covenant.component.scss'
 })
 export class VoluntaryistCovenantComponent {
   vcType = 'WorldVoluntaryistOrganisationCredential';

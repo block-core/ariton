@@ -27,28 +27,27 @@ type CardContent = {
 };
 
 @Component({
-  selector: 'app-communities',
-  standalone: true,
-  imports: [
-    RouterModule,
-    MatButtonToggleModule,
-    MatIconModule,
-    MatInputModule,
-    MatFormFieldModule,
-    ReactiveFormsModule,
-    CommonModule,
-    MatButtonModule,
-    MatCardModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatSlideToggleModule,
-    FormsModule,
-    MatToolbarModule,
-  ],
-  templateUrl: './communities.component.html',
-  styleUrl: './communities.component.scss',
-  changeDetection: ChangeDetectionStrategy.Default,
+    selector: 'app-communities',
+    imports: [
+        RouterModule,
+        MatButtonToggleModule,
+        MatIconModule,
+        MatInputModule,
+        MatFormFieldModule,
+        ReactiveFormsModule,
+        CommonModule,
+        MatButtonModule,
+        MatCardModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatSlideToggleModule,
+        FormsModule,
+        MatToolbarModule,
+    ],
+    templateUrl: './communities.component.html',
+    styleUrl: './communities.component.scss',
+    changeDetection: ChangeDetectionStrategy.Default
 })
 export class CommunitiesComponent {
   search = new FormControl('');

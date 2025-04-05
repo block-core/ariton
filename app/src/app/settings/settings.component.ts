@@ -12,13 +12,12 @@ import { MatCardModule } from '@angular/material/card';
 import { AppService } from '../app.service';
 
 @Component({
-  selector: 'app-settings',
-  standalone: true,
-  imports: [MatCardModule, CommonModule, MatButtonModule, MatListModule, MatIconModule, RouterLink],
-  templateUrl: './settings.component.html',
-  styleUrl: './settings.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [SettingsStateService],
+    selector: 'app-settings',
+    imports: [MatCardModule, CommonModule, MatButtonModule, MatListModule, MatIconModule, RouterLink],
+    templateUrl: './settings.component.html',
+    styleUrl: './settings.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [SettingsStateService]
 })
 export class SettingsComponent {
   debug = this.settingsState.select('debug');

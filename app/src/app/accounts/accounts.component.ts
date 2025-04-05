@@ -15,22 +15,21 @@ import { IdentityService } from '../identity.service';
 import { MatCardModule } from '@angular/material/card';
 
 @Component({
-  selector: 'app-accounts',
-  standalone: true,
-  imports: [
-    MatCardModule,
-    MatExpansionModule,
-    MatTabsModule,
-    MatFormFieldModule,
-    MatListModule,
-    MatIconModule,
-    MatInputModule,
-    MatButtonModule,
-    MatMenuModule,
-    RouterLink,
-  ],
-  templateUrl: './accounts.component.html',
-  styleUrl: './accounts.component.scss',
+    selector: 'app-accounts',
+    imports: [
+        MatCardModule,
+        MatExpansionModule,
+        MatTabsModule,
+        MatFormFieldModule,
+        MatListModule,
+        MatIconModule,
+        MatInputModule,
+        MatButtonModule,
+        MatMenuModule,
+        RouterLink,
+    ],
+    templateUrl: './accounts.component.html',
+    styleUrl: './accounts.component.scss'
 })
 export class AccountsComponent {
   layout = inject(LayoutService);

@@ -7,11 +7,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { AppService } from '../../app.service';
 
 @Component({
-  selector: 'app-data-entry',
-  standalone: true,
-  imports: [JsonPipe, CommonModule, MatButtonModule, MatIconModule, RouterModule],
-  templateUrl: './entry.component.html',
-  styleUrl: './entry.component.scss',
+    selector: 'app-data-entry',
+    imports: [JsonPipe, CommonModule, MatButtonModule, MatIconModule, RouterModule],
+    templateUrl: './entry.component.html',
+    styleUrl: './entry.component.scss'
 })
 export class DataEntryComponent {
   entry: any;

@@ -11,20 +11,19 @@ import { MatCardModule } from '@angular/material/card';
 import { AppService } from '../../app.service';
 
 @Component({
-  selector: 'app-password-reset',
-  standalone: true,
-  imports: [
-    MatCardModule,
-    FormsModule,
-    MatProgressSpinnerModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-  ],
-  templateUrl: './reset.component.html',
-  styleUrl: './reset.component.scss',
+    selector: 'app-password-reset',
+    imports: [
+        MatCardModule,
+        FormsModule,
+        MatProgressSpinnerModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        MatIconModule,
+    ],
+    templateUrl: './reset.component.html',
+    styleUrl: './reset.component.scss'
 })
 export class PasswordResetComponent {
   passwordInputPrevious = new FormControl('', Validators.required);

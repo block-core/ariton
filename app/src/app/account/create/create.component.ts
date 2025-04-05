@@ -12,11 +12,10 @@ import { Web5IdentityAgent } from '@web5/identity-agent';
 import { AgentDidApi } from '@web5/agent';
 
 @Component({
-  selector: 'app-create',
-  standalone: true,
-  imports: [RouterLink, MatButtonModule],
-  templateUrl: './create.component.html',
-  styleUrl: './create.component.scss',
+    selector: 'app-create',
+    imports: [RouterLink, MatButtonModule],
+    templateUrl: './create.component.html',
+    styleUrl: './create.component.scss'
 })
 export class CreateComponent {
   layout = inject(LayoutService);

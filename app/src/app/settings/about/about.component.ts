@@ -7,11 +7,10 @@ import { CommonModule } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
-  selector: 'app-about',
-  standalone: true,
-  imports: [MatCardModule, MatListModule, CommonModule, MatTooltipModule],
-  templateUrl: './about.component.html',
-  styleUrl: './about.component.scss',
+    selector: 'app-about',
+    imports: [MatCardModule, MatListModule, CommonModule, MatTooltipModule],
+    templateUrl: './about.component.html',
+    styleUrl: './about.component.scss'
 })
 export class AboutComponent {
   appService = inject(AppService);

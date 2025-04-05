@@ -11,11 +11,10 @@ import { Router, RouterModule } from '@angular/router';
 import { UtilityService } from '../../utility.service';
 
 @Component({
-  selector: 'app-backup',
-  standalone: true,
-  imports: [CommonModule, MatButtonModule, MatIconModule, MatCardModule, MatTooltipModule, RouterModule],
-  templateUrl: './backup.component.html',
-  styleUrl: './backup.component.scss',
+    selector: 'app-backup',
+    imports: [CommonModule, MatButtonModule, MatIconModule, MatCardModule, MatTooltipModule, RouterModule],
+    templateUrl: './backup.component.html',
+    styleUrl: './backup.component.scss'
 })
 export class BackupComponent {
   recoveryPhrase = '';

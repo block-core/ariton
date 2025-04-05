@@ -18,22 +18,21 @@ import { Record } from '@web5/api';
 import { AdminService } from '../admin.service';
 
 @Component({
-  selector: 'app-registries',
-  templateUrl: './registries.component.html',
-  styleUrl: './registries.component.scss',
-  standalone: true,
-  imports: [
-    DidPipe,
-    MatProgressSpinnerModule,
-    CommonModule,
-    MatButtonModule,
-    MatCardModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatTooltipModule,
-    RouterModule,
-  ],
+    selector: 'app-registries',
+    templateUrl: './registries.component.html',
+    styleUrl: './registries.component.scss',
+    imports: [
+        DidPipe,
+        MatProgressSpinnerModule,
+        CommonModule,
+        MatButtonModule,
+        MatCardModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatTooltipModule,
+        RouterModule,
+    ]
 })
 export class RegistriesComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;

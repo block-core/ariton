@@ -4,11 +4,10 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-file-viewer',
-  standalone: true,
-  imports: [CommonModule, FormsModule],
-  templateUrl: './file-viewer.component.html',
-  styleUrls: ['./file-viewer.component.scss'],
+    selector: 'app-file-viewer',
+    imports: [CommonModule, FormsModule],
+    templateUrl: './file-viewer.component.html',
+    styleUrls: ['./file-viewer.component.scss']
 })
 export class FileViewerComponent implements OnInit, AfterViewInit {
   fileMimeType = FileMimeType;

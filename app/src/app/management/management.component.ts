@@ -6,11 +6,10 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { LayoutService } from '../layout.service';
 
 @Component({
-  selector: 'app-management',
-  standalone: true,
-  imports: [MatTabsModule, MatCardModule, MatIconModule, MatButtonModule],
-  templateUrl: './management.component.html',
-  styleUrl: './management.component.scss',
+    selector: 'app-management',
+    imports: [MatTabsModule, MatCardModule, MatIconModule, MatButtonModule],
+    templateUrl: './management.component.html',
+    styleUrl: './management.component.scss'
 })
 export class ManagementComponent {
   layout = inject(LayoutService);

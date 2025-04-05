@@ -7,11 +7,10 @@ import { DataLiveComponent } from './data-live/data-live.component';
 import { LayoutService } from '../layout.service';
 
 @Component({
-  selector: 'app-data',
-  standalone: true,
-  imports: [MatTabsModule, MatIconModule, DataManagementComponent, DataProtocolsComponent, DataLiveComponent],
-  templateUrl: './data.component.html',
-  styleUrl: './data.component.scss',
+    selector: 'app-data',
+    imports: [MatTabsModule, MatIconModule, DataManagementComponent, DataProtocolsComponent, DataLiveComponent],
+    templateUrl: './data.component.html',
+    styleUrl: './data.component.scss'
 })
 export class DataComponent {
   layout = inject(LayoutService);

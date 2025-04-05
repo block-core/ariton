@@ -12,29 +12,28 @@ import { MatCardModule } from '@angular/material/card';
 import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-avatar',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatIconModule,
-    MatDialogModule,
-    MatInputModule,
-    MatButtonModule,
-    MatSelectModule,
-    MatIconModule,
-    MatRadioModule,
-    MatCardModule,
-    ReactiveFormsModule,
-  ],
-  templateUrl: './avatar.component.html',
-  styleUrl: './avatar.component.scss',
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      multi: true,
-      useExisting: AvatarComponent,
-    },
-  ],
+    selector: 'app-avatar',
+    imports: [
+        CommonModule,
+        MatIconModule,
+        MatDialogModule,
+        MatInputModule,
+        MatButtonModule,
+        MatSelectModule,
+        MatIconModule,
+        MatRadioModule,
+        MatCardModule,
+        ReactiveFormsModule,
+    ],
+    templateUrl: './avatar.component.html',
+    styleUrl: './avatar.component.scss',
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            multi: true,
+            useExisting: AvatarComponent,
+        },
+    ]
 })
 export class AvatarComponent {
   file: string = '';

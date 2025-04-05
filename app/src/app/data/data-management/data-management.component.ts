@@ -35,23 +35,22 @@ export interface FlatTreeNode {
 }
 
 @Component({
-  selector: 'app-data-management',
-  standalone: true,
-  imports: [
-    MatFormFieldModule,
-    MatInputModule,
-    RouterLink,
-    CommonModule,
-    MatTabsModule,
-    MatIconModule,
-    MatButtonModule,
-    MatListModule,
-    MatTreeModule,
-    SizePipe,
-  ],
-  templateUrl: './data-management.component.html',
-  styleUrl: './data-management.component.scss',
-  providers: [SizePipe],
+    selector: 'app-data-management',
+    imports: [
+        MatFormFieldModule,
+        MatInputModule,
+        RouterLink,
+        CommonModule,
+        MatTabsModule,
+        MatIconModule,
+        MatButtonModule,
+        MatListModule,
+        MatTreeModule,
+        SizePipe,
+    ],
+    templateUrl: './data-management.component.html',
+    styleUrl: './data-management.component.scss',
+    providers: [SizePipe]
 })
 export class DataManagementComponent {
   protected readonly didInput = signal('');

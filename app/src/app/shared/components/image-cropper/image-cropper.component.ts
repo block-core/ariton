@@ -6,11 +6,10 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import Cropper from 'cropperjs';
 
 @Component({
-  selector: 'app-image-cropper',
-  standalone: true,
-  imports: [MatIconModule, MatButtonModule, MatDialogModule],
-  templateUrl: './image-cropper.component.html',
-  styleUrl: './image-cropper.component.scss',
+    selector: 'app-image-cropper',
+    imports: [MatIconModule, MatButtonModule, MatDialogModule],
+    templateUrl: './image-cropper.component.html',
+    styleUrl: './image-cropper.component.scss'
 })
 export class ImageCropperComponent {
   sanitizedUrl!: SafeUrl;

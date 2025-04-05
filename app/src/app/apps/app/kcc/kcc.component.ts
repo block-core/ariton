@@ -16,22 +16,21 @@ import { UtilityService } from '../../../utility.service';
 import { MatRadioModule } from '@angular/material/radio';
 
 @Component({
-  selector: 'app-kcc',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatInputModule,
-    MatFormFieldModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatCardModule,
-    MatIconModule,
-    MatButtonModule,
-    MatTabsModule,
-    MatRadioModule,
-  ],
-  templateUrl: './kcc.component.html',
-  styleUrl: './kcc.component.scss',
+    selector: 'app-kcc',
+    imports: [
+        CommonModule,
+        MatInputModule,
+        MatFormFieldModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatCardModule,
+        MatIconModule,
+        MatButtonModule,
+        MatTabsModule,
+        MatRadioModule,
+    ],
+    templateUrl: './kcc.component.html',
+    styleUrl: './kcc.component.scss'
 })
 export class KnownCustomerCredentialComponent {
   vcType = 'IdentityCredential';

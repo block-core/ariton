@@ -3,11 +3,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { DidPipe } from '../../pipes/did.pipe';
 
 @Component({
-  selector: 'app-did',
-  standalone: true,
-  imports: [MatTooltipModule, DidPipe],
-  templateUrl: './did.component.html',
-  styleUrl: './did.component.scss',
+    selector: 'app-did',
+    imports: [MatTooltipModule, DidPipe],
+    templateUrl: './did.component.html',
+    styleUrl: './did.component.scss'
 })
 export class DidComponent {
   did = input.required<string>();

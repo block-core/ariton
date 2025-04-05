@@ -14,22 +14,21 @@ import { IdentityService } from '../../identity.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
-  selector: 'app-connections',
-  standalone: true,
-  imports: [
-    RequestComponent,
-    ConnectionComponent,
-    ProfileHeaderComponent,
-    AgoPipe,
-    CommonModule,
-    MatCardModule,
-    MatButtonModule,
-    MatIconModule,
-    RouterModule,
-    MatProgressSpinnerModule,
-  ],
-  templateUrl: './connections.component.html',
-  styleUrl: './connections.component.scss',
+    selector: 'app-connections',
+    imports: [
+        RequestComponent,
+        ConnectionComponent,
+        ProfileHeaderComponent,
+        AgoPipe,
+        CommonModule,
+        MatCardModule,
+        MatButtonModule,
+        MatIconModule,
+        RouterModule,
+        MatProgressSpinnerModule,
+    ],
+    templateUrl: './connections.component.html',
+    styleUrl: './connections.component.scss'
 })
 export class ConnectionsComponent {
   connection = inject(ConnectionService);

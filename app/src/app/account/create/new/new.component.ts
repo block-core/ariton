@@ -16,20 +16,19 @@ import { AppService } from '../../../app.service';
 import { ProtocolService } from '../../../protocol.service';
 
 @Component({
-  selector: 'app-new',
-  standalone: true,
-  imports: [
-    MatInputModule,
-    MatButtonModule,
-    MatButtonToggleModule,
-    MatSelectModule,
-    MatIconModule,
-    MatRadioModule,
-    MatCardModule,
-    ReactiveFormsModule,
-  ],
-  templateUrl: './new.component.html',
-  styleUrl: './new.component.scss',
+    selector: 'app-new',
+    imports: [
+        MatInputModule,
+        MatButtonModule,
+        MatButtonToggleModule,
+        MatSelectModule,
+        MatIconModule,
+        MatRadioModule,
+        MatCardModule,
+        ReactiveFormsModule,
+    ],
+    templateUrl: './new.component.html',
+    styleUrl: './new.component.scss'
 })
 export class NewComponent {
   private fb = inject(FormBuilder);

@@ -15,11 +15,10 @@ import { BreadcrumbService } from '../../../breadcrumb.service';
 import { FileService } from '../../../file.service';
 
 @Component({
-  selector: 'app-files',
-  standalone: true,
-  imports: [RouterOutlet, BreadcrumbComponent, CommonModule, MatListModule, MatIconModule, AgoPipe],
-  templateUrl: './files.component.html',
-  styleUrl: './files.component.scss',
+    selector: 'app-files',
+    imports: [RouterOutlet, BreadcrumbComponent, CommonModule, MatListModule, MatIconModule, AgoPipe],
+    templateUrl: './files.component.html',
+    styleUrl: './files.component.scss'
 })
 export class FilesComponent {
   // id = signal<string | undefined>(undefined);

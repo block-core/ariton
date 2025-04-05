@@ -10,19 +10,18 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
-  selector: 'app-unlock',
-  standalone: true,
-  imports: [
-    FormsModule,
-    MatProgressSpinnerModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-  ],
-  templateUrl: './unlock.component.html',
-  styleUrl: './unlock.component.scss',
+    selector: 'app-unlock',
+    imports: [
+        FormsModule,
+        MatProgressSpinnerModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        MatIconModule,
+    ],
+    templateUrl: './unlock.component.html',
+    styleUrl: './unlock.component.scss'
 })
 export class UnlockComponent {
   passwordInput = new FormControl('', Validators.required);

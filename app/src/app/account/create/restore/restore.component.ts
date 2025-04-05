@@ -22,23 +22,22 @@ import { protocolDefinition as fileDefinition } from '../../../../protocols/file
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
-  selector: 'app-restore',
-  standalone: true,
-  imports: [
-    MatInputModule,
-    MatButtonModule,
-    MatButtonToggleModule,
-    MatSelectModule,
-    MatIconModule,
-    MatListModule,
-    RouterModule,
-    MatRadioModule,
-    MatCardModule,
-    ReactiveFormsModule,
-    MatProgressSpinnerModule,
-  ],
-  templateUrl: './restore.component.html',
-  styleUrl: './restore.component.scss',
+    selector: 'app-restore',
+    imports: [
+        MatInputModule,
+        MatButtonModule,
+        MatButtonToggleModule,
+        MatSelectModule,
+        MatIconModule,
+        MatListModule,
+        RouterModule,
+        MatRadioModule,
+        MatCardModule,
+        ReactiveFormsModule,
+        MatProgressSpinnerModule,
+    ],
+    templateUrl: './restore.component.html',
+    styleUrl: './restore.component.scss'
 })
 export class RestoreComponent {
   private fb = inject(FormBuilder);

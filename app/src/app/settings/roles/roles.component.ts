@@ -26,21 +26,20 @@ export interface RoleData {
 export interface RoleEntry extends RecordEntry<RoleData> {}
 
 @Component({
-  selector: 'app-roles',
-  standalone: true,
-  imports: [
-    RequestComponent,
-    ConnectionComponent,
-    ProfileHeaderComponent,
-    AgoPipe,
-    CommonModule,
-    MatCardModule,
-    MatButtonModule,
-    MatIconModule,
-    RouterModule,
-  ],
-  templateUrl: './roles.component.html',
-  styleUrl: './roles.component.scss',
+    selector: 'app-roles',
+    imports: [
+        RequestComponent,
+        ConnectionComponent,
+        ProfileHeaderComponent,
+        AgoPipe,
+        CommonModule,
+        MatCardModule,
+        MatButtonModule,
+        MatIconModule,
+        RouterModule,
+    ],
+    templateUrl: './roles.component.html',
+    styleUrl: './roles.component.scss'
 })
 export class RolesComponent {
   app = inject(AppService);

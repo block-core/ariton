@@ -15,11 +15,10 @@ import { AppService } from '../app.service';
 import { LayoutService } from '../layout.service';
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.scss',
-  standalone: true,
-  imports: [AsyncPipe, MatGridListModule, MatMenuModule, MatIconModule, MatButtonModule, MatCardModule, RouterModule],
+    selector: 'app-dashboard',
+    templateUrl: './dashboard.component.html',
+    styleUrl: './dashboard.component.scss',
+    imports: [AsyncPipe, MatGridListModule, MatMenuModule, MatIconModule, MatButtonModule, MatCardModule, RouterModule]
 })
 export class DashboardComponent {
   private breakpointObserver = inject(BreakpointObserver);

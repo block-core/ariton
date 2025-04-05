@@ -27,8 +27,7 @@ export interface FlatTreeNode {
     selector: 'app-tree',
     templateUrl: './tree.component.html',
     styleUrl: './tree.component.scss',
-    standalone: true,
-    imports: [MatTreeModule, MatButtonModule, MatIconModule],
+    imports: [MatTreeModule, MatButtonModule, MatIconModule]
 })
 export class TreeComponent {
     /** The TreeControl controls the expand/collapse state of tree nodes.  */

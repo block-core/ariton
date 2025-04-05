@@ -5,10 +5,9 @@ import { retry, tap } from 'rxjs';
 
 @Component({
     selector: 'app-licenses',
-    standalone: true,
     imports: [HttpClientModule], // TODO: Fix this import as it is deprecated.
     templateUrl: './licenses.component.html',
-    styleUrl: './licenses.component.scss',
+    styleUrl: './licenses.component.scss'
 })
 export class LicensesComponent {
     selectedContent!: SafeHtml;

@@ -10,11 +10,10 @@ import { FormsModule } from '@angular/forms';
 import { TimePipe } from '../../../../shared/pipes/time.pipe';
 
 @Component({
-  selector: 'app-player-controls',
-  standalone: true,
-  imports: [TimePipe, MatButtonModule, MatIconModule, CommonModule, MatSliderModule, MatInputModule, FormsModule],
-  templateUrl: './controls.component.html',
-  styleUrl: './controls.component.scss',
+    selector: 'app-player-controls',
+    imports: [TimePipe, MatButtonModule, MatIconModule, CommonModule, MatSliderModule, MatInputModule, FormsModule],
+    templateUrl: './controls.component.html',
+    styleUrl: './controls.component.scss'
 })
 export class PlayerControlsComponent {
   @Input() miniplayer: boolean = false;

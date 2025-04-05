@@ -31,26 +31,25 @@ import { AgoPipe } from '../shared/pipes/ago.pipe';
 import { DwnDateSort } from '@web5/agent';
 
 @Component({
-  selector: 'app-profile',
-  standalone: true,
-  imports: [
-    QRCodeDialogComponent,
-    MatDialogModule,
-    SafeUrlPipe,
-    MatTabsModule,
-    MatIconModule,
-    MatButtonModule,
-    MatMenuModule,
-    RouterLink,
-    MatDividerModule,
-    CommonModule,
-    MatProgressSpinnerModule,
-    MatCardModule,
-    ProfileHeaderComponent,
-    AgoPipe,
-  ],
-  templateUrl: './profile.component.html',
-  styleUrl: './profile.component.scss',
+    selector: 'app-profile',
+    imports: [
+        QRCodeDialogComponent,
+        MatDialogModule,
+        SafeUrlPipe,
+        MatTabsModule,
+        MatIconModule,
+        MatButtonModule,
+        MatMenuModule,
+        RouterLink,
+        MatDividerModule,
+        CommonModule,
+        MatProgressSpinnerModule,
+        MatCardModule,
+        ProfileHeaderComponent,
+        AgoPipe,
+    ],
+    templateUrl: './profile.component.html',
+    styleUrl: './profile.component.scss'
 })
 export class ProfileComponent {
   posts = signal<any[]>([]);

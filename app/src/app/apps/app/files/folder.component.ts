@@ -58,23 +58,22 @@ export class TableEntry {
 }
 
 @Component({
-  selector: 'app-folder',
-  standalone: true,
-  imports: [
-    MatCardModule,
-    MatButtonModule,
-    MatTableModule,
-    MatSortModule,
-    SizePipe,
-    BreadcrumbComponent,
-    CommonModule,
-    MatListModule,
-    MatIconModule,
-    AgoPipe,
-    BreadcrumbComponent,
-  ],
-  templateUrl: './folder.component.html',
-  styleUrl: './folder.component.scss',
+    selector: 'app-folder',
+    imports: [
+        MatCardModule,
+        MatButtonModule,
+        MatTableModule,
+        MatSortModule,
+        SizePipe,
+        BreadcrumbComponent,
+        CommonModule,
+        MatListModule,
+        MatIconModule,
+        AgoPipe,
+        BreadcrumbComponent,
+    ],
+    templateUrl: './folder.component.html',
+    styleUrl: './folder.component.scss'
 })
 export class FolderComponent {
   entries = signal<Record[]>([]);

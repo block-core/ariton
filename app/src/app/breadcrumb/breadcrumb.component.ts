@@ -3,11 +3,10 @@ import { BreadcrumbService } from '../breadcrumb.service';
 import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-breadcrumb',
-  standalone: true,
-  imports: [RouterModule],
-  templateUrl: './breadcrumb.component.html',
-  styleUrl: './breadcrumb.component.scss',
+    selector: 'app-breadcrumb',
+    imports: [RouterModule],
+    templateUrl: './breadcrumb.component.html',
+    styleUrl: './breadcrumb.component.scss'
 })
 export class BreadcrumbComponent {
   breadcrumbs: Array<{ label: string; url: string }> = [];

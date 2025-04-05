@@ -6,11 +6,10 @@ import { RouterLink } from '@angular/router';
 import { LayoutService } from '../layout.service';
 
 @Component({
-  selector: 'app-marketplace',
-  standalone: true,
-  imports: [MatIconModule, MatButtonModule, MatCardModule, RouterLink],
-  templateUrl: './marketplace.component.html',
-  styleUrl: './marketplace.component.scss',
+    selector: 'app-marketplace',
+    imports: [MatIconModule, MatButtonModule, MatCardModule, RouterLink],
+    templateUrl: './marketplace.component.html',
+    styleUrl: './marketplace.component.scss'
 })
 export class MarketplaceComponent {
   layout = inject(LayoutService);

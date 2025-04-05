@@ -13,20 +13,19 @@ import { Web5IdentityAgent } from '@web5/identity-agent';
 import { HdIdentityVault } from '@web5/agent';
 
 @Component({
-  selector: 'app-debug',
-  standalone: true,
-  imports: [
-    MatCardModule,
-    MatButtonModule,
-    CommonModule,
-    MatTooltipModule,
-    MatMenuModule,
-    MatIconModule,
-    MatInputModule,
-    FormsModule,
-  ],
-  templateUrl: './debug.component.html',
-  styleUrl: './debug.component.scss',
+    selector: 'app-debug',
+    imports: [
+        MatCardModule,
+        MatButtonModule,
+        CommonModule,
+        MatTooltipModule,
+        MatMenuModule,
+        MatIconModule,
+        MatInputModule,
+        FormsModule,
+    ],
+    templateUrl: './debug.component.html',
+    styleUrl: './debug.component.scss'
 })
 export class DebugComponent {
   query: string = `{

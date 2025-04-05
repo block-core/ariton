@@ -24,28 +24,27 @@ type CardContent = {
 };
 
 @Component({
-  selector: 'app-projects',
-  standalone: true,
-  imports: [
-    RouterModule,
-    MatButtonToggleModule,
-    MatIconModule,
-    MatInputModule,
-    MatFormFieldModule,
-    ReactiveFormsModule,
-    CommonModule,
-    MatButtonModule,
-    MatCardModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatSlideToggleModule,
-    FormsModule,
-    MatToolbarModule,
-  ],
-  templateUrl: './projects.component.html',
-  styleUrl: './projects.component.scss',
-  changeDetection: ChangeDetectionStrategy.Default,
+    selector: 'app-projects',
+    imports: [
+        RouterModule,
+        MatButtonToggleModule,
+        MatIconModule,
+        MatInputModule,
+        MatFormFieldModule,
+        ReactiveFormsModule,
+        CommonModule,
+        MatButtonModule,
+        MatCardModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatSlideToggleModule,
+        FormsModule,
+        MatToolbarModule,
+    ],
+    templateUrl: './projects.component.html',
+    styleUrl: './projects.component.scss',
+    changeDetection: ChangeDetectionStrategy.Default
 })
 export class ProjectsComponent {
   search = new FormControl('');

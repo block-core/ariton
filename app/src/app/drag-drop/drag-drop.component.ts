@@ -5,8 +5,7 @@ import { CdkDrag, CdkDropList, CdkDragDrop, moveItemInArray, transferArrayItem }
     selector: 'app-drag-drop',
     templateUrl: './drag-drop.component.html',
     styleUrl: './drag-drop.component.scss',
-    standalone: true,
-    imports: [CdkDrag, CdkDropList],
+    imports: [CdkDrag, CdkDropList]
 })
 export class DragDropComponent {
     todo = ['Get to work', 'Pick up groceries', 'Go home', 'Fall asleep'];

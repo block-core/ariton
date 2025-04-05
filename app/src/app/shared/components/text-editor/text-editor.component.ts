@@ -6,11 +6,10 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
-  selector: 'app-text-editor',
-  standalone: true,
-  imports: [MatButtonModule, MatCardModule, MatIconModule, MatMenuModule, MatTooltipModule],
-  templateUrl: './text-editor.component.html',
-  styleUrls: ['./text-editor.component.scss'],
+    selector: 'app-text-editor',
+    imports: [MatButtonModule, MatCardModule, MatIconModule, MatMenuModule, MatTooltipModule],
+    templateUrl: './text-editor.component.html',
+    styleUrls: ['./text-editor.component.scss']
 })
 export class TextEditorComponent implements AfterViewInit {
   @Input() content: string = '';

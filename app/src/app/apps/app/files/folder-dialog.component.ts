@@ -18,20 +18,19 @@ export interface DialogData {
 }
 
 @Component({
-  selector: 'app-folder-dialog',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatTooltipModule,
-    MatMenuModule,
-    MatIconModule,
-    MatButtonModule,
-    MatInputModule,
-    MatDialogModule,
-    FormsModule,
-  ],
-  templateUrl: './folder-dialog.component.html',
-  styleUrl: './folder-dialog.component.scss',
+    selector: 'app-folder-dialog',
+    imports: [
+        CommonModule,
+        MatTooltipModule,
+        MatMenuModule,
+        MatIconModule,
+        MatButtonModule,
+        MatInputModule,
+        MatDialogModule,
+        FormsModule,
+    ],
+    templateUrl: './folder-dialog.component.html',
+    styleUrl: './folder-dialog.component.scss'
 })
 export class FolderDialogComponent {
   private fb = inject(FormBuilder);

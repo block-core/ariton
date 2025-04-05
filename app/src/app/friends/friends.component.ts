@@ -23,28 +23,27 @@ import { ProfileService } from '../profile.service';
 import { SafeUrlPipe } from '../shared/pipes/safe-url.pipe';
 
 @Component({
-  selector: 'app-friends',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatListModule,
-    MatCardModule,
-    MatButtonModule,
-    MatTabsModule,
-    MatIconModule,
-    MatBadgeModule,
-    MatMenuModule,
-    ProfileCardComponent,
-    ProfileImageDirective,
-    DidComponent,
-    RouterModule,
-    RequestComponent,
-    MatButtonToggleModule,
-    FormsModule,
-    SafeUrlPipe,
-  ],
-  templateUrl: './friends.component.html',
-  styleUrl: './friends.component.scss',
+    selector: 'app-friends',
+    imports: [
+        CommonModule,
+        MatListModule,
+        MatCardModule,
+        MatButtonModule,
+        MatTabsModule,
+        MatIconModule,
+        MatBadgeModule,
+        MatMenuModule,
+        ProfileCardComponent,
+        ProfileImageDirective,
+        DidComponent,
+        RouterModule,
+        RequestComponent,
+        MatButtonToggleModule,
+        FormsModule,
+        SafeUrlPipe,
+    ],
+    templateUrl: './friends.component.html',
+    styleUrl: './friends.component.scss'
 })
 export class FriendsComponent {
   friends: ConnectionEntry[] | any[] = [];

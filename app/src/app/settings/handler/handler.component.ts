@@ -5,10 +5,9 @@ import { MatIconModule } from '@angular/material/icon';
 
 @Component({
     selector: 'app-handler',
-    standalone: true,
     imports: [MatIconModule, MatCardModule, MatButtonModule],
     templateUrl: './handler.component.html',
-    styleUrl: './handler.component.scss',
+    styleUrl: './handler.component.scss'
 })
 export class HandlerComponent {
     registerHandler(protocol: string, parameter: string) {

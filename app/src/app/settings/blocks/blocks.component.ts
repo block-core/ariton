@@ -9,11 +9,10 @@ import { RouterModule } from '@angular/router';
 import { AgoPipe } from '../../shared/pipes/ago.pipe';
 
 @Component({
-  selector: 'app-blocks',
-  standalone: true,
-  imports: [AgoPipe, CommonModule, MatCardModule, MatButtonModule, MatIconModule, RouterModule],
-  templateUrl: './blocks.component.html',
-  styleUrl: './blocks.component.scss',
+    selector: 'app-blocks',
+    imports: [AgoPipe, CommonModule, MatCardModule, MatButtonModule, MatIconModule, RouterModule],
+    templateUrl: './blocks.component.html',
+    styleUrl: './blocks.component.scss'
 })
 export class BlocksComponent {
   service = inject(ConnectionService);

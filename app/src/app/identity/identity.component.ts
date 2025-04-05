@@ -3,11 +3,10 @@ import { IdentityService } from '../identity.service';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-  selector: 'app-identity',
-  standalone: true,
-  imports: [MatButtonModule],
-  templateUrl: './identity.component.html',
-  styleUrl: './identity.component.scss',
+    selector: 'app-identity',
+    imports: [MatButtonModule],
+    templateUrl: './identity.component.html',
+    styleUrl: './identity.component.scss'
 })
 export class IdentityComponent {
   portableDid = signal<string>('');

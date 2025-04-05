@@ -5,11 +5,10 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-  selector: 'app-qrcode-scan-dialog',
-  standalone: true,
-  imports: [ZXingScannerModule, MatDialogModule, MatButtonModule],
-  templateUrl: './qrcode-scan-dialog.component.html',
-  styleUrl: './qrcode-scan-dialog.component.scss',
+    selector: 'app-qrcode-scan-dialog',
+    imports: [ZXingScannerModule, MatDialogModule, MatButtonModule],
+    templateUrl: './qrcode-scan-dialog.component.html',
+    styleUrl: './qrcode-scan-dialog.component.scss'
 })
 export class QRCodeScanDialogComponent {
   constructor(

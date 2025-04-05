@@ -5,11 +5,10 @@ import { PlayerService } from '../../../player.service';
 import { QueueEditorComponent } from './queue-editor/queue-editor.component';
 
 @Component({
-  selector: 'app-player',
-  standalone: true,
-  imports: [MatButtonModule, QueueEditorComponent],
-  templateUrl: './player.component.html',
-  styleUrl: './player.component.scss',
+    selector: 'app-player',
+    imports: [MatButtonModule, QueueEditorComponent],
+    templateUrl: './player.component.html',
+    styleUrl: './player.component.scss'
 })
 export class PlayerComponent {
   layout = inject(LayoutService);

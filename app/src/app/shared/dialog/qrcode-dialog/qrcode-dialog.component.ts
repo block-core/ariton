@@ -8,11 +8,10 @@ import * as QRCode from 'qrcode';
 import { UtilityService } from '../../../utility.service';
 
 @Component({
-  selector: 'app-qrcode-dialog',
-  standalone: true,
-  imports: [MatDialogModule, MatButtonModule, MatButtonToggleModule, FormsModule, MatIconModule],
-  templateUrl: './qrcode-dialog.component.html',
-  styleUrl: './qrcode-dialog.component.scss',
+    selector: 'app-qrcode-dialog',
+    imports: [MatDialogModule, MatButtonModule, MatButtonToggleModule, FormsModule, MatIconModule],
+    templateUrl: './qrcode-dialog.component.html',
+    styleUrl: './qrcode-dialog.component.scss'
 })
 export class QRCodeDialogComponent {
   qrStyle = 'did';

@@ -17,10 +17,9 @@ import { MatCardModule } from '@angular/material/card';
 
 @Component({
     selector: 'app-data-protocols',
-    standalone: true,
     imports: [MatCardModule, MatButtonModule, MatListModule, CommonModule, MatButtonModule, MatExpansionModule, MatIconModule],
     templateUrl: './data-protocols.component.html',
-    styleUrl: './data-protocols.component.scss',
+    styleUrl: './data-protocols.component.scss'
 })
 export class DataProtocolsComponent {
     accordion = viewChild.required(MatAccordion);

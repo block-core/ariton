@@ -17,20 +17,19 @@ export interface DialogData {
 }
 
 @Component({
-  selector: 'app-post-dialog',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatTooltipModule,
-    MatMenuModule,
-    MatIconModule,
-    MatButtonModule,
-    MatInputModule,
-    MatDialogModule,
-    FormsModule,
-  ],
-  templateUrl: './post-dialog.component.html',
-  styleUrl: './post-dialog.component.scss',
+    selector: 'app-post-dialog',
+    imports: [
+        CommonModule,
+        MatTooltipModule,
+        MatMenuModule,
+        MatIconModule,
+        MatButtonModule,
+        MatInputModule,
+        MatDialogModule,
+        FormsModule,
+    ],
+    templateUrl: './post-dialog.component.html',
+    styleUrl: './post-dialog.component.scss'
 })
 export class PostDialogComponent {
   private fb = inject(FormBuilder);

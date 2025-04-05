@@ -26,30 +26,29 @@ type CardContent = {
 };
 
 @Component({
-  selector: 'app-local-company',
-  standalone: true,
-  imports: [
-    MatButtonToggleModule,
-    MatIconModule,
-    MatInputModule,
-    MatFormFieldModule,
-    ReactiveFormsModule,
-    CommonModule,
-    MatButtonModule,
-    MatCardModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatSlideToggleModule,
-    FormsModule,
-    MatToolbarModule,
-    AsyncPipe,
-    MatGridListModule,
-    MatMenuModule,
-    RouterModule,
-  ],
-  templateUrl: './local-company.component.html',
-  styleUrl: './local-company.component.scss',
+    selector: 'app-local-company',
+    imports: [
+        MatButtonToggleModule,
+        MatIconModule,
+        MatInputModule,
+        MatFormFieldModule,
+        ReactiveFormsModule,
+        CommonModule,
+        MatButtonModule,
+        MatCardModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatSlideToggleModule,
+        FormsModule,
+        MatToolbarModule,
+        AsyncPipe,
+        MatGridListModule,
+        MatMenuModule,
+        RouterModule,
+    ],
+    templateUrl: './local-company.component.html',
+    styleUrl: './local-company.component.scss'
 })
 export class LocalCompanyComponent {
   search = new FormControl('');

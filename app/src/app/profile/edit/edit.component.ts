@@ -15,20 +15,19 @@ import { protocolDefinition as profileDefinition } from '../../../protocols/prof
 import { LayoutService } from '../../layout.service';
 
 @Component({
-  selector: 'app-edit',
-  standalone: true,
-  imports: [
-    AvatarComponent,
-    MatInputModule,
-    MatButtonModule,
-    MatSelectModule,
-    MatIconModule,
-    MatRadioModule,
-    MatCardModule,
-    ReactiveFormsModule,
-  ],
-  templateUrl: './edit.component.html',
-  styleUrl: './edit.component.scss',
+    selector: 'app-edit',
+    imports: [
+        AvatarComponent,
+        MatInputModule,
+        MatButtonModule,
+        MatSelectModule,
+        MatIconModule,
+        MatRadioModule,
+        MatCardModule,
+        ReactiveFormsModule,
+    ],
+    templateUrl: './edit.component.html',
+    styleUrl: './edit.component.scss'
 })
 export class ProfileEditComponent {
   private fb = inject(FormBuilder);

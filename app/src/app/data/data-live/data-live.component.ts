@@ -12,21 +12,20 @@ import { AgoPipe } from '../../shared/pipes/ago.pipe';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'app-data-live',
-  standalone: true,
-  imports: [
-    AgoPipe,
-    CommonModule,
-    MatInputModule,
-    MatButtonModule,
-    MatSelectModule,
-    MatIconModule,
-    MatRadioModule,
-    MatCardModule,
-    ReactiveFormsModule,
-  ],
-  templateUrl: './data-live.component.html',
-  styleUrl: './data-live.component.scss',
+    selector: 'app-data-live',
+    imports: [
+        AgoPipe,
+        CommonModule,
+        MatInputModule,
+        MatButtonModule,
+        MatSelectModule,
+        MatIconModule,
+        MatRadioModule,
+        MatCardModule,
+        ReactiveFormsModule,
+    ],
+    templateUrl: './data-live.component.html',
+    styleUrl: './data-live.component.scss'
 })
 export class DataLiveComponent {
   private fb = inject(FormBuilder);

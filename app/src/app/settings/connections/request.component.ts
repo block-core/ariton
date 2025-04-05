@@ -14,11 +14,10 @@ import { FriendService } from '../../friend.service';
 import { protocolDefinition as taskDefinition } from '../../../protocols/task';
 
 @Component({
-  selector: 'app-request',
-  standalone: true,
-  imports: [ProfileHeaderComponent, AgoPipe, CommonModule, MatCardModule, MatButtonModule, MatIconModule, RouterModule],
-  templateUrl: './request.component.html',
-  styleUrl: './request.component.scss',
+    selector: 'app-request',
+    imports: [ProfileHeaderComponent, AgoPipe, CommonModule, MatCardModule, MatButtonModule, MatIconModule, RouterModule],
+    templateUrl: './request.component.html',
+    styleUrl: './request.component.scss'
 })
 export class RequestComponent {
   @Input() public entry?: ConnectionEntry = undefined;

@@ -8,19 +8,18 @@ import { MatIconModule } from '@angular/material/icon';
 import { LayoutService } from '../layout.service';
 
 @Component({
-  selector: 'app-storage',
-  standalone: true,
-  imports: [
-    MatChipsModule,
-    MatIconModule,
-    MatButtonToggleModule,
-    MatCardModule,
-    MatButtonModule,
-    FormsModule,
-    ReactiveFormsModule,
-  ],
-  templateUrl: './storage.component.html',
-  styleUrl: './storage.component.scss',
+    selector: 'app-storage',
+    imports: [
+        MatChipsModule,
+        MatIconModule,
+        MatButtonToggleModule,
+        MatCardModule,
+        MatButtonModule,
+        FormsModule,
+        ReactiveFormsModule,
+    ],
+    templateUrl: './storage.component.html',
+    styleUrl: './storage.component.scss'
 })
 export class StorageComponent {
   premiumPeriod = 'monthly';

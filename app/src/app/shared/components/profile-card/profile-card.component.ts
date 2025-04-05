@@ -10,11 +10,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-profile-card',
-  standalone: true,
-  imports: [RouterModule, DidComponent, MatTooltipModule, MatCardModule, SafeUrlPipe, DidPipe],
-  templateUrl: './profile-card.component.html',
-  styleUrl: './profile-card.component.scss',
+    selector: 'app-profile-card',
+    imports: [RouterModule, DidComponent, MatTooltipModule, MatCardModule, SafeUrlPipe, DidPipe],
+    templateUrl: './profile-card.component.html',
+    styleUrl: './profile-card.component.scss'
 })
 export class ProfileCardComponent {
   // @Input() name: string;

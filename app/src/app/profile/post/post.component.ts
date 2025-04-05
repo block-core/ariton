@@ -13,21 +13,20 @@ import { IdentityService } from '../../identity.service';
 import { LayoutService } from '../../layout.service';
 
 @Component({
-  selector: 'app-post',
-  standalone: true,
-  imports: [
-    MatCardModule,
-    MatMenuModule,
-    MatIconModule,
-    MatButtonModule,
-    RouterModule,
-    MatDividerModule,
-    ProfileHeaderComponent,
-    MatProgressSpinnerModule,
-    AgoPipe,
-  ],
-  templateUrl: './post.component.html',
-  styleUrl: './post.component.scss',
+    selector: 'app-post',
+    imports: [
+        MatCardModule,
+        MatMenuModule,
+        MatIconModule,
+        MatButtonModule,
+        RouterModule,
+        MatDividerModule,
+        ProfileHeaderComponent,
+        MatProgressSpinnerModule,
+        AgoPipe,
+    ],
+    templateUrl: './post.component.html',
+    styleUrl: './post.component.scss'
 })
 export class PostComponent {
   app = inject(AppService);

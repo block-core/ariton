@@ -11,19 +11,18 @@ import { MatListModule } from '@angular/material/list';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-queue-editor',
-  standalone: true,
-  imports: [
-    FormsModule,
-    MatButtonModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatIconModule,
-    MatListModule,
-  ],
-  templateUrl: './queue-editor.component.html',
+    selector: 'app-queue-editor',
+    imports: [
+        FormsModule,
+        MatButtonModule,
+        MatCardModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+        MatIconModule,
+        MatListModule,
+    ],
+    templateUrl: './queue-editor.component.html'
 })
 export class QueueEditorComponent {
   newItemTitle: string = '';

@@ -11,21 +11,20 @@ import { MatCardModule } from '@angular/material/card';
 import { AppService } from '../../app.service';
 
 @Component({
-  selector: 'app-password',
-  standalone: true,
-  imports: [
-    MatCardModule,
-    FormsModule,
-    MatProgressSpinnerModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    RouterModule,
-  ],
-  templateUrl: './password.component.html',
-  styleUrl: './password.component.scss',
+    selector: 'app-password',
+    imports: [
+        MatCardModule,
+        FormsModule,
+        MatProgressSpinnerModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        MatIconModule,
+        RouterModule,
+    ],
+    templateUrl: './password.component.html',
+    styleUrl: './password.component.scss'
 })
 export class PasswordComponent {
   passwordInputPrevious = new FormControl('', Validators.required);

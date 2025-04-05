@@ -5,11 +5,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { LayoutService } from '../../../layout.service';
 
 @Component({
-  selector: 'app-gaianet',
-  standalone: true,
-  imports: [MatButtonModule],
-  templateUrl: './gaianet.component.html',
-  styleUrl: './gaianet.component.scss',
+    selector: 'app-gaianet',
+    imports: [MatButtonModule],
+    templateUrl: './gaianet.component.html',
+    styleUrl: './gaianet.component.scss'
 })
 export class GaianetComponent {
   layout = inject(LayoutService);

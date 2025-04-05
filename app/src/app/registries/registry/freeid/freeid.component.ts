@@ -15,22 +15,21 @@ import { VerifiableCredential } from '@web5/credentials';
 import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-freeid',
-  standalone: true,
-  imports: [
-    RouterModule,
-    MatButtonModule,
-    CommonModule,
-    MatInputModule,
-    MatFormFieldModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatCardModule,
-    MatIconModule,
-    MatTabsModule,
-  ],
-  templateUrl: './freeid.component.html',
-  styleUrl: './freeid.component.scss',
+    selector: 'app-freeid',
+    imports: [
+        RouterModule,
+        MatButtonModule,
+        CommonModule,
+        MatInputModule,
+        MatFormFieldModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatCardModule,
+        MatIconModule,
+        MatTabsModule,
+    ],
+    templateUrl: './freeid.component.html',
+    styleUrl: './freeid.component.scss'
 })
 export class FreeIDComponent {
   // Source: https://github.com/WorldVoluntaryistOrganisation/VerificationServices/blob/main/services.json
