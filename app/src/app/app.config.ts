@@ -1,4 +1,4 @@
-import { ApplicationConfig, provideZoneChangeDetection, isDevMode, APP_INITIALIZER } from '@angular/core';
+import { ApplicationConfig, provideZoneChangeDetection, isDevMode, inject, provideAppInitializer } from '@angular/core';
 import { PreloadAllModules, provideRouter, withPreloading } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -21,11 +21,9 @@ export const appConfig: ApplicationConfig = {
       enabled: !isDevMode(),
       registrationStrategy: 'registerWhenStable:30000',
     }),
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initializeApp,
-      deps: [HashService],
-      multi: true,
-    },
+    provideAppInitializer(() => {
+        const initializerFn = (initializeApp)(inject(HashService));
+        return initializerFn();
+      }),
   ],
 };
